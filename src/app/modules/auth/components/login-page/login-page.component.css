@@ -1,0 +1,29 @@
+
+.login-form {
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);   
+}
+
+@media (max-width: 300px){
+    .login-form {
+        width: 90%;  
+    }
+
+}
+
+.login-form-margin {
+margin-bottom: 16px;
+}
+
+.login-form-forgot {
+float: right;
+}
+
+.login-form-button {
+    width: 100%;
+    padding: 0.5em 1em;
+    border: none;
+}
