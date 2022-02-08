@@ -1,0 +1,38 @@
+
+[nz-form] {
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);   
+} 
+
+@media (max-width: 1300px){
+    [nz-form] {
+        width: 90%;  
+    }
+
+}
+
+.phone-select {
+width: 100px;
+}
+
+.register-are {
+margin-bottom: 8px;
+}
+
+/* 
+
+{
+  code: string;
+  userType: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  roleId: number;
+  password: string;
+}
+
+} */

@@ -27,13 +27,15 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { CookieService } from 'ngx-cookie-service';
 
+
 //shared
 
-import {SharedModule} from "@shared/shared.module";
+import { RegisterComponent } from './components/register/register.component';
 @NgModule({
   declarations: [
     AuthMainComponent,
     LoginPageComponent,
+    RegisterComponent,
 
   ],
   imports: [
@@ -60,7 +62,6 @@ import {SharedModule} from "@shared/shared.module";
     NzDrawerModule,
     HttpClientModule,
     //shared
-    SharedModule
   ],
   providers:
     [CookieService],

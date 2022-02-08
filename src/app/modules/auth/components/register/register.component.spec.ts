@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PopConfirmComponent } from './pop-confirm.component';
+import { RegisterComponent } from './register.component';
 
-describe('PopConfirmComponent', () => {
-  let component: PopConfirmComponent;
-  let fixture: ComponentFixture<PopConfirmComponent>;
+describe('RegisterComponent', () => {
+  let component: RegisterComponent;
+  let fixture: ComponentFixture<RegisterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PopConfirmComponent ]
+      declarations: [ RegisterComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PopConfirmComponent);
+    fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

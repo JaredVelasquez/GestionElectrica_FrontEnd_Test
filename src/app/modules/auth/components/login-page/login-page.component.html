@@ -1,6 +1,4 @@
-<div *ngIf="validateForm">
-    <app-pop-confirm></app-pop-confirm>
-</div>
+
 <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
     
     <nz-form-item>
@@ -27,8 +25,8 @@
         <a class="login-form-forgot">Forgot password</a>
         </div>
     </div>
-    <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+    <button [disabled]="validateForm.invalid" nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
     Or
-    <a>register now!</a>
+    <a [routerLink]="['register']">register now!</a>
 </form>
   
