@@ -2,31 +2,41 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MenuLayoutRoutingModule } from './menu-layout-routing.module';
-import { MenuLayoutPageComponent } from './pages/menu-layout-page/menu-layout-page.component';
 import { HomeComponent } from './components/home/home.component';
 
 //layout
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from '../../icons-provider.module';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
-import { BrowserModule } from '@angular/platform-browser';
+
+import { SharedModule } from "@shared/shared.module";
+import { MainPageComponent } from './pages/main-page/main-page.component';
+import { ClientsComponent } from './components/clients/clients.component';
+import { ProvidersComponent } from './components/providers/providers.component';
+import { ZonesComponent } from './components/zones/zones.component';
+import { MetersComponent } from './components/meters/meters.component';
 
 @NgModule({
   declarations: [
-    MenuLayoutPageComponent,
-    HomeComponent
+    HomeComponent,
+    MainPageComponent,
+    ClientsComponent,
+    ProvidersComponent,
+    ZonesComponent,
+    MetersComponent
   ],
   imports: [
     CommonModule,
     MenuLayoutRoutingModule,
     NzLayoutModule,
     NzMenuModule,
-    IconsProviderModule
+    IconsProviderModule,
+    SharedModule,
+    NzTableModule
   ],
-  bootstrap: [MenuLayoutPageComponent]
+  bootstrap: [MainPageComponent]
 })
 export class MenuLayoutModule { }

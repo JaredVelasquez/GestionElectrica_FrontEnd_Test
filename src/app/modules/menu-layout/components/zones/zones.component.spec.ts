@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MenuLayoutPageComponent } from './menu-layout-page.component';
+import { ZonesComponent } from './zones.component';
 
-describe('MenuLayoutPageComponent', () => {
-  let component: MenuLayoutPageComponent;
-  let fixture: ComponentFixture<MenuLayoutPageComponent>;
+describe('ZonesComponent', () => {
+  let component: ZonesComponent;
+  let fixture: ComponentFixture<ZonesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MenuLayoutPageComponent ]
+      declarations: [ ZonesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MenuLayoutPageComponent);
+    fixture = TestBed.createComponent(ZonesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

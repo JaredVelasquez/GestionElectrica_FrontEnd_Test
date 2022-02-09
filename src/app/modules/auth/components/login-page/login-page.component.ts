@@ -40,7 +40,6 @@ export class LoginPageComponent implements OnInit {
           if(result.token){
             this.validateError = false;
             this.cookieService.set(key.TOKEN_KEY_NAME, result.token , key.TOKEN_EXPIRATION_TIME, '');
-            this.router.navigate(['welcome']);
           }
           else
             this.validateError = true;
@@ -49,7 +48,7 @@ export class LoginPageComponent implements OnInit {
         }
       );
       if(this.cookieService.get(key.TOKEN_KEY_NAME))
-        this.router.navigate(['welcome'])
+        this.router.navigate(['sys/welcome'])
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

@@ -7,8 +7,14 @@ const routes: Routes = [
     loadChildren:() => import('@modules/auth/auth.module').then((m) => m.AuthModule),
 
   },
-  { path: '', pathMatch: 'full', redirectTo: '/welcome' },
-  { path: 'welcome', loadChildren: () => import('./modules/menu-layout/menu-layout.module').then(m => m.MenuLayoutModule) }
+  { path: '', 
+    pathMatch: 'full', 
+    redirectTo: '/sys' 
+  },
+  { 
+    path: 'sys', 
+    loadChildren: () => import('@modules/menu-layout/menu-layout.module').then(m => m.MenuLayoutModule) 
+  }
 ];
 
 @NgModule({

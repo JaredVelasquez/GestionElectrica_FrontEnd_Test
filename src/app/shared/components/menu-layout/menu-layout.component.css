@@ -75,7 +75,8 @@
   
   .inner-content {
     padding: 24px;
-    background: #fff;
-    height: 100%;
+    background: rgba(255, 255, 255, 0.774);
+    height: auto;
+    width: 100%;
   }
   

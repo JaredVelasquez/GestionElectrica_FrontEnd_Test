@@ -12,17 +12,39 @@
         </a>
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-        <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+        
+        <div routerLink="welcome" nz-menu-item nzMatchRouter>
+          <li>
+              <i nz-icon nzType="home"></i>
+              <span >Inicio</span>
+          </li>
+        </div>
+        <li nz-submenu nzOpen nzTitle="Mantenimientos" nzIcon="tool">
           <ul>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/welcome">Welcome</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a>Monitor</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a>Workplace</a>
-            </li>
+            <div routerLink="clients" nz-menu-item nzMatchRouter>
+              <li>
+                  <i nz-icon nzType="team"></i>
+                  <span >Clientes</span>
+              </li>
+            </div>
+            <div routerLink="providers" nz-menu-item nzMatchRouter>
+              <li>
+                  <i nz-icon nzType="thunderbolt"></i>
+                  <span >Proveedores</span>
+              </li>
+            </div>
+            <div routerLink="zones" nz-menu-item nzMatchRouter>
+              <li>
+                  <i nz-icon nzType="border-horizontal"></i>
+                  <span >Zonas</span>
+              </li>
+            </div>
+            <div routerLink="meters" nz-menu-item nzMatchRouter>
+              <li>
+                  <i nz-icon nzType="dashboard"></i>
+                  <span >Medidores</span>
+              </li>
+            </div>
           </ul>
         </li>
         <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
@@ -52,4 +74,3 @@
       </nz-content>
     </nz-layout>
   </nz-layout>
-  
