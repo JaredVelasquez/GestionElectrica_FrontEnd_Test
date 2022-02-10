@@ -7,13 +7,14 @@ import { IconsProviderModule } from 'src/app/icons-provider.module';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { TableComponent } from './components/table/table.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { MetersTableComponent } from './components/meters-table/meters-table.component';
+
 
 @NgModule({
   declarations: [
     MenuLayoutComponent,
-    TableComponent
+    MetersTableComponent
   ],
   imports: [
     RouterModule,
@@ -25,7 +26,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
   ],
   exports: [
     MenuLayoutComponent,
-    TableComponent
+    MetersTableComponent
   ]
 })
 export class SharedModule { }

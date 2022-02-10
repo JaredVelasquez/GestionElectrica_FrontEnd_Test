@@ -6,7 +6,7 @@
   }
   
   .app-layout {
-    height: 100vh;
+    height: auto;
   }
   
   .menu-sidebar {
@@ -73,10 +73,4 @@
     margin: 24px;
   }
   
-  .inner-content {
-    padding: 24px;
-    background: rgba(255, 255, 255, 0.774);
-    height: auto;
-    width: 100%;
-  }
   

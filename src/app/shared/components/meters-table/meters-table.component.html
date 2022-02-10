@@ -1,0 +1,28 @@
+    
+    <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1150px', y: '240px' }">
+        <thead>
+          <tr>
+            <th nzLeft>Accion</th>
+            <th *ngFor="let title of titles">
+                {{title.name}}</th>
+            <th nzRight>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of fixedTable.data">
+            <td nzLeft>
+                <i class="iconAction" nz-icon nzType="edit" ></i>
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td nzRight>
+                Activo
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
