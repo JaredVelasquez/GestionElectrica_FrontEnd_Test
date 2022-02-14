@@ -1,28 +1,52 @@
-    
-    <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1150px', y: '240px' }">
-        <thead>
-          <tr>
-            <th nzLeft>Accion</th>
-            <th *ngFor="let title of titles">
-                {{title.name}}</th>
-            <th nzRight>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of fixedTable.data">
-            <td nzLeft>
-                <i class="iconAction" nz-icon nzType="edit" ></i>
-                <i nz-icon nzType="delete" nzTheme="outline"></i>
-            </td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td nzRight>
-                Activo
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+
+    <div nz-row class="table-operations">
+      <button nz-col nzSpan="6" nz-button (click)="sortByAge()">Orden por estado</button>
+      <button nz-col nzSpan="6" nz-button (click)="resetFilters()">Quitar filtros</button>
+      <button nz-col nzSpan="6" nz-button (click)="resetSortAndFilters()">Quitar filtros y orden</button>
+      <div nz-col nzSpan="6">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+          <input type="text" nz-input placeholder="input search text" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+        </ng-template>
+      </div>
+    </div>
+    <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
+      <thead>
+        <tr>
+          <th nzLeft>Accion</th>
+          <th
+            *ngFor="let column of listOfColumns"
+            [nzSortOrder]="column.sortOrder"
+            [nzSortFn]="column.sortFn"
+            [nzSortDirections]="column.sortDirections"
+            [nzFilterMultiple]="column.filterMultiple"
+            [nzFilters]="column.listOfFilter"
+            [nzFilterFn]="column.filterFn"
+          >
+            {{ column.name }}
+          </th>
+          <th nzRight>Configuracion</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of filterTable.data">
+          <td nzLeft>
+            <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+          </td>
+          <td>{{ data.Id }}</td>
+          <td>{{ data.Codigo }}</td>
+          <td>{{ data.Descripcion }}</td>
+          <td>{{ data.Modelo }}</td>
+          <td>{{ data.Serie }}</td>
+          <td>{{ data.Tipo }}</td>
+          <td>{{ data.Estado }}</td>
+          <td nzRight> 
+            <button class="config" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="setting" nzTheme="outline"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
