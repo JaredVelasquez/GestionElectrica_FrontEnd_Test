@@ -31,6 +31,9 @@
       ],
       "@dev/*":[
         "src/environments/*"
+      ],
+      "@core/*":[
+        "src/core/*"
       ]
     }
   },

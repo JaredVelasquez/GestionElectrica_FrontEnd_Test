@@ -8,15 +8,22 @@ import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { MetersTableComponent } from './components/meters-table/meters-table.component';
+import { MetersTableComponent } from "./components/meters/meters-table/meters-table.component";
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { MetersModalComponent } from './components/meters/meters-modal/meters-modal.component';
 
+import { NzModalModule } from 'ng-zorro-antd/modal';
+
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
 @NgModule({
   declarations: [
     MenuLayoutComponent,
-    MetersTableComponent
+    MetersTableComponent,
+    MetersModalComponent
   ],
   imports: [
     RouterModule,
@@ -27,11 +34,14 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     NzTableModule,
     NzButtonModule,
     NzInputModule,
-    NzGridModule
+    NzGridModule,
+    NzModalModule,
+    NzRadioModule
   ],
   exports: [
     MenuLayoutComponent,
-    MetersTableComponent
+    MetersTableComponent,
+    NzFormModule
   ]
 })
 export class SharedModule { }

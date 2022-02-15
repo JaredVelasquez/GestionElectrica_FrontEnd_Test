@@ -1,24 +1,12 @@
-<h1>Medidores Fisicos</h1>
-
-  <!-- Opciones de tabla -->
-  <app-meters-table [listOfData]="listOfData" [url]="urlMedidor" [listOfColumns]="listOfColumns"></app-meters-table>
-  <!-- Cuerpo de tabla -->
-
-<h1>Medidores Virtuales</h1>
+   <!-- Opciones de tabla -->
 
 <div nz-row class="table-operations">
     <button nz-col nzSpan="6" nz-button (click)="sortByAge()">Orden por estado</button>
     <button nz-col nzSpan="6" nz-button (click)="resetSortAndFilters()">Quitar filtros y orden</button>
-    <button nz-col nzSpan="6" nz-button nzType="primary">Agregar</button>
-    <div nz-col nzSpan="6">
-      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-        <input type="text" nz-input placeholder="input search text" />
-      </nz-input-group>
-      <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-      </ng-template>
-    </div>
-  </div>
+    <app-meters-modal></app-meters-modal>
+</div> 
+  <!-- Ecabezado de tabla -->
+
   <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
     <thead>
       <tr>
@@ -38,11 +26,13 @@
 
       </tr>
     </thead>
+  <!-- Cuerpo de tabla -->
+
     <tbody>
       <tr *ngFor="let data of filterTable.data">
         <td nzLeft>
           <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-          <button class="delete" nz-button nzType="primary"  nzShape="circle" (click)="DeleteVirtualMeter(data.Id)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+          <button class="delete" nz-button nzType="primary"  nzShape="circle" (click)="DeleteMeter(data.Id)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
         </td>
         <td>{{ data.Id }}</td>
         <td>{{ data.Codigo }}</td>

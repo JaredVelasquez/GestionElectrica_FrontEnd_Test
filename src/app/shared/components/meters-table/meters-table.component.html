@@ -27,7 +27,7 @@
           >
             {{ column.name }}
           </th>
-          <th nzRight>Configuracion</th>
+          <th nzRight>Estado</th>
 
         </tr>
       </thead>
@@ -35,7 +35,7 @@
         <tr *ngFor="let data of filterTable.data">
           <td nzLeft>
             <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-            <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            <button class="delete" nz-button nzType="primary"  nzShape="circle" (CaptureMeterIdEvent)="DeleteMedidor(data.Id)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
           </td>
           <td>{{ data.Id }}</td>
           <td>{{ data.Codigo }}</td>
@@ -43,9 +43,11 @@
           <td>{{ data.Modelo }}</td>
           <td>{{ data.Serie }}</td>
           <td>{{ data.Tipo }}</td>
-          <td>{{ data.Estado }}</td>
-          <td nzRight> 
-            <button class="config" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="setting" nzTheme="outline"></i></button>
+          <td nzRight *ngIf="data.Estado === true"> 
+            <button class="config" nz-button nzType="primary" >En Contrato</button>
+          </td>
+          <td nzRight *ngIf="data.Estado === false"> 
+            <button class="warning" nz-button nzType="primary" >Rollover</button>
           </td>
         </tr>
       </tbody>

@@ -19,6 +19,17 @@ import { ProvidersComponent } from './components/providers/providers.component';
 import { ZonesComponent } from './components/zones/zones.component';
 import { MetersComponent } from './components/meters/meters.component';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
+import { NzModalModule } from 'ng-zorro-antd/modal';
+
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -35,7 +46,13 @@ import { MetersComponent } from './components/meters/meters.component';
     NzMenuModule,
     IconsProviderModule,
     SharedModule,
-    NzTableModule
+    NzTableModule,
+    NzButtonModule,
+    NzInputModule,
+    NzGridModule,
+    NzModalModule,
+    NzRadioModule,
+    NzFormModule
   ],
   bootstrap: [MainPageComponent]
 })

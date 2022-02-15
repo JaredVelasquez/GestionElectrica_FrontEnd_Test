@@ -1,0 +1,37 @@
+  <!-- inicia modal -->
+  <button nz-col nzSpan="6" nz-button [nzType]="'primary'" (click)="showModal()"><span>Agregar</span></button>
+
+  <nz-modal class="modal" [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+      <div nz-row class="modal-row-1">
+        <!-- Search var meter -->
+        <div nz-col nzSpan="6" class="modal-col-1">
+          <label>Codigo Medidor</label>
+          <div >
+            <nz-input-group [nzSuffix]="suffixIconSearch">
+              <input type="text" nz-input placeholder="input search text" />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+              <i nz-icon nzType="search"></i>
+            </ng-template>
+          </div>
+        </div>
+        <!-- Radio tipo Medidor -->
+        <div nz-col nzSpan="12" class="modal-col-2">
+          <div class="meter-type">
+            <label>Tipo de Medidor</label>
+            <nz-radio-group >
+              <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{ o.label }}</label>
+            </nz-radio-group>
+          </div>
+        </div>
+      </div>
+      <div nz-row class="modal-row-2">
+        <div nz-col class="modal-col1-row2">
+          <label>Descripción</label>
+          <input nz-input placeholder="Medidor sin etiqueta" [disabled]="true" />
+        </div>
+      </div>
+    </ng-container>
+  </nz-modal>
+  <!-- termina modal -->

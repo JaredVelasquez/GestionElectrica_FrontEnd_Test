@@ -1,7 +1,8 @@
-import { Component, OnInit, Input , OnChanges} from '@angular/core';
+import { Component, OnInit, Input , OnChanges, Output, EventEmitter} from '@angular/core';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 import { observable } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
 interface DataItem {
   Codigo: string;
   Descripcion: string;
@@ -30,12 +31,15 @@ interface ColumnItem {
 
 export class MetersTableComponent implements OnInit, OnChanges{
   size: NzButtonSize = 'large';
+  Id!:number;
   @Input() filterCodigo : Array<{text: string, value: any}>  = [];
   @Input() filterModel : Array<{text: string, value: any}> = [];
   @Input() filterSerie : Array<{text: string, value: any}> = [];
   @Input() listOfData: DataItem[] = [];
   listOfColumns!: ColumnItem[];
-  constructor() { }
+  constructor(
+    private http:HttpClient
+  ) { }
 
   ngOnInit(): void {
     observable
@@ -101,22 +105,14 @@ export class MetersTableComponent implements OnInit, OnChanges{
         listOfFilter: [
         ],
         filterFn: null
-      },
-      {
-        name: 'Estado',
-        sortOrder: null,
-        sortDirections: ['ascend', 'descend',null],
-        sortFn: (a: DataItem, b: DataItem) => Number(a.Estado) - Number(b.Estado),
-        filterMultiple: false,
-        listOfFilter: [
-        ],
-        filterFn: null
       }
     ];
     
   }
   
-
+  DeleteMedidor(Id : any){
+    
+  }
 
   
   trackByName(_: number, item: ColumnItem): string {
@@ -186,6 +182,10 @@ export class MetersTableComponent implements OnInit, OnChanges{
     });
 
   }
-
+  DeleteMeter(Id: number){
+    this.Id = Id;
+    console.log(this.Id);
+    
+  }
 
 }
