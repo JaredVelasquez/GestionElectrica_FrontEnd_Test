@@ -38,10 +38,49 @@ export class MetersComponent implements OnInit, OnChanges {
   filterModel : Array<{text: string, value: any}> = [];
   filterSerie : Array<{text: string, value: any}> = [];
   listOfData: DataItem[] = [];
+  property: Array<string> = [];
   options = [
     { label: 'Virtual', value: 'Virtual' },
     { label: 'Fisico', value: 'Fisico' }
   ];
+  
+  constructor(
+    private http:HttpClient,
+    private metersService: MetersService
+  ) { }
+
+  ngOnInit(): void {
+    this.GetMeters();
+    
+    
+  }
+
+  ngOnChanges(): void {
+    
+  }
+  
+  GetMeters(){
+    this.metersService.GetMeters().subscribe(
+      (result:any) => {
+        this.listOfData = result;
+        
+        if(this.listOfData){
+          for(let i = 0 ; i < this.listOfData.length ; i++){
+            
+            this.filterModel.push({text: this.listOfData[i].Modelo+'', value: this.listOfData[i].Modelo});
+            this.filterSerie.push({text: this.listOfData[i].Serie+'', value: this.listOfData[i].Serie})
+            this.filterCodigo.push({text: this.listOfData[i].Codigo+'', value: this.listOfData[i].Codigo});
+          }
+          
+          for(let property in this.listOfData){
+            this.property.push(property);
+          }
+
+        }
+      }
+    );
+  }
+  
   listOfColumns: ColumnItem[] = [
     {
       name: '#',
@@ -103,130 +142,4 @@ export class MetersComponent implements OnInit, OnChanges {
       filterFn: null
     }
   ];
-  
-  constructor(
-    private http:HttpClient,
-    private metersService: MetersService
-  ) { }
-
-  ngOnInit(): void {
-    this.GetMeters();
-    
-    
-  }
-
-  ngOnChanges(): void {
-    this.GetMeters();
-  }
-  
-  trackByName(_: number, item: ColumnItem): string {
-    return item.name;
-  }
-
-  sortByAge(): void {
-    this.listOfColumns.forEach(item => {
-      if (item.name === 'Estado') {
-        if(item.sortOrder === 'descend'){
-          item.sortOrder = 'ascend';
-        }
-        else{
-          item.sortOrder = 'descend';
-
-        }
-      } else {
-        item.sortOrder = null;
-      }
-    });
-  }
-
-  resetFilters(): void {
-    this.listOfColumns.forEach(item => {
-      if (item.name === '#') {
-        item.listOfFilter = [];
-      } else if (item.name === 'Codigo') {
-        item.listOfFilter = this.filterCodigo;
-      } else if (item.name === 'Descripcion') {
-        item.listOfFilter = [];
-      } else if (item.name === 'Modelo') {
-        item.listOfFilter = this.filterModel;
-      } else if (item.name === 'Serie') {
-        item.listOfFilter = this.filterSerie;
-      } else if (item.name === 'Tipo') {
-        item.listOfFilter = [];
-      }else if (item.name === 'Estado') {
-        item.listOfFilter = [];
-      }
-    });
-  }
-
-  resetSortAndFilters(): void {
-    this.listOfColumns.forEach(item => {
-      if (item.name === '#') {
-        item.listOfFilter = [];
-        item.sortOrder = null;
-      } else if (item.name === 'Codigo') {
-        item.listOfFilter = this.filterCodigo;
-        item.sortOrder = null;
-      } else if (item.name === 'Descripcion') {
-        item.listOfFilter = [];
-        item.sortOrder = null;
-      } else if (item.name === 'Modelo') {
-        item.listOfFilter = this.filterModel;
-        item.sortOrder = null;
-      } else if (item.name === 'Serie') {
-        item.listOfFilter = this.filterSerie;
-        item.sortOrder = null;
-      } else if (item.name === 'Tipo') {
-        item.listOfFilter = [];
-        item.sortOrder = null;
-      }else if (item.name === 'Estado') {
-        item.listOfFilter = [];
-        item.sortOrder = null;
-      }
-    });
-
-  }
-  DeleteMeter(Id: number){
-    this.metersService.DeleteMeter(Id).subscribe(
-      result => {
-        console.log(result);
-        this.GetMeters();
-      }
-    );
-  }
-  GetMeters(){
-    this.metersService.GetMeters().subscribe(
-      (result:any) => {
-        this.listOfData = result;
-        
-        if(this.listOfData){
-          for(let i = 0 ; i < this.listOfData.length ; i++){
-            
-            this.filterModel.push({text: this.listOfData[i].Modelo+'', value: this.listOfData[i].Modelo});
-            this.filterSerie.push({text: this.listOfData[i].Serie+'', value: this.listOfData[i].Serie})
-            this.filterCodigo.push({text: this.listOfData[i].Codigo+'', value: this.listOfData[i].Codigo});
-          }
-
-        }
-      }
-    );
-  }
-
-  DeleteVirtualMeter(Id : number){
-  }
-
-  
-  showModal(): void {
-    this.isVisible = true;
-  }
-
-  handleOk(): void {
-    console.log('Button ok clicked!');
-    this.isVisible = false;
-  }
-
-  handleCancel(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible = false;
-  }
 }

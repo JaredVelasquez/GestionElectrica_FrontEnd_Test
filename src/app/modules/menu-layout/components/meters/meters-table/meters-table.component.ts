@@ -1,14 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { DataMeter } from 'src/Core/interfaces/meter.interface';
-import { MetersTableService } from './meters-table.service';
+import { MetersService } from '../../../services/meters.service';
 import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 @Component({
   selector: 'app-meters-table',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './meters-table.component.html',
   styleUrls: ['./meters-table.component.css']
 })
-export class MetersTableComponent implements OnInit {
+export class MetersTableComponent implements OnInit, OnChanges {
   Id!:number;
   filterCodigo : Array<{text: string, value: any}>  = [];
   filterModel : Array<{text: string, value: any}> = [];
@@ -16,14 +17,49 @@ export class MetersTableComponent implements OnInit {
   @Input() listOfData: DataMeter[] = [];
   @Input() listOfColumns: ColumnItem[] = [];
   @Input() url!: string;
+  @Input() properties!: Array<any> ;
+  datap:DataMeter[] = [];
+  property: Array<string> = [];
 
   constructor(
-    private tableService: MetersTableService
+    private tableService: MetersService
   ) { }
 
   ngOnInit(): void {
+    
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+      // for(const datap in this.listOfData[0]){
+      //   this.property.push(datap);
+      // }
+
+      // for(let i = 0; i< this.listOfData.length ; i++){
+      //   let ObjTmp: DataMeter;
+      //   ObjTmp = this.listOfData[i];
+      //   for(let j = 0; j< this.property.length ; j++){
+      //     let prop: String = this.property[j];
+      //     console.log(`${property}: ${object[property]}`);
+          
+      //     console.log(Object.values(this.listOfData[i]));
+      //   }
+
+      // }
+
+      
+      
+      //   for(let data in this.listOfData[0]){
+      //     let index = data + '';
+      //     console.log(`${(this.listOfData[i])[data]}`);
+      //     console.log((this.listOfData[0])[index]);
+
+      //   }
+      // for(let i = 0; i< this.listOfData.length ; i++){
+      //   console.log((this.listOfData[i])[this.property[0].toString()]);
+      // }
+    
+      
+  }
 
 
   
@@ -32,19 +68,7 @@ export class MetersTableComponent implements OnInit {
   }
 
   sortByAge(): void {
-    this.listOfColumns.forEach(item => {
-      if (item.name === 'Estado') {
-        if(item.sortOrder === 'descend'){
-          item.sortOrder = 'ascend';
-        }
-        else{
-          item.sortOrder = 'descend';
-
-        }
-      } else {
-        item.sortOrder = null;
-      }
-    });
+    
   }
 
   resetFilters(): void {

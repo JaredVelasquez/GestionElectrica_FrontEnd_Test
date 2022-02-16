@@ -18,6 +18,8 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { ZonesComponent } from './components/zones/zones.component';
 import { MetersComponent } from './components/meters/meters.component';
+import { MetersTableComponent } from "./components/meters/meters-table/meters-table.component";
+import { MetersModalComponent } from "./components/meters/meters-modal/meters-modal.component";
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -28,6 +30,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -37,7 +40,9 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     ClientsComponent,
     ProvidersComponent,
     ZonesComponent,
-    MetersComponent
+    MetersComponent,
+    MetersTableComponent,
+    MetersModalComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +57,9 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     NzGridModule,
     NzModalModule,
     NzRadioModule,
-    NzFormModule
+    NzFormModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   bootstrap: [MainPageComponent]
 })

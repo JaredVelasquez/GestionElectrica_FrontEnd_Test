@@ -8,11 +8,9 @@ import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { MetersTableComponent } from "./components/meters/meters-table/meters-table.component";
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { MetersModalComponent } from './components/meters/meters-modal/meters-modal.component';
 
 import { NzModalModule } from 'ng-zorro-antd/modal';
 
@@ -22,8 +20,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 @NgModule({
   declarations: [
     MenuLayoutComponent,
-    MetersTableComponent,
-    MetersModalComponent
   ],
   imports: [
     RouterModule,
@@ -40,7 +36,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
   ],
   exports: [
     MenuLayoutComponent,
-    MetersTableComponent,
     NzFormModule
   ]
 })
