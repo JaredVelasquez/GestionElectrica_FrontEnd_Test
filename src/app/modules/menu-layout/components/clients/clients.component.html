@@ -1,1 +1,59 @@
-<p>clients works!</p>
+<h1>Clientes</h1>
+
+<div nz-row class="row-1">
+
+    <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
+
+        <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Cliente</span></button>
+        <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+          <ng-container *nzModalContent>
+            <p>Content one</p>
+            <p>Content two</p>
+            <p>Content three</p>
+          </ng-container>
+        </nz-modal>
+
+    </div>
+
+    <div nz-col nzSpan="12" class="row1-col2">
+
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input placeholder="input search text" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon nzType="search"></i>
+        </ng-template>
+        
+    </div>
+</div>
+
+<div nz-row class="row-2">
+    
+    <div nz-col>
+    
+        <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+            <nz-card-meta
+              nzTitle="Card title"
+              nzDescription="This is the description"
+              [nzAvatar]="avatarTemplate"
+            ></nz-card-meta>
+          </nz-card>
+          <ng-template #avatarTemplate>
+              <nz-avatar nzSrc="../../../../../assets/Images/Logo.jpg"></nz-avatar>
+          </ng-template>
+          <ng-template #coverTemplate>
+            <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+          </ng-template>
+          <ng-template #actionSetting>
+            <i nz-icon nzType="setting"></i>
+          </ng-template>
+          <ng-template #actionEdit>
+            <i nz-icon nzType="edit"></i>
+          </ng-template>
+          <ng-template #actionEllipsis>
+            <i nz-icon nzType="ellipsis"></i>
+          </ng-template>    
+          
+    </div>
+    
+</div>

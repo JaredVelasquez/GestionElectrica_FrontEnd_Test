@@ -20,6 +20,7 @@ import { ZonesComponent } from './components/zones/zones.component';
 import { MetersComponent } from './components/meters/meters.component';
 import { MetersTableComponent } from "./components/meters/meters-table/meters-table.component";
 import { MetersModalComponent } from "./components/meters/meters-modal/meters-modal.component";
+import { VirtualMeterModalComponent } from "./components/meters/virtual-meter-modal/virtual-meter-modal.component";
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -31,7 +32,9 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzAvatarModule } from "ng-zorro-antd/avatar";
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ZonesComponent,
     MetersComponent,
     MetersTableComponent,
-    MetersModalComponent
+    MetersModalComponent,
+    VirtualMeterModalComponent
   ],
   imports: [
     CommonModule,
@@ -59,8 +63,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NzRadioModule,
     NzFormModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzCardModule,
+    NzAvatarModule,
+    NzUploadModule
   ],
-  bootstrap: [MainPageComponent]
+  bootstrap: [MainPageComponent],
+  providers:[
+    MetersTableComponent,
+  ]
 })
 export class MenuLayoutModule { }

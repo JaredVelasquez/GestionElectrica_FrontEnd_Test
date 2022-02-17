@@ -1,5 +1,5 @@
   <!-- inicia modal -->
-  <button nz-col nzSpan="6" nz-button [nzType]="'primary'" (click)="showModal()"><span>Agregar</span></button>
+  <button nz-col nzSpan="6" nz-button [nzType]="'primary'" (click)="showModal()"><span>Agregar Medidor Fisico</span></button>
 
   <nz-modal class="modal" [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
     <ng-container  *nzModalContent>
@@ -16,6 +16,7 @@
                     <input type="text" nz-input placeholder="Busqueda por Id" id="Id" formControlName="codigo"/>
                   </nz-input-group>
                   <ng-template #suffixIconSearch>
+                    <i nz-icon nzType="search"></i>
                   </ng-template>
                 </nz-form-control>
                 </nz-form-item>

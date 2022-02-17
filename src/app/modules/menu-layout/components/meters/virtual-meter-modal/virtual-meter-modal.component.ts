@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
+import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 
 interface DataItem {
   name: string;
@@ -7,12 +7,23 @@ interface DataItem {
   address: string;
 }
 
+interface ColumnItem {
+  name: string;
+  sortOrder: NzTableSortOrder | null;
+  sortFn: NzTableSortFn<DataItem> | null;
+  listOfFilter: NzTableFilterList;
+  filterFn: NzTableFilterFn<DataItem> | null;
+  filterMultiple: boolean;
+  sortDirections: NzTableSortOrder[];
+}
+
 @Component({
-  selector: 'app-zones',
-  templateUrl: './zones.component.html',
-  styleUrls: ['./zones.component.css']
+  selector: 'app-virtual-meter-modal',
+  templateUrl: './virtual-meter-modal.component.html',
+  styleUrls: ['./virtual-meter-modal.component.css']
 })
-export class ZonesComponent implements OnInit {
+
+export class VirtualMeterModalComponent implements OnInit {
   isVisible = false;
   listOfData: DataItem[] = [];
 
@@ -51,7 +62,7 @@ export class ZonesComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'Codigo',
+      name: 'Medidor',
       sortOrder: 'descend',
       sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
       sortDirections: ['descend', null],
@@ -60,16 +71,7 @@ export class ZonesComponent implements OnInit {
       filterMultiple: true
     },
     {
-      name: 'Descripcion',
-      sortOrder: 'descend',
-      sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Observacion',
+      name: 'Energia',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
       sortFn: (a: DataItem, b: DataItem) => a.address.length - b.address.length,

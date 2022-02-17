@@ -4,9 +4,9 @@ import { DataMeter } from './meter.interface';
 export interface ColumnItem {
     name: string;
     sortOrder: NzTableSortOrder | null;
-    sortFn: NzTableSortFn<DataMeter> | null;
+    sortFn: NzTableSortFn<any> | null;
     listOfFilter: NzTableFilterList;
-    filterFn: NzTableFilterFn<DataMeter> | null;
+    filterFn: NzTableFilterFn<any> | null;
     filterMultiple: boolean;
     sortDirections: NzTableSortOrder[];
   }

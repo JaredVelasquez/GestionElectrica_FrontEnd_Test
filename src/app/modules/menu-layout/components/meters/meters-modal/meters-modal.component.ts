@@ -85,7 +85,6 @@ export class MetersModalComponent implements OnInit {
         (result:any) => {
           if(result){
             
-            this.metersTableComponent.GetMeters();  
           }
             console.log(result);
           

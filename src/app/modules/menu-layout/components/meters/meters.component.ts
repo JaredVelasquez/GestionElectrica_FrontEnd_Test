@@ -32,7 +32,6 @@ interface ColumnItem {
 })
 export class MetersComponent implements OnInit, OnChanges {
   Id!:number;
-  isVisible = false;
   urlMedidor: string = 'medidors';
   filterCodigo : Array<{text: string, value: any}>  = [];
   filterModel : Array<{text: string, value: any}> = [];

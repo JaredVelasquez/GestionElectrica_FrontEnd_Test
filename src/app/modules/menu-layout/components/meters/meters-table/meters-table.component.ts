@@ -26,6 +26,7 @@ export class MetersTableComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    this.GetMeters();
     
   }
 
@@ -58,6 +59,7 @@ export class MetersTableComponent implements OnInit, OnChanges {
       //   console.log((this.listOfData[i])[this.property[0].toString()]);
       // }
     
+      this.GetMeters();
       
   }
 

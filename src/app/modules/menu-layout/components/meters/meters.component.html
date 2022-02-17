@@ -1,7 +1,10 @@
 <h1>Medidores Fisicos</h1>
+  <app-meters-modal></app-meters-modal>
 
   <!-- Opciones de tabla -->
   <app-meters-table [listOfData]="listOfData" [properties]="property" [url]="urlMedidor" [listOfColumns]="listOfColumns"></app-meters-table>
   <!-- Cuerpo de tabla -->
 
 <h1>Medidores Virtuales</h1>
+<app-virtual-meter-modal></app-virtual-meter-modal>
+<app-meters-table [listOfColumns]="listOfColumns"></app-meters-table>
