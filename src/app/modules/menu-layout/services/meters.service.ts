@@ -16,6 +16,9 @@ export class MetersService {
   GetMeters(): Observable<any>{
     return this.http.get(`${environment.api}get-meters`);
   }
+  GetVirtualMeters(): Observable<any>{
+    return this.http.get(`${environment.api}get-vmeters`);
+  }
   DeleteMeter(Id:number, url: string){
     return this.http.delete(`${environment.api}${url}/${Id}`);
   }

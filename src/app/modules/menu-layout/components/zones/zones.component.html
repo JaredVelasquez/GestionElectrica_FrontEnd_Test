@@ -88,7 +88,7 @@
               [nzFilterMultiple]="column.filterMultiple"
               [nzFilters]="column.listOfFilter"
               [nzFilterFn]="column.filterFn"
-              nzWidth="100px"
+              nzWidth="150px"
             >
               {{ column.name }}
             </th>
@@ -97,13 +97,13 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of filterTable.data">
-            <td nzLeft>{{ data.name }}</td>
-            <td>{{ data.age }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
+            <td nzLeft>{{data.Id}}</td>
+            <td>{{data.Codigo}}</td>
+            <td>{{ data.Descripcion }}</td>
+            <td>{{ data.Observacion }}</td>
             <td nzRight>
               <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-              <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+              <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline" (click)="DeleteZone(data.Id)"></i></button>
             </td>
           </tr>
         </tbody>

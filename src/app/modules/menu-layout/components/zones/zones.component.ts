@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
+import { ZonesService } from "../../services/zones.service";
 
 interface DataItem {
-  name: string;
-  age: number;
-  address: string;
+  Id: string;
+  Codigo: number;
+  Descripcion: string;
+  Observacion: string;
 }
 
 @Component({
@@ -15,19 +18,16 @@ interface DataItem {
 export class ZonesComponent implements OnInit {
   isVisible = false;
   listOfData: DataItem[] = [];
+  url = 'zonas';
 
-  constructor() { }
+  constructor(
+    private zonesService: ZonesService,
+    private metersService: MetersService
+  ) { }
 
   ngOnInit(): void {
-    const data = [];
-    for (let i = 0; i < 100; i++) {
-        data.push({
-          name: `Edward King ${i}`,
-          age: 32,
-          address: `London, Park Lane no. ${i}`
-        });
-      }
-      this.listOfData = data;
+    this.GetZones();
+    
   }
 
 
@@ -45,6 +45,24 @@ export class ZonesComponent implements OnInit {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
+  GetZones(){
+    this.zonesService.GetZones().subscribe( 
+      (result:any) => {
+        console.log(result);
+        result.Id = Number(result.Id);
+        this.listOfData = result;
+      }
+    );
+  }
+  DeleteZone(Id: any){
+    Id = Number(Id);
+    this.metersService.DeleteMeter(Id, this.url).subscribe(
+      result => {
+        console.log(result);
+        this.GetZones();
+      }
+    );
+  }
 
 
 
@@ -53,7 +71,7 @@ export class ZonesComponent implements OnInit {
     {
       name: 'Codigo',
       sortOrder: 'descend',
-      sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
+      sortFn: (a: DataItem, b: DataItem) => a.Codigo - b.Codigo,
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -62,7 +80,7 @@ export class ZonesComponent implements OnInit {
     {
       name: 'Descripcion',
       sortOrder: 'descend',
-      sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
+      sortFn: (a: DataItem, b: DataItem) => a.Descripcion.localeCompare(b.Descripcion),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -72,13 +90,11 @@ export class ZonesComponent implements OnInit {
       name: 'Observacion',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: DataItem, b: DataItem) => a.address.length - b.address.length,
+      sortFn: null,
       filterMultiple: false,
       listOfFilter: [
-        { text: 'London', value: 'London' },
-        { text: 'Sidney', value: 'Sidney' }
       ],
-      filterFn: (address: string, item: DataItem) => item.address.indexOf(address) !== -1
+      filterFn: null
     }
   ];
 

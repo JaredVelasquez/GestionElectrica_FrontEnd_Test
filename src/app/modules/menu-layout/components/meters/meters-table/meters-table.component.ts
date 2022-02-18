@@ -18,6 +18,7 @@ export class MetersTableComponent implements OnInit, OnChanges {
   @Input() listOfColumns: ColumnItem[] = [];
   @Input() url!: string;
   @Input() properties!: Array<any> ;
+  listOfDataVM: any[] = []; 
   datap:DataMeter[] = [];
   property: Array<string> = [];
 
@@ -60,6 +61,7 @@ export class MetersTableComponent implements OnInit, OnChanges {
       // }
     
       this.GetMeters();
+      this.GetVirtualMeters();
       
   }
 
@@ -145,6 +147,17 @@ export class MetersTableComponent implements OnInit, OnChanges {
       }
     );
   }
+  
+  GetVirtualMeters(){
+    this.tableService.GetVirtualMeters().subscribe(
+      (result:any) => {
+        console.log(result);
+        
+        this.listOfDataVM = result;
+      }
+    );
+  }
+  
 
   DeleteVirtualMeter(Id : number){
   }
