@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { ActorInterface } from "src/Core/interfaces/actors.interface";
+import { MetersService } from "../../services/meters.service";
+import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 
 const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
   new Promise((resolve, reject) => {
@@ -16,53 +18,74 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
 })
 export class ProvidersComponent implements OnInit {
   isVisible = false;
+  url = {
+    get: 'get-providers',
+    post: 'actores',
+    delete: '',
+    update: '',
+  };
   previewImage: string | undefined = '';
   previewVisible = false;
-  constructor() { }
-
-  fileList: NzUploadFile[] = [
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-2',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-3',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-4',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-xxx',
-      percent: 50,
-      name: 'image.png',
-      status: 'uploading',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-5',
-      name: 'image.png',
-      status: 'error'
-    }
-  ];
+  providers: ActorInterface[] = [];
+  validateForm!: FormGroup;
+  fileList : any = [];
+  constructor(
+    private metersService:MetersService,
+    private fb: FormBuilder,
+  ) { }
 
   ngOnInit(): void {
+    this.GetProviders();
+    this.validateForm = this.fb.group({
+      nombre: ['', [Validators.required]],
+      telefono: ['', [Validators.required]],
+      direccion: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+    })
   }
 
-
+  GetProviders(){
+    this.metersService.Get(this.url.get).subscribe(
+      (result : any) => {
+        console.log(result);
+        
+        this.providers = result;
+      }
+    );
+  }
+  PostProvider(){
+    if (this.validateForm.valid) {
+      const provider = {
+        nombre: this.validateForm.value.nombre,
+        tipo: false,
+        telefono: this.validateForm.value.telefono,
+        direccion: this.validateForm.value.direccion,
+        imagen: 'https://us.123rf.com/450wm/blankstock/blankstock1408/blankstock140800126/30454176-signo-de-interrogaci%C3%B3n-signo-icono-s%C3%ADmbolo-de-ayuda-signo-de-preguntas-frecuentes-bot%C3%B3n-plano-gris-c.jpg?ver=6',
+        observacion: this.validateForm.value.observacion,
+        estado: true
+      }
+      console.log(provider);
+      this.isVisible = false;
+      this.metersService.Post(this.url.post, provider).subscribe(
+        (result:any) => {
+          if(result){
+            this.GetProviders();
+            
+          }
+            console.log(result);
+          
+        }
+      );
+      
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
   
   showModal(): void {
     this.isVisible = true;

@@ -4,16 +4,17 @@
     <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
 
         <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nueva zona</span></button>
-        <nz-modal [(nzVisible)]="isVisible" nzTitle="Zonas" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <nz-modal [(nzVisible)]="isVisible" nzTitle="Zonas" (nzOnCancel)="handleCancel()" (nzOnOk)="PostZone()">
           <ng-container *nzModalContent>
-              
+
+            <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
               <div nz-row class="row-1">
                 <div nz-col  [nzSpan]="24" class="row1-col1">
                     <label>Codigo</label>
                     <div nz-row>
                       <nz-form-item>
                         <nz-form-control>
-                          <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
+                          <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="codigo" [disabled]="false" />
                         </nz-form-control>
                       </nz-form-item>
                     </div>
@@ -46,7 +47,7 @@
                     <div nz-row>
                         <nz-form-item>
                           <nz-form-control>
-                            <textarea class="inputLarge" formControlName="observacion" nz-input rows="2" placeholder=" Escriba algo respecto a la zona "></textarea>
+                            <textarea class="inputLarge"  nz-input rows="2" placeholder=" Escriba algo respecto a la zona " formControlName="observacion"></textarea>
                           </nz-form-control>
                         </nz-form-item>
                     </div>
@@ -55,7 +56,7 @@
 
               </div>
               
-
+            </form>
           </ng-container>
         </nz-modal>
 

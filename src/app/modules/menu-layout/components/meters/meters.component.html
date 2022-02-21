@@ -6,7 +6,7 @@
 
   <nz-modal class="modal" [(nzVisible)]="isVisible" nzTitle="Medidor Fisico" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
     <ng-container  *nzModalContent>
-      <form  nz-form [formGroup]="validateForm">
+      <form  nz-form [formGroup]="validateForm" nzLayout="horizontal">
 
         <div nz-row class="row-1">
           <div nzSpan="12" nz-col class="row1-col1">
@@ -230,7 +230,7 @@
 <button nz-button [nzType]="'primary'" (click)="showModal2()"><span>Agregar Medidor Virtual</span></button>
 <nz-modal [(nzVisible)]="isVisible2" nzTitle="The first Modal" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()">
     <ng-container  *nzModalContent>
-        <form  nz-form >
+        <form  nz-form  nzLayout="horizontal">
   
           <div nz-row class="row-1">
             <div nzSpan="24" nz-col class="row1-col1">

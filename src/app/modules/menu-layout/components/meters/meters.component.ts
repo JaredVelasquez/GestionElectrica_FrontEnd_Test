@@ -158,9 +158,6 @@ export class MetersComponent implements OnInit, OnChanges {
   }
 
   submitForm(){
-    console.log(this.validateForm.value);
-    console.log(this.validateForm.valid);
-    console.log(this.validateForm);
     
     
     

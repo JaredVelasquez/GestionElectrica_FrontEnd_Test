@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { ZonesService } from "../../services/zones.service";
+import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 
 interface DataItem {
   Id: string;
@@ -18,15 +19,28 @@ interface DataItem {
 export class ZonesComponent implements OnInit {
   isVisible = false;
   listOfData: DataItem[] = [];
-  url = 'zonas';
+  validateForm!: FormGroup;
+  url = {
+    get: 'get-zones',
+    post: 'zonas',
+    delete: 'zonas',
+    update: '',
+  };
 
   constructor(
     private zonesService: ZonesService,
-    private metersService: MetersService
+    private metersService: MetersService,
+    private fb: FormBuilder,
+
   ) { }
 
   ngOnInit(): void {
     this.GetZones();
+    this.validateForm = this.fb.group({
+      codigo: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+    })
     
   }
 
@@ -46,7 +60,7 @@ export class ZonesComponent implements OnInit {
     this.isVisible = false;
   }
   GetZones(){
-    this.zonesService.GetZones().subscribe( 
+    this.metersService.Get(this.url.get).subscribe( 
       (result:any) => {
         console.log(result);
         result.Id = Number(result.Id);
@@ -54,9 +68,39 @@ export class ZonesComponent implements OnInit {
       }
     );
   }
+  PostZone(){
+    if (this.validateForm.valid) {
+      const provider = {
+        codigo: this.validateForm.value.codigo,
+        descripcion: this.validateForm.value.descripcion,
+        observacion: this.validateForm.value.observacion,
+      }
+      console.log(provider);
+      this.isVisible = false;
+      this.metersService.Post(this.url.post, provider).subscribe(
+        (result:any) => {
+          if(result){
+            this.GetZones();
+            
+          }
+            console.log(result);
+          
+        }
+      );
+      
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+  }
   DeleteZone(Id: any){
     Id = Number(Id);
-    this.metersService.DeleteMeter(Id, this.url).subscribe(
+    this.metersService.DeleteMeter(Id, this.url.delete).subscribe(
       result => {
         console.log(result);
         this.GetZones();
