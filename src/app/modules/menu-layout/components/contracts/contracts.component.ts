@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ZoneInterface } from 'src/Core/interfaces/zones.interface';
+import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 
 @Component({
-  selector: 'app-zones',
-  templateUrl: './zones.component.html',
-  styleUrls: ['./zones.component.css']
+  selector: 'app-contracts',
+  templateUrl: './contracts.component.html',
+  styleUrls: ['./contracts.component.css']
 })
-export class ZonesComponent implements OnInit {
+export class ContractsComponent implements OnInit {
   isVisible = false;
-  listOfData: ZoneInterface[] = [];
   validateForm!: FormGroup;
+  listOfData: ContractInterface[] = [];
   url = {
     get: 'get-zones',
     post: 'zonas',
@@ -21,22 +21,19 @@ export class ZonesComponent implements OnInit {
   };
 
   constructor(
-    private metersService: MetersService,
+    private globalService: MetersService,
     private fb: FormBuilder,
-
   ) { }
 
   ngOnInit(): void {
-    this.GetZones();
+    this.GetRates();
+    
     this.validateForm = this.fb.group({
       codigo: ['', [Validators.required]],
       descripcion: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
     })
-    
   }
-
-
   
   showModal(): void {
     this.isVisible = true;
@@ -51,8 +48,8 @@ export class ZonesComponent implements OnInit {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
-  GetZones(){
-    this.metersService.Get(this.url.get).subscribe( 
+  GetRates(){
+    this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
         console.log(result);
         result.Id = Number(result.Id);
@@ -60,7 +57,7 @@ export class ZonesComponent implements OnInit {
       }
     );
   }
-  PostZone(){
+  PostRate(){
     if (this.validateForm.valid) {
       const provider = {
         codigo: this.validateForm.value.codigo,
@@ -69,10 +66,10 @@ export class ZonesComponent implements OnInit {
       }
       console.log(provider);
       this.isVisible = false;
-      this.metersService.Post(this.url.post, provider).subscribe(
+      this.globalService.Post(this.url.post, provider).subscribe(
         (result:any) => {
           if(result){
-            this.GetZones();
+            this.GetRates();
             
           }
             console.log(result);
@@ -90,12 +87,12 @@ export class ZonesComponent implements OnInit {
     }
 
   }
-  DeleteZone(Id: any){
+  DeleteRate(Id: any){
     Id = Number(Id);
-    this.metersService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
       result => {
         console.log(result);
-        this.GetZones();
+        this.GetRates();
       }
     );
   }
@@ -105,9 +102,18 @@ export class ZonesComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
+      name: 'ID',
+      sortOrder: 'descend',
+      sortFn: (a: ContractInterface, b: ContractInterface) => a.id - b.id,
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
       name: 'Codigo',
       sortOrder: 'descend',
-      sortFn: (a: ZoneInterface, b: ZoneInterface) => a.Codigo - b.Codigo,
+      sortFn: (a: ContractInterface, b: ContractInterface) => a.codigo.localeCompare(b.codigo),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -116,21 +122,29 @@ export class ZonesComponent implements OnInit {
     {
       name: 'Descripcion',
       sortOrder: 'descend',
-      sortFn: (a: ZoneInterface, b: ZoneInterface) => a.Descripcion.localeCompare(b.Descripcion),
+      sortFn: (a: ContractInterface, b: ContractInterface) => a.descripcion.localeCompare(b.descripcion),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
     {
-      name: 'Observacion',
-      sortOrder: null,
-      sortDirections: ['ascend', 'descend', null],
-      sortFn: null,
-      filterMultiple: false,
-      listOfFilter: [
-      ],
-      filterFn: null
+      name: 'Cliente',
+      sortOrder: 'descend',
+      sortFn: (a: ContractInterface, b: ContractInterface) => a.cliente.localeCompare(b.cliente),
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Creacion',
+      sortOrder: 'descend',
+      sortFn: (a: ContractInterface, b: ContractInterface) => a.creacion.localeCompare(b.creacion),
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
     }
   ];
 

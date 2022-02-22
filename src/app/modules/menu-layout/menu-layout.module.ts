@@ -35,6 +35,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzAvatarModule } from "ng-zorro-antd/avatar";
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { RatesComponent } from './components/rates/rates.component';
+import { InputParametersComponent } from './components/input-parameters/input-parameters.component';
+import { ContractsComponent } from './components/contracts/contracts.component';
+import { EnergyMatrixComponent } from './components/energy-matrix/energy-matrix.component';
+import { EspecialChargesComponent } from './components/especial-charges/especial-charges.component';
+import { GeneratedInvoicesComponent } from './components/generated-invoices/generated-invoices.component';
+import { IssuedInvoicesComponent } from './components/issued-invoices/issued-invoices.component';
+import { CancelledInvoicesComponent } from './components/cancelled-invoices/cancelled-invoices.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +54,15 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     MetersComponent,
     MetersTableComponent,
     MetersModalComponent,
-    VirtualMeterModalComponent
+    VirtualMeterModalComponent,
+    RatesComponent,
+    InputParametersComponent,
+    ContractsComponent,
+    EnergyMatrixComponent,
+    EspecialChargesComponent,
+    GeneratedInvoicesComponent,
+    IssuedInvoicesComponent,
+    CancelledInvoicesComponent
   ],
   imports: [
     CommonModule,

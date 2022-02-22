@@ -47,10 +47,68 @@
             </div>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
+        
+        <div routerLink="rates" nz-menu-item nzMatchRouter>
+          <li>
+              <i nz-icon nzType="dollar"></i>
+              <span >Tarifas</span>
+          </li>
+        </div>
+        
+        <div routerLink="input-parameters" nz-menu-item nzMatchRouter>
+          <li>
+              <i nz-icon nzType="control"></i>
+              <span >Parametros de entrada</span>
+          </li>
+        </div>
+        
+        <div routerLink="contracts" nz-menu-item nzMatchRouter>
+          <li>
+              <i nz-icon nzType="reconciliation"></i>
+              <span >Contratos</span>
+          </li>
+        </div>
+        
+        <div routerLink="energy-matrix" nz-menu-item nzMatchRouter>
+          <li>
+              <i nz-icon nzType="pie-chart"></i>
+              <span >Matriz energetica</span>
+          </li>
+        </div>
+
+        <li nz-submenu nzOpen nzTitle="Facturacion" nzIcon="calculator">
           <ul>
-            <li nz-menu-item nzMatchRouter>
-              <a>Basic Form</a>
+            <div routerLink="especial-charges" nz-menu-item nzMatchRouter>
+              <li>
+                  <i nz-icon nzType="file-text"></i>
+                  <span >Cargos especiales</span>
+              </li>
+            </div>
+            <li nz-submenu nzOpen nzTitle="Facturas" nzIcon="container">
+              <ul>
+
+                <div routerLink="generated-invoices" nz-menu-item nzMatchRouter>
+                  <li>
+                      <i nz-icon nzType="file-text"></i>
+                      <span >Facturas Generadas</span>
+                  </li>
+                </div>
+
+                <div routerLink="issued-invoices" nz-menu-item nzMatchRouter>
+                  <li>
+                      <i nz-icon nzType="file-text"></i>
+                      <span >Facutras Emitidas</span>
+                  </li>
+                </div>
+
+                <div routerLink="cancelled-invoices" nz-menu-item nzMatchRouter>
+                  <li>
+                      <i nz-icon nzType="file-text"></i>
+                      <span >Facturas canceladas</span>
+                  </li>
+                </div>
+
+              </ul>
             </li>
           </ul>
         </li>
