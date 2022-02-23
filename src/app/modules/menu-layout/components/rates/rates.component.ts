@@ -4,15 +4,26 @@ import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 
+
+interface DataItemTest {
+  name: string;
+  age: number;
+  address: string;
+}
+
 @Component({
   selector: 'app-rates',
   templateUrl: './rates.component.html',
   styleUrls: ['./rates.component.css']
 })
 export class RatesComponent implements OnInit {
+  inputValue: string = 'my site';
   isVisible = false;
+  isVisible2 = false;
   validateForm!: FormGroup;
   listOfData: RatesInterface[] = [];
+  listOfDataModal: DataItemTest[] = [];
+  
   url = {
     get: 'get-zones',
     post: 'zonas',
@@ -33,6 +44,16 @@ export class RatesComponent implements OnInit {
       descripcion: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
     })
+    
+    const data = [];
+    for (let i = 0; i < 100; i++) {
+        data.push({
+          name: `Edward King ${i}`,
+          age: 32,
+          address: `London, Park Lane no. ${i}`
+        });
+      }
+      this.listOfDataModal = data;
   }
   
   showModal(): void {
@@ -47,6 +68,19 @@ export class RatesComponent implements OnInit {
   handleCancel(): void {
     console.log('Button cancel clicked!');
     this.isVisible = false;
+  }
+  showModal2(): void {
+    this.isVisible2 = true;
+  }
+
+  handleOk2(): void {
+    console.log('Button ok clicked!');
+    this.isVisible2 = false;
+  }
+
+  handleCancel2(): void {
+    console.log('Button cancel clicked!');
+    this.isVisible2 = false;
   }
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 

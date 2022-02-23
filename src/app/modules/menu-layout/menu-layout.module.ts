@@ -25,16 +25,16 @@ import { VirtualMeterModalComponent } from "./components/meters/virtual-meter-mo
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-
 import { NzModalModule } from 'ng-zorro-antd/modal';
-
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzAvatarModule } from "ng-zorro-antd/avatar";
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RatesComponent } from './components/rates/rates.component';
 import { InputParametersComponent } from './components/input-parameters/input-parameters.component';
 import { ContractsComponent } from './components/contracts/contracts.component';
@@ -82,7 +82,9 @@ import { CancelledInvoicesComponent } from './components/cancelled-invoices/canc
     ReactiveFormsModule,
     NzCardModule,
     NzAvatarModule,
-    NzUploadModule
+    NzUploadModule,
+    NzSelectModule,
+    NzDatePickerModule
   ],
   bootstrap: [MainPageComponent],
   providers:[
