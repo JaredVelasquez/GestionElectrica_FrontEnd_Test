@@ -5,11 +5,6 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 
 
-interface DataItemTest {
-  name: string;
-  age: number;
-  address: string;
-}
 
 @Component({
   selector: 'app-rates',
@@ -19,10 +14,8 @@ interface DataItemTest {
 export class RatesComponent implements OnInit {
   inputValue: string = 'my site';
   isVisible = false;
-  isVisible2 = false;
   validateForm!: FormGroup;
   listOfData: RatesInterface[] = [];
-  listOfDataModal: DataItemTest[] = [];
   
   url = {
     get: 'get-zones',
@@ -45,17 +38,12 @@ export class RatesComponent implements OnInit {
       observacion: ['', [Validators.required]],
     })
     
-    const data = [];
-    for (let i = 0; i < 100; i++) {
-        data.push({
-          name: `Edward King ${i}`,
-          age: 32,
-          address: `London, Park Lane no. ${i}`
-        });
-      }
-      this.listOfDataModal = data;
   }
   
+  updateTable(list: any){
+    console.log(list);
+    
+  }
   showModal(): void {
     this.isVisible = true;
   }
@@ -68,19 +56,6 @@ export class RatesComponent implements OnInit {
   handleCancel(): void {
     console.log('Button cancel clicked!');
     this.isVisible = false;
-  }
-  showModal2(): void {
-    this.isVisible2 = true;
-  }
-
-  handleOk2(): void {
-    console.log('Button ok clicked!');
-    this.isVisible2 = false;
-  }
-
-  handleCancel2(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible2 = false;
   }
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 

@@ -43,6 +43,7 @@ import { EspecialChargesComponent } from './components/especial-charges/especial
 import { GeneratedInvoicesComponent } from './components/generated-invoices/generated-invoices.component';
 import { IssuedInvoicesComponent } from './components/issued-invoices/issued-invoices.component';
 import { CancelledInvoicesComponent } from './components/cancelled-invoices/cancelled-invoices.component';
+import { ModalParametersComponent } from './components/rates/modal-parameters/modal-parameters.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { CancelledInvoicesComponent } from './components/cancelled-invoices/canc
     EspecialChargesComponent,
     GeneratedInvoicesComponent,
     IssuedInvoicesComponent,
-    CancelledInvoicesComponent
+    CancelledInvoicesComponent,
+    ModalParametersComponent
   ],
   imports: [
     CommonModule,
