@@ -5,11 +5,11 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 
 @Component({
-  selector: 'app-issued-invoices',
-  templateUrl: './issued-invoices.component.html',
-  styleUrls: ['./issued-invoices.component.css']
+  selector: 'app-modal-new-rate',
+  templateUrl: './modal-new-rate.component.html',
+  styleUrls: ['./modal-new-rate.component.css']
 })
-export class IssuedInvoicesComponent implements OnInit {
+export class ModalNewRateComponent implements OnInit {
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
@@ -107,53 +107,4 @@ export class IssuedInvoicesComponent implements OnInit {
     );
   }
 
-  
-  
-  listOfColumns: ColumnItem[] = [
-    {
-      name: 'Codigo',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.codigo.localeCompare(b.codigo),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Contrato',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Cliente',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Fecha generacion',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Energia consumida',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    }
-  ];
 }

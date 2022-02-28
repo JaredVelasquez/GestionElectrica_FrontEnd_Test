@@ -1,1 +1,60 @@
-<p>issued-invoices works!</p>
+<h1>Facturas Emitidas</h1>
+<div nz-row class="row-1">
+
+
+    <div nz-col nzOffset="12" nzSpan="12" class="row1-col2">
+
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input placeholder="input search text" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon nzType="search"></i>
+        </ng-template>
+        
+    </div>
+
+
+</div>
+<div nz-row class="row-2">
+  <div nz-col>
+      <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+        <thead>
+          <tr>
+          <th nzLeft nzWidth="150px">ID</th>
+            <th
+              *ngFor="let column of listOfColumns"
+              [nzSortOrder]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzSortDirections]="column.sortDirections"
+              [nzFilterMultiple]="column.filterMultiple"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+              nzWidth="150px"
+            >
+              {{ column.name }}
+            </th>
+            <th nzRight nzWidth="100px">
+                Total a pagar
+                
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of filterTable.data">
+            <td nzLeft>
+            {{data.id}}
+            </td>
+            <td>{{data.codigo}}</td>
+            <td>{{ data.descripcion }}</td>
+            <td>{{data.id}}</td>
+            <td>{{data.codigo}}</td>
+            <td>{{data.codigo}}</td>
+            <td nzRight>
+                {{ data.descripcion }}
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      
+  </div>
+</div>

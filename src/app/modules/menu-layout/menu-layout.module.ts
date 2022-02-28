@@ -33,6 +33,10 @@ import { NzAvatarModule } from "ng-zorro-antd/avatar";
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+
+
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RatesComponent } from './components/rates/rates.component';
@@ -44,6 +48,14 @@ import { GeneratedInvoicesComponent } from './components/generated-invoices/gene
 import { IssuedInvoicesComponent } from './components/issued-invoices/issued-invoices.component';
 import { CancelledInvoicesComponent } from './components/cancelled-invoices/cancelled-invoices.component';
 import { ModalParametersComponent } from './components/rates/modal-parameters/modal-parameters.component';
+import { ModalMedidoresComponent } from './components/contracts/modal-medidores/modal-medidores.component';
+import { ModalNewContractComponent } from './components/contracts/modal-new-contract/modal-new-contract.component';
+import { ModalNewParameterComponent } from './components/input-parameters/modal-new-parameter/modal-new-parameter.component';
+import { ModalNewChargeComponent } from './components/especial-charges/modal-new-charge/modal-new-charge.component';
+import { ModalNewMatrixComponent } from './components/energy-matrix/modal-new-matrix/modal-new-matrix.component';
+import { ModalDistributionComponent } from './components/energy-matrix/modal-distribution/modal-distribution.component';
+import { ModalNewRateComponent } from './components/rates/modal-new-rate/modal-new-rate.component';
+
 
 @NgModule({
   declarations: [
@@ -64,7 +76,14 @@ import { ModalParametersComponent } from './components/rates/modal-parameters/mo
     GeneratedInvoicesComponent,
     IssuedInvoicesComponent,
     CancelledInvoicesComponent,
-    ModalParametersComponent
+    ModalParametersComponent,
+    ModalMedidoresComponent,
+    ModalNewContractComponent,
+    ModalNewParameterComponent,
+    ModalNewChargeComponent,
+    ModalNewMatrixComponent,
+    ModalDistributionComponent,
+    ModalNewRateComponent
   ],
   imports: [
     CommonModule,
@@ -86,7 +105,9 @@ import { ModalParametersComponent } from './components/rates/modal-parameters/mo
     NzAvatarModule,
     NzUploadModule,
     NzSelectModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    NzSwitchModule,
+    NzInputNumberModule
   ],
   bootstrap: [MainPageComponent],
   providers:[

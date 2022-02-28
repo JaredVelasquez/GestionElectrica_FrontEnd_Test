@@ -2,20 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
+import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 
 @Component({
-  selector: 'app-issued-invoices',
-  templateUrl: './issued-invoices.component.html',
-  styleUrls: ['./issued-invoices.component.css']
+  selector: 'app-modal-new-parameter',
+  templateUrl: './modal-new-parameter.component.html',
+  styleUrls: ['./modal-new-parameter.component.css']
 })
-export class IssuedInvoicesComponent implements OnInit {
-  inputValue: string = 'my site';
+export class ModalNewParameterComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: RatesInterface[] = [];
-  list: any[] = [];
-  
+  listOfData: ContractInterface[] = [];
   url = {
     get: 'get-zones',
     post: 'zonas',
@@ -36,15 +33,8 @@ export class IssuedInvoicesComponent implements OnInit {
       descripcion: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
     })
-    console.log(this.list);
-    
   }
-
   
-  updateTable(list: any){
-    this.list = list;
-    
-  }
   showModal(): void {
     this.isVisible = true;
   }
@@ -67,7 +57,7 @@ export class IssuedInvoicesComponent implements OnInit {
       }
     );
   }
-  PostRate(){
+  Post(): void{
     if (this.validateForm.valid) {
       const provider = {
         codigo: this.validateForm.value.codigo,
@@ -106,54 +96,4 @@ export class IssuedInvoicesComponent implements OnInit {
       }
     );
   }
-
-  
-  
-  listOfColumns: ColumnItem[] = [
-    {
-      name: 'Codigo',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.codigo.localeCompare(b.codigo),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Contrato',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Cliente',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Fecha generacion',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Energia consumida',
-      sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    }
-  ];
 }

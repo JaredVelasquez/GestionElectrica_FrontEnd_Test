@@ -2,17 +2,7 @@
 <div nz-row class="row-1">
 
     <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
-
-        <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
-        <nz-modal [(nzVisible)]="isVisible" nzTitle="Zonas" (nzOnCancel)="handleCancel()" (nzOnOk)="PostRate()">
-          <ng-container *nzModalContent>
-
-            <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
-              
-            </form>
-          </ng-container>
-        </nz-modal>
-
+      <app-modal-new-matrix></app-modal-new-matrix>
     </div>
 
     <div nz-col nzSpan="12" class="row1-col2">
@@ -61,8 +51,8 @@
             <td>{{ data.fechaFinal }}</td>
             <td>{{ data.totalEnergia }}</td>  
             <td nzRight>
-                <button class="view-medidores-btn" nz-button nzType="primary" >Distribucion</button>
-              </td>
+                <app-modal-distribution></app-modal-distribution>
+            </td>
           </tr>
         </tbody>
       </nz-table>

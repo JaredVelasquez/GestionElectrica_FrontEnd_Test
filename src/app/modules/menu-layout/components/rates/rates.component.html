@@ -2,74 +2,7 @@
 <div nz-row class="row-1">
 
     <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
-
-        <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nueva tarifa</span></button>
-        <nz-modal [(nzVisible)]="isVisible" nzTitle="Tarifas Mensuales" (nzOnCancel)="handleCancel()" (nzOnOk)="PostRate()">
-          <ng-container *nzModalContent>
-
-            <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
-              <div nz-row class="row-1">
-                <div nz-col  [nzSpan]="12" class="row1-col1">
-                    <label>Codigo</label>
-                    <div nz-row>
-                      <nz-form-item>
-                        <nz-form-control>
-                          <input nz-input  class="inputMedium" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="codigo" [disabled]="false" />
-                        </nz-form-control>
-                      </nz-form-item>
-                    </div>
-                </div>
-
-                <div nz-col  nzSpan="12" class="row1-col2">
-                  <label>Clasificacion de tarifa</label>
-                  <div nz-row >
-                    <nz-input-group>
-                      <nz-select [ngModel]="'x1'" class="inputMedium">
-                        <nz-option nzLabel="x1" nzValue="0.1"></nz-option>
-                        <nz-option nzLabel="x2" nzValue="0.2"></nz-option>
-                      </nz-select>                   
-                    </nz-input-group>
-                  </div>
-                </div>
-              </div>
-              <div nz-row class="row-2">
-                
-                <div nz-col [nzSpan]="24" class="row3-col1">
-
-                    <label>Descripcion</label>
-                    <div nz-row>
-                      <nz-form-item>
-                        <nz-form-control>
-                          <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" Zona ## "  [disabled]="false" />
-                        </nz-form-control>
-                      </nz-form-item>
-                    </div>
-    
-
-                </div>
-
-              </div>
-              <div nz-row class="row-3">
-                
-                <div nz-col [nzSpan]="24" class="row3-col1">
-                    
-                    <label>Observacion</label>
-                    <div nz-row>
-                        <nz-form-item>
-                          <nz-form-control>
-                            <textarea class="inputLarge"  nz-input rows="2" placeholder=" Escriba algo respecto a la zona " formControlName="observacion"></textarea>
-                          </nz-form-control>
-                        </nz-form-item>
-                    </div>
-
-                </div>
-
-              </div>
-              
-            </form>
-          </ng-container>
-        </nz-modal>
-
+      <app-modal-new-rate></app-modal-new-rate>
     </div>
 
     <div nz-col nzSpan="12" class="row1-col2">

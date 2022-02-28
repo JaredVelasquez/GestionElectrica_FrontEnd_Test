@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
@@ -16,6 +16,7 @@ export class RatesComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: RatesInterface[] = [];
+  list: any[] = [];
   
   url = {
     get: 'get-zones',
@@ -37,11 +38,13 @@ export class RatesComponent implements OnInit {
       descripcion: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
     })
+    console.log(this.list);
     
   }
+
   
   updateTable(list: any){
-    console.log(list);
+    this.list = list;
     
   }
   showModal(): void {
