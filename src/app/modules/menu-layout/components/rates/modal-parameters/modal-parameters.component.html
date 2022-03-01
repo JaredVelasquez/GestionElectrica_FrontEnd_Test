@@ -1,5 +1,5 @@
 <button nz-button [nzType]="'primary'" (click)="showModal2()"><span>Parametros</span></button>
-<nz-modal [(nzVisible)]="isVisible2" nzTitle="The first Modal" (nzOnCancel)="handleCancel2()" (nzOnOk)="UpdateListOfData(ListOfData)" 
+<nz-modal nzWidth="530px" [(nzVisible)]="isVisible2" nzTitle="Parametros" (nzOnCancel)="handleCancel2()" (nzOnOk)="UpdateListOfData(ListOfData)" 
 [nzStyle]="{ top: '40px' }">
 <ng-container *nzModalContent>
     <form nz-form nzLayout="horizontal">
@@ -20,7 +20,7 @@
 
         </div>
 
-        <div nz-col nzOffset="1" nzSpan="12">
+        <div nz-col nzOffset="2" nzSpan="12">
 
         <label>Fecha Final</label>
         <div nz-row>
@@ -53,7 +53,7 @@
 
         </div>
 
-        <div nz-col nzOffset="1" nzSpan="10">
+        <div nz-col nzOffset="2" nzSpan="10">
 
         <label>Valor</label>
         <div nz-row>
@@ -118,13 +118,15 @@
                 >
                     {{ column.name }}
                 </th>
-                <th nzRight nzWidth="80px">Acciones</th>
+                <th nzRight nzWidth="100px">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let data of filterTable.data">
                 <td nzLeft>{{ data.name }}</td>
                 <td>{{ data.age }}</td>
+                <td>{{ data.address }}</td>
+                <td>{{ data.address }}</td>
                 <td>{{ data.address }}</td>
                 <td nzRight>
                     <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>

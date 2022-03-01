@@ -61,15 +61,6 @@ export class ModalParametersComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'ID',
-      sortOrder: 'descend',
-      sortFn: (a: RatesInterface, b: RatesInterface) => a.id - b.id,
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Codigo',
       sortOrder: 'descend',
       sortFn: (a: RatesInterface, b: RatesInterface) => a.codigo.localeCompare(b.codigo),
@@ -79,14 +70,32 @@ export class ModalParametersComponent implements OnInit {
       filterMultiple: true
     },
     {
-      name: 'Descripcion',
+      name: 'Valor',
       sortOrder: 'descend',
-      sortFn: (a: RatesInterface, b: RatesInterface) => a.descripcion.localeCompare(b.descripcion),
+      sortFn: (a: RatesInterface, b: RatesInterface) => a.id - b.id,
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
-    }
+    },
+    {
+      name: 'Fecha Inicial',
+      sortOrder: 'descend',
+      sortFn: (a: RatesInterface, b: RatesInterface) => a.codigo.localeCompare(b.codigo),
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Fecha Final',
+      sortOrder: 'descend',
+      sortFn: (a: RatesInterface, b: RatesInterface) => a.codigo.localeCompare(b.codigo),
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
   ];
 
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
+import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 
 @Component({
   selector: 'app-contracts',
@@ -14,19 +15,20 @@ export class ContractsComponent implements OnInit {
   validateForm!: FormGroup;
   listOfData: ContractInterface[] = [];
   url = {
-    get: 'get-zones',
-    post: 'zonas',
-    delete: 'zonas',
-    update: '',
+    get: 'get-contracts',
+    post: 'tarifas',
+    delete: 'tarifas',
+    update: 'tarifas',
   };
 
   constructor(
-    private globalService: MetersService,
     private fb: FormBuilder,
+    private globalService: EndPointGobalService
   ) { }
 
   ngOnInit(): void {
     this.GetRates();
+    console.log(this.listOfData);
     
     this.validateForm = this.fb.group({
       codigo: ['', [Validators.required]],
@@ -51,8 +53,7 @@ export class ContractsComponent implements OnInit {
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
-        console.log(result);
-        result.Id = Number(result.Id);
+        result.id = Number(result.id);
         this.listOfData = result;
       }
     );
@@ -71,9 +72,7 @@ export class ContractsComponent implements OnInit {
           if(result){
             this.GetRates();
             
-          }
-            console.log(result);
-          
+          }          
         }
       );
       
@@ -89,9 +88,8 @@ export class ContractsComponent implements OnInit {
   }
   DeleteRate(Id: any){
     Id = Number(Id);
-    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
-        console.log(result);
         this.GetRates();
       }
     );
@@ -140,7 +138,7 @@ export class ContractsComponent implements OnInit {
     {
       name: 'Creacion',
       sortOrder: 'descend',
-      sortFn: (a: ContractInterface, b: ContractInterface) => a.creacion.localeCompare(b.creacion),
+      sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaCreacion.localeCompare(b.fechaCreacion),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,

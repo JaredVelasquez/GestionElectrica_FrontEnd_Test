@@ -3,5 +3,5 @@ export interface ContractInterface{
     codigo: string;
     descripcion: string;
     cliente: string;
-    creacion: string;
+    fechaCreacion: string;
 }

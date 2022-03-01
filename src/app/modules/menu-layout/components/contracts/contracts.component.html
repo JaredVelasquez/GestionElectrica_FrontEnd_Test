@@ -23,7 +23,7 @@
       <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="80px">Acciones</th>
+          <th nzLeft nzWidth="80px" nzAlign="center">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -32,16 +32,16 @@
               [nzFilterMultiple]="column.filterMultiple"
               [nzFilters]="column.listOfFilter"
               [nzFilterFn]="column.filterFn"
-              nzWidth="150px"
+              nzWidth="90px"
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="90px">Medidores</th>
+            <th nzRight nzWidth="120px" nzAlign="center">Medidores</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of filterTable.data">    
-            <td nzLeft>
+            <td nzLeft nzAlign="center">
                 <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                 <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline" (click)="DeleteRate(data.id)"></i></button>
               </td>
@@ -49,8 +49,8 @@
             <td>{{data.codigo}}</td>
             <td>{{data.descripcion}}</td>
             <td>{{ data.cliente }}</td>
-            <td>{{ data.creacion }}</td>  
-            <td nzRight>
+            <td>{{ data.fechaCreacion }}</td>  
+            <td nzRight nzAlign="center">
                 <app-modal-medidores></app-modal-medidores>
               </td>
           </tr>

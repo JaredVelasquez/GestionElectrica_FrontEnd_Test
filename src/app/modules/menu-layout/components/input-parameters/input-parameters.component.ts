@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
+import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 
 @Component({
   selector: 'app-input-parameters',
@@ -14,14 +14,14 @@ export class InputParametersComponent implements OnInit {
   validateForm!: FormGroup;
   listOfData: InputParametersInterface[] = [];
   url = {
-    get: 'get-zones',
-    post: 'zonas',
-    delete: 'zonas',
+    get: 'get-allparameters',
+    post: 'parametro-tarifas',
+    delete: 'parametro-tarifas',
     update: '',
   };
 
   constructor(
-    private globalService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
@@ -52,7 +52,7 @@ export class InputParametersComponent implements OnInit {
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
         console.log(result);
-        result.Id = Number(result.Id);
+        result.id = Number(result.id);
         this.listOfData = result;
       }
     );
@@ -89,7 +89,7 @@ export class InputParametersComponent implements OnInit {
   }
   DeleteRate(Id: any){
     Id = Number(Id);
-    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
         console.log(result);
         this.GetRates();
@@ -112,6 +112,15 @@ export class InputParametersComponent implements OnInit {
     },
     {
       name: 'Cargo',
+      sortOrder: 'descend',
+      sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.cargo - b.cargo,
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Valor',
       sortOrder: 'descend',
       sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.cargo - b.cargo,
       sortDirections: ['descend', null],

@@ -1,8 +1,8 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
+import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 
 
 
@@ -19,14 +19,14 @@ export class RatesComponent implements OnInit {
   list: any[] = [];
   
   url = {
-    get: 'get-zones',
-    post: 'zonas',
-    delete: 'zonas',
-    update: '',
+    get: 'get-rates',
+    post: 'tarifas',
+    delete: 'tarifas',
+    update: 'tarifas',
   };
 
   constructor(
-    private globalService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
@@ -64,7 +64,7 @@ export class RatesComponent implements OnInit {
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
         console.log(result);
-        result.Id = Number(result.Id);
+        result.id = Number(result.id);
         this.listOfData = result;
       }
     );
@@ -101,7 +101,7 @@ export class RatesComponent implements OnInit {
   }
   DeleteRate(Id: any){
     Id = Number(Id);
-    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
         console.log(result);
         this.GetRates();

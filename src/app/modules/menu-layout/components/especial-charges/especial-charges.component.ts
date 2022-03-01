@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
+import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
 
 @Component({
   selector: 'app-especial-charges',
@@ -12,16 +13,16 @@ import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.i
 export class EspecialChargesComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: any[] = [];
+  listOfData: EspecialChargesInterface[] = [];
   url = {
-    get: 'get-zones',
-    post: 'zonas',
-    delete: 'zonas',
-    update: '',
+    get: 'get-especial-charges',
+    post: 'cargos-facturas',
+    delete: 'cargos-facturas',
+    update: 'cargos-facturas',
   };
 
   constructor(
-    private globalService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
@@ -52,7 +53,7 @@ export class EspecialChargesComponent implements OnInit {
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
         console.log(result);
-        result.Id = Number(result.Id);
+        result.id = Number(result.id);
         this.listOfData = result;
       }
     );
@@ -89,7 +90,7 @@ export class EspecialChargesComponent implements OnInit {
   }
   DeleteRate(Id: any){
     Id = Number(Id);
-    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
         console.log(result);
         this.GetRates();
