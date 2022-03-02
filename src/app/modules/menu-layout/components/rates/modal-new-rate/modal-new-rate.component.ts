@@ -1,91 +1,105 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MetersService } from '@modules/menu-layout/services/meters.service';
-import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
-
+import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 @Component({
   selector: 'app-modal-new-rate',
   templateUrl: './modal-new-rate.component.html',
   styleUrls: ['./modal-new-rate.component.css']
 })
 export class ModalNewRateComponent implements OnInit {
+  listOfData: RatesInterface[] = [];
+  @Output() ListOfDataUpdated : EventEmitter<any> = new EventEmitter();
+  @Input() dataPosition!: RatesInterface;
+
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: RatesInterface[] = [];
   list: any[] = [];
   
   url = {
-    get: 'get-zones',
-    post: 'zonas',
-    delete: 'zonas',
-    update: '',
+    get: 'get-rates',
+    post: 'tarifas',
+    delete: 'tarifas',
+    update: 'tarifas',
   };
 
   constructor(
-    private globalService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
     this.GetRates();
-    
+    console.log(this.dataPosition);
     this.validateForm = this.fb.group({
       codigo: ['', [Validators.required]],
+      tipo: ['', [Validators.required]],
       descripcion: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
     })
-    console.log(this.list);
     
   }
 
   
-  updateTable(list: any){
-    this.list = list;
-    
+  UpdateListOfData(list: any){
+    this.isVisible = false;
+    this.ListOfDataUpdated.emit(list);
   }
+
   showModal(): void {
     this.isVisible = true;
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
-        console.log(result);
-        result.Id = Number(result.Id);
         this.listOfData = result;
       }
     );
   }
-  PostRate(){
+  Post(): void{
     if (this.validateForm.valid) {
       const provider = {
         codigo: this.validateForm.value.codigo,
         descripcion: this.validateForm.value.descripcion,
-        observacion: this.validateForm.value.observacion,
+        puntoMedicionId: 1,
+        tipo: Boolean(this.validateForm.value.tipo),
+//        observacion: this.validateForm.value.observacion,
+        estado: true,
       }
       console.log(provider);
       this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetRates();
+      if(this.dataPosition){
+        this.globalService.PutId( this.url.post, this.dataPosition?.id, provider).subscribe(
+          (result:any) => {
+            if(result){
+              this.GetRates();
+              this.UpdateListOfData(this.listOfData);
+              
+            }
             
           }
-            console.log(result);
-          
-        }
-      );
+        );
+      }else{
+        this.globalService.Post(this.url.post, provider).subscribe(
+          (result:any) => {
+            if(result){
+              this.GetRates();
+              this.UpdateListOfData(this.listOfData);
+              
+            }
+            
+          }
+        );
+      }
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
@@ -97,11 +111,11 @@ export class ModalNewRateComponent implements OnInit {
     }
 
   }
+
   DeleteRate(Id: any){
     Id = Number(Id);
-    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
-        console.log(result);
         this.GetRates();
       }
     );

@@ -14,8 +14,14 @@ export class EndPointGobalService {
   Get(url: string){
     return this.http.get(`${environment.api}${url}`);
   }
+  GetId(url: string, Id: number){
+    return this.http.get(`${environment.api}${url}/${Id}`);
+  }
   Post(url: string, body: any){
     return this.http.post(`${environment.api}${url}`, body);
+  }
+  PutId(url: string, Id: number, body: any){
+    return this.http.put(`${environment.api}${url}/${Id}`, body);
   }
   Delete(url: string, Id:number){
     return this.http.delete(`${environment.api}${url}/${Id}`);

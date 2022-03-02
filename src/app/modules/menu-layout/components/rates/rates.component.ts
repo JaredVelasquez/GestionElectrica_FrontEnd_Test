@@ -16,7 +16,7 @@ export class RatesComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: RatesInterface[] = [];
-  list: any[] = [];
+  dataPosition: any[] = [];
   
   url = {
     get: 'get-rates',
@@ -33,18 +33,11 @@ export class RatesComponent implements OnInit {
   ngOnInit(): void {
     this.GetRates();
     
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
-    console.log(this.list);
-    
   }
 
   
   updateTable(list: any){
-    this.list = list;
+    this.listOfData = list;
     
   }
   showModal(): void {
@@ -52,58 +45,23 @@ export class RatesComponent implements OnInit {
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
-        console.log(result);
-        result.id = Number(result.id);
         this.listOfData = result;
       }
     );
-  }
-  PostRate(){
-    if (this.validateForm.valid) {
-      const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
-        observacion: this.validateForm.value.observacion,
-      }
-      console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetRates();
-            
-          }
-            console.log(result);
-          
-        }
-      );
-      
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
-
   }
   DeleteRate(Id: any){
     Id = Number(Id);
     this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
-        console.log(result);
         this.GetRates();
       }
     );

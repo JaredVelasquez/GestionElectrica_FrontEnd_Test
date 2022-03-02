@@ -1,7 +1,12 @@
 
+<div *ngIf="dataPosition; else Guardar">
+    <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+</div>
+<ng-template #Guardar>
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nueva tarifa</span></button>
+</ng-template>
 
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nueva tarifa</span></button>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Tarifas Mensuales" (nzOnCancel)="handleCancel()" (nzOnOk)="PostRate()">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Tarifas Mensuales" (nzOnCancel)="handleCancel()" (nzOnOk)="Post()">
     <ng-container *nzModalContent>
 
     <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
@@ -11,7 +16,12 @@
             <div nz-row>
                 <nz-form-item>
                 <nz-form-control>
-                    <input nz-input  class="inputMedium" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="codigo" [disabled]="false" />
+                    <div *ngIf="dataPosition; else emptyCode">
+                        <input nz-input [(ngModel)]="dataPosition.codigo"  class="inputMedium" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="codigo" [disabled]="false" />
+                    </div>
+                    <ng-template #emptyCode>
+                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="codigo" [disabled]="false" />
+                    </ng-template>
                 </nz-form-control>
                 </nz-form-item>
             </div>
@@ -21,9 +31,9 @@
             <label>Clasificacion de tarifa</label>
             <div nz-row >
             <nz-input-group>
-                <nz-select [ngModel]="'x1'" class="inputMedium">
-                <nz-option nzLabel="x1" nzValue="0.1"></nz-option>
-                <nz-option nzLabel="x2" nzValue="0.2"></nz-option>
+                <nz-select  formControlName="tipo" [ngModel]="'x1'"  class="inputMedium">
+                <nz-option nzLabel="x1" nzValue=true></nz-option>
+                <nz-option nzLabel="x2" nzValue=false></nz-option>
                 </nz-select>                   
             </nz-input-group>
             </div>
@@ -37,7 +47,12 @@
             <div nz-row>
                 <nz-form-item>
                 <nz-form-control>
-                    <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" Zona ## "  [disabled]="false" />
+                    <div *ngIf="dataPosition; else emptyDesc">
+                        <input [(ngModel)]="dataPosition.descripcion" nz-input formControlName="descripcion"  class="inputLarge" id="Descripcion" type="text" placeholder=" Zona ## "  [disabled]="false" />
+                    </div>
+                    <ng-template #emptyDesc>
+                        <input nz-input formControlName="descripcion"  class="inputLarge" id="Descripcion" type="text" placeholder=" Zona ## "  [disabled]="false" />
+                    </ng-template>
                 </nz-form-control>
                 </nz-form-item>
             </div>

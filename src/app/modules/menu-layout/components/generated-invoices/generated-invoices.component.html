@@ -20,7 +20,7 @@
       <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="150px">ID</th>
+          <th nzLeft nzWidth="150px">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -47,10 +47,11 @@
             </td>
             <td>{{data.id}}</td>
             <td>{{data.codigo}}</td>
-            <td>{{ data.descripcion }}</td>
-            <td>{{data.id}}</td>
-            <td>{{data.codigo}}</td>
-            <td>{{ data.descripcion }}</td>
+            <td>{{ data.contrato }}</td>
+            <td>{{data.cliente}}</td>
+            <td>{{data.fechaInicio}}</td>
+            <td>{{ data.energiaConsumida }}</td>
+            <td>{{ data.total }}</td>
             <td nzRight>
                 <button nz-button nzType="primary" ><i nz-icon nzType="check"></i></button>
             </td>

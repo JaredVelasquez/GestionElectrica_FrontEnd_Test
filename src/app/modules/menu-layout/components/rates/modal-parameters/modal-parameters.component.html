@@ -1,8 +1,8 @@
 <button nz-button [nzType]="'primary'" (click)="showModal2()"><span>Parametros</span></button>
-<nz-modal nzWidth="530px" [(nzVisible)]="isVisible2" nzTitle="Parametros" (nzOnCancel)="handleCancel2()" (nzOnOk)="UpdateListOfData(ListOfData)" 
+<nz-modal nzWidth="530px" [(nzVisible)]="isVisible2" nzTitle="Parametros" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()" 
 [nzStyle]="{ top: '40px' }">
 <ng-container *nzModalContent>
-    <form nz-form nzLayout="horizontal">
+    <form nz-form  [formGroup]="validateForm" nzLayout="horizontal">
 
 
     <div nz-row class="row-1">
@@ -13,7 +13,7 @@
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <nz-date-picker class="inputMedium"></nz-date-picker>
+                <nz-date-picker class="inputMedium" formControlName="fechaInicio"></nz-date-picker>
             </nz-form-control>
             </nz-form-item>
         </div>
@@ -26,7 +26,7 @@
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <nz-date-picker class="inputMedium"></nz-date-picker>
+                <nz-date-picker class="inputMedium" formControlName="fechaFinal"></nz-date-picker>
             </nz-form-control>
             </nz-form-item>
         </div>
@@ -43,9 +43,10 @@
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <nz-select [ngModel]="'x1'" class="inputMedium">
-                    <nz-option nzLabel="x1" nzValue="0.1"></nz-option>
-                    <nz-option nzLabel="x2" nzValue="0.2"></nz-option>
+                <nz-select formControlName="cargo" [ngModel]="'x1'" class="inputMedium">
+                    <div *ngFor="let charge of ListOfCharges">
+                        <nz-option nzLabel="{{charge.nombre}}" nzValue="{{charge.id}}"></nz-option>
+                    </div>
                 </nz-select>                   
             </nz-form-control>
             </nz-form-item>
@@ -59,7 +60,7 @@
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
+                <input nz-input formControlName="valor" class="inputMedium" id="Descripcion" type="number" placeholder="(0.5)%"  [disabled]="false" />
             </nz-form-control>
             </nz-form-item>
         </div>
@@ -94,7 +95,7 @@
         </div>
         <div nz-col [nzSpan]="4" class="row4-col2">
             <nz-form-item  nzFlex>
-                <button nz-button nzType="primary">Guardar</button>
+                <button nz-button nzType="primary" (click)="Post()">Guardar</button>
             </nz-form-item>
 
         </div>
@@ -102,7 +103,7 @@
 
     <div nz-row class="row-5">
         <div nz-col>
-            <nz-table #filterTable [nzData]="listOfDataModal" nzTableLayout="fixed" [nzScroll]="{  x: '600px', y: '240px' }"  [nzPageSize]="10">
+            <nz-table #filterTable [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '600px', y: '240px' }"  [nzPageSize]="10">
             <thead>
                 <tr>
                 <th nzLeft nzWidth="80px">ID</th>
@@ -123,11 +124,11 @@
             </thead>
             <tbody>
                 <tr *ngFor="let data of filterTable.data">
-                <td nzLeft>{{ data.name }}</td>
-                <td>{{ data.age }}</td>
-                <td>{{ data.address }}</td>
-                <td>{{ data.address }}</td>
-                <td>{{ data.address }}</td>
+                <td nzLeft>{{ data.id }}</td>
+                <td>{{ data.cargo }}</td>
+                <td>{{ data.valor }}</td>
+                <td>{{ data.fechaInicio }}</td>
+                <td>{{ data.fechaFinal }}</td>
                 <td nzRight>
                     <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                     <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>

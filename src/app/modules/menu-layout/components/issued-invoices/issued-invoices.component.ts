@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
+import { InvoiceTablesInterface } from 'src/Core/interfaces/invoices-tables.interface';
+import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 
 @Component({
   selector: 'app-issued-invoices',
@@ -13,18 +14,19 @@ export class IssuedInvoicesComponent implements OnInit {
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: RatesInterface[] = [];
+  listOfData: InvoiceTablesInterface[] = [];
   list: any[] = [];
   
   url = {
-    get: 'get-zones',
-    post: 'zonas',
-    delete: 'zonas',
-    update: '',
+    id: 1,
+    get: 'get-invoices',
+    post: 'facturas',
+    delete: 'facturas',
+    update: 'facturas',
   };
 
   constructor(
-    private globalService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
@@ -59,7 +61,7 @@ export class IssuedInvoicesComponent implements OnInit {
     this.isVisible = false;
   }
   GetRates(){
-    this.globalService.Get(this.url.get).subscribe( 
+    this.globalService.GetId(this.url.get, this.url.id).subscribe( 
       (result:any) => {
         console.log(result);
         result.Id = Number(result.Id);
@@ -99,7 +101,7 @@ export class IssuedInvoicesComponent implements OnInit {
   }
   DeleteRate(Id: any){
     Id = Number(Id);
-    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
         console.log(result);
         this.GetRates();
@@ -113,8 +115,8 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Codigo',
       sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.codigo.localeCompare(b.codigo),
-      sortDirections: ['descend', null],
+      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.codigo.localeCompare(b.codigo),
+      sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
@@ -122,8 +124,8 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Contrato',
       sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
+      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.contrato.localeCompare(b.contrato),
+      sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
@@ -131,8 +133,8 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Cliente',
       sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
+      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.cliente.localeCompare(b.cliente),
+      sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
@@ -140,8 +142,8 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Fecha generacion',
       sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
+      sortFn: null ,
+      sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
@@ -149,11 +151,11 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Energia consumida',
       sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
+      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.energiaConsumida - b.energiaConsumida,
+      sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
-    }
+    },
   ];
 }
