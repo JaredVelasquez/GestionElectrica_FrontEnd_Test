@@ -31,7 +31,6 @@ export class ModalNewRateComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetRates();
-    console.log(this.dataPosition);
     this.validateForm = this.fb.group({
       codigo: ['', [Validators.required]],
       tipo: ['', [Validators.required]],
@@ -75,7 +74,6 @@ export class ModalNewRateComponent implements OnInit {
 //        observacion: this.validateForm.value.observacion,
         estado: true,
       }
-      console.log(provider);
       this.isVisible = false;
       if(this.dataPosition){
         this.globalService.PutId( this.url.post, this.dataPosition?.id, provider).subscribe(

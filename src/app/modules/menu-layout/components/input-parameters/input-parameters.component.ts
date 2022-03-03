@@ -13,6 +13,7 @@ export class InputParametersComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: InputParametersInterface[] = [];
+
   url = {
     get: 'get-allparameters',
     post: 'parametro-tarifas',
@@ -122,7 +123,7 @@ export class InputParametersComponent implements OnInit {
     {
       name: 'Valor',
       sortOrder: 'descend',
-      sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.cargo - b.cargo,
+      sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.valor - b.valor,
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,

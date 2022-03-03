@@ -43,9 +43,9 @@
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <nz-select formControlName="cargo" [ngModel]="'x1'" class="inputMedium">
+                <nz-select formControlName="cargo" class="inputMedium">
                     <div *ngFor="let charge of ListOfCharges">
-                        <nz-option nzLabel="{{charge.nombre}}" nzValue="{{charge.id}}"></nz-option>
+                        <nz-option nzLabel={{charge.nombre}} nzValue={{charge.id}}></nz-option>
                     </div>
                 </nz-select>                   
             </nz-form-control>
@@ -88,26 +88,34 @@
 
     
     <div nz-row class="row-4">
-        <div nz-col [nzSpan]="6"  [nzOffset]="14" class="row4-col1">
-            <nz-form-item  nzFlex>
-                <button nz-button nzType="default">Cancelar</button>
+        <div nz-col nzSpan="2"  nzOffset="16" class="row4-col1">
+            <nz-form-item *ngIf="!currentAction"  nzFlex>
+                <button nz-button nzType="default" nzShape="circle" (click)="SelectUpload()"><i nz-icon nzType="undo"></i></button>
             </nz-form-item>
         </div>
-        <div nz-col [nzSpan]="4" class="row4-col2">
-            <nz-form-item  nzFlex>
-                <button nz-button nzType="primary" (click)="Post()">Guardar</button>
-            </nz-form-item>
+        <div nzSpan="2" nz-col>
+            <div *ngIf="currentAction; else Edit">
+                    <nz-form-item  nzFlex>
+                        <button nz-button nzType="primary" (click)="Post()">Guardar</button>
+                    </nz-form-item>
+            </div>
+        </div>
 
-        </div>
+            <ng-template #Edit>
+                <nz-form-item  nzFlex>
+                    <button nz-button nzType="primary" (click)="Post()">Actualizar</button>
+                </nz-form-item>
+            </ng-template>
+
     </div>
 
     <div nz-row class="row-5">
         <div nz-col>
-            <nz-table #filterTable [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '600px', y: '240px' }"  [nzPageSize]="10">
-            <thead>
+            <nz-table #filterTable [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+              <thead>
                 <tr>
                 <th nzLeft nzWidth="80px">ID</th>
-                <th
+                  <th
                     *ngFor="let column of listOfColumns"
                     [nzSortOrder]="column.sortOrder"
                     [nzSortFn]="column.sortFn"
@@ -116,27 +124,27 @@
                     [nzFilters]="column.listOfFilter"
                     [nzFilterFn]="column.filterFn"
                     nzWidth="150px"
-                >
+                  >
                     {{ column.name }}
-                </th>
-                <th nzRight nzWidth="100px">Acciones</th>
+                  </th>
+                  <th nzRight nzWidth="80px">Acciones</th>
                 </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
                 <tr *ngFor="let data of filterTable.data">
-                <td nzLeft>{{ data.id }}</td>
+                <td nzLeft>{{ data.idParametro }}</td>
                 <td>{{ data.cargo }}</td>
                 <td>{{ data.valor }}</td>
                 <td>{{ data.fechaInicio }}</td>
                 <td>{{ data.fechaFinal }}</td>
                 <td nzRight>
-                    <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-                    <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                    <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="SelectEdit(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+                    <button class="delete" nz-button nzType="primary"  nzShape="circle" (click)="Delete(data.idParametro)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                 </td>
                 </tr>
-            </tbody>
+              </tbody>
             </nz-table>
-            
+
         </div>
     </div>
 
