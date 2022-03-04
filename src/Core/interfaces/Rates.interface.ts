@@ -4,5 +4,6 @@ export interface RatesInterface{
     descripcion: string;
     puntoMedicionId: number;
     tipo: boolean;
+    observacion: string;
     estado: boolean; 
 }

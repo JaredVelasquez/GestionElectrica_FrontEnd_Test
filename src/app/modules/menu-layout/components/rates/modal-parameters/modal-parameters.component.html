@@ -43,11 +43,22 @@
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <nz-select formControlName="cargo" class="inputMedium">
-                    <div *ngFor="let charge of ListOfCharges">
-                        <nz-option nzLabel={{charge.nombre}} nzValue={{charge.id}}></nz-option>
-                    </div>
-                </nz-select>                   
+                <div *ngIf="editableSchema; else Empty">
+                        <nz-select formControlName="cargo" class="inputMedium" >
+                            <div *ngFor="let charge of ListOfCharges">
+                                <nz-option nzLabel={{charge.nombre}} nzValue={{charge.id}}></nz-option>
+                            </div>
+                        </nz-select> 
+                        
+                    
+                </div>  
+                <ng-template #Empty>
+                    <nz-select formControlName="cargo" class="inputMedium">
+                        <div *ngFor="let charge of ListOfCharges">
+                            <nz-option nzLabel={{charge.nombre}} nzValue={{charge.id}}></nz-option>
+                        </div>
+                    </nz-select> 
+                </ng-template>                
             </nz-form-control>
             </nz-form-item>
         </div>
@@ -90,7 +101,7 @@
     <div nz-row class="row-4">
         <div nz-col nzSpan="2"  nzOffset="16" class="row4-col1">
             <nz-form-item *ngIf="!currentAction"  nzFlex>
-                <button nz-button nzType="default" nzShape="circle" (click)="SelectUpload()"><i nz-icon nzType="undo"></i></button>
+                <button nz-button nzType="default" nzShape="circle" (click)="CleanForm()"><i nz-icon nzType="clear"></i></button>
             </nz-form-item>
         </div>
         <div nzSpan="2" nz-col>
@@ -133,7 +144,7 @@
               <tbody>
                 <tr *ngFor="let data of filterTable.data">
                 <td nzLeft>{{ data.idParametro }}</td>
-                <td>{{ data.cargo }}</td>
+                <td>{{ data.cargoNombre }}</td>
                 <td>{{ data.valor }}</td>
                 <td>{{ data.fechaInicio }}</td>
                 <td>{{ data.fechaFinal }}</td>

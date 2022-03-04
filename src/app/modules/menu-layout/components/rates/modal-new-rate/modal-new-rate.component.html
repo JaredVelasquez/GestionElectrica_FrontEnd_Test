@@ -31,7 +31,7 @@
             <label>Clasificacion de tarifa</label>
             <div nz-row >
             <nz-input-group>
-                <nz-select  formControlName="tipo" [ngModel]="'x1'"  class="inputMedium">
+                <nz-select  formControlName="tipo" class="inputMedium">
                 <nz-option nzLabel="x1" nzValue=true></nz-option>
                 <nz-option nzLabel="x2" nzValue=false></nz-option>
                 </nz-select>                   
@@ -47,12 +47,7 @@
             <div nz-row>
                 <nz-form-item>
                 <nz-form-control>
-                    <div *ngIf="dataPosition; else emptyDesc">
-                        <input [(ngModel)]="dataPosition.descripcion" nz-input formControlName="descripcion"  class="inputLarge" id="Descripcion" type="text" placeholder=" Zona ## "  [disabled]="false" />
-                    </div>
-                    <ng-template #emptyDesc>
                         <input nz-input formControlName="descripcion"  class="inputLarge" id="Descripcion" type="text" placeholder=" Zona ## "  [disabled]="false" />
-                    </ng-template>
                 </nz-form-control>
                 </nz-form-item>
             </div>
@@ -69,7 +64,7 @@
             <div nz-row>
                 <nz-form-item>
                     <nz-form-control>
-                    <textarea class="inputLarge"  nz-input rows="2" placeholder=" Escriba algo respecto a la zona " formControlName="observacion"></textarea>
+                            <textarea class="inputLarge"  nz-input rows="2" placeholder=" Escriba algo respecto a la zona " formControlName="observacion"></textarea>
                     </nz-form-control>
                 </nz-form-item>
             </div>

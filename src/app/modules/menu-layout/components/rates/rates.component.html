@@ -36,7 +36,7 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="80px">Parametros</th>
+            <th nzRight nzWidth="100px">Parametros</th>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +48,7 @@
             <td>{{data.id}}</td>
             <td>{{data.codigo}}</td>
             <td>{{ data.descripcion }}</td>
+            <td>{{ data.observacion }}</td>
             <td nzRight>
               <app-modal-parameters [dataPosition]="data"></app-modal-parameters>
             </td>

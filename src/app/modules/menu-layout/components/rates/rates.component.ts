@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
@@ -11,7 +11,7 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
   templateUrl: './rates.component.html',
   styleUrls: ['./rates.component.css']
 })
-export class RatesComponent implements OnInit {
+export class RatesComponent implements OnInit, OnChanges {
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
@@ -34,11 +34,13 @@ export class RatesComponent implements OnInit {
     this.GetRates();
     
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.listOfData);
+  }
 
   
-  updateTable(list: any){
-    this.listOfData = list;
-    
+  updateTable(list: string){
+    console.log(list); 
   }
   showModal(): void {
     this.isVisible = true;
@@ -93,6 +95,15 @@ export class RatesComponent implements OnInit {
       name: 'Descripcion',
       sortOrder: 'descend',
       sortFn: (a: RatesInterface, b: RatesInterface) => a.descripcion.localeCompare(b.descripcion),
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Observacion',
+      sortOrder: 'descend',
+      sortFn: (a: RatesInterface, b: RatesInterface) => a.observacion.localeCompare(b.observacion),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,

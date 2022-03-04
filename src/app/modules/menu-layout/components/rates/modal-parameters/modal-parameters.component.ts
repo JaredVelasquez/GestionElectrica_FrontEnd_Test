@@ -20,7 +20,7 @@ export class ModalParametersComponent implements OnInit {
   filterFechaInicio : Array<{text: string, value: any}>  = [];
   filterFechaFinal : Array<{text: string, value: any}>  = [];
   currentAction : boolean = true;
-  editableSchema !: InputParametersInterface;
+  editableSchema !: InputParametersInterface | undefined;
   url = {
     get: 'get-parameter',
     getcargo: 'tipo-cargos',
@@ -72,6 +72,8 @@ export class ModalParametersComponent implements OnInit {
     this.globalService.Get(this.url.getcargo).subscribe(
       (result: any) => {
         this.ListOfCharges = result;
+        console.log(result);
+        
       }
     );
   }
@@ -90,24 +92,31 @@ export class ModalParametersComponent implements OnInit {
       if(this.currentAction){
         this.globalService.Post(this.url.post, provider).subscribe(
           (result:any) => {
-              if(result){
-                this.validateForm = this.EmptyForm;
-              }
               this.Get();
           }
         );
+        this.EmptyForm = this.fb.group({
+          fechaInicio: ['', [Validators.required]],
+          fechaFinal: ['', [Validators.required]],
+          cargo: ['', [Validators.required]],
+          valor: ['', [Validators.required]],
+          observacion: ['', [Validators.required]],
+        })
+        this.CleanForm();
       }
       else{
-        this.globalService.PutId(this.url.update, this.editableSchema.idParametro, provider).subscribe(
-          (result:any) => {
-              this.Get();
-          }
-        );
-        
-      this.currentAction = this.action.post;
-      this.validateForm = this.EmptyForm;
-
+        if(this.editableSchema){
+          this.globalService.PutId(this.url.update, this.editableSchema.idParametro, provider).subscribe(
+            (result:any) => {
+                this.Get();
+                this.CleanForm();
+            }
+          );  
+          this.editableSchema = undefined;
+          
+        }
       }
+      this.CleanForm();
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
@@ -134,20 +143,25 @@ export class ModalParametersComponent implements OnInit {
 
   SelectEdit(data: InputParametersInterface){
     this.currentAction = this.action.edit;
+    data.cargoId = String(data.cargoId);
     this.editableSchema = data;
     this.validateForm = this.fb.group({
       fechaInicio: [data.fechaInicio, [Validators.required]],
       fechaFinal: [data.fechaFinal, [Validators.required]],
-      cargo: [data.cargo, [Validators.required]],
+      cargo: [data.cargoId, [Validators.required]],
       valor: [data.valor, [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
     })
 
+    console.log(this.validateForm.value);
+    
+
   }
 
-  SelectUpload(){
+  CleanForm(){
     this.currentAction = this.action.post;
     this.validateForm = this.EmptyForm;
+    this.editableSchema = undefined;
   }
 
   showModal2(): void {

@@ -9,8 +9,8 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 })
 export class ModalNewRateComponent implements OnInit {
   listOfData: RatesInterface[] = [];
-  @Output() ListOfDataUpdated : EventEmitter<any> = new EventEmitter();
-  @Input() dataPosition!: RatesInterface;
+  @Output() ListOfDataUpdated = new EventEmitter<string>();
+  @Input() dataPosition!: RatesInterface | undefined;
 
   inputValue: string = 'my site';
   isVisible = false;
@@ -24,6 +24,13 @@ export class ModalNewRateComponent implements OnInit {
     update: 'tarifas',
   };
 
+  EmptyForm = this.fb.group({
+    codigo: ['', [Validators.required]],
+    tipo: ['', [Validators.required]],
+    descripcion: ['', [Validators.required]],
+    observacion: ['', [Validators.required]],
+  });
+
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
@@ -31,31 +38,41 @@ export class ModalNewRateComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetRates();
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      tipo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
+    this.validateForm = this.EmptyForm;
+
     
   }
 
   
-  UpdateListOfData(list: any){
+  UpdateListOfData(list: any[]){
+    console.log(list);
+    
+    this.ListOfDataUpdated.emit('list');
+    console.log(this.ListOfDataUpdated);
+    
     this.isVisible = false;
-    this.ListOfDataUpdated.emit(list);
   }
 
   showModal(): void {
     this.isVisible = true;
+    if(this.dataPosition){
+      this.validateForm =this.fb.group({
+        codigo: [this.dataPosition.codigo, [Validators.required]],
+        tipo: [String(this.dataPosition.tipo), [Validators.required]],
+        descripcion: [this.dataPosition.descripcion, [Validators.required]],
+        observacion: [this.dataPosition.observacion, [Validators.required]],
+      });
+    }
   }
 
   handleOk(): void {
     this.isVisible = false;
+    this.validateForm = this.EmptyForm;
   }
 
   handleCancel(): void {
     this.isVisible = false;
+    this.validateForm = this.EmptyForm;
   }
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 
@@ -71,21 +88,19 @@ export class ModalNewRateComponent implements OnInit {
         descripcion: this.validateForm.value.descripcion,
         puntoMedicionId: 1,
         tipo: Boolean(this.validateForm.value.tipo),
-//        observacion: this.validateForm.value.observacion,
+        observacion: this.validateForm.value.observacion,
         estado: true,
       }
       this.isVisible = false;
       if(this.dataPosition){
         this.globalService.PutId( this.url.post, this.dataPosition?.id, provider).subscribe(
           (result:any) => {
-            if(result){
-              this.GetRates();
-              this.UpdateListOfData(this.listOfData);
-              
-            }
             
           }
         );
+        
+        this.GetRates();
+        this.UpdateListOfData(this.listOfData);
       }else{
         this.globalService.Post(this.url.post, provider).subscribe(
           (result:any) => {
