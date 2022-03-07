@@ -35,22 +35,7 @@ export class ZonesComponent implements OnInit {
     })
     
   }
-
-
   
-  showModal(): void {
-    this.isVisible = true;
-  }
-
-  handleOk(): void {
-    console.log('Button ok clicked!');
-    this.isVisible = false;
-  }
-
-  handleCancel(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible = false;
-  }
   GetZones(){
     this.metersService.Get(this.url.get).subscribe( 
       (result:any) => {
@@ -60,6 +45,7 @@ export class ZonesComponent implements OnInit {
       }
     );
   }
+  
   PostZone(){
     if (this.validateForm.valid) {
       const provider = {
@@ -90,6 +76,7 @@ export class ZonesComponent implements OnInit {
     }
 
   }
+
   DeleteZone(Id: any){
     Id = Number(Id);
     this.metersService.DeleteMeter(Id, this.url.delete).subscribe(
@@ -98,6 +85,20 @@ export class ZonesComponent implements OnInit {
         this.GetZones();
       }
     );
+  }
+  
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    console.log('Button ok clicked!');
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    console.log('Button cancel clicked!');
+    this.isVisible = false;
   }
 
 

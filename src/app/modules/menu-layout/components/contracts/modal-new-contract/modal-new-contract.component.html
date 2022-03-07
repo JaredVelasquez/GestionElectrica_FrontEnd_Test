@@ -1,9 +1,14 @@
 
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nueva Contrato</span></button>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Contrato" (nzOnCancel)="handleCancel()" (nzOnOk)="Post()">
+<div *ngIf="dataPosition; else Guardar">
+    <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+</div>
+<ng-template #Guardar>
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
+</ng-template>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Contrato" (nzOnCancel)="handleCancel()" (nzOnOk)="PushData()">
     <ng-container *nzModalContent>
 
-    <form nz-form nzLayout="horizontal">
+    <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
 
         <div nz-row>
 
@@ -13,7 +18,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
+                        <input nz-input formControlName="codigo" class="inputMedium" id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
                     </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -26,9 +31,10 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <nz-select [ngModel]="'Norte'" class="inputMedium">
-                            <nz-option nzLabel="Norte" nzValue="Norte"></nz-option>
-                            <nz-option nzLabel="Sur" nzValue="Sur"></nz-option>
+                        <nz-select formControlName="clasificacion" class="inputMedium">
+                            <nz-option nzLabel="Permanente" nzValue="P"></nz-option>
+                            <nz-option nzLabel="Temporal" nzValue="C"></nz-option>
+                            <nz-option nzLabel="Anual" nzValue="I"></nz-option>
                         </nz-select>                   
                     </nz-form-control>
                     </nz-form-item>
@@ -45,9 +51,10 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <nz-select [ngModel]="'Norte'" class="inputLarge">
-                            <nz-option nzLabel="Norte" nzValue="Norte"></nz-option>
-                            <nz-option nzLabel="Sur" nzValue="Sur"></nz-option>
+                        <nz-select formControlName="actorId" class="inputLarge">
+                            <div *ngFor="let client of ListOfClients">
+                                <nz-option nzLabel={{client.nombre}} nzValue={{client.id}}></nz-option>
+                            </div>
                         </nz-select>                   
                     </nz-form-control>
                     </nz-form-item>
@@ -72,7 +79,7 @@
                                 <div nz-row>
                                     <nz-form-item>
                                     <nz-form-control>
-                                        <nz-date-picker class="inputMedium"></nz-date-picker>
+                                        <nz-date-picker formControlName="fechaCreacion" class="inputMedium"></nz-date-picker>
                                     </nz-form-control>
                                     </nz-form-item>
                                 </div>
@@ -86,7 +93,7 @@
                         <div nz-row>
                             <nz-form-item >
                             <nz-form-control>
-                                <nz-date-picker class="inputMedium"></nz-date-picker>
+                                <nz-date-picker formControlName="fechaVencimiento" class="inputMedium"></nz-date-picker>
                             </nz-form-control>
                             </nz-form-item>
                         </div>
@@ -99,9 +106,14 @@
                         <br>
                             <nz-form-item nzFlex>
                             <nz-form-control>
-                                <nz-select [ngModel]="'Norte'" class="inputMedium">
-                                    <nz-option nzLabel="Norte" nzValue="Norte"></nz-option>
-                                    <nz-option nzLabel="Sur" nzValue="Sur"></nz-option>
+                                <nz-select formControlName="diaGeneracion" class="inputMedium">
+                                    <nz-option nzLabel="Lunes" nzValue="1"></nz-option>
+                                    <nz-option nzLabel="Martes" nzValue="2"></nz-option>
+                                    <nz-option nzLabel="Miercoles" nzValue="3"></nz-option>
+                                    <nz-option nzLabel="Jueves" nzValue="4"></nz-option>
+                                    <nz-option nzLabel="Viernes" nzValue="5"></nz-option>
+                                    <nz-option nzLabel="Sabado" nzValue="6"></nz-option>
+                                    <nz-option nzLabel="Domingo" nzValue="7"></nz-option>
                                 </nz-select>                   
                             </nz-form-control>
                             </nz-form-item>
@@ -112,7 +124,7 @@
                         <br>
                             <nz-form-item  nzFlex>
                               <nz-form-control>
-                                <nz-input-number class="inputMedium" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
+                                <nz-input-number formControlName="diasDisponibles" class="inputMedium" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
                               </nz-form-control>
                             </nz-form-item>
                             
@@ -131,7 +143,7 @@
                   <nz-form-item  nzFlex>
                     <nz-form-control>
                       <nz-radio-group >
-                        <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{ o.label }}</label>
+                            <label nz-radio formControlName="exportacion" [nzValue]="o.value" *ngFor="let o of options">{{ o.label }}</label>
                       </nz-radio-group>
                     </nz-form-control>
                   </nz-form-item>
@@ -143,11 +155,27 @@
         <div nz-row>
             <div nz-col>
                     
+                <label  nzRequired>Descripcion</label>
+                <div nz-row>
+                    <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input formControlName="descripcion" class="inputLarge" type="text">
+                    </nz-form-control>
+                    </nz-form-item>
+                </div>
+                
+            </div>
+
+        </div>
+
+        <div nz-row>
+            <div nz-col>
+                    
                 <label  nzRequired>Observacion</label>
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <textarea class="inputLarge" nz-input rows="2" placeholder="Escriba algo"></textarea>
+                        <textarea formControlName="observacion" class="inputLarge" nz-input rows="2" placeholder="Escriba algo"></textarea>
                     </nz-form-control>
                     </nz-form-item>
                 </div>

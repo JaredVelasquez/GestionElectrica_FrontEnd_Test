@@ -215,12 +215,12 @@
     
         <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
             <nz-card-meta
-              nzTitle= {{provider.Nombre}}
-              nzDescription= {{provider.Direccion}}
+              nzTitle= {{provider.nombre}}
+              nzDescription= {{provider.direccion}}
             ></nz-card-meta>
           </nz-card>
           <ng-template #coverTemplate>
-            <img alt="example" src="{{provider.Imagen}}" />
+            <img alt="example" src="{{provider.imagen}}" />
           </ng-template>
           <ng-template #actionSetting>
             <i nz-icon nzType="setting"></i>

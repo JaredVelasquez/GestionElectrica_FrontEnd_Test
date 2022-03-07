@@ -1,11 +1,12 @@
 export interface ActorInterface{
-    UsuarioId: number;
-    Tipo: boolean;
-    Nombre: string;
-    Telefono: string;
-    Direccion: string;
-    Imagen: string;
-    ImagenId: string;
-    Observacion: string;
-    Estado: boolean;
+    id: number;
+    usuarioId: number;
+    tipo: boolean;
+    nombre: string;
+    telefono: string;
+    direccion: string;
+    imagen: string;
+    imagenId: string;
+    observacion: string;
+    estado: boolean;
 }

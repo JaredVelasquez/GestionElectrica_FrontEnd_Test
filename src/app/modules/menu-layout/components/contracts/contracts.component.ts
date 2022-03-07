@@ -4,6 +4,7 @@ import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 
 @Component({
   selector: 'app-contracts',
@@ -13,9 +14,12 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 export class ContractsComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: ContractInterface[] = [];
+  ListOfData: ContractInterface[] = [];
+  ListOfClients: ActorInterface[] = [];
+
   url = {
     get: 'get-contracts',
+    getClients: 'get-clients',
     post: 'tarifas',
     delete: 'tarifas',
     update: 'tarifas',
@@ -28,13 +32,7 @@ export class ContractsComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetRates();
-    console.log(this.listOfData);
-    
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
+    this.GetClients();
   }
   
   showModal(): void {
@@ -54,38 +52,20 @@ export class ContractsComponent implements OnInit {
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
         result.id = Number(result.id);
-        this.listOfData = result;
+        this.ListOfData = result;
       }
     );
   }
-  PostRate(){
-    if (this.validateForm.valid) {
-      const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
-        observacion: this.validateForm.value.observacion,
-      }
-      console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetRates();
-            
-          }          
-        }
-      );
-      
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
 
+  GetClients(){
+    this.globalService.Get(this.url.getClients).subscribe(
+      (result: ActorInterface[] | any) => {
+        this.ListOfClients = result;
+      }
+    
+    );
   }
+
   DeleteRate(Id: any){
     Id = Number(Id);
     this.globalService.Delete(this.url.delete, Id).subscribe(

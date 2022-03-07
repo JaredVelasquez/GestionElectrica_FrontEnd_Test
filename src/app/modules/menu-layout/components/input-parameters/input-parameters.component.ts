@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+import { Event } from '@angular/router';
+import { ChargesInterface } from 'src/Core/interfaces/charges.interface';
 
 @Component({
   selector: 'app-input-parameters',
@@ -13,9 +15,12 @@ export class InputParametersComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: InputParametersInterface[] = [];
+  dataPosition: any[] = [];
+  ListOfCharges: ChargesInterface[] = [];
 
   url = {
     get: 'get-allparameters',
+    getcargo: 'tipo-cargos',
     post: 'parametro-tarifas',
     delete: 'parametro-tarifas',
     update: '',
@@ -28,71 +33,50 @@ export class InputParametersComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetRates();
+    this.GetCargos();
     
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
   }
+
   
+  updateTable(list: any){
+    this.listOfData.push(list);
+    console.log(list);
+    console.log(this.listOfData);
+    
+    
+  }
   showModal(): void {
     this.isVisible = true;
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
-        console.log(result);
-        result.id = Number(result.id);
         this.listOfData = result;
       }
     );
   }
-  PostRate(){
-    if (this.validateForm.valid) {
-      const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
-        observacion: this.validateForm.value.observacion,
+  GetCargos(){
+    this.globalService.Get(this.url.getcargo).subscribe(
+      (result: any) => {
+        this.ListOfCharges = result;
+        console.log(result);
+        
       }
-      console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetRates();
-            
-          }
-            console.log(result);
-          
-        }
-      );
-      
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
-
+    );
   }
+
   DeleteRate(Id: any){
     Id = Number(Id);
     this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
-        console.log(result);
         this.GetRates();
       }
     );
@@ -102,6 +86,15 @@ export class InputParametersComponent implements OnInit {
 
   
   listOfColumns: ColumnItem[] = [
+    {
+      name: 'ID',
+      sortOrder: 'descend',
+      sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.id - b.id,
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
     {
       name: 'Codigo',
       sortOrder: 'descend',
@@ -121,15 +114,6 @@ export class InputParametersComponent implements OnInit {
       filterMultiple: true
     },
     {
-      name: 'Valor',
-      sortOrder: 'descend',
-      sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.valor - b.valor,
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Fecha Inicio',
       sortOrder: 'descend',
       sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.fechaInicio.localeCompare(b.fechaInicio),
@@ -140,6 +124,15 @@ export class InputParametersComponent implements OnInit {
     },
     {
       name: 'Fecha Final',
+      sortOrder: 'descend',
+      sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.fechaFinal.localeCompare(b.fechaFinal),
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Observacion',
       sortOrder: 'descend',
       sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.fechaFinal.localeCompare(b.fechaFinal),
       sortDirections: ['descend', null],

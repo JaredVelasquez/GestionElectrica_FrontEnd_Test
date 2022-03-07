@@ -2,7 +2,7 @@
 <div nz-row class="row-1">
 
     <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
-      <app-modal-new-contract></app-modal-new-contract>
+      <app-modal-new-contract [ListOfClients]="ListOfClients" [ListOfData]="ListOfData"></app-modal-new-contract>
     </div>
 
     <div nz-col nzSpan="12" class="row1-col2">
@@ -20,7 +20,7 @@
 </div>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table #filterTable [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="80px" nzAlign="center">Acciones</th>
@@ -42,7 +42,7 @@
         <tbody>
           <tr *ngFor="let data of filterTable.data">    
             <td nzLeft nzAlign="center">
-                <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+              <app-modal-new-contract [ListOfClients]="ListOfClients" [ListOfData]="ListOfData" [dataPosition]="data"></app-modal-new-contract>
                 <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline" (click)="DeleteRate(data.id)"></i></button>
               </td>
             <td>{{data.id}}</td>

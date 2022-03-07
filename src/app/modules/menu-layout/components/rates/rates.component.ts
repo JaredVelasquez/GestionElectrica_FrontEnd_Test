@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+import { Event } from '@angular/router';
 
 
 
@@ -11,7 +12,7 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
   templateUrl: './rates.component.html',
   styleUrls: ['./rates.component.css']
 })
-export class RatesComponent implements OnInit, OnChanges {
+export class RatesComponent implements OnInit{
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
@@ -34,13 +35,14 @@ export class RatesComponent implements OnInit, OnChanges {
     this.GetRates();
     
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.listOfData);
-  }
 
   
-  updateTable(list: string){
-    console.log(list); 
+  updateTable(list: any){
+    this.listOfData.push(list);
+    console.log(list);
+    console.log(this.listOfData);
+    
+    
   }
   showModal(): void {
     this.isVisible = true;

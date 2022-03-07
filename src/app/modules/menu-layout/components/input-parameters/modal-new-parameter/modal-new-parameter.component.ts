@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MetersService } from '@modules/menu-layout/services/meters.service';
-import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
+import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
+import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
+import { ChargesInterface } from 'src/Core/interfaces/charges.interface';
 
 @Component({
   selector: 'app-modal-new-parameter',
@@ -12,31 +14,57 @@ import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 export class ModalNewParameterComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: ContractInterface[] = [];
+  listOfData: InputParametersInterface[] = [];
+  @Input() dataPosition!: InputParametersInterface | undefined;
+  @Input() ListOfCharges: ChargesInterface[] = [];
+
+  
   url = {
-    get: 'get-zones',
-    post: 'zonas',
-    delete: 'zonas',
-    update: '',
+    get: 'get-allparameters',
+    getcargo: 'tipo-cargos',
+    post: 'parametro-tarifas',
+    delete: 'parametro-tarifas',
+    update: 'parametro-tarifas',
   };
 
   constructor(
-    private globalService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
-    this.GetRates();
-    
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
+    this.Get();
+    this.validateForm =this.fb.group({
+      fechaInicio: [ '', [Validators.required]],
+      fechaFinal: [ '', [Validators.required]],
+      cargo: ['', [Validators.required]],
+      valor: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
-    })
+    });
   }
   
   showModal(): void {
     this.isVisible = true;
+    if(this.dataPosition){
+      this.validateForm =this.fb.group({
+        fechaInicio: [ this.dataPosition.fechaInicio, [Validators.required]],
+        fechaFinal: [ this.dataPosition.fechaFinal, [Validators.required]],
+        cargo: [String(this.dataPosition.cargoId), [Validators.required]],
+        valor: [this.dataPosition.valor, [Validators.required]],
+        observacion: [this.dataPosition.observacion, [Validators.required]],
+      });
+    }
+    else{
+      
+    this.validateForm =this.fb.group({
+      fechaInicio: [ '', [Validators.required]],
+      fechaFinal: [ '', [Validators.required]],
+      cargo: ['', [Validators.required]],
+      valor: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+    });
+  
+    }
   }
 
   handleOk(): void {
@@ -48,34 +76,64 @@ export class ModalNewParameterComponent implements OnInit {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
-  GetRates(){
+  Get(){
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
-        console.log(result);
-        result.Id = Number(result.Id);
         this.listOfData = result;
       }
     );
   }
-  Post(): void{
+  
+    PushData(){
     if (this.validateForm.valid) {
+      
       const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
+        tipoCargoId: Number(this.validateForm.value.cargo),
+        fechaInicio: this.validateForm.value.fechaInicio,
+        fechaFinal: this.validateForm.value.fechaFinal,
+        valor: this.validateForm.value.valor,
         observacion: this.validateForm.value.observacion,
+        estado: true,
       }
       console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetRates();
+      
+
+      if(this.dataPosition){
+        this.globalService.PutId( this.url.post, this.dataPosition?.idParametro, provider).subscribe(
+          (result:any) => {
             
           }
+        );
+        
+      }else{
+        this.globalService.Post(this.url.post, provider).subscribe(
+          (result:any) => {
             console.log(result);
-          
+            
+          }
+        );
+
+      }
+
+      if(this.dataPosition){
+        if(this.ListOfCharges){
+          for(let i=0; i<this.ListOfCharges.length ; i++){
+            if(this.ListOfCharges[i].id == provider.tipoCargoId){
+              this.dataPosition.cargoNombre = this.ListOfCharges[i].nombre;
+              
+            }
+          }
         }
-      );
+        this.dataPosition.cargoId = provider.tipoCargoId;
+        this.dataPosition.fechaInicio = provider.fechaInicio;
+        this.dataPosition.fechaFinal = provider.fechaFinal;
+        this.dataPosition.valor = provider.valor;
+        this.dataPosition.observacion = provider.observacion;
+        console.log(this.dataPosition);
+        
+      }
+      this.Get();
+      this.isVisible = false;
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
@@ -87,12 +145,12 @@ export class ModalNewParameterComponent implements OnInit {
     }
 
   }
+
   DeleteRate(Id: any){
     Id = Number(Id);
-    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
-        console.log(result);
-        this.GetRates();
+        this.Get();
       }
     );
   }

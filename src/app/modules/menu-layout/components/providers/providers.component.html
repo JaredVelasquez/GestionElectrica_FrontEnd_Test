@@ -211,27 +211,27 @@
 
 <div nz-row class="row-2">
     
-    <div nz-col nzOffset="1" *ngFor="let provider of providers">
-    
-        <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-            <nz-card-meta
-              nzTitle= {{provider.Nombre}}
-              nzDescription= {{provider.Direccion}}
-            ></nz-card-meta>
-          </nz-card>
-          <ng-template #coverTemplate>
-            <img alt="example" src="{{provider.Imagen}}" />
-          </ng-template>
-          <ng-template #actionSetting>
-            <i nz-icon nzType="setting"></i>
-          </ng-template>
-          <ng-template #actionEdit>
-            <i nz-icon nzType="edit"></i>
-          </ng-template>
-          <ng-template #actionEllipsis>
-            <i nz-icon nzType="ellipsis"></i>
-          </ng-template>    
+  <div nz-col nzOffset="1" *ngFor="let provider of providers">
+  
+      <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+          <nz-card-meta
+            nzTitle= {{provider.nombre}}
+            nzDescription= {{provider.direccion}}
+          ></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="{{provider.imagen}}" />
+        </ng-template>
+        <ng-template #actionSetting>
+          <i nz-icon nzType="setting"></i>
+        </ng-template>
+        <ng-template #actionEdit>
+          <i nz-icon nzType="edit"></i>
+        </ng-template>
+        <ng-template #actionEllipsis>
+          <i nz-icon nzType="ellipsis"></i>
+        </ng-template>    
 
-    </div>
+  </div>
     
 </div>

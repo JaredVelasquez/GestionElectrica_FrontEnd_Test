@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
@@ -7,9 +7,9 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
   templateUrl: './modal-new-rate.component.html',
   styleUrls: ['./modal-new-rate.component.css']
 })
-export class ModalNewRateComponent implements OnInit {
-  listOfData: RatesInterface[] = [];
-  @Output() ListOfDataUpdated = new EventEmitter<string>();
+export class ModalNewRateComponent implements OnInit, OnChanges {
+  listOfData2: RatesInterface[] = [];
+  @Output() ListOfDataUpdated = new EventEmitter<any[]>();
   @Input() dataPosition!: RatesInterface | undefined;
 
   inputValue: string = 'my site';
@@ -43,12 +43,17 @@ export class ModalNewRateComponent implements OnInit {
     
   }
 
-  
-  UpdateListOfData(list: any[]){
-    console.log(list);
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    console.log(this.listOfData2);
+    console.log(this.dataPosition);
     
-    this.ListOfDataUpdated.emit('list');
-    console.log(this.ListOfDataUpdated);
+    
+  }
+  
+  UpdateListOfData(list: any){
+    
+    this.ListOfDataUpdated.emit(list);
     
     this.isVisible = false;
   }
@@ -57,10 +62,10 @@ export class ModalNewRateComponent implements OnInit {
     this.isVisible = true;
     if(this.dataPosition){
       this.validateForm =this.fb.group({
-        codigo: [this.dataPosition.codigo, [Validators.required]],
         tipo: [String(this.dataPosition.tipo), [Validators.required]],
         descripcion: [this.dataPosition.descripcion, [Validators.required]],
         observacion: [this.dataPosition.observacion, [Validators.required]],
+        codigo: [this.dataPosition.codigo, [Validators.required]],
       });
     }
   }
@@ -77,11 +82,11 @@ export class ModalNewRateComponent implements OnInit {
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
-        this.listOfData = result;
+        this.listOfData2 = result;
       }
     );
   }
-  Post(): void{
+  Post(){
     if (this.validateForm.valid) {
       const provider = {
         codigo: this.validateForm.value.codigo,
@@ -91,7 +96,7 @@ export class ModalNewRateComponent implements OnInit {
         observacion: this.validateForm.value.observacion,
         estado: true,
       }
-      this.isVisible = false;
+
       if(this.dataPosition){
         this.globalService.PutId( this.url.post, this.dataPosition?.id, provider).subscribe(
           (result:any) => {
@@ -99,20 +104,23 @@ export class ModalNewRateComponent implements OnInit {
           }
         );
         
-        this.GetRates();
-        this.UpdateListOfData(this.listOfData);
       }else{
         this.globalService.Post(this.url.post, provider).subscribe(
           (result:any) => {
-            if(result){
-              this.GetRates();
-              this.UpdateListOfData(this.listOfData);
-              
-            }
             
           }
         );
+
       }
+
+      if(this.dataPosition){
+        this.dataPosition.codigo = provider.codigo;
+        this.dataPosition.descripcion = provider.descripcion;
+        this.dataPosition.observacion = provider.observacion;
+      }
+      this.GetRates();
+      this.UpdateListOfData(provider);
+      this.isVisible = false;
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {

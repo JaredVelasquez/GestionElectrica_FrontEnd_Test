@@ -16,12 +16,7 @@
             <div nz-row>
                 <nz-form-item>
                 <nz-form-control>
-                    <div *ngIf="dataPosition; else emptyCode">
-                        <input nz-input [(ngModel)]="dataPosition.codigo"  class="inputMedium" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="codigo" [disabled]="false" />
-                    </div>
-                    <ng-template #emptyCode>
-                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="codigo" [disabled]="false" />
-                    </ng-template>
+                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="codigo" />
                 </nz-form-control>
                 </nz-form-item>
             </div>
@@ -47,7 +42,7 @@
             <div nz-row>
                 <nz-form-item>
                 <nz-form-control>
-                        <input nz-input formControlName="descripcion"  class="inputLarge" id="Descripcion" type="text" placeholder=" Zona ## "  [disabled]="false" />
+                        <input nz-input formControlName="descripcion"  class="inputLarge" id="Descripcion" type="text" placeholder=" Zona ## "  />
                 </nz-form-control>
                 </nz-form-item>
             </div>
