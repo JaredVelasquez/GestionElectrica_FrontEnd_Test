@@ -9,7 +9,7 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 })
 export class ModalNewRateComponent implements OnInit, OnChanges {
   listOfData2: RatesInterface[] = [];
-  @Output() ListOfDataUpdated = new EventEmitter<any[]>();
+  @Output() DataUpdated : EventEmitter<RatesInterface> = new EventEmitter<RatesInterface>();
   @Input() dataPosition!: RatesInterface | undefined;
 
   inputValue: string = 'my site';
@@ -51,11 +51,7 @@ export class ModalNewRateComponent implements OnInit, OnChanges {
     
   }
   
-  UpdateListOfData(list: any){
-    
-    this.ListOfDataUpdated.emit(list);
-    
-    this.isVisible = false;
+  UpdateListOfData(list: RatesInterface){
   }
 
   showModal(): void {
@@ -107,6 +103,10 @@ export class ModalNewRateComponent implements OnInit, OnChanges {
       }else{
         this.globalService.Post(this.url.post, provider).subscribe(
           (result:any) => {
+            if(result){
+              this.DataUpdated.emit(result);
+              this.isVisible = false;
+            }
             
           }
         );
@@ -118,8 +118,6 @@ export class ModalNewRateComponent implements OnInit, OnChanges {
         this.dataPosition.descripcion = provider.descripcion;
         this.dataPosition.observacion = provider.observacion;
       }
-      this.GetRates();
-      this.UpdateListOfData(provider);
       this.isVisible = false;
       
     } else {

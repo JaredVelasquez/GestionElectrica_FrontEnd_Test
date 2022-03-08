@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
+import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 
 
 
@@ -18,7 +19,7 @@ export class ModalNewContractComponent implements OnInit {
   validateForm!: FormGroup;
   @Input() dataPosition!: ContractInterface | undefined;
   @Input() ListOfClients: ActorInterface[] = [];
-  @Input() ListOfData: ContractInterface[] = [];
+  @Output() DataUpdated : EventEmitter<ContractInterface> = new EventEmitter<ContractInterface>();
 
   
   url = {
@@ -27,10 +28,6 @@ export class ModalNewContractComponent implements OnInit {
     delete: 'contratos',
     update: 'contratos',
   };
-  options = [
-    { label: 'Fecha Contrato', value: true },
-    { label: 'Especifica', value: false }
-  ];
   
 
   constructor(
@@ -39,7 +36,6 @@ export class ModalNewContractComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    
     this.validateForm = this.fb.group({
       codigo: ['', [Validators.required]],
       clasificacion: ['', [Validators.required]],
@@ -55,18 +51,17 @@ export class ModalNewContractComponent implements OnInit {
   }
 
   showModal(): void {
+    this.isVisible = true;
     if(this.dataPosition){
-      console.log(this.dataPosition);
-      
       this.validateForm = this.fb.group({
         codigo: [ this.dataPosition.codigo , [Validators.required]],
         clasificacion: [ String(this.dataPosition.clasificacion), [Validators.required]],
-        actorId: [ String(this.dataPosition.clienteId), [Validators.required]],
+        actorId: [ String(this.dataPosition.actorId), [Validators.required]],
         fechaCreacion: [ this.dataPosition.fechaCreacion, [Validators.required]],
-        fechaVencimiento: [ this.dataPosition.fechaVencimiento, [Validators.required]],
+        fechaVencimiento: [ this.dataPosition.fechaVenc, [Validators.required]],
         diaGeneracion: [ String(this.dataPosition.diaGeneracion), [Validators.required]],
         diasDisponibles: [ this.dataPosition.diasDisponibles, [Validators.required]],
-        exportacion: [ (this.dataPosition.exportacion), [Validators.required]],
+        exportacion: [ String(this.dataPosition.exportacion), [Validators.required]],
         descripcion: [ this.dataPosition.descripcion, [Validators.required]],
         observacion: [ this.dataPosition.observacion, [Validators.required]],
       })
@@ -86,7 +81,6 @@ export class ModalNewContractComponent implements OnInit {
       })
       
     }
-    this.isVisible = true;
   }
 
   handleOk(): void {
@@ -98,51 +92,43 @@ export class ModalNewContractComponent implements OnInit {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
-  Get(){
-    this.globalService.Get(this.url.get).subscribe( 
-      (result:any) => {
-        result.id = Number(result.id);
-        this.ListOfData = result;
-      }
-    );
-  }
 
- 
   PushData(): void{
     if (this.validateForm.valid) {
+      let updateData;
       
-      console.log(this.validateForm.value);
       
       const provider = {
         codigo:  this.validateForm.value.codigo,
-        clasificacion:  (this.validateForm.value.clasificacion),
-        actorId:  Number(this.validateForm.value.actorId),
-        fechaCreacion:  this.validateForm.value.fechaCreacion,
-        fechaVencimiento:  this.validateForm.value.fechaVencimiento,
-        diaGeneracion:  Number(this.validateForm.value.diaGeneracion),
-        diasDisponibles:  Number(this.validateForm.value.diasDisponibles),
-        exportacion:  Boolean(this.validateForm.value.exportacion),
+        clasificacion: this.validateForm.value.clasificacion,
         descripcion: this.validateForm.value.descripcion,
+        actorId:  toNumber(this.validateForm.value.actorId),
+        fechaCreacion:  this.validateForm.value.fechaCreacion,
+        fechaVenc:  this.validateForm.value.fechaVencimiento,
+        diaGeneracion:  toNumber(this.validateForm.value.diaGeneracion),
+        diasDisponibles:  toNumber(this.validateForm.value.diasDisponibles),
+        exportacion:  toBoolean(this.validateForm.value.exportacion),
         observacion:  this.validateForm.value.observacion,
         estado: true,
-      }
-      console.log(provider);
-      
+      }      
 
-      if(this.dataPosition){
-        this.globalService.PutId( this.url.post, this.dataPosition?.id, provider).subscribe(
-          (result:any) => {
-            
-          }
-        );
-        
+      if(this.dataPosition?.id){
+          this.globalService.PutId( this.url.post, this.dataPosition.id , provider).subscribe(
+            (result:any) => {
+            }
+            );
       }else{
         this.globalService.Post(this.url.post, provider).subscribe(
-          (result:any) => {
-            this.Get();
+          (result:any) => { 
+            console.log(result);
             
+            if(result){
+              updateData = result;
+              this.DataUpdated.emit(updateData);
+            }
           }
         );
+
 
       }
 
@@ -158,10 +144,34 @@ export class ModalNewContractComponent implements OnInit {
         this.dataPosition.codigo = provider.codigo;
         this.dataPosition.descripcion = provider.descripcion;
         this.dataPosition.fechaCreacion = provider.fechaCreacion;
-        this.dataPosition.fechaVencimiento = provider.fechaVencimiento;
+        this.dataPosition.fechaVenc = provider.fechaVenc;
+        this.dataPosition.exportacion = provider.exportacion;
+        this.dataPosition.clasificacion = provider.clasificacion;
+        this.dataPosition.actorId = provider.actorId;
+        this.dataPosition.diaGeneracion = provider.diaGeneracion;
+        this.dataPosition.diasDisponibles = provider.diasDisponibles;
+        this.dataPosition.observacion = provider.observacion;
+
+        console.log(this.dataPosition);
+        
+
+
         
       }
       this.isVisible = false;
+      
+      this.validateForm = this.fb.group({
+        codigo: ['', [Validators.required]],
+        clasificacion: ['', [Validators.required]],
+        actorId: ['', [Validators.required]],
+        fechaCreacion: ['', [Validators.required]],
+        fechaVencimiento: ['', [Validators.required]],
+        diaGeneracion: ['', [Validators.required]],
+        diasDisponibles: ['', [Validators.required]],
+        exportacion: ['', [Validators.required]],
+        descripcion: ['', [Validators.required]],
+        observacion: ['', [Validators.required]],
+      })
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {

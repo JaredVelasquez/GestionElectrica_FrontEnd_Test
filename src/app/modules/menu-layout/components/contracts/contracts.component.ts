@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
@@ -11,18 +11,18 @@ import { ActorInterface } from 'src/Core/interfaces/actors.interface';
   templateUrl: './contracts.component.html',
   styleUrls: ['./contracts.component.css']
 })
-export class ContractsComponent implements OnInit {
+export class ContractsComponent implements OnInit{
   isVisible = false;
   validateForm!: FormGroup;
-  ListOfData: ContractInterface[] = [];
+  ListOfData!: ContractInterface[];
   ListOfClients: ActorInterface[] = [];
 
   url = {
     get: 'get-contracts',
     getClients: 'get-clients',
-    post: 'tarifas',
-    delete: 'tarifas',
-    update: 'tarifas',
+    post: 'contratos',
+    delete: 'contratos',
+    update: 'contratos',
   };
 
   constructor(
@@ -34,7 +34,7 @@ export class ContractsComponent implements OnInit {
     this.GetRates();
     this.GetClients();
   }
-  
+
   showModal(): void {
     this.isVisible = true;
   }
@@ -51,8 +51,9 @@ export class ContractsComponent implements OnInit {
   GetRates(){
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
-        result.id = Number(result.id);
         this.ListOfData = result;
+        console.log(this.ListOfData);
+        
       }
     );
   }
@@ -75,51 +76,60 @@ export class ContractsComponent implements OnInit {
     );
   }
 
+  TablaUpdated(list: any){
+
+    this.ListOfData.push(list);
+    console.log(this.ListOfData);
+    
+      
+    
+  }
+
 
 
   
   listOfColumns: ColumnItem[] = [
     {
       name: 'ID',
-      sortOrder: 'descend',
+      sortOrder: 'ascend',
       sortFn: (a: ContractInterface, b: ContractInterface) => a.id - b.id,
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
     {
       name: 'Codigo',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.codigo.localeCompare(b.codigo),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
     {
       name: 'Descripcion',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
     {
       name: 'Cliente',
-      sortOrder: 'descend',
-      sortFn: (a: ContractInterface, b: ContractInterface) => a.cliente.localeCompare(b.cliente),
-      sortDirections: ['descend', null],
+      sortOrder: null,
+      sortFn: null,
+      sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
     {
       name: 'Creacion',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaCreacion.localeCompare(b.fechaCreacion),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true

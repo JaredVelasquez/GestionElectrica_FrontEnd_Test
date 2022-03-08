@@ -17,12 +17,13 @@ export class ModalNewParameterComponent implements OnInit {
   listOfData: InputParametersInterface[] = [];
   @Input() dataPosition!: InputParametersInterface | undefined;
   @Input() ListOfCharges: ChargesInterface[] = [];
+  @Output() DataUpdated : EventEmitter<InputParametersInterface> = new EventEmitter<InputParametersInterface>();
 
   
   url = {
     get: 'get-allparameters',
     getcargo: 'tipo-cargos',
-    post: 'parametro-tarifas',
+    post: 'parametro-global',
     delete: 'parametro-tarifas',
     update: 'parametro-tarifas',
   };
@@ -93,13 +94,14 @@ export class ModalNewParameterComponent implements OnInit {
         fechaFinal: this.validateForm.value.fechaFinal,
         valor: this.validateForm.value.valor,
         observacion: this.validateForm.value.observacion,
+        tipo: true,
         estado: true,
       }
       console.log(provider);
       
 
       if(this.dataPosition){
-        this.globalService.PutId( this.url.post, this.dataPosition?.idParametro, provider).subscribe(
+        this.globalService.PutId( this.url.update, this.dataPosition?.idParametro, provider).subscribe(
           (result:any) => {
             
           }
@@ -108,7 +110,10 @@ export class ModalNewParameterComponent implements OnInit {
       }else{
         this.globalService.Post(this.url.post, provider).subscribe(
           (result:any) => {
-            console.log(result);
+            if(result){
+              this.DataUpdated.emit(result);
+              this.isVisible = false;
+            }
             
           }
         );

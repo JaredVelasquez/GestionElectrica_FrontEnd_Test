@@ -33,18 +33,19 @@ export class InputParametersComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetRates();
+    console.log(this.listOfData);
+    
     this.GetCargos();
     
   }
 
   
-  updateTable(list: any){
-    this.listOfData.push(list);
-    console.log(list);
-    console.log(this.listOfData);
-    
-    
+  updateTable(list: InputParametersInterface){
+    if(list){
+      this.GetRates();
+    }
   }
+
   showModal(): void {
     this.isVisible = true;
   }
@@ -60,6 +61,8 @@ export class InputParametersComponent implements OnInit {
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
         this.listOfData = result;
+        console.log(this.listOfData);
+        
       }
     );
   }
@@ -81,6 +84,7 @@ export class InputParametersComponent implements OnInit {
       }
     );
   }
+  
 
 
 
@@ -107,7 +111,7 @@ export class InputParametersComponent implements OnInit {
     {
       name: 'Cargo',
       sortOrder: 'descend',
-      sortFn: (a: InputParametersInterface, b: InputParametersInterface) => a.cargo - b.cargo,
+      sortFn: null,
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,

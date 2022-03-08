@@ -1,7 +1,7 @@
 <h1>Tarifas</h1>
 <div nz-row class="row-1">
     <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
-      <app-modal-new-rate (ListOfDataUpdated)="updateTable($event)"></app-modal-new-rate>
+      <app-modal-new-rate (DataUpdated)="updateTable($event)"></app-modal-new-rate>
     </div>
 
     <div nz-col nzSpan="12" class="row1-col2">
@@ -19,7 +19,7 @@
 </div>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="80px">Acciones</th>
@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of filterTable.data">
+          <tr *ngFor="let data of listOfData">
             <td nzLeft>
               <app-modal-new-rate [dataPosition]="data"></app-modal-new-rate>
               <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline" (click)="DeleteRate(data.id)"></i></button>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
+import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
 import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
 
 @Component({
@@ -12,6 +13,8 @@ import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.i
 export class ModalNewChargeComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
+  @Output() DataUpdated : EventEmitter<EspecialChargesInterface> = new EventEmitter<EspecialChargesInterface>();
+
   listOfData: any[] = [];
   url = {
     get: 'get-zones',
@@ -69,10 +72,9 @@ export class ModalNewChargeComponent implements OnInit {
       this.globalService.Post(this.url.post, provider).subscribe(
         (result:any) => {
           if(result){
-            this.GetRates();
-            
+            this.DataUpdated.emit(result);
+            this.isVisible = false;
           }
-            console.log(result);
           
         }
       );

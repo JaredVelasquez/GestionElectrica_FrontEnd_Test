@@ -24,7 +24,7 @@ export class ModalParametersComponent implements OnInit {
   url = {
     get: 'get-parameter',
     getcargo: 'tipo-cargos',
-    post: 'parametro-tarifas',
+    post: 'parametro-tarifa',
     delete: 'parametro-tarifas',
     update: 'parametro-tarifas',
   };
@@ -80,17 +80,19 @@ export class ModalParametersComponent implements OnInit {
 
   Post(): void{
     if (this.validateForm.valid) {
-      const provider = {
-        tarifaId: this.dataPosition.id,
-        tipoCargoId: Number(this.validateForm.value.cargo),
-        fechaInicio:  this.validateForm.value.fechaInicio,
-        fechaFinal:  this.validateForm.value.fechaFinal,
-        valor:  this.validateForm.value.valor,
-        observacion:  this.validateForm.value.observacion,
-        estado: true,
-      }
       if(this.currentAction){
-        this.globalService.Post(this.url.post, provider).subscribe(
+        const providerPost = {
+          idTarifa: this.dataPosition.id,
+          cargoId: Number(this.validateForm.value.cargo),
+          valor:  Number(this.validateForm.value.valor),
+          fechaInicio:  this.validateForm.value.fechaInicio,
+          fechaFinal:  this.validateForm.value.fechaFinal,
+          observacion:  this.validateForm.value.observacion,
+          estado: true,
+        }
+        console.log(providerPost);
+        
+        this.globalService.Post(this.url.post, providerPost).subscribe(
           (result:any) => {
               this.Get();
           }
@@ -105,8 +107,18 @@ export class ModalParametersComponent implements OnInit {
         this.CleanForm();
       }
       else{
+        
+      const providerUpdate = {
+        tipoCargoId: Number(this.validateForm.value.cargo),
+        fechaInicio:  this.validateForm.value.fechaInicio,
+        fechaFinal:  this.validateForm.value.fechaFinal,
+        valor:  this.validateForm.value.valor,
+        observacion:  this.validateForm.value.observacion,
+        tipo: this.editableSchema?.tipo,
+        estado: true,
+      }
         if(this.editableSchema){
-          this.globalService.PutId(this.url.update, this.editableSchema.idParametro, provider).subscribe(
+          this.globalService.PutId(this.url.update, this.editableSchema.idParametro, providerUpdate).subscribe(
             (result:any) => {
                 this.Get();
                 this.CleanForm();
@@ -207,7 +219,7 @@ export class ModalParametersComponent implements OnInit {
     {
       name: 'Cargo',
       sortOrder: null,
-      sortFn: (a: InputParametersInterface, b: InputParametersInterface)=> a.cargo - (b.cargo),
+      sortFn: null,
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
