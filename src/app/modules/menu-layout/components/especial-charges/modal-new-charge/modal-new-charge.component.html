@@ -1,9 +1,14 @@
 
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Cargo</span></button>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Cargo" (nzOnCancel)="handleCancel()" (nzOnOk)="Post()">
+<div *ngIf="dataPosition; else Guardar">
+    <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+</div>
+<ng-template #Guardar>
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Cargo</span></button>
+</ng-template>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Cargo" (nzOnCancel)="handleCancel()" (nzOnOk)="PushData()">
     <ng-container *nzModalContent>
 
-    <form nz-form nzLayout="horizontal">
+    <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
 
         <div nz-row>
             <div nz-col nzSpan="11">
@@ -11,7 +16,7 @@
                     <div nz-row>
                         <nz-form-item>
                         <nz-form-control>
-                            <nz-date-picker class="inputMedium"></nz-date-picker>
+                            <nz-date-picker formControlName="fechaInicio" class="inputMedium"></nz-date-picker>
                         </nz-form-control>
                         </nz-form-item>
                     </div>
@@ -21,10 +26,23 @@
                 <div nz-row>
                     <nz-form-item >
                     <nz-form-control>
-                        <nz-date-picker class="inputMedium"></nz-date-picker>
+                        <nz-date-picker formControlName="fechaFinal" class="inputMedium"></nz-date-picker>
                     </nz-form-control>
                     </nz-form-item>
                 </div>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col nzSpan="11">
+                <label>Descripcion</label>
+                <div nz-row>
+                    <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input formControlName="descripcion" class="inputLarge"  id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
+                    </nz-form-control>
+                    </nz-form-item>
+                </div>
+
             </div>
         </div>
 
@@ -34,7 +52,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
+                        <input nz-input formControlName="cargoFinanciamiento" class="inputMedium" id="Descripcion" type="number" placeholder="(0.5)%"  [disabled]="false" />
                     </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -46,7 +64,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
+                        <input nz-input formControlName="ajuste" class="inputMedium" id="Descripcion" type="number" placeholder="(0.5)%"  [disabled]="false" />
                     </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -60,7 +78,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
+                        <input nz-input formControlName="cargoCorte" class="inputMedium" id="Descripcion" type="number" placeholder="(0.5)%"  [disabled]="false" />
                     </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -72,7 +90,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
+                        <input nz-input formControlName="cargoMora" class="inputMedium" id="Descripcion" type="number" placeholder="(0.5)%"  [disabled]="false" />
                     </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -86,7 +104,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <input nz-input class="inputMedium" id="Descripcion" type="text" placeholder="(0.5)%"  [disabled]="false" />
+                        <input nz-input formControlName="otrosCargos" class="inputMedium" id="Descripcion" type="number" placeholder="(0.5)%"  [disabled]="false" />
                     </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -101,7 +119,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <textarea class="inputLarge" nz-input rows="2" placeholder="Escriba algo"></textarea>
+                        <textarea class="inputLarge" formControlName="observacion" nz-input rows="2" placeholder="Escriba algo"></textarea>
                     </nz-form-control>
                     </nz-form-item>
                 </div>

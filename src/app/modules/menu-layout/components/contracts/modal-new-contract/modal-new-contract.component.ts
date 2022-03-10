@@ -52,13 +52,15 @@ export class ModalNewContractComponent implements OnInit {
 
   showModal(): void {
     this.isVisible = true;
+    console.log(this.dataPosition);
+    
     if(this.dataPosition){
       this.validateForm = this.fb.group({
         codigo: [ this.dataPosition.codigo , [Validators.required]],
-        clasificacion: [ String(this.dataPosition.clasificacion), [Validators.required]],
-        actorId: [ String(this.dataPosition.actorId), [Validators.required]],
+        clasificacion: [ this.dataPosition.clasificacion, [Validators.required]],
+        actorId: [ String(this.dataPosition.clienteId), [Validators.required]],
         fechaCreacion: [ this.dataPosition.fechaCreacion, [Validators.required]],
-        fechaVencimiento: [ this.dataPosition.fechaVenc, [Validators.required]],
+        fechaVencimiento: [ this.dataPosition.fechaVencimiento, [Validators.required]],
         diaGeneracion: [ String(this.dataPosition.diaGeneracion), [Validators.required]],
         diasDisponibles: [ this.dataPosition.diasDisponibles, [Validators.required]],
         exportacion: [ String(this.dataPosition.exportacion), [Validators.required]],
@@ -144,10 +146,10 @@ export class ModalNewContractComponent implements OnInit {
         this.dataPosition.codigo = provider.codigo;
         this.dataPosition.descripcion = provider.descripcion;
         this.dataPosition.fechaCreacion = provider.fechaCreacion;
-        this.dataPosition.fechaVenc = provider.fechaVenc;
+        this.dataPosition.fechaVencimiento = provider.fechaVenc;
         this.dataPosition.exportacion = provider.exportacion;
         this.dataPosition.clasificacion = provider.clasificacion;
-        this.dataPosition.actorId = provider.actorId;
+        this.dataPosition.clienteId = provider.actorId;
         this.dataPosition.diaGeneracion = provider.diaGeneracion;
         this.dataPosition.diasDisponibles = provider.diasDisponibles;
         this.dataPosition.observacion = provider.observacion;

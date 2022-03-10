@@ -37,9 +37,12 @@ export class LoginPageComponent implements OnInit {
       this.cookieService.deleteAll();
       const res : any = this.loginService.SubmitLogin(this.validateForm.value).subscribe(
         (result:any) => {
-          if(result.token){
+          
+          if(result?.token){
+            console.log(result.token);
             this.validateError = false;
-            this.cookieService.set(key.TOKEN_KEY_NAME, result.token , key.TOKEN_EXPIRATION_TIME, '');
+            this.cookieService.set("tokensession", result?.token +'' , key.TOKEN_EXPIRATION_TIME, '');
+            this.router.navigate(['sys/welcome'])
           }
           else
             this.validateError = true;
@@ -47,8 +50,6 @@ export class LoginPageComponent implements OnInit {
           return result;
         }
       );
-      if(this.cookieService.get(key.TOKEN_KEY_NAME))
-        this.router.navigate(['sys/welcome'])
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

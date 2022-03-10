@@ -20,7 +20,7 @@
 </div>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="80px">Acciones</th>
@@ -36,13 +36,13 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="80px">Total cargos</th>
+            <th nzRight nzWidth="60px">Total cargos</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of filterTable.data">
+          <tr *ngFor="let data of listOfData">
             <td nzLeft>
-              <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+              <app-modal-new-charge [dataPosition]="data"></app-modal-new-charge>
               <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline" (click)="DeleteRate(data.id)"></i></button>
             </td>
             <td>{{data.id}}</td>

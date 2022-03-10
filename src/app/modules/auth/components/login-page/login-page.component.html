@@ -3,7 +3,7 @@
 
     <div nz-row class="logo-container">
         <div nz-col [nzSpan]="12">
-            <img class="Logo" src="../../../../../assets/Images/Logo.jpg" alt="">
+            <img class="Logo" src="../../../../../assets/Images/Logo.png" alt="">
         </div>
     </div>
     <nz-form-item>    
@@ -28,11 +28,10 @@
         </label>
         </div> -->
         <div nz-col [nzSpan]="12">
-        <a class="login-form-forgot">Olvide mi contraseña</a>
+        <a class="login-form-forgot">Cambiar mi contraseña</a>
         </div>
     </div>
     <button [disabled]="validateForm.invalid" nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-    Or
     <a [routerLink]="['register']">Registrate ahora!</a>
 </form>
   
