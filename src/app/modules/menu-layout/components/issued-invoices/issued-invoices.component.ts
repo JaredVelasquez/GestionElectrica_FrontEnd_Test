@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { InvoiceTablesInterface } from 'src/Core/interfaces/invoices-tables.interface';
+import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 
 @Component({
@@ -14,7 +14,7 @@ export class IssuedInvoicesComponent implements OnInit {
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: InvoiceTablesInterface[] = [];
+  listOfData: InvoiceInterface[] = [];
   list: any[] = [];
   
   url = {
@@ -115,7 +115,7 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Codigo',
       sortOrder: 'descend',
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.codigo.localeCompare(b.codigo),
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigo.localeCompare(b.codigo),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -124,7 +124,7 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Contrato',
       sortOrder: 'descend',
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.contrato.localeCompare(b.contrato),
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigoContrato.localeCompare(b.codigoContrato),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -133,7 +133,7 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Cliente',
       sortOrder: 'descend',
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.cliente.localeCompare(b.cliente),
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigoContrato.localeCompare(b.codigoContrato),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -151,7 +151,7 @@ export class IssuedInvoicesComponent implements OnInit {
     {
       name: 'Energia consumida',
       sortOrder: 'descend',
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.energiaConsumida - b.energiaConsumida,
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.energiaConsumida - b.energiaConsumida,
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,

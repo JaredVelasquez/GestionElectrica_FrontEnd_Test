@@ -1,8 +1,10 @@
 <h1>Facturas Generadas</h1>
 <div nz-row class="row-1">
+    <div nz-col nzOffset="8" nzSpan="4">
+      <app-modal-new-invoices (DataUpdated)="updateTable($event)"></app-modal-new-invoices>
+    </div>
 
-
-    <div nz-col nzOffset="12" nzSpan="12" class="row1-col2">
+    <div nz-col nzSpan="12" class="row1-col2">
 
         <nz-input-group [nzSuffix]="suffixIconSearch">
           <input type="text" nz-input placeholder="input search text" />
@@ -17,7 +19,7 @@
 </div>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="150px">Acciones</th>
@@ -40,16 +42,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of filterTable.data">
+          <tr *ngFor="let data of listOfData">
             <td nzLeft>
               <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-              <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline" (click)="DeleteRate(data.id)"></i></button>
+              <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
             </td>
-            <td>{{data.id}}</td>
+            <td>{{data.detalleFacturaId}}</td>
             <td>{{data.codigo}}</td>
-            <td>{{ data.contrato }}</td>
-            <td>{{data.cliente}}</td>
-            <td>{{data.fechaInicio}}</td>
+            <td>{{ data.codigoContrato }}</td>
+            <td>{{data.actorNombre}}</td>
+            <td>{{data.fechaLectura}}</td>
             <td>{{ data.energiaConsumida }}</td>
             <td>{{ data.total }}</td>
             <td nzRight>

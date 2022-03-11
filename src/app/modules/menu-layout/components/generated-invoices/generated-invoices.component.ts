@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
-import { InvoiceTablesInterface } from 'src/Core/interfaces/invoices-tables.interface';
+import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 
 @Component({
   selector: 'app-generated-invoices',
@@ -14,11 +14,11 @@ export class GeneratedInvoicesComponent implements OnInit {
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: InvoiceTablesInterface[] = [];
+  listOfData: InvoiceInterface[] = [];
   list: any[] = [];
   
   url = {
-    id: 0,
+    id: 1,
     get: 'get-invoices',
     post: 'facturas',
     delete: 'facturas',
@@ -33,18 +33,12 @@ export class GeneratedInvoicesComponent implements OnInit {
   ngOnInit(): void {
     this.GetRates();
     
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
-    console.log(this.list);
     
   }
 
   
   updateTable(list: any){
-    this.list = list;
+    this.GetRates();
     
   }
   showModal(): void {
@@ -69,36 +63,7 @@ export class GeneratedInvoicesComponent implements OnInit {
       }
     );
   }
-  PostRate(){
-    if (this.validateForm.valid) {
-      const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
-        observacion: this.validateForm.value.observacion,
-      }
-      console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetRates();
-            
-          }
-            console.log(result);
-          
-        }
-      );
-      
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
-
-  }
+  
   DeleteRate(Id: any){
     Id = Number(Id);
     this.globalService.Delete(this.url.delete, Id).subscribe(
@@ -115,7 +80,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     {
       name: 'ID',
       sortOrder: 'descend',
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.id - b.id,
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.detalleFacturaId - b.detalleFacturaId,
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -124,7 +89,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     {
       name: 'Codigo',
       sortOrder: null,
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.codigo.localeCompare(b.codigo),
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigo.localeCompare(b.codigo),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -133,7 +98,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     {
       name: 'Contrato',
       sortOrder: null,
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.contrato.localeCompare(b.contrato),
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigo.localeCompare(b.codigo),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -142,7 +107,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     {
       name: 'Cliente',
       sortOrder: null,
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.cliente.localeCompare(b.cliente),
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigo.localeCompare(b.codigo),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -160,7 +125,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     {
       name: 'Energia consumida',
       sortOrder: null,
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.energiaConsumida - b.energiaConsumida,
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.energiaConsumida - b.energiaConsumida,
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -169,7 +134,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     {
       name: 'Total a pagar',
       sortOrder: null,
-      sortFn: (a: InvoiceTablesInterface, b: InvoiceTablesInterface) => a.total - (b.total),
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.total - (b.total),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,

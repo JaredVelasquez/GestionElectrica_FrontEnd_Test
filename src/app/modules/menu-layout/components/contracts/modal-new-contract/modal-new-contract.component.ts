@@ -153,8 +153,6 @@ export class ModalNewContractComponent implements OnInit {
         this.dataPosition.diaGeneracion = provider.diaGeneracion;
         this.dataPosition.diasDisponibles = provider.diasDisponibles;
         this.dataPosition.observacion = provider.observacion;
-
-        console.log(this.dataPosition);
         
 
 

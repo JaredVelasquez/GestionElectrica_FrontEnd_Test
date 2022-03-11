@@ -55,6 +55,7 @@ import { ModalNewChargeComponent } from './components/especial-charges/modal-new
 import { ModalNewMatrixComponent } from './components/energy-matrix/modal-new-matrix/modal-new-matrix.component';
 import { ModalDistributionComponent } from './components/energy-matrix/modal-distribution/modal-distribution.component';
 import { ModalNewRateComponent } from './components/rates/modal-new-rate/modal-new-rate.component';
+import { ModalNewInvoicesComponent } from './components/generated-invoices/modal-new-invoices/modal-new-invoices.component';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { ModalNewRateComponent } from './components/rates/modal-new-rate/modal-n
     ModalNewChargeComponent,
     ModalNewMatrixComponent,
     ModalDistributionComponent,
-    ModalNewRateComponent
+    ModalNewRateComponent,
+    ModalNewInvoicesComponent
   ],
   imports: [
     CommonModule,

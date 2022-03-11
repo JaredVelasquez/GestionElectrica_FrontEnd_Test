@@ -42,12 +42,12 @@
         <tbody>
           <tr *ngFor="let data of filterTable.data">
             <td nzLeft>
-            {{data.id}}
+            {{data.detalleFacturaId}}
             </td>
             <td>{{data.codigo}}</td>
-            <td>{{ data.contrato }}</td>
-            <td>{{data.cliente}}</td>
-            <td>{{data.fechaInicio}}</td>
+            <td>{{ data.codigoContrato }}</td>
+            <td>{{data.actorNombre}}</td>
+            <td>{{data.fechaLectura}}</td>
             <td>{{ data.energiaConsumida }}</td>
             <td nzRight>{{ data.total }}</td>
           </tr>
