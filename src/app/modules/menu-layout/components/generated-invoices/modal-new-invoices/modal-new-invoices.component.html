@@ -1,4 +1,4 @@
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Generar Factura</span></button>
+<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
 <nz-modal nzCentered [(nzVisible)]="isVisible" nzTitle="Factura" (nzOnCancel)="handleCancel()" (nzOnOk)="PushData()">
     <ng-container *nzModalContent>
         <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
@@ -9,7 +9,9 @@
                         <nz-form-control>
                             <nz-form-item  nzFlex>
                                 <nz-select formControlName="contratoMedidorId" class="inputMedium" nzPlaceHolder="MD_123120" nzAllowClear>
-                                  <nz-option nzLabel="example" nzValue="example"></nz-option>
+                                    <div *ngFor="let contract of ListOfContractMeditors">
+                                        <nz-option [nzLabel]="contract.codigoContrato" [nzValue]="contract.contratoMedidorId"></nz-option>
+                                    </div>
                                 </nz-select>
                             </nz-form-item>
                         </nz-form-control>

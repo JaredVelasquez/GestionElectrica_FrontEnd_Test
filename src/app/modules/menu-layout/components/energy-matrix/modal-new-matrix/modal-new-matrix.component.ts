@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MetersService } from '@modules/menu-layout/services/meters.service';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 
@@ -23,7 +23,7 @@ export class ModalNewMatrixComponent implements OnInit {
   };
 
   constructor(
-    private globalService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
@@ -91,7 +91,7 @@ export class ModalNewMatrixComponent implements OnInit {
   }
   DeleteRate(Id: any){
     Id = Number(Id);
-    this.globalService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
         console.log(result);
         this.GetRates();

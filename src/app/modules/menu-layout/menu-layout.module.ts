@@ -18,7 +18,6 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { ZonesComponent } from './components/zones/zones.component';
 import { MetersComponent } from './components/meters/meters.component';
-import { MetersTableComponent } from "./components/meters/meters-table/meters-table.component";
 import { MetersModalComponent } from "./components/meters/meters-modal/meters-modal.component";
 import { VirtualMeterModalComponent } from "./components/meters/virtual-meter-modal/virtual-meter-modal.component";
 
@@ -66,7 +65,6 @@ import { ModalNewInvoicesComponent } from './components/generated-invoices/modal
     ProvidersComponent,
     ZonesComponent,
     MetersComponent,
-    MetersTableComponent,
     MetersModalComponent,
     VirtualMeterModalComponent,
     RatesComponent,
@@ -112,8 +110,5 @@ import { ModalNewInvoicesComponent } from './components/generated-invoices/modal
     NzInputNumberModule
   ],
   bootstrap: [MainPageComponent],
-  providers:[
-    MetersTableComponent,
-  ]
 })
 export class MenuLayoutModule { }

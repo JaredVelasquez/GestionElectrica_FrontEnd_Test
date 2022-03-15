@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ZoneInterface } from 'src/Core/interfaces/zones.interface';
 
 @Component({
@@ -21,7 +21,7 @@ export class ZonesComponent implements OnInit {
   };
 
   constructor(
-    private metersService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
 
   ) { }
@@ -37,7 +37,7 @@ export class ZonesComponent implements OnInit {
   }
   
   GetZones(){
-    this.metersService.Get(this.url.get).subscribe( 
+    this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
         console.log(result);
         result.Id = Number(result.Id);
@@ -55,7 +55,7 @@ export class ZonesComponent implements OnInit {
       }
       console.log(provider);
       this.isVisible = false;
-      this.metersService.Post(this.url.post, provider).subscribe(
+      this.globalService.Post(this.url.post, provider).subscribe(
         (result:any) => {
           if(result){
             this.GetZones();
@@ -79,7 +79,7 @@ export class ZonesComponent implements OnInit {
 
   DeleteZone(Id: any){
     Id = Number(Id);
-    this.metersService.DeleteMeter(Id, this.url.delete).subscribe(
+    this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
         console.log(result);
         this.GetZones();

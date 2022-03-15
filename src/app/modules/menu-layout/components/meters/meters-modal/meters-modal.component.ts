@@ -1,9 +1,7 @@
 import { Component, OnInit , Input} from '@angular/core';
-import { MetersService } from "@modules/menu-layout/services/meters.service";
-import { MeterInterface } from 'src/Core/interfaces/model-meter.interface';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from "@angular/router";
-import { MetersTableComponent } from "../meters-table/meters-table.component";
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 
 @Component({
   selector: 'app-meters-modal',
@@ -13,8 +11,13 @@ import { MetersTableComponent } from "../meters-table/meters-table.component";
 export class MetersModalComponent implements OnInit {
   validateForm!: FormGroup;
   isVisible:boolean = false;
-  url: string = 'medidors';
-  meter!: MeterInterface;
+  url = {
+    getMeters: 'get-meters',
+    getVMeters: 'get-vmeters',
+    get: 'medidors',
+    postMeter:'medidors',
+    del:'medidors',
+  }
   options = [
     { label: 'Virtual', value: 'Virtual' },
     { label: 'Fisico', value: 'Fisico' }
@@ -26,8 +29,7 @@ export class MetersModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private  meterService : MetersService,
-    private metersTableComponent: MetersTableComponent
+    private  globalService : EndPointGobalService,
 
   ) { }
 
@@ -39,7 +41,7 @@ export class MetersModalComponent implements OnInit {
       serie: ['', [Validators.required]],
       lecturaMax: ['', [Validators.required]],
       multiplicador: ['', [Validators.required]],
-      //puntoMedicionId: ['', [Validators.required]],
+      puntoMedicionId: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
     }
     
@@ -69,7 +71,7 @@ export class MetersModalComponent implements OnInit {
     
     
     if (this.validateForm.valid) {
-      this.meter = {
+      let meter = {
         codigo: this.validateForm.value.codigo,
         descripcion: this.validateForm.value.descripcion,
         modelo: this.validateForm.value.modelo,
@@ -79,9 +81,8 @@ export class MetersModalComponent implements OnInit {
         puntoMedicionId: 1,
         observacion: this.validateForm.value.Observacion,
       }
-      console.log(this.meter);
       this.isVisible = false;
-      this.meterService.PostMeter(this.url, this.meter).subscribe(
+      this.globalService.Post(this.url.postMeter, meter).subscribe(
         (result:any) => {
           if(result){
             

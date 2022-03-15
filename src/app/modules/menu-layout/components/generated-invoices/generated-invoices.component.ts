@@ -4,6 +4,8 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
+import { MeterInterface } from 'src/Core/interfaces/meter.interface';
+import { ContractMeterInterface } from 'src/Core/interfaces/contract-meter.interface';
 
 @Component({
   selector: 'app-generated-invoices',
@@ -15,11 +17,15 @@ export class GeneratedInvoicesComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: InvoiceInterface[] = [];
+  listOfMeters: MeterInterface[] = [];
+  ListOfContractMeditors: ContractMeterInterface[] = [];
   list: any[] = [];
   
   url = {
     id: 1,
     get: 'get-invoices',
+    getMeters: 'get-meters',
+    getcontratosM: 'get-c-meter',
     post: 'facturas',
     delete: 'facturas',
     update: 'facturas',
@@ -32,6 +38,7 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetRates();
+    this.GetContratos();
     
     
   }
@@ -64,12 +71,29 @@ export class GeneratedInvoicesComponent implements OnInit {
     );
   }
   
+  GetMeters(){
+    this.globalService.Get(this.url.getMeters).subscribe(
+      (result:any) => {
+        this.listOfMeters = result;
+
+        
+      }
+    );
+  }
   DeleteRate(Id: any){
     Id = Number(Id);
     this.globalService.Delete(this.url.delete, Id).subscribe(
       result => {
         console.log(result);
         this.GetRates();
+      }
+    );
+  }
+  
+  GetContratos(){
+    this.globalService.GetId(this.url.getcontratosM, 1).subscribe( 
+      (result:any) => {
+        this.ListOfContractMeditors = result;
       }
     );
   }

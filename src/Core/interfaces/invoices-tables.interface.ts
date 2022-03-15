@@ -16,4 +16,5 @@ export interface  InvoiceInterface{
     energiaConsumida: number;
     total: number;
     parametroTarifaId: number;
+    estado: number;
 }

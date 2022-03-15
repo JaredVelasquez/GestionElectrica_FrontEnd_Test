@@ -1,7 +1,7 @@
 <h1>Facturas Generadas</h1>
 <div nz-row class="row-1">
     <div nz-col nzOffset="8" nzSpan="4">
-      <app-modal-new-invoices (DataUpdated)="updateTable($event)"></app-modal-new-invoices>
+      <app-modal-new-invoices [ListOfContractMeditors]="ListOfContractMeditors" (DataUpdated)="updateTable($event)"></app-modal-new-invoices>
     </div>
 
     <div nz-col nzSpan="12" class="row1-col2">
@@ -22,7 +22,7 @@
       <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="150px">Acciones</th>
+          <th nzLeft nzWidth="90px">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -44,8 +44,9 @@
         <tbody>
           <tr *ngFor="let data of listOfData">
             <td nzLeft>
-              <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-              <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+              <button class="edit" nz-button nzType="primary"  nzShape="circle" ><i nz-icon nzType="minus-square" nzTheme="outline"></i></button>
+              
+
             </td>
             <td>{{data.detalleFacturaId}}</td>
             <td>{{data.codigo}}</td>

@@ -1,7 +1,8 @@
+
 <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Agregar Medidor Virtual</span></button>
 <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <ng-container  *nzModalContent>
-        <form  nz-form >
+        <form  nz-form  nzLayout="horizontal">
   
           <div nz-row class="row-1">
             <div nzSpan="24" nz-col class="row1-col1">
@@ -98,7 +99,7 @@
   
           <div nz-row class="row-5">
             <div nz-col>
-                <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '600px', y: '240px' }"  [nzPageSize]="10">
+                <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '600px', y: '240px' }"  [nzPageSize]="10">
                   <thead>
                     <tr>
                     <th nzLeft nzWidth="80px">ID</th>
@@ -118,7 +119,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let data of filterTable.data">
+                    <tr *ngFor="let data of listOfData">
                       <td nzLeft>{{ data.name }}</td>
                       <td>{{ data.age }}</td>
                       <td>{{ data.address }}</td>

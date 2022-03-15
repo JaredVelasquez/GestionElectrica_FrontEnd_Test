@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
-import { MetersService } from "../../services/meters.service";
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 
 @Component({
   selector: 'app-clients',
@@ -22,7 +22,7 @@ export class ClientsComponent implements OnInit {
     update: '',
   };
   constructor(
-    private metersService: MetersService,
+    private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
@@ -39,7 +39,7 @@ export class ClientsComponent implements OnInit {
   }
 
   GetClients(){
-    this.metersService.Get(this.url.get).subscribe(
+    this.globalService.Get(this.url.get).subscribe(
       (result:any) => {
         this.clients = result;
       }
@@ -59,7 +59,7 @@ export class ClientsComponent implements OnInit {
       }
       console.log(provider);
       this.isVisible = false;
-      this.metersService.Post(this.url.post, provider).subscribe(
+      this.globalService.Post(this.url.post, provider).subscribe(
         (result:any) => {
           if(result){
             this.GetClients();

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';

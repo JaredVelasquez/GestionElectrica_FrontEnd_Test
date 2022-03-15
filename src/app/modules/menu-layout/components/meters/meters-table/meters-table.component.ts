@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { DataMeter } from 'src/Core/interfaces/meter.interface';
-import { MetersService } from '../../../services/meters.service';
-import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
+import { MeterInterface } from 'src/Core/interfaces/meter.interface';
+
 @Component({
   selector: 'app-meters-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,23 +11,22 @@ import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } f
 })
 export class MetersTableComponent implements OnInit, OnChanges {
   Id!:number;
-  filterCodigo : Array<{text: string, value: any}>  = [];
-  filterModel : Array<{text: string, value: any}> = [];
-  filterSerie : Array<{text: string, value: any}> = [];
-  @Input() listOfData: DataMeter[] = [];
+  @Input() filterCodigo : Array<{text: string, value: any}>  = [];
+  @Input() filterModel : Array<{text: string, value: any}> = [];
+  @Input() filterSerie : Array<{text: string, value: any}> = [];
+  @Input() listOfData: MeterInterface[] = [];
   @Input() listOfColumns: ColumnItem[] = [];
   @Input() url!: string;
   @Input() properties!: Array<any> ;
   listOfDataVM: any[] = []; 
-  datap:DataMeter[] = [];
+  datap:MeterInterface[] = [];
   property: Array<string> = [];
 
   constructor(
-    private tableService: MetersService
+    private globalService: EndPointGobalService
   ) { }
 
   ngOnInit(): void {
-    this.GetMeters();
     
   }
 
@@ -60,8 +59,6 @@ export class MetersTableComponent implements OnInit, OnChanges {
       //   console.log((this.listOfData[i])[this.property[0].toString()]);
       // }
     
-      this.GetMeters();
-      this.GetVirtualMeters();
       
   }
 
@@ -124,36 +121,9 @@ export class MetersTableComponent implements OnInit, OnChanges {
   }
   
   DeleteMeter(Id: number){
-    this.tableService.DeleteMeter(Id, this.url).subscribe(
+    this.globalService.Delete(this.url, Id).subscribe(
       result => {
         console.log(result);
-        this.GetMeters();
-      }
-    );
-  }
-  GetMeters(){
-    this.tableService.GetMeters().subscribe(
-      (result:any) => {
-        this.listOfData = result;
-        
-        if(this.listOfData){
-          for(let i = 0 ; i < this.listOfData.length ; i++){
-            this.filterModel.push({text: this.listOfData[i].Modelo+'', value: this.listOfData[i].Modelo});
-            this.filterSerie.push({text: this.listOfData[i].Serie+'', value: this.listOfData[i].Serie})
-            this.filterCodigo.push({text: this.listOfData[i].Codigo+'', value: this.listOfData[i].Codigo});
-          }
-
-        }
-      }
-    );
-  }
-  
-  GetVirtualMeters(){
-    this.tableService.GetVirtualMeters().subscribe(
-      (result:any) => {
-        console.log(result);
-        
-        this.listOfDataVM = result;
       }
     );
   }

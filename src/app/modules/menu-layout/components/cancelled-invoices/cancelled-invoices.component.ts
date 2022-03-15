@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MetersService } from '@modules/menu-layout/services/meters.service';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
-import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 
 @Component({
   selector: 'app-cancelled-invoices',
@@ -19,7 +17,7 @@ export class CancelledInvoicesComponent implements OnInit {
   list: any[] = [];
   
   url = {
-    id: 2,
+    id: 0,
     get: 'get-invoices',
     post: 'facturas',
     delete: 'facturas',

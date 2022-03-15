@@ -1,21 +1,9 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { MetersService } from "../../services/meters.service";
-import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 import { HttpClient } from '@angular/common/http';
-import { MeterInterface } from 'src/Core/interfaces/model-meter.interface';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-
-
-interface DataItem {
-  Codigo: string;
-  Descripcion: string;
-  Estado: boolean;
-  Id: number;
-  Modelo: string;
-  Serie: string;
-  Tipo: boolean;
-}
+import { MeterInterface } from 'src/Core/interfaces/meter.interface';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 
 interface DataItemTest {
   name: string;
@@ -35,29 +23,24 @@ export class MetersComponent implements OnInit, OnChanges {
   filterCodigo : Array<{text: string, value: any}>  = [];
   filterModel : Array<{text: string, value: any}> = [];
   filterSerie : Array<{text: string, value: any}> = [];
-  listOfData: DataItem[] = [];
+  listOfData: MeterInterface[] = [];
   listOfDataModal: DataItemTest[] = [];
   listOfDataVM: any[] = []; 
   property: Array<string> = [];
-  options = [
-    { label: 'Virtual', value: 'Virtual' },
-    { label: 'Fisico', value: 'Fisico' }
-  ];
   validateForm!: FormGroup;
   isVisible:boolean = false;
-  isVisible2:boolean = false;
-
-  url: string = 'medidors';
-  meter!: MeterInterface;
-  options2 = [
-    { label: 'Baja Tension', value: 'Baja Tension' },
-    { label: 'Media Tension', value: 'Media Tension' }
-  ];
+  url = {
+    getMeters: 'get-meters',
+    getVMeters: 'get-vmeters',
+    get: 'medidors',
+    post:'medidors',
+    del:'medidors',
+  }
   
   constructor(
     private fb: FormBuilder,
     private http:HttpClient,
-    private metersService: MetersService
+    private globalService: EndPointGobalService
   ) { }
 
   ngOnInit(): void {
@@ -95,16 +78,16 @@ export class MetersComponent implements OnInit, OnChanges {
   }
   
   GetMeters(){
-    this.metersService.GetMeters().subscribe(
+    this.globalService.Get(this.url.getMeters).subscribe(
       (result:any) => {
         this.listOfData = result;
         
         if(this.listOfData){
           for(let i = 0 ; i < this.listOfData.length ; i++){
             
-            this.filterModel.push({text: this.listOfData[i].Modelo+'', value: this.listOfData[i].Modelo});
-            this.filterSerie.push({text: this.listOfData[i].Serie+'', value: this.listOfData[i].Serie})
-            this.filterCodigo.push({text: this.listOfData[i].Codigo+'', value: this.listOfData[i].Codigo});
+            this.filterModel.push({text: this.listOfData[i].modeloMedidor+'', value: this.listOfData[i].modeloMedidor});
+            this.filterSerie.push({text: this.listOfData[i].serieMedidor+'', value: this.listOfData[i].serieMedidor})
+            this.filterCodigo.push({text: this.listOfData[i].codigoPM+'', value: this.listOfData[i].codigoPM});
           }
           
           for(let property in this.listOfData){
@@ -117,7 +100,7 @@ export class MetersComponent implements OnInit, OnChanges {
   }
 
   GetVirtualMeters(){
-    this.metersService.GetVirtualMeters().subscribe(
+    this.globalService.Get(this.url.getVMeters).subscribe(
       (result:any) => {
         this.listOfDataVM = result;
       }
@@ -126,7 +109,7 @@ export class MetersComponent implements OnInit, OnChanges {
 
   
   DeleteMeter(Id: number){
-    this.metersService.DeleteMeter(Id, this.urlMedidor).subscribe(
+    this.globalService.Delete(this.urlMedidor, Id).subscribe(
       result => {
         console.log(result);
         this.GetMeters();
@@ -135,7 +118,7 @@ export class MetersComponent implements OnInit, OnChanges {
   }
   
   DeleteVirtualMeter(Id: number){
-    this.metersService.DeleteMeter(Id, this.urlVirtualMeter).subscribe(
+    this.globalService.Delete(this.urlMedidor, Id).subscribe(
       result => {
         console.log(result);
         this.GetMeters();
@@ -162,7 +145,7 @@ export class MetersComponent implements OnInit, OnChanges {
     
     
     if (this.validateForm.valid) {
-      this.meter = {
+      let meter = {
         codigo: this.validateForm.value.codigo,
         descripcion: this.validateForm.value.descripcion,
         modelo: this.validateForm.value.modelo,
@@ -172,9 +155,9 @@ export class MetersComponent implements OnInit, OnChanges {
         puntoMedicionId: 1,
         observacion: this.validateForm.value.Observacion,
       }
-      console.log(this.meter);
+      console.log(meter);
       this.isVisible = false;
-      this.metersService.PostMeter(this.url, this.meter).subscribe(
+      this.globalService.Post(this.url.post, meter).subscribe(
         (result:any) => {
           if(result){
             
@@ -195,55 +178,11 @@ export class MetersComponent implements OnInit, OnChanges {
   }
 
   
-
-  
-  showModal2(): void {
-    this.isVisible2 = true;
-  }
-
-  handleOk2(): void {
-    console.log('Button ok clicked!');
-    this.isVisible2 = false;
-  }
-
-  handleCancel2(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible2 = false;
-  }
-
-
-
-  
-  listOfColumnsModal: ColumnItem[] = [
-    {
-      name: 'Medidor',
-      sortOrder: 'descend',
-      sortFn: (a: DataItemTest, b: DataItemTest) => a.age - b.age,
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Energia',
-      sortOrder: null,
-      sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: DataItemTest, b: DataItemTest) => a.address.length - b.address.length,
-      filterMultiple: false,
-      listOfFilter: [
-        { text: 'London', value: 'London' },
-        { text: 'Sidney', value: 'Sidney' }
-      ],
-      filterFn: (address: string, item: DataItemTest) => item.address.indexOf(address) !== -1
-    }
-  ];
-  
-  
   listOfColumns: ColumnItem[] = [
     {
       name: '#',
       sortOrder: 'ascend',
-      sortFn: (a: DataItem, b: DataItem) => a.Id - b.Id,
+      sortFn: (a: MeterInterface, b: MeterInterface) => a.idMedidor - b.idMedidor,
       sortDirections: ['ascend', 'descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -252,11 +191,11 @@ export class MetersComponent implements OnInit, OnChanges {
     {
       name: 'Codigo',
       sortOrder: null,
-      sortFn: (a: DataItem, b: DataItem) => a.Codigo.localeCompare(b.Codigo),
+      sortFn: (a: MeterInterface, b: MeterInterface) => a.codigoPM.localeCompare(b.codigoPM),
       sortDirections: ['ascend', 'descend', null],
       filterMultiple: true,
       listOfFilter: this.filterCodigo,
-      filterFn: (list: string[], item: DataItem) => list.some(codigo => item.Codigo.indexOf(codigo) !== -1)
+      filterFn: (list: string[], item: MeterInterface) => list.some(codigo => item.codigoPM.indexOf(codigo) !== -1)
     },
     {
       name: 'Descripcion',
@@ -271,29 +210,29 @@ export class MetersComponent implements OnInit, OnChanges {
       name: 'Modelo',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: DataItem, b: DataItem) => a.Modelo.localeCompare(b.Modelo),
+      sortFn: (a: MeterInterface, b: MeterInterface) => a.modeloMedidor.localeCompare(b.modeloMedidor),
       filterMultiple: false,
       listOfFilter: 
         this.filterModel
       ,
-      filterFn: (address: string, item: DataItem) => item.Modelo.indexOf(address) !== -1
+      filterFn: (address: string, item: MeterInterface) => item.modeloMedidor.indexOf(address) !== -1
     },
     {
       name: 'Serie',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: DataItem, b: DataItem) => a.Modelo.localeCompare(b.Serie),
+      sortFn: (a: MeterInterface, b: MeterInterface) => a.serieMedidor.localeCompare(b.serieMedidor),
       filterMultiple: false,
       listOfFilter: 
         this.filterSerie
       ,
-      filterFn: (address: string, item: DataItem) => item.Serie.indexOf(address) !== -1
+      filterFn: (address: string, item: MeterInterface) => item.serieMedidor.indexOf(address) !== -1
     },
     {
       name: 'Tipo',
       sortOrder: null,
       sortDirections: [null],
-      sortFn: (a: DataItem, b: DataItem) => Number(a.Tipo) - Number(b.Tipo),
+      sortFn: (a: MeterInterface, b: MeterInterface) => Number(a.tipoMedidor) - Number(b.tipoMedidor),
       filterMultiple: false,
       listOfFilter: [
       ],

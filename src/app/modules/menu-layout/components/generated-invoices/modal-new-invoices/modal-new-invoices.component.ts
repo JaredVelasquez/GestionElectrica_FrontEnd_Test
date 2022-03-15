@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { toNumber } from 'ng-zorro-antd/core/util';
+import { ContractMeterInterface } from 'src/Core/interfaces/contract-meter.interface';
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 
 @Component({
@@ -13,8 +14,9 @@ export class ModalNewInvoicesComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: InvoiceInterface[] = [];
-  @Input() dataPosition!: InvoiceInterface | undefined;
-  @Input() ListOfContractMeditors: any[] = [];
+  @Input() ListOfContractMeditors: ContractMeterInterface[] = [];
+  @Input() state: number = 0;
+
   @Output() DataUpdated : EventEmitter<InvoiceInterface> = new EventEmitter<InvoiceInterface>();
 
   
@@ -59,12 +61,8 @@ export class ModalNewInvoicesComponent implements OnInit {
   
   showModal(): void {
     this.isVisible = true;
-    if(this.dataPosition){
-      this.validateForm = this.FullForm;
-    }
-    else{
       this.validateForm = this.EmptyForm;
-    }
+    
   }
 
   handleOk(): void {
@@ -80,8 +78,8 @@ export class ModalNewInvoicesComponent implements OnInit {
   
   PushData(): void{
     if (this.validateForm.valid) {
-      let updateData;
       
+      let updateData;
       
       const provider = {
         contratoMedidorId:  1,
@@ -93,20 +91,11 @@ export class ModalNewInvoicesComponent implements OnInit {
         tipoConsumo:  toNumber(this.validateForm.value.tipoConsumo),
         energiaConsumida: this.validateForm.value.energiaConsumida,
         observacion:  this.validateForm.value.observacion,
-        estado: true,
-        cargoId: this.dataPosition?.cargoFacturaId,
-        parametroTarifaId: this.dataPosition?.parametroTarifaId,
-
+        cargoId: this.validateForm.value.cargoId,
+        estado: this.state,
       }   
       console.log(provider);
       
-
-      if(this.dataPosition?.facturaId){
-          this.globalService.PutId( this.url.post, this.dataPosition.facturaId , provider).subscribe(
-            (result:any) => {
-            }
-            );
-      }else{
         this.globalService.Post(this.url.post, provider).subscribe(
           (result:any) => { 
             console.log(result);
@@ -119,12 +108,7 @@ export class ModalNewInvoicesComponent implements OnInit {
         );
 
 
-      }
-
-      if(this.dataPosition){
-
-        
-      }
+      
       this.isVisible = false;
       
       this.validateForm = this.EmptyForm;
@@ -144,9 +128,7 @@ export class ModalNewInvoicesComponent implements OnInit {
   GetContratos(){
     this.globalService.Get(this.url.getcontratosM).subscribe( 
       (result:any) => {
-        console.log(result);
-        result.Id = Number(result.Id);
-        this.listOfData = result;
+        this.ListOfContractMeditors = result;
       }
     );
   }

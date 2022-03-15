@@ -1,5 +1,4 @@
 import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
-import { DataMeter } from './meter.interface';
 
 export interface ColumnItem {
     name: string;

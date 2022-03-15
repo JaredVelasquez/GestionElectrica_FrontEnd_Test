@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
-import { Event } from '@angular/router';
 
 
 
