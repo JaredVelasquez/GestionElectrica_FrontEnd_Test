@@ -17,7 +17,7 @@
 </div>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="150px">ID</th>
@@ -40,7 +40,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of filterTable.data">
+          <tr *ngFor="let data of listOfData">
             <td nzLeft>
             {{data.detalleFacturaId}}
             </td>

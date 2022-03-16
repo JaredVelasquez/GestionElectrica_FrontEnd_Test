@@ -5,6 +5,8 @@ export interface  InvoiceInterface{
     descripcion: string;
     fechaLectura: string;
     fechaVencimiento: string;
+    fechaInicio: string;
+    fechaFin: string;
     fechaEmision: string;
     tipoConsumo: number;
     observacion: string;
@@ -17,4 +19,5 @@ export interface  InvoiceInterface{
     total: number;
     parametroTarifaId: number;
     estado: number;
+    medidorId: number;
 }

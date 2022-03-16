@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { toNumber } from 'ng-zorro-antd/core/util';
 import { ContractMeterInterface } from 'src/Core/interfaces/contract-meter.interface';
+import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 
 @Component({
@@ -16,12 +17,13 @@ export class ModalNewInvoicesComponent implements OnInit {
   listOfData: InvoiceInterface[] = [];
   @Input() ListOfContractMeditors: ContractMeterInterface[] = [];
   @Input() state: number = 0;
+  @Input() ListOfCharges: EspecialChargesInterface[] = [];
 
   @Output() DataUpdated : EventEmitter<InvoiceInterface> = new EventEmitter<InvoiceInterface>();
 
   
   url = {
-    getcontratosM: '',
+    getcontratosM: 'get-c-meter',
     post: 'facturas',
     delete: 'facturas',
     update: 'facturas',
@@ -29,6 +31,7 @@ export class ModalNewInvoicesComponent implements OnInit {
 
   EmptyForm = this.fb.group({
     contratoMedidorId: [ '', [Validators.required]],
+    cargo: [ '', [Validators.required]],
     codigo: [ '', [Validators.required]],
     fechaLectura: ['', [Validators.required]],
     fechaVencimiento: ['', [Validators.required]],
@@ -39,17 +42,6 @@ export class ModalNewInvoicesComponent implements OnInit {
     observacion: ['', [Validators.required]],
   });
 
-  FullForm  = this.fb.group({
-    contratoMedidorId: [ '', [Validators.required]],
-    codigo: [ '', [Validators.required]],
-    fechaLectura: ['', [Validators.required]],
-    fechaVencimiento: ['', [Validators.required]],
-    fechaInicio: ['', [Validators.required]],
-    fechaFinal: ['', [Validators.required]],
-    tipoConsumo: ['', [Validators.required]],
-    energiaConsumida: ['', [Validators.required]],
-    observacion: ['', [Validators.required]],
-  });
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
@@ -78,22 +70,21 @@ export class ModalNewInvoicesComponent implements OnInit {
   
   PushData(): void{
     if (this.validateForm.valid) {
-      
-      let updateData;
-      
+
       const provider = {
         contratoMedidorId:  1,
         codigo:  this.validateForm.value.codigo,
         fechaLectura:  this.validateForm.value.fechaLectura,
         fechaVencimiento:  this.validateForm.value.fechaVencimiento,
         fechaInicio:  this.validateForm.value.fechaInicio,
-        fechaFin:  this.validateForm.value.fechaFin,
-        tipoConsumo:  toNumber(this.validateForm.value.tipoConsumo),
+        fechaFin:  this.validateForm.value.fechaFinal,
+        tipoConsumo:  Number(this.validateForm.value.tipoConsumo),
         energiaConsumida: this.validateForm.value.energiaConsumida,
         observacion:  this.validateForm.value.observacion,
-        cargoId: this.validateForm.value.cargoId,
-        estado: this.state,
-      }   
+        cargoId: Number(this.validateForm.value.cargo),
+        estado: 1,
+      }  
+       
       console.log(provider);
       
         this.globalService.Post(this.url.post, provider).subscribe(
@@ -101,8 +92,7 @@ export class ModalNewInvoicesComponent implements OnInit {
             console.log(result);
             
             if(result){
-              updateData = result;
-              this.DataUpdated.emit(updateData);
+              this.DataUpdated.emit(result);
             }
           }
         );
@@ -125,12 +115,5 @@ export class ModalNewInvoicesComponent implements OnInit {
   }
 
   
-  GetContratos(){
-    this.globalService.Get(this.url.getcontratosM).subscribe( 
-      (result:any) => {
-        this.ListOfContractMeditors = result;
-      }
-    );
-  }
 
 }

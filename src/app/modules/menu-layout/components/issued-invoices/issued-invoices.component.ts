@@ -32,13 +32,6 @@ export class IssuedInvoicesComponent implements OnInit {
   ngOnInit(): void {
     this.GetRates();
     
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
-    console.log(this.list);
-    
   }
 
   
@@ -63,40 +56,9 @@ export class IssuedInvoicesComponent implements OnInit {
     this.globalService.GetId(this.url.get, this.url.id).subscribe( 
       (result:any) => {
         console.log(result);
-        result.Id = Number(result.Id);
         this.listOfData = result;
       }
     );
-  }
-  PostRate(){
-    if (this.validateForm.valid) {
-      const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
-        observacion: this.validateForm.value.observacion,
-      }
-      console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetRates();
-            
-          }
-            console.log(result);
-          
-        }
-      );
-      
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
-
   }
   DeleteRate(Id: any){
     Id = Number(Id);

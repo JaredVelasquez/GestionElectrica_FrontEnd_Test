@@ -14,6 +14,7 @@ import { EspecialChargesComponent } from './components/especial-charges/especial
 import { GeneratedInvoicesComponent } from './components/generated-invoices/generated-invoices.component';
 import { IssuedInvoicesComponent } from './components/issued-invoices/issued-invoices.component';
 import { CancelledInvoicesComponent } from './components/cancelled-invoices/cancelled-invoices.component';
+import { DigitalInvoiceComponent } from './components/digital-invoice/digital-invoice.component';
 
 
 const routes: Routes = [
@@ -73,6 +74,10 @@ const routes: Routes = [
       {
         path: 'cancelled-invoices',
         component: CancelledInvoicesComponent
+      },
+      {
+        path: 'digital-invoice',
+        component: DigitalInvoiceComponent
       }
      ]
   },

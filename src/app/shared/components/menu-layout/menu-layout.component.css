@@ -73,4 +73,8 @@
     margin: 24px;
   }
   
-  
+  .header-title {
+    margin-left: 28vw;
+    font-weight: bold;
+    font-size: larger;
+}

@@ -3,12 +3,12 @@
     <ng-container *nzModalContent>
         <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
             <div nz-row>
-                <div nz-col nzSpan="11">
+                <div nz-col nzSpan="8">
                     <label>Contrato Medidor</label>
                     <div nz-row>
                         <nz-form-control>
                             <nz-form-item  nzFlex>
-                                <nz-select formControlName="contratoMedidorId" class="inputMedium" nzPlaceHolder="MD_123120" nzAllowClear>
+                                <nz-select formControlName="contratoMedidorId" nzPlaceHolder="MD_123120" nzAllowClear>
                                     <div *ngFor="let contract of ListOfContractMeditors">
                                         <nz-option [nzLabel]="contract.codigoContrato" [nzValue]="contract.contratoMedidorId"></nz-option>
                                     </div>
@@ -18,13 +18,28 @@
 
                     </div>
                 </div>
+                <div nz-col nzSpan="8">
+                    <label>Cargos</label>
+                    <div nz-row>
+                        <nz-form-control>
+                            <nz-form-item  nzFlex>
+                                <nz-select formControlName="cargo" nzPlaceHolder="MD_123120" nzAllowClear>
+                                    <div *ngFor="let charge of ListOfCharges">
+                                        <nz-option [nzLabel]="charge.descripcion" [nzValue]="charge.id"></nz-option>
+                                    </div>
+                                </nz-select>
+                            </nz-form-item>
+                        </nz-form-control>
 
-                <div nz-col nzOffset="2" nzSpan="11">
+                    </div>
+                </div>
+
+                <div nz-col nzSpan="8">
                     <label>Codigo</label>
                     <div nz-row>
                         <nz-form-control>
                             <nz-form-item  nzFlex>
-                                <input nz-input class="inputMedium" type="text" formControlName="codigo" placeholder="">
+                                <input nz-input  type="text" formControlName="codigo" placeholder="">
                             </nz-form-item>
                         </nz-form-control>
                     </div>

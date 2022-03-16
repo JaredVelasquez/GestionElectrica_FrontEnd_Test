@@ -6,6 +6,7 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 import { MeterInterface } from 'src/Core/interfaces/meter.interface';
 import { ContractMeterInterface } from 'src/Core/interfaces/contract-meter.interface';
+import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
 
 @Component({
   selector: 'app-generated-invoices',
@@ -19,6 +20,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   listOfData: InvoiceInterface[] = [];
   listOfMeters: MeterInterface[] = [];
   ListOfContractMeditors: ContractMeterInterface[] = [];
+  ListOfCharges: EspecialChargesInterface[] = [];
   list: any[] = [];
   
   url = {
@@ -26,6 +28,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     get: 'get-invoices',
     getMeters: 'get-meters',
     getcontratosM: 'get-c-meter',
+    getECharges: 'get-especial-charges',
     post: 'facturas',
     delete: 'facturas',
     update: 'facturas',
@@ -39,6 +42,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   ngOnInit(): void {
     this.GetRates();
     this.GetContratos();
+    this.GetCargos();
     
     
   }
@@ -97,6 +101,66 @@ export class GeneratedInvoicesComponent implements OnInit {
       }
     );
   }
+  GetCargos(){
+    this.globalService.Get(this.url.getECharges).subscribe( 
+      (result:any) => {
+        this.ListOfCharges = result;
+        console.log(this.ListOfCharges);
+        
+      }
+    );
+  }
+  CancelarFactura(invoicePosition: InvoiceInterface){
+    let provider = {
+      contratoMedidorId: invoicePosition.contratoMedidorId,
+      descripcion: "actualizado",
+      codigo: invoicePosition.codigo,
+      fechaLectura: invoicePosition.fechaLectura,
+      fechaEmision: (new Date()).toISOString(),
+      fechaVencimiento: invoicePosition.fechaVencimiento,
+      fechaInicio: invoicePosition.fechaInicio,
+      fechaFin: invoicePosition.fechaFin,
+      tipoConsumo: invoicePosition.tipoConsumo,
+      observacion: invoicePosition.observacion,
+      estado: 0,
+    }
+    console.log(provider);
+    this.globalService.PutId(this.url.update, invoicePosition.facturaId, provider).subscribe(
+      (result: any) => {
+        console.log(result);
+        this.GetRates();
+        
+      }
+    );
+
+  }
+
+  EmitirFactura(invoicePosition: InvoiceInterface){
+    let provider = {
+      contratoMedidorId: invoicePosition.contratoMedidorId,
+      descripcion: "actualizado",
+      codigo: invoicePosition.codigo,
+      fechaLectura: invoicePosition.fechaLectura,
+      fechaEmision: (new Date()).toISOString(),
+      fechaVencimiento: invoicePosition.fechaVencimiento,
+      fechaInicio: invoicePosition.fechaInicio,
+      fechaFin: invoicePosition.fechaFin,
+      tipoConsumo: invoicePosition.tipoConsumo,
+      observacion: invoicePosition.observacion,
+      estado: 2,
+    }
+    console.log(provider);
+    
+    this.globalService.PutId(this.url.update, invoicePosition.facturaId, provider).subscribe(
+      (result: any) => {
+        console.log(result);
+        this.GetRates();
+        
+      }
+    );
+
+  }
+
 
   
   

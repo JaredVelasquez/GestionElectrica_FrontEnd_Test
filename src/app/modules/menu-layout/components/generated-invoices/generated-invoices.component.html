@@ -1,7 +1,7 @@
 <h1>Facturas Generadas</h1>
 <div nz-row class="row-1">
     <div nz-col nzOffset="8" nzSpan="4">
-      <app-modal-new-invoices [ListOfContractMeditors]="ListOfContractMeditors" (DataUpdated)="updateTable($event)"></app-modal-new-invoices>
+      <app-modal-new-invoices [ListOfCharges]="ListOfCharges" [ListOfContractMeditors]="ListOfContractMeditors" (DataUpdated)="updateTable($event)"></app-modal-new-invoices>
     </div>
 
     <div nz-col nzSpan="12" class="row1-col2">
@@ -35,16 +35,16 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="100px">
-                <button nz-button nzType="primary" >Emitir</button>
-                
+            <th nzRight nzWidth="100px">Emitir</th>
+            <th nzRight nzWidth="120px">
+                Generar Factura
             </th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of listOfData">
             <td nzLeft>
-              <button class="edit" nz-button nzType="primary"  nzShape="circle" ><i nz-icon nzType="minus-square" nzTheme="outline"></i></button>
+              <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="CancelarFactura(data)"><i nz-icon nzType="minus-square" nzTheme="outline"></i></button>
               
 
             </td>
@@ -54,9 +54,13 @@
             <td>{{data.actorNombre}}</td>
             <td>{{data.fechaLectura}}</td>
             <td>{{ data.energiaConsumida }}</td>
-            <td>{{ data.total }}</td>
+            <td>{{data.total + "  LPS"}}</td>
             <td nzRight>
-                <button nz-button nzType="primary" ><i nz-icon nzType="check"></i></button>
+                <button nz-button nzType="primary" (click)="EmitirFactura(data)"><i nz-icon nzType="check"></i></button>
+            </td>
+            <td nzRight>
+              <button nz-button nzType="primary" routerLink="digital-invoice"><i nz-icon nzType="file-done"></i></button>
+
             </td>
           </tr>
         </tbody>
