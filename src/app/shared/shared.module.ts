@@ -17,9 +17,19 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { DigitalInvoiceComponent } from './components/digital-invoice/digital-invoice.component';
+
+//import graphics module
+import { FusionChartsModule } from 'angular-fusioncharts';
+import * as FusionCharts from 'fusioncharts';
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
+
 @NgModule({
   declarations: [
     MenuLayoutComponent,
+    DigitalInvoiceComponent,
   ],
   imports: [
     RouterModule,
@@ -32,11 +42,13 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     NzInputModule,
     NzGridModule,
     NzModalModule,
-    NzRadioModule
+    NzRadioModule,
+    FusionChartsModule
   ],
   exports: [
     MenuLayoutComponent,
-    NzFormModule
+    NzFormModule,
+    DigitalInvoiceComponent
   ]
 })
 export class SharedModule { }
