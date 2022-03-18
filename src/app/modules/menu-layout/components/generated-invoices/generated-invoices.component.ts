@@ -14,7 +14,8 @@ import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.i
   styleUrls: ['./generated-invoices.component.css']
 })
 export class GeneratedInvoicesComponent implements OnInit {
-  inputValue: string = 'my site';
+  FacturaIsVisible: boolean = false;
+  dataInvoice!: InvoiceInterface;
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: InvoiceInterface[] = [];
@@ -52,6 +53,16 @@ export class GeneratedInvoicesComponent implements OnInit {
     this.GetRates();
     
   }
+
+  GenerateInvoice(data: InvoiceInterface): void{
+    this.dataInvoice = data;
+    this.FacturaIsVisible = true;
+  }
+
+  Back(): void {
+    this.FacturaIsVisible = false;
+  }
+
   showModal(): void {
     this.isVisible = true;
   }
@@ -116,7 +127,6 @@ export class GeneratedInvoicesComponent implements OnInit {
       descripcion: "actualizado",
       codigo: invoicePosition.codigo,
       fechaLectura: invoicePosition.fechaLectura,
-      fechaEmision: (new Date()).toISOString(),
       fechaVencimiento: invoicePosition.fechaVencimiento,
       fechaInicio: invoicePosition.fechaInicio,
       fechaFin: invoicePosition.fechaFin,

@@ -1,15 +1,21 @@
+<div nz-row>
+    <div nz-col nzOffset="22">
+        <button nz-button nzType="primary" (click)=" GenerarFactura()"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
+    </div>
+
+</div>
 <hr>
 <div id="content">
     <div class="cabecera">
         <img style="width: 50px;" src="../../../../assets/Images/LogoSmall.png" alt="Cliente">
-        <h2> Cliente </h2>
+        <h2> {{dataInvoice.actorNombre}} </h2>
         <div style="text-align: end;">
             <p class="direccion"> Dirección: 800 Metros, Camino a la Jutosa, Choloma, Cortés </p>
             <p class="direccion"> Honduras, Centro América </p>
         </div>
     </div>
     <br>
-    <div>
+    <div class="body">
         <div class="titulos">
             <h5>Datos de Factura</h5>
             <h5>Datos del titular </h5>
@@ -18,20 +24,25 @@
 
             <div class="datos">
                 <div>
-                    <p class="etiqueta-izq"> Fecha de lectura: </p>
-                    <p class="etiqueta-izq"> Fecha de emisión: </p>
-                    <p class="etiqueta-izq"> Fecha de vencimiento: </p>
+                    <p class="etiqueta-izq"> Fecha lectura: </p>
+                    <p class="etiqueta-izq"> Fecha vencimiento: </p>
+                    <p class="etiqueta-izq"> Fecha emisión: </p>
+                    <p class="etiqueta-izq"> Fechas facturadas: </p>
                     <p class="etiqueta-izq"> Periodo: </p>
-                    <p class="etiqueta-izq"> Días de facturación: </p>
-                    <p class="etiqueta-izq"> Número de factura: </p>
+                    <p class="etiqueta-izq"> Días facturación: </p>
+                    <p class="etiqueta-izq"> Número factura: </p>
                 </div>
                 <div>
-                    <p class="etiqueta-der"> xxx </p>
-                    <p class="etiqueta-der"> xxx </p>
-                    <p class="etiqueta-der"> xxx </p>
-                    <p class="etiqueta-der"> xxx hasta xxx </p>
-                    <p class="etiqueta-der"> xxx </p>
-                    <p class="etiqueta-der"> xxx </p>
+                    <p class="etiqueta-der">{{dataInvoice.fechaLectura | date:'dd/M/yyyy' }} </p>
+                    <p class="etiqueta-der">{{dataInvoice.fechaVencimiento | date:'dd/M/yyyy' }}</p>
+                    <p class="etiqueta-der" *ngIf="dataInvoice.fechaEmision; else Vacio">{{dataInvoice.fechaEmision | date:'dd/M/yyyy' }}</p>
+                    <p class="etiqueta-der">{{dataInvoice.fechaInicio | date:'dd/M/yyyy' }}  hasta  {{dataInvoice.fechaFin | date:'dd/M/yyyy' }} </p>
+                    <p class="etiqueta-der"> xxxx </p>
+                    <p class="etiqueta-der"> xxxx </p>
+                    <p class="etiqueta-der">{{dataInvoice.detalleFacturaId}} </p>
+                    <ng-template #Vacio>
+                        <p class="etiqueta-der"> --- </p>
+                    </ng-template>
                 </div>
             </div>
             <div class="datos">
@@ -55,6 +66,7 @@
                 </div>
             </div>
         </div>
+
         <div class="titulos">
             <h5>Resumen de la Factura</h5>
         </div>
@@ -158,15 +170,15 @@
             <tbody>
                 <tr>
                     <td>
-                        <p style="margin: 0px;">Convencional</p>
+                        <p style="margin: 0px;">Activa</p>
                     </td>
-                    <td>  </td>
-                    <td>  </td>
-                    <td>  </td>
+                    <td> xxxx </td>
+                    <td> xxxx </td>
+                    <td> xxxx </td>
                 </tr>
                 <tr>
                     <td>
-                        <p style="margin: 0px;">Solar</p>
+                        <p style="margin: 0px;">Reactiva</p>
                     </td>
                     <td> xxx </td>
                     <td> xxx </td>
@@ -270,21 +282,41 @@
 <div class="impacto-container"> 
 <div class="detalle-cliente-container">
     <div class="contenedor-cliente-regulado">
-        <p *ngFor="let name of ClienteReguladoCampos" class="datos-cliente-regulado"> 
-            <span>{{name}}</span> 
-            <span> xxxxx Lps</span> 
-        </p>
+        <div>
+            <p *ngFor="let name of ClienteReguladoCampos" class="datos-cliente-regulado"> 
+                {{name}}
+            </p>
+
+        </div>
+        <div>
+            <p class="datos-cliente-regulado">{{dataInvoice.total}} Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">---    Lps</p>
+            <p class="datos-cliente-regulado">{{ChargePosition.ajuste}} Lps</p>
+            <p class="datos-cliente-regulado">{{ChargePosition.cargoCorte}} Lps</p>
+            <p class="datos-cliente-regulado">{{ChargePosition.cargoMora}} Lps</p>
+            <p class="datos-cliente-regulado">{{ChargePosition.otrosCargos}} Lps</p>
+        </div>
     </div>
     <div style="background-color:#a9a9a9; margin: 1% 0% 0% 0%;">
         <p class="total-pagar">
             <span style="color: black; font-weight: bold; font-size: 16px;">
-                xxxxx:
+                Total:
             </span>
             <span style="color: black; font-weight: bold; font-size: 16px;"> 
-                xxxxx Lps
+                {{ChargePosition.totalCargos + dataInvoice.total}} Lps
             </span>
         </p>
     </div>
     
+</div>
+</div>
 </div>
 </div>

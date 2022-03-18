@@ -1,3 +1,4 @@
+<div *ngIf="!FacturaIsVisible">
 <h1>Facturas Generadas</h1>
 <div nz-row class="row-1">
     <div nz-col nzOffset="8" nzSpan="4">
@@ -59,7 +60,7 @@
                 <button nz-button nzType="primary" (click)="EmitirFactura(data)"><i nz-icon nzType="check"></i></button>
             </td>
             <td nzRight>
-              <button nz-button nzType="primary" routerLink="digital-invoice"><i nz-icon nzType="file-done"></i></button>
+              <button nz-button nzType="primary" (click)="GenerateInvoice(data)"><i nz-icon nzType="file-done"></i></button>
 
             </td>
           </tr>
@@ -67,4 +68,12 @@
       </nz-table>
       
   </div>
+</div>
+
+</div>
+
+<div *ngIf="FacturaIsVisible"> 
+  <button class="back-btn" nz-button nzType="primary" (click)="Back()"><i nz-icon nzType="arrow-left"></i></button>
+  <br>
+  <app-digital-invoice [dataInvoice]="dataInvoice"></app-digital-invoice>
 </div>

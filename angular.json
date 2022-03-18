@@ -4,6 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "GestionElectrica_FrontEnd_Test": {
+      
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -33,7 +34,8 @@
             ],
             "styles": [
               "src/theme.less",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css"
             ],
             "scripts": []
           },

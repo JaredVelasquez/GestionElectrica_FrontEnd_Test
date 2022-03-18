@@ -20,8 +20,11 @@
     "@angular/router": "~13.2.0",
     "angular-fusioncharts": "^3.2.0",
     "fusioncharts": "^3.18.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "ng-zorro-antd": "^13.0.1",
     "ngx-cookie-service": "^13.1.2",
+    "ngx-spinner": "^13.1.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
