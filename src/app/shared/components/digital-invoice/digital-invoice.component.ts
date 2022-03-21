@@ -17,6 +17,7 @@ import html2canvas from 'html2canvas';
 export class DigitalInvoiceComponent implements OnInit {
 
   @Input() dataInvoice !: InvoiceInterface;
+  SpinVisible: boolean = false;
   ChargePosition!: ChargesShema;
   dataSource: Object;
   title: string;
@@ -61,7 +62,7 @@ export class DigitalInvoiceComponent implements OnInit {
   }
 
   GenerarFactura(): void {
-    this.spinner.show();
+    this.SpinVisible = true;
     const div = document.getElementById('content');
 
     const options = {
@@ -72,6 +73,7 @@ export class DigitalInvoiceComponent implements OnInit {
     const doc = new jsPDF('p', 'mm', 'a4', true);
 
     if(div){
+      
       html2canvas(div, options).then((canvas) => {
         const img = canvas.toDataURL('image/PNG');
         const bufferX = 5;
@@ -81,17 +83,20 @@ export class DigitalInvoiceComponent implements OnInit {
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
   
         (doc as any).addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
-  
+
+        this.SpinVisible = false;
         return doc;
       }).then((doc) => {
           doc.save(`factura-${this.dataInvoice.codigo}.pdf`);
-          this.spinner.hide();
         
       });
+      
     }else{
       console.log("No se pudo generar factura, content no existe");
       
     }
+
+
   }
 }
     

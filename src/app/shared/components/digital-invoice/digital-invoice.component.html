@@ -1,9 +1,9 @@
 <div nz-row>
     <div nz-col nzOffset="22">
-        <button nz-button nzType="primary" (click)=" GenerarFactura()"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
+        <button nz-button class="print-btn" nzType="primary" (click)=" GenerarFactura()"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
     </div>
-
 </div>
+<br>
 <hr>
 <div id="content">
     <div class="cabecera">
@@ -320,3 +320,8 @@
 </div>
 </div>
 </div>
+
+ <div *ngIf="SpinVisible">
+    <app-spiner-loader ></app-spiner-loader>
+
+ </div>

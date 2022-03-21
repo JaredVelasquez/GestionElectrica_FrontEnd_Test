@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'app-clients',
@@ -9,18 +10,33 @@ import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit {
+  showUploadList = {
+    showPreviewIcon: true,
+    showRemoveIcon: true,
+    hidePreviewIconInNonImage: true
+  };
+  fileList: NzUploadFile[] = [];
+
+  previewImage: string | undefined = '';
+  previewVisible = false;
+
+
   isVisible = false;
   validateForm!: FormGroup;
   clients: ActorInterface[] = [];
-  fileList : any = [];
-  previewImage: string | undefined = '';
-  previewVisible = false;
+
   url = {
     get: 'get-clients',
     post: 'actores',
     delete: '',
     update: '',
   };
+  EmptyForm = this.fb.group({
+    nombre: ['', [Validators.required]],
+    telefono: ['', [Validators.required]],
+    direccion: ['', [Validators.required]],
+    observacion: ['', [Validators.required]],
+  })
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
@@ -28,14 +44,7 @@ export class ClientsComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetClients();
-    this.validateForm = this.fb.group({
-      nombre: ['', [Validators.required]],
-      telefono: ['', [Validators.required]],
-      direccion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
-    
-
+    this.validateForm = this.EmptyForm;
   }
 
   GetClients(){
@@ -57,16 +66,19 @@ export class ClientsComponent implements OnInit {
         observacion: this.validateForm.value.observacion,
         estado: true
       }
-      console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetClients();
-          }
+      console.log(this.fileList);
+      
+      
+      // console.log(provider);
+      // this.isVisible = false;
+      // this.globalService.Post(this.url.post, provider).subscribe(
+      //   (result:any) => {
+      //     if(result){
+      //       this.GetClients();
+      //     }
           
-        }
-      );
+      //   }
+      // );
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
@@ -90,5 +102,15 @@ export class ClientsComponent implements OnInit {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
+  
+handlePreview = (file: NzUploadFile) => {
+  this.previewImage = file.url || file.thumbUrl;
+  this.previewVisible = true;
+};
+// Devolución de llamada al hacer clic en el enlace del archivo o en el icono de vista previa
+picturePreview = (file: NzUploadFile) => {
+  this.previewImage = file.url || file.thumbUrl;
+  this.previewVisible = true;
+}
 
 }

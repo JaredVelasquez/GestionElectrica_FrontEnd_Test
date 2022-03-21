@@ -1,7 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuLayoutComponent } from './components/menu-layout/menu-layout.component';
-
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -19,7 +18,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { DigitalInvoiceComponent } from './components/digital-invoice/digital-invoice.component';
 
 //import graphics module
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
 
@@ -27,12 +25,14 @@ import { FusionChartsModule } from 'angular-fusioncharts';
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+import { SpinerLoaderComponent } from './components/spiner-loader/spiner-loader.component';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
 @NgModule({
   declarations: [
     MenuLayoutComponent,
     DigitalInvoiceComponent,
+    SpinerLoaderComponent,
   ],
   imports: [
     RouterModule,
@@ -49,7 +49,6 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
     FusionChartsModule,
     NgxSpinnerModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [
     MenuLayoutComponent,
     NzFormModule,

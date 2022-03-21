@@ -10,3 +10,11 @@ export interface ActorInterface{
     observacion: string;
     estado: boolean;
 }
+
+export interface ImageInterface {
+    uid: string,
+    name: string,
+    status: string,
+    url: string,
+    thumbUrl: string
+}

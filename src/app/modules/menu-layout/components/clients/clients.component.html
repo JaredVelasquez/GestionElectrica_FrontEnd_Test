@@ -8,22 +8,7 @@
   <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="PostClient()">
     <ng-container *nzModalContent>
     <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
-      <!-- 
-                  <div nz-row class="row-1">
-                    <div nz-col  [nzSpan]="24" class="row1-col1">
-                        <label>Codigo</label>
-                        <div nz-row>
-                          <nz-form-item>
-                            <nz-form-control>
-                              <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                            </nz-form-control>
-                          </nz-form-item>
-                        </div>
-        
-      
-                    </div>
-                  </div> -->
-      
+
                   <div nz-row class="row-2">
                     
                     <div nz-col [nzSpan]="24" class="row3-col1">
@@ -74,96 +59,32 @@
                       </div>
                     </div>
       
-      <!--               
-                  <div nz-row class="row-1">
-                      <div nz-col  [nzSpan]="24" class="row1-col1">
-                          <label>Codigo</label>
-                          <div nz-row>
-                            <nz-form-item>
-                              <nz-form-control>
-                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                              </nz-form-control>
-                            </nz-form-item>
-                          </div>
-          
-        
-                      </div>
-                    </div>
-      
-                    
-                  <div nz-row class="row-1">
-                      <div nz-col  [nzSpan]="24" class="row1-col1">
-                          <label>Codigo</label>
-                          <div nz-row>
-                            <nz-form-item>
-                              <nz-form-control>
-                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                              </nz-form-control>
-                            </nz-form-item>
-                          </div>
-          
-        
-                      </div>
-                    </div>
-      
-                    
-                  <div nz-row class="row-1">
-                      <div nz-col  [nzSpan]="24" class="row1-col1">
-                          <label>Codigo</label>
-                          <div nz-row>
-                            <nz-form-item>
-                              <nz-form-control>
-                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                              </nz-form-control>
-                            </nz-form-item>
-                          </div>
-          
-        
-                      </div>
-                    </div>
-      
-                    <div nz-row class="row-1">
-                        <div nz-col  [nzSpan]="24" class="row1-col1">
-                            <label>Codigo</label>
-                            <div nz-row>
-                              <nz-form-item>
-                                <nz-form-control>
-                                  <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                                </nz-form-control>
-                              </nz-form-item>
-                            </div>
-            
-          
-                        </div>
-                      </div> -->
                       <div nz-row>
       
                           <div nz-col nzSpan="24">
-      
-                              <div class="clearfix">
-                                <nz-upload
-                                  nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                  nzListType="picture-card"
-                                  [(nzFileList)]="fileList"
-                                  [nzShowButton]="fileList.length < 8"
-                                >
-                                  <div>
-                                    <i nz-icon nzType="plus"></i>
-                                    <div style="margin-top: 8px">Upload</div>
-                                  </div>
-                                </nz-upload>
-                                <nz-modal
-                                  [nzVisible]="previewVisible"
-                                  [nzContent]="modalContent"
-                                  [nzFooter]="null"
-                                  (nzOnCancel)="previewVisible = false"
-                                >
-                                  <ng-template #modalContent>
-                                    <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-                                  </ng-template>
-                                </nz-modal>
-                              </div>
-      
+                            <div class="clearfix">
+                              <nz-upload
+                                nzAction="https://jsonplaceholder.typicode.com/posts/"
+                                nzListType="picture-card"
+                                [(nzFileList)]="fileList"
+                                [nzShowButton]="fileList.length < 1"
+                                [nzShowUploadList]="showUploadList"
+                                [nzPreview]="handlePreview" 
+                              >
+                                <i nz-icon nzType="plus"></i>
+                                <div class="ant-upload-text">Upload</div>
+                              </nz-upload>
+                              <nz-modal
+                                [nzVisible]="previewVisible"
+                                [nzContent]="modalContent"
+                                [nzFooter]="null"
+                                (nzOnCancel)="previewVisible = false"
+                              >
+                                <ng-template #modalContent>
+                                  <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+                                </ng-template>
+                              </nz-modal>
+                            </div>
                           </div>
       
                       </div>

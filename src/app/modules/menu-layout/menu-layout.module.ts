@@ -86,6 +86,7 @@ import { ReportComponent } from './components/report/report.component';
     ModalNewRateComponent,
     ModalNewInvoicesComponent,
     ReportComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -109,7 +110,7 @@ import { ReportComponent } from './components/report/report.component';
     NzSelectModule,
     NzDatePickerModule,
     NzSwitchModule,
-    NzInputNumberModule
+    NzInputNumberModule,
   ],
   bootstrap: [MainPageComponent],
 })
