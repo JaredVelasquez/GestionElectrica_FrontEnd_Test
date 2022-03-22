@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
-import { ZoneInterface } from 'src/Core/interfaces/zones.interface';
+import { ZoneShema } from 'src/Core/interfaces/zones.interface';
 
 @Component({
   selector: 'app-zones',
@@ -11,15 +11,21 @@ import { ZoneInterface } from 'src/Core/interfaces/zones.interface';
 })
 export class ZonesComponent implements OnInit {
   isVisible = false;
-  listOfData: ZoneInterface[] = [];
+  zonaIsDisable: boolean = false;
+  listOfData: ZoneShema[] = [];
   validateForm!: FormGroup;
+  provider!: ZoneShema;
   url = {
     get: 'get-zones',
     post: 'zonas',
     delete: 'zonas',
-    update: '',
+    update: 'zonas',
   };
-
+  EmptyForm =this.fb.group({
+    codigo: ['', [Validators.required]],
+    descripcion: ['', [Validators.required]],
+    observacion: ['', [Validators.required]],
+  })
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
@@ -27,42 +33,61 @@ export class ZonesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.GetZones();
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
-    
+    this.GetZones(1, false);
+    this.validateForm = this.EmptyForm;
   }
   
-  GetZones(){
-    this.globalService.Get(this.url.get).subscribe( 
+
+  GetZones(estado: number, switched: boolean){
+    if(switched){
+      if((!this.zonaIsDisable) && estado === 0){
+        this.zonaIsDisable = true;
+      }else{
+        this.zonaIsDisable = false;
+      }
+    }
+
+    this.globalService.GetId(this.url.get, estado).subscribe(
       (result:any) => {
-        console.log(result);
-        result.Id = Number(result.Id);
         this.listOfData = result;
+      }
+    );
+  }
+  
+  disableClient(zone: ZoneShema, estado : number){
+    let newEstado = Boolean(estado);
+    this.globalService.Patch(this.url.update, zone.id, {estado: newEstado}).subscribe(
+      result => {
+        if(!result){
+          if(estado === 1){
+            this.GetZones(0, false);
+          }else{
+            this.GetZones(1, false);
+          }
+
+        }
       }
     );
   }
   
   PostZone(){
     if (this.validateForm.valid) {
-      const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
-        observacion: this.validateForm.value.observacion,
+      this.provider = {
+        ... this.validateForm.value,
+        estado: true
       }
-      console.log(provider);
+      console.log(this.provider);
       this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
+      this.globalService.Post(this.url.post, this.provider).subscribe(
         (result:any) => {
           if(result){
-            this.GetZones();
-            
+            if(result.estado === true){
+              this.GetZones(1, false);
+            }else{
+              this.GetZones(0, false);
+            }
+  
           }
-            console.log(result);
-          
         }
       );
       
@@ -76,19 +101,10 @@ export class ZonesComponent implements OnInit {
     }
 
   }
-
-  DeleteZone(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
-      result => {
-        console.log(result);
-        this.GetZones();
-      }
-    );
-  }
   
   showModal(): void {
     this.isVisible = true;
+    this.validateForm = this.EmptyForm;
   }
 
   handleOk(): void {
@@ -108,7 +124,7 @@ export class ZonesComponent implements OnInit {
     {
       name: 'Codigo',
       sortOrder: 'descend',
-      sortFn: (a: ZoneInterface, b: ZoneInterface) => a.Codigo - b.Codigo,
+      sortFn: (a: ZoneShema, b: ZoneShema) => a.codigo - b.codigo,
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -117,7 +133,7 @@ export class ZonesComponent implements OnInit {
     {
       name: 'Descripcion',
       sortOrder: 'descend',
-      sortFn: (a: ZoneInterface, b: ZoneInterface) => a.Descripcion.localeCompare(b.Descripcion),
+      sortFn: (a: ZoneShema, b: ZoneShema) => a.descripcion.localeCompare(b.descripcion),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,

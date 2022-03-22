@@ -1,7 +1,16 @@
 <h1>Zona</h1>
-<div nz-row class="row-1">
+  <div nz-row class="row-1">
+    <div nz-col nzOffset="3" nzSpan="6">
+      <div *ngIf="!zonaIsDisable ; else enableClients">
+        <button nz-button [nzType]="'primary'" (click)="GetZones(0, true)"><span>Mostrar desabilitados</span></button>
+      </div>
+      <ng-template #enableClients>
+        <button nz-button [nzType]="'primary'" (click)="GetZones(1, true)"><span>Mostrar Habilitados</span></button>
+      </ng-template>
+  
+    </div>
 
-    <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
+    <div nz-col nzOffset="1" nzSpan="4" class="row1-col1">
 
         <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nueva zona</span></button>
         <nz-modal [(nzVisible)]="isVisible" nzTitle="Zonas" (nzOnCancel)="handleCancel()" (nzOnOk)="PostZone()">
@@ -62,7 +71,7 @@
 
     </div>
 
-    <div nz-col nzSpan="12" class="row1-col2">
+    <div nz-col nzOffset="1" nzSpan="8" class="row1-col2">
 
         <nz-input-group [nzSuffix]="suffixIconSearch">
           <input type="text" nz-input placeholder="input search text" />
@@ -77,7 +86,7 @@
 </div>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="80px">ID</th>
@@ -97,14 +106,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of filterTable.data">
-            <td nzLeft>{{data.Id}}</td>
-            <td>{{data.Codigo}}</td>
-            <td>{{ data.Descripcion }}</td>
-            <td>{{ data.Observacion }}</td>
+          <tr *ngFor="let data of listOfData">
+            <td nzLeft>{{data.id}}</td>
+            <td>{{data.codigo}}</td>
+            <td>{{ data.descripcion }}</td>
+            <td>{{ data.observacion }}</td>
             <td nzRight>
-              <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-              <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline" (click)="DeleteZone(data.Id)"></i></button>
+              <div *ngIf="data.estado; else disablesList"> 
+                  <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableClient(data, 0)"><i nz-icon nzType="minus-square" nzTheme="outline"></i></button>
+              </div>
+              <ng-template #disablesList>
+                  <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableClient(data, 1)"><i nz-icon nzType="plus-square" nzTheme="outline"></i></button>
+              </ng-template>
             </td>
           </tr>
         </tbody>

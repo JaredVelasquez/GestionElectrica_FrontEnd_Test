@@ -1,28 +1,22 @@
 <h1>Proveedores</h1>
 
 <div nz-row class="row-1">
+  <div nz-col nzOffset="3" nzSpan="5">
+    <div *ngIf="!disableClients ; else enableClients">
+      <button nz-button [nzType]="'primary'" (click)="GetProviders(0)"><span>Mostrar desabilitados</span></button>
+    </div>
+    <ng-template #enableClients>
+      <button nz-button [nzType]="'primary'" (click)="GetProviders(1)"><span>Mostrar Habilitados</span></button>
+    </ng-template>
 
-  <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
+  </div>
+
+  <div nz-col nzOffset="1" nzSpan="4" class="row1-col1">
 
   <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Proveedor</span></button>
   <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="PostProvider()">
     <ng-container *nzModalContent>
     <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
-      <!-- 
-                  <div nz-row class="row-1">
-                    <div nz-col  [nzSpan]="24" class="row1-col1">
-                        <label>Codigo</label>
-                        <div nz-row>
-                          <nz-form-item>
-                            <nz-form-control>
-                              <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                            </nz-form-control>
-                          </nz-form-item>
-                        </div>
-        
-      
-                    </div>
-                  </div> -->
       
                   <div nz-row class="row-2">
                     
@@ -73,104 +67,22 @@
         
                       </div>
                     </div>
-      
-      <!--               
-                  <div nz-row class="row-1">
-                      <div nz-col  [nzSpan]="24" class="row1-col1">
-                          <label>Codigo</label>
-                          <div nz-row>
-                            <nz-form-item>
-                              <nz-form-control>
-                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                              </nz-form-control>
-                            </nz-form-item>
-                          </div>
-          
-        
-                      </div>
-                    </div>
-      
-                    
-                  <div nz-row class="row-1">
-                      <div nz-col  [nzSpan]="24" class="row1-col1">
-                          <label>Codigo</label>
-                          <div nz-row>
-                            <nz-form-item>
-                              <nz-form-control>
-                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                              </nz-form-control>
-                            </nz-form-item>
-                          </div>
-          
-        
-                      </div>
-                    </div>
-      
-                    
-                  <div nz-row class="row-1">
-                      <div nz-col  [nzSpan]="24" class="row1-col1">
-                          <label>Codigo</label>
-                          <div nz-row>
-                            <nz-form-item>
-                              <nz-form-control>
-                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                              </nz-form-control>
-                            </nz-form-item>
-                          </div>
-          
-        
-                      </div>
-                    </div>
-      
-                    <div nz-row class="row-1">
-                        <div nz-col  [nzSpan]="24" class="row1-col1">
-                            <label>Codigo</label>
-                            <div nz-row>
-                              <nz-form-item>
-                                <nz-form-control>
-                                  <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" ZM_#1 " formControlName="descripcion" [disabled]="false" />
-                                </nz-form-control>
-                              </nz-form-item>
-                            </div>
-            
-          
+                      
+
+                    <div nz-row>
+                      <div nz-col>
+                        <label>Logo de proveedor</label>
+                        <div nz-row>
+                          <nz-form-item>
+                            <nz-form-control>
+                              <input nz-input id="file" type="file" formControlName="file" />
+                            </nz-form-control>
+                          </nz-form-item>
                         </div>
-                      </div> -->
-                      <div nz-row>
-      
-                          <div nz-col nzSpan="24">
-      
-                              <div class="clearfix">
-                                <nz-upload
-                                  nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                  nzListType="picture-card"
-                                  [(nzFileList)]="fileList"
-                                  [nzShowButton]="fileList.length < 8"
-                                >
-                                  <div>
-                                    <i nz-icon nzType="plus"></i>
-                                    <div style="margin-top: 8px">Upload</div>
-                                  </div>
-                                </nz-upload>
-                                <nz-modal
-                                  [nzVisible]="previewVisible"
-                                  [nzContent]="modalContent"
-                                  [nzFooter]="null"
-                                  (nzOnCancel)="previewVisible = false"
-                                >
-                                  <ng-template #modalContent>
-                                    <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-                                  </ng-template>
-                                </nz-modal>
-                              </div>
-      
-                          </div>
-      
+
                       </div>
-                    
-      
-      
-      
+                    </div>
+
                       <div nz-row class="row-3">
                     
                           <div nz-col [nzSpan]="24" class="row3-col1">
@@ -196,11 +108,11 @@
 
   </div>
   
-  <div nz-col nzSpan="12" class="row1-col2">
+  <div nz-col nzSpan="10" class="row1-col2">
 
     <nz-input-group [nzSuffix]="suffixIconSearch">
       <input type="text" nz-input placeholder="input search text" />
-    </nz-input-group>
+    </nz-input-group> 
     <ng-template #suffixIconSearch>
       <i nz-icon nzType="search"></i>
     </ng-template>
@@ -213,7 +125,7 @@
     
   <div nz-col nzOffset="1" *ngFor="let provider of providers">
   
-      <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+      <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionEdit]">
           <nz-card-meta
             nzTitle= {{provider.nombre}}
             nzDescription= {{provider.direccion}}
@@ -222,15 +134,14 @@
         <ng-template #coverTemplate>
           <img alt="example" src="{{provider.imagen}}" />
         </ng-template>
-        <ng-template #actionSetting>
-          <i nz-icon nzType="setting"></i>
-        </ng-template>
         <ng-template #actionEdit>
-          <i nz-icon nzType="edit"></i>
-        </ng-template>
-        <ng-template #actionEllipsis>
-          <i nz-icon nzType="ellipsis"></i>
-        </ng-template>    
+          <div *ngIf="provider.estado ; else disable">
+            <button nz-button (click)="disableProvider(provider, 0)"><i nz-icon nzType="minus-square"></i></button>
+          </div>
+          <ng-template #disable>
+            <button nz-button (click)="disableProvider(provider, 1)"><i nz-icon nzType="plus-square"></i></button>
+          </ng-template>
+        </ng-template>  
 
   </div>
     

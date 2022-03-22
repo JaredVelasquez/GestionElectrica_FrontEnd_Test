@@ -26,4 +26,7 @@ export class EndPointGobalService {
   Delete(url: string, Id:number){
     return this.http.delete(`${environment.api}${url}/${Id}`);
   }
+  Patch(url: string, Id:number, body: any){
+    return this.http.patch(`${environment.api}${url}/${Id}`, body);
+  }
 }

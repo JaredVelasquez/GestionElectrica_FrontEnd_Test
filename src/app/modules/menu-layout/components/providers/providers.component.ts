@@ -21,9 +21,10 @@ export class ProvidersComponent implements OnInit {
   url = {
     get: 'get-providers',
     post: 'actores',
-    delete: '',
-    update: '',
+    delete: 'actores',
+    update: 'actores',
   };
+  disableClients: boolean = false;
   previewImage: string | undefined = '';
   previewVisible = false;
   providers: ActorInterface[] = [];
@@ -34,22 +35,46 @@ export class ProvidersComponent implements OnInit {
     private fb: FormBuilder,
   ) { }
 
+  EmptyForm = this.fb.group({
+    nombre: ['', [Validators.required]],
+    telefono: ['', [Validators.required]],
+    direccion: ['', [Validators.required]],
+    observacion: ['', [Validators.required]],
+    file: ['', [Validators.required]],
+  })
+
   ngOnInit(): void {
-    this.GetProviders();
-    this.validateForm = this.fb.group({
-      nombre: ['', [Validators.required]],
-      telefono: ['', [Validators.required]],
-      direccion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
+    this.GetProviders(1);
+    this.validateForm = this.EmptyForm;
   }
 
-  GetProviders(){
-    this.globalService.Get(this.url.get).subscribe(
-      (result : any) => {
-        console.log(result);
-        
+  GetProviders(estado: number){
+
+    if((!this.disableClients) && estado === 0){
+      this.disableClients = true;
+    }else{
+      this.disableClients = false;
+    }
+
+    this.globalService.GetId(this.url.get, estado).subscribe(
+      (result:any) => {
         this.providers = result;
+      }
+    );
+  }
+  
+  disableProvider(client: ActorInterface, estado : number){
+    let newEstado = Boolean(estado);
+    this.globalService.Patch(this.url.update, client.id, {estado: newEstado}).subscribe(
+      result => {
+        if(!result){
+          if(estado === 1){
+            this.GetProviders(0)
+          }else{
+            this.GetProviders(1);
+          }
+
+        }
       }
     );
   }
@@ -64,18 +89,18 @@ export class ProvidersComponent implements OnInit {
         observacion: this.validateForm.value.observacion,
         estado: true
       }
-      console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetProviders();
+      // console.log(provider);
+      // this.isVisible = false;
+      // this.globalService.Post(this.url.post, provider).subscribe(
+      //   (result:any) => {
+      //     if(result){
+      //       this.GetProviders();
             
-          }
-            console.log(result);
+      //     }
+      //       console.log(result);
           
-        }
-      );
+      //   }
+      // );
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {

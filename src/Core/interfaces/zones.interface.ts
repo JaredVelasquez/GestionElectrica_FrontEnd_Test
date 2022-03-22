@@ -1,6 +1,7 @@
-export interface ZoneInterface {
-    Id: string;
-    Codigo: number;
-    Descripcion: string;
-    Observacion: string;
+export interface ZoneShema {
+    id: number;
+    codigo: number;
+    descripcion: string;
+    observacion: string;
+    estado: boolean;
   }

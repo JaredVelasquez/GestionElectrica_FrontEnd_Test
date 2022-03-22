@@ -1,9 +1,17 @@
 <h1>Clientes</h1>
-
 <div nz-row class="row-1">
+  <div nz-col nzOffset="3" nzSpan="5">
+    <div *ngIf="!disableClients ; else enableClients">
+      <button nz-button [nzType]="'primary'" (click)="GetClients(0)"><span>Mostrar desabilitados</span></button>
+    </div>
+    <ng-template #enableClients>
+      <button nz-button [nzType]="'primary'" (click)="GetClients(1)"><span>Mostrar Habilitados</span></button>
+    </ng-template>
 
-  <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
-
+  </div>
+    
+  <div nz-col nzOffset="1" nzSpan="4" class="row1-col1">
+  
   <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Cliente</span></button>
   <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="PostClient()">
     <ng-container *nzModalContent>
@@ -17,7 +25,7 @@
                         <div nz-row>
                           <nz-form-item>
                             <nz-form-control>
-                              <input nz-input  class="inputLarge" id="nombre" type="text" placeholder=" Nombre de proveedor " formControlName="nombre" [disabled]="false" />
+                              <input nz-input  class="inputLarge" id="nombre" type="text" placeholder=" Nombre de proveedor " formControlName="nombre" />
                             </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -34,7 +42,7 @@
                           <div nz-row>
                             <nz-form-item>
                               <nz-form-control>
-                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" +50498####98 " formControlName="telefono" [disabled]="false" />
+                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" +50498####98 " formControlName="telefono" />
                               </nz-form-control>
                             </nz-form-item>
                           </div>
@@ -50,7 +58,7 @@
                           <div nz-row>
                             <nz-form-item>
                               <nz-form-control>
-                                <input nz-input  class="inputLarge" id="direccion" type="text" placeholder=" 1 ave 2 calle bloque#2 " formControlName="direccion" [disabled]="false" />
+                                <input nz-input  class="inputLarge" id="direccion" type="text" placeholder=" 1 ave 2 calle bloque#2 " formControlName="direccion" />
                               </nz-form-control>
                             </nz-form-item>
                           </div>
@@ -58,36 +66,22 @@
         
                       </div>
                     </div>
-      
-                      <div nz-row>
-      
-                          <div nz-col nzSpan="24">
-                            <div class="clearfix">
-                              <nz-upload
-                                nzAction="https://jsonplaceholder.typicode.com/posts/"
-                                nzListType="picture-card"
-                                [(nzFileList)]="fileList"
-                                [nzShowButton]="fileList.length < 1"
-                                [nzShowUploadList]="showUploadList"
-                                [nzPreview]="handlePreview" 
-                              >
-                                <i nz-icon nzType="plus"></i>
-                                <div class="ant-upload-text">Upload</div>
-                              </nz-upload>
-                              <nz-modal
-                                [nzVisible]="previewVisible"
-                                [nzContent]="modalContent"
-                                [nzFooter]="null"
-                                (nzOnCancel)="previewVisible = false"
-                              >
-                                <ng-template #modalContent>
-                                  <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-                                </ng-template>
-                              </nz-modal>
-                            </div>
-                          </div>
-      
+
+                    <div nz-row>
+                      <div nz-col>
+                        <label>Logo de cliente</label>
+                        <div nz-row>
+                          <nz-form-item>
+                            <nz-form-control>
+                              <input nz-input id="file" type="file" formControlName="file" />
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
                       </div>
+                    </div>
+
+      
                     
       
       
@@ -117,7 +111,7 @@
 
   </div>
   
-  <div nz-col nzSpan="12" class="row1-col2">
+  <div nz-col nzOffset="1" nzSpan="10" class="row1-col2">
 
     <nz-input-group [nzSuffix]="suffixIconSearch">
       <input type="text" nz-input placeholder="input search text" />
@@ -134,7 +128,7 @@
     
     <div nz-col nzOffset="1" *ngFor="let provider of clients">
     
-        <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+        <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionEdit]">
             <nz-card-meta
               nzTitle= {{provider.nombre}}
               nzDescription= {{provider.direccion}}
@@ -143,15 +137,14 @@
           <ng-template #coverTemplate>
             <img alt="example" src="{{provider.imagen}}" />
           </ng-template>
-          <ng-template #actionSetting>
-            <i nz-icon nzType="setting"></i>
-          </ng-template>
           <ng-template #actionEdit>
-            <i nz-icon nzType="edit"></i>
-          </ng-template>
-          <ng-template #actionEllipsis>
-            <i nz-icon nzType="ellipsis"></i>
-          </ng-template>    
+            <div *ngIf="provider.estado ; else disable">
+              <button nz-button (click)="disableClient(provider, 0)"><i nz-icon nzType="minus-square"></i></button>
+            </div>
+            <ng-template #disable>
+              <button nz-button (click)="disableClient(provider, 1)"><i nz-icon nzType="plus-square"></i></button>
+            </ng-template>
+          </ng-template>  
 
     </div>
     

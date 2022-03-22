@@ -34,6 +34,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 
 
@@ -111,6 +112,7 @@ import { ReportComponent } from './components/report/report.component';
     NzDatePickerModule,
     NzSwitchModule,
     NzInputNumberModule,
+    NzMessageModule,
   ],
   bootstrap: [MainPageComponent],
 })

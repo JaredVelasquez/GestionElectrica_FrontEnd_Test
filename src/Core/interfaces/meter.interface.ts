@@ -14,4 +14,20 @@ export interface MeterInterface {
     puntoConexion: string;
 
   }
+
+  export interface MeterSchema{
+    id: number;
+    codigo: string;
+    souceId: string;
+    descripcion: string;
+    modelo: string;
+    serie: string;
+    lecturaMax: number;
+    multiplicador: number;
+    puntoMedicionId: number;
+    observacion: string;
+    tipo: number;
+    estado: boolean;
+
+  }
   
