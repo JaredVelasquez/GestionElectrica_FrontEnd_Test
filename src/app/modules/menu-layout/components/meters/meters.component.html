@@ -1,49 +1,85 @@
 <h1>Medidores Fisicos</h1>
-  
-  <app-meters-modal></app-meters-modal>
 
-<nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
-  <thead>
-    <tr>
-      <th nzLeft>Accion</th>
-      <th
-        *ngFor="let column of listOfColumns"
-        [nzSortOrder]="column.sortOrder"
-        [nzSortFn]="column.sortFn"
-        [nzSortDirections]="column.sortDirections"
-        [nzFilterMultiple]="column.filterMultiple"
-        [nzFilters]="column.listOfFilter"
-        [nzFilterFn]="column.filterFn"
-      >
-        {{ column.name }}
-      </th>
-      <th nzRight>Estado</th>
+<div nz-row>
 
-    </tr>
-  </thead>
-<!-- Cuerpo de tabla -->
+  <div nz-col nzSpan="8">
 
-  <tbody>
-    <tr *ngFor="let data of listOfData">
-      <td nzLeft>
-        <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-        <button class="delete" nz-button nzType="primary"  nzShape="circle" (click)="DeleteMeter(data.idMedidor)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-      </td>
-      <td>{{ data.idMedidor }}</td>
-      <td>{{ data.codigoPM }}</td>
-      <td>{{ data.descripcionPM }}</td>
-      <td>{{ data.modeloMedidor }}</td>
-      <td>{{ data.serieMedidor }}</td>
-      <td>{{ data.tipoMedidor }}</td>
-      <td nzRight *ngIf="data.estado === true"> 
-        <button class="config" nz-button nzType="primary" >En Contrato</button>
-      </td>
-      <td nzRight *ngIf="data.estado === false"> 
-        <button class="warning" nz-button nzType="primary" >Rollover</button>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
+    <div *ngIf="!meterIsActive ; else enableClients">
+      <button nz-button [nzType]="'primary'" (click)="GetMeters(0, true)"><span>Medidores desabilitados</span></button>
+    </div>
+    <ng-template #enableClients>
+      <button nz-button [nzType]="'primary'" (click)="GetMeters(1, true)"><span>Medidores Habilitados</span></button>
+    </ng-template>
+
+  </div>
+
+  <div nz-col nzSpan="5">
+
+    <app-meters-modal></app-meters-modal>
+
+  </div>
+</div>
+
+<div nz-row>
+
+  <div nz-col>
+
+    <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
+      <thead>
+        <tr>
+          <th nzLeft nzWidth="180px">Accion</th>
+          <th
+            *ngFor="let column of listOfColumns"
+            [nzSortOrder]="column.sortOrder"
+            [nzSortFn]="column.sortFn"
+            [nzSortDirections]="column.sortDirections"
+            [nzFilterMultiple]="column.filterMultiple"
+            [nzFilters]="column.listOfFilter"
+            [nzFilterFn]="column.filterFn"
+          >
+            {{ column.name }}
+          </th>
+          <th nzRight nzWidth="120px">Estado</th>
+          <th nzRight nzWidth="100px">RollOver</th>
+        </tr>
+      </thead>
+    <!-- Cuerpo de tabla -->
+    
+      <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td nzLeft> 
+            <div *ngIf="data.estado; else disablesList"> 
+                <button class="edit" nz-button nzType="primary" nzDanger (click)=" disableMeter(data, 0)">Desactivar Contrato</button>
+            </div>
+            <ng-template #disablesList>
+                <button class="edit" nz-button nzType="primary" (click)=" disableMeter(data, 1)">Activar Contrato</button>
+            </ng-template>
+          </td>
+          <td>{{ data.idMedidor }}</td>
+          <td>{{ data.codigoPM }}</td>
+          <td>{{ data.sourceId }}</td>
+          <td>{{ data.descripcionPM }}</td>
+          <td>{{ data.modeloMedidor }}</td>
+          <td>{{ data.serieMedidor }}</td>
+          <td>{{ data.tipoMedidor }}</td>
+          <td nzRight> 
+            <div *ngIf="data.estado; else contractDisable"> 
+                <p><span>Contrato Activo</span></p>
+            </div>
+            <ng-template #contractDisable>
+                <p><span>Contrato Inactivo</span></p>
+            </ng-template>
+          </td> 
+          <td nzRight> 
+            <app-roll-over-modal [dataPosition]="data"></app-roll-over-modal>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>  
+
+  </div>
+
+</div>
 
 
 
@@ -75,8 +111,6 @@
   <tbody>
     <tr *ngFor="let data of listOfDataVM">
       <td nzLeft>
-        <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-        <button class="delete" nz-button nzType="primary"  nzShape="circle" (click)="DeleteMeter(data.idMedidor)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
       </td>
       <td>{{ data.idMedidor }}</td>
       <td>{{ data.codigoPM }}</td>
@@ -85,10 +119,6 @@
       <td>{{ data.serieMedidor }}</td>
       <td>{{ data.tipoMedidor }}</td>
       <td nzRight *ngIf="data.estado === true"> 
-        <button class="config" nz-button nzType="primary" >En Contrato</button>
-      </td>
-      <td nzRight *ngIf="data.estado === false"> 
-        <button class="warning" nz-button nzType="primary" >Rollover</button>
       </td>
     </tr>
   </tbody>

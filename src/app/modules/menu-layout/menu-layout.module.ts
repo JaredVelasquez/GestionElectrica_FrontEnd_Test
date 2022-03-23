@@ -57,6 +57,7 @@ import { ModalDistributionComponent } from './components/energy-matrix/modal-dis
 import { ModalNewRateComponent } from './components/rates/modal-new-rate/modal-new-rate.component';
 import { ModalNewInvoicesComponent } from './components/generated-invoices/modal-new-invoices/modal-new-invoices.component';
 import { ReportComponent } from './components/report/report.component';
+import { RollOverModalComponent } from './components/meters/roll-over-modal/roll-over-modal.component';
 
 
 @NgModule({
@@ -87,6 +88,7 @@ import { ReportComponent } from './components/report/report.component';
     ModalNewRateComponent,
     ModalNewInvoicesComponent,
     ReportComponent,
+    RollOverModalComponent
     
   ],
   imports: [

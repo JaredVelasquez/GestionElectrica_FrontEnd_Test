@@ -1,7 +1,7 @@
   <!-- inicia modal -->
-  <button nz-col nzSpan="6" nz-button [nzType]="'primary'" (click)="showModal()"><span>Agregar Medidor Fisico</span></button>
+  <button nzSpan="6" nz-button [nzType]="'primary'" (click)="showModal()"><span>Agregar Medidor Fisico</span></button>
 
-  <nz-modal class="modal" [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
+  <nz-modal class="modal" [(nzVisible)]="isVisible" nzTitle="Medidor Fisico" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
     <ng-container  *nzModalContent>
       <form  nz-form [formGroup]="validateForm">
 

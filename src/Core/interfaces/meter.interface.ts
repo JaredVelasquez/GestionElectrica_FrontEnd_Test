@@ -26,8 +26,8 @@ export interface MeterInterface {
     multiplicador: number;
     puntoMedicionId: number;
     observacion: string;
+    puntoConexion: boolean;
     tipo: number;
     estado: boolean;
-
   }
   
