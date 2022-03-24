@@ -7,7 +7,7 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
   templateUrl: './modal-new-rate.component.html',
   styleUrls: ['./modal-new-rate.component.css']
 })
-export class ModalNewRateComponent implements OnInit, OnChanges {
+export class ModalNewRateComponent implements OnInit {
   listOfData2: RatesInterface[] = [];
   @Output() DataUpdated : EventEmitter<RatesInterface> = new EventEmitter<RatesInterface>();
   @Input() dataPosition!: RatesInterface | undefined;
@@ -41,17 +41,6 @@ export class ModalNewRateComponent implements OnInit, OnChanges {
     this.validateForm = this.EmptyForm;
 
     
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    console.log(this.listOfData2);
-    console.log(this.dataPosition);
-    
-    
-  }
-  
-  UpdateListOfData(list: RatesInterface){
   }
 
   showModal(): void {

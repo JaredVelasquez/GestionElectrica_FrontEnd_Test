@@ -113,10 +113,10 @@
             <td>{{ data.observacion }}</td>
             <td nzRight>
               <div *ngIf="data.estado; else disablesList"> 
-                  <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableClient(data, 0)"><i nz-icon nzType="minus-square" nzTheme="outline"></i></button>
+                  <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableClient(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
               </div>
               <ng-template #disablesList>
-                  <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableClient(data, 1)"><i nz-icon nzType="plus-square" nzTheme="outline"></i></button>
+                  <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableClient(data, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
               </ng-template>
             </td>
           </tr>

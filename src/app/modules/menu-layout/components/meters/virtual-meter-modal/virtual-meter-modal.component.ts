@@ -1,21 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
+import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
+import { MeterInterface } from 'src/Core/interfaces/meter.interface';
+import { VirtualMeterShema, VirtualMeterView } from 'src/Core/interfaces/virtual-meter.interface';
 
-interface DataItem {
-  name: string;
-  age: number;
-  address: string;
-}
-
-interface ColumnItem {
-  name: string;
-  sortOrder: NzTableSortOrder | null;
-  sortFn: NzTableSortFn<DataItem> | null;
-  listOfFilter: NzTableFilterList;
-  filterFn: NzTableFilterFn<DataItem> | null;
-  filterMultiple: boolean;
-  sortDirections: NzTableSortOrder[];
-}
 
 @Component({
   selector: 'app-virtual-meter-modal',
@@ -25,26 +16,126 @@ interface ColumnItem {
 
 export class VirtualMeterModalComponent implements OnInit {
   isVisible = false;
-  listOfData: DataItem[] = [];
-
-  constructor() { }
-
-  ngOnInit(): void {
-    const data = [];
-    for (let i = 0; i < 100; i++) {
-        data.push({
-          name: `Edward King ${i}`,
-          age: 32,
-          address: `London, Park Lane no. ${i}`
-        });
-      }
-      this.listOfData = data;
+  @Input() listOfVMeters: VirtualMeterShema[] = [];
+  @Input() dataPosition!: MeterInterface;
+  newVMeter!: VirtualMeterShema;
+  validateForm!: FormGroup;
+  listOfData: VirtualMeterShema[] = [];
+  VMIsDisable: boolean = false;
+  url = { 
+    post: 'medidor-virtuals',
+    update: 'medidor-virtuals'
   }
 
+  EmptyForm = this.fb.group({
+    medidorId: [''],
+    porcentaje: ['', [Validators.required]],
+    operacion: ['', [Validators.required]],
+    observacion: ['', [Validators.required]],
+  })
+  constructor(
+    private globalService: EndPointGobalService,
+    private fb: FormBuilder,
+  ) { }
 
+  ngOnInit(): void {
+    this.GetVirtualMeters(true, false);
+    this.validateForm = this.EmptyForm;
+  }
+  
+  
+  GetVirtualMeters(estado: boolean, switched: boolean){
+    if(switched){
+      this.listOfData.length = 0;
+      for(let i = 0; i < this.listOfVMeters.length ; i++){
+        if(this.dataPosition.idMedidor === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
+          this.listOfData.push(this.listOfVMeters[i]);
+        }
+      }
+      if((!this.VMIsDisable) && estado === false){
+        this.VMIsDisable = true;
+      }else{
+        this.VMIsDisable = false;
+      }
+    }else{
+      this.listOfData.length = 0;
+      for(let i = 0; i < this.listOfVMeters.length ; i++){
+        if(this.dataPosition.idMedidor === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
+          this.listOfData.push(this.listOfVMeters[i]);
+        }
+      }
+
+    }
+    
+
+  }
+  
+  disableVMeter(vmeter: VirtualMeterShema, estado : boolean){
+
+    this.globalService.Patch(this.url.update, vmeter.id, {estado: estado}).subscribe(
+      result => {
+        if(!result){
+          for(let i = 0; i < this.listOfVMeters.length; i++){
+            if(this.listOfVMeters[i].id === vmeter.id){
+              this.listOfVMeters[i].estado = estado;
+            }
+          }
+
+          if(estado === true){
+            this.GetVirtualMeters(false, false);
+          }else{
+            this.GetVirtualMeters(true, false);
+          }
+
+        }
+      }
+    );
+  }
+
+  cleanForm(): void{
+    this.validateForm = this.fb.group({
+      medidorId: [this.dataPosition.idMedidor],
+      porcentaje: ['', [Validators.required]],
+      operacion: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+    })
+  }
+
+  submitForm(estado: boolean): void{
+    console.log(this.validateForm.value);
+    
+    if (this.validateForm.valid) {
+      this.validateForm.value.operacion = toBoolean(this.validateForm.value.operacion);
+      this.validateForm.value.medidorId = toNumber(this.validateForm.value.medidorId);
+      this.newVMeter = {
+        ... this.validateForm.value,
+        estado: true
+      }
+      console.log(this.newVMeter);
+      this.globalService.Post(this.url.post, this.newVMeter).subscribe(
+        (result:any) => {
+          if(result){
+            this.listOfVMeters.push(result);
+            this.GetVirtualMeters(estado, false);
+          }
+        }
+      );
+      
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+  }
   
   showModal(): void {
     this.isVisible = true;
+    this.GetVirtualMeters(true, false);
+    this.validateForm = this.EmptyForm;
   }
 
   handleOk(): void {
@@ -62,25 +153,34 @@ export class VirtualMeterModalComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'Medidor',
+      name: 'Porcentaje',
       sortOrder: 'descend',
-      sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
+      sortFn: (a: VirtualMeterShema, b: VirtualMeterShema) => a.porcentaje - b.porcentaje,
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
     {
-      name: 'Energia',
+      name: 'Operacion',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: DataItem, b: DataItem) => a.address.length - b.address.length,
+      sortFn: (a: VirtualMeterShema, b: VirtualMeterShema) => Number(a.operacion) - Number(b.operacion),
       filterMultiple: false,
       listOfFilter: [
         { text: 'London', value: 'London' },
         { text: 'Sidney', value: 'Sidney' }
       ],
-      filterFn: (address: string, item: DataItem) => item.address.indexOf(address) !== -1
+      filterFn: null
+    },
+    {
+      name: 'Tipo',
+      sortOrder: null,
+      sortDirections: ['ascend', 'descend', null],
+      sortFn: (a: VirtualMeterShema, b: VirtualMeterShema) => Number(a.tipo) - Number(b.tipo),
+      filterMultiple: false,
+      listOfFilter: [],
+      filterFn: null
     }
   ];
 

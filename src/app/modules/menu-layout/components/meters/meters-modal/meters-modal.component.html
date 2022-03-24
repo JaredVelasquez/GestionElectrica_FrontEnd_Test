@@ -64,7 +64,9 @@
               <nz-form-item  nzFlex>
                 <nz-form-control>
                   <nz-select class="inputMedium" formControlName="puntoMedicionId" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
-                        <nz-option nzLabel="example" nzValue="example"></nz-option>
+                    <div *ngFor="let point of listOfMPoinst">
+                      <nz-option [nzLabel]="point.descripcion" [nzValue]="point.id"></nz-option>
+                    </div>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -124,7 +126,7 @@
             <div nz-row>
               <nz-form-item  nzFlex>
                 <nz-form-control>
-                  <input nz-input id="Descripcion" type="number" placeholder="12200" formControlName="lecturaMax"  />
+                  <nz-input-number style="width: 200px;" placeholder="12200" formControlName="lecturaMax" [nzMin]="0.01" [nzStep]="100" ></nz-input-number>
                 </nz-form-control>
               </nz-form-item>    
             </div>
@@ -154,7 +156,7 @@
             <div nz-row>
               <nz-form-item  nzFlex>
                 <nz-form-control>
-                  <input nz-input class="inputLarge" id="multiplicador" type="number" placeholder="Medidor sin etiqueta" formControlName="multiplicador"  />
+                  <nz-input-number class="inputLarge" placeholder="Medidor sin etiqueta" formControlName="multiplicador" [nzMin]="0.01" [nzStep]="0.1" nzInputMode="decimal" ></nz-input-number>
                 </nz-form-control>
               </nz-form-item>
 
@@ -166,7 +168,7 @@
 
         <div nz-row class="row-7">
           <div nzSpan="12" nz-col class="row1-col1">
-            <nz-form-label  nzRequired>Observacion</nz-form-label>
+            <label>Observacion</label>
             <div nz-row>
               <nz-form-item>
                 <nz-form-control>

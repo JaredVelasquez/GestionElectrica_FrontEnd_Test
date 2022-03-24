@@ -1,5 +1,11 @@
 .inputLarge{
-    width: 475px;
+    width: 476px;
+    display: table-cell; 
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+.inputMedium{
+    width: 150px;
     display: table-cell; 
     vertical-align: middle;
     border: 1px solid #ccc;

@@ -136,10 +136,10 @@
         </ng-template>
         <ng-template #actionEdit>
           <div *ngIf="provider.estado ; else disable">
-            <button nz-button (click)="disableProvider(provider, 0)"><i nz-icon nzType="minus-square"></i></button>
+            <button nz-button (click)="disableProvider(provider, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
           </div>
           <ng-template #disable>
-            <button nz-button (click)="disableProvider(provider, 1)"><i nz-icon nzType="plus-square"></i></button>
+            <button nz-button (click)="disableProvider(provider, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
           </ng-template>
         </ng-template>  
 

@@ -15,7 +15,7 @@
 
   <div nz-col nzSpan="5">
 
-    <app-meters-modal></app-meters-modal>
+    <app-meters-modal [listOfMPoinst]="listOfMPoinst"></app-meters-modal>
 
   </div>
 </div>
@@ -39,8 +39,9 @@
           >
             {{ column.name }}
           </th>
-          <th nzRight nzWidth="120px">Estado</th>
+          <th nzRight nzWidth="100px">Estado</th>
           <th nzRight nzWidth="100px">RollOver</th>
+          <th nzRight nzWidth="100px">Medidores Virtuales</th>
         </tr>
       </thead>
     <!-- Cuerpo de tabla -->
@@ -70,8 +71,11 @@
                 <p><span>Contrato Inactivo</span></p>
             </ng-template>
           </td> 
-          <td nzRight> 
+          <td nzAlign="center"  nzRight> 
             <app-roll-over-modal [dataPosition]="data"></app-roll-over-modal>
+          </td>
+          <td nzAlign="center" nzRight>
+            <app-virtual-meter-modal [listOfVMeters]="listOfDataVM" [dataPosition]="data"></app-virtual-meter-modal>
           </td>
         </tr>
       </tbody>
@@ -80,47 +84,4 @@
   </div>
 
 </div>
-
-
-
-<h1>Medidores Virtuales</h1>
-
-<app-virtual-meter-modal></app-virtual-meter-modal>
-
-<nz-table [nzData]="listOfDataVM" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
-  <thead>
-    <tr>
-      <th nzLeft>Accion</th>
-      <th
-        *ngFor="let column of listOfColumns"
-        [nzSortOrder]="column.sortOrder"
-        [nzSortFn]="column.sortFn"
-        [nzSortDirections]="column.sortDirections"
-        [nzFilterMultiple]="column.filterMultiple"
-        [nzFilters]="column.listOfFilter"
-        [nzFilterFn]="column.filterFn"
-      >
-        {{ column.name }}
-      </th>
-      <th nzRight>Estado</th>
-
-    </tr>
-  </thead>
-<!-- Cuerpo de tabla -->
-
-  <tbody>
-    <tr *ngFor="let data of listOfDataVM">
-      <td nzLeft>
-      </td>
-      <td>{{ data.idMedidor }}</td>
-      <td>{{ data.codigoPM }}</td>
-      <td>{{ data.descripcionPM }}</td>
-      <td>{{ data.modeloMedidor }}</td>
-      <td>{{ data.serieMedidor }}</td>
-      <td>{{ data.tipoMedidor }}</td>
-      <td nzRight *ngIf="data.estado === true"> 
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
 

@@ -1,65 +1,46 @@
 
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Agregar Medidor Virtual</span></button>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+<button nz-button [nzType]="'primary'" (click)="showModal()"><i nz-icon nzType="file-add" nzTheme="outline"></i></button>
+<nz-modal nzCentered [(nzVisible)]="isVisible" nzTitle="Medidores Virtuales" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <ng-container  *nzModalContent>
-        <form  nz-form  nzLayout="horizontal">
-  
-          <div nz-row class="row-1">
-            <div nzSpan="24" nz-col class="row1-col1">
-              <label>Codigo de Medidor</label>
-  
+        <form  [formGroup]="validateForm" nz-form  nzLayout="horizontal">
+
+          <div nz-row class="row-2">
+            <div nzSpan="8" >
+              <label>Medidor Seleccionado</label>
               <div nz-row>
                 <nz-form-item>
                   <nz-form-control>
-                    <input class="inputLarge" nz-input id="Descripcion" type="text" placeholder=" MED_1_V " formControlName="descripcion" [disabled]="false" />
+                    <nz-select formControlName="medidorId" style="width: 150px;" [(ngModel)]="dataPosition.idMedidor" nzAllowClear [nzDisabled]="true">
+                          <nz-option [nzLabel]="dataPosition.sourceId" [nzValue]="dataPosition.idMedidor"></nz-option>
+                    </nz-select>
                   </nz-form-control>
                 </nz-form-item>
                 </div>
-  
             </div>
 
-          </div> 
-          
 
-          <div nz-row class="row-2">
-            <div nzSpan="8" nz-col class="row2-col1">
-                <label>Medidor en operacion</label>
-
-                <div nz-row>
-                    <nz-form-item  nzFlex>
-                      <nz-form-control >
-                        <nz-input-group [nzSuffix]="suffixIconSearch">
-                          <input type="text" nz-input placeholder=" Buscar " id="Id" formControlName="codigo"/>
-                        </nz-input-group>
-                        <ng-template #suffixIconSearch>
-                            <i nz-icon nzType="search"></i>
-                        </ng-template>
-                      </nz-form-control>
-                      </nz-form-item>
-                </div>
-  
-
-            </div>
-
-            <div  nzSpan="8" nz-col class="row2-col2">
+            <div  nzSpan="6" nzOffset="1" nz-col>
                 <label>Operacion</label>
                 <div nz-row>
                   <nz-form-item>
                     <nz-form-control>
-                      <input nz-input id="Descripcion" type="text" placeholder=" (+) Suma " formControlName="descripcion" [disabled]="false" />
+                      <nz-select formControlName="operacion" style="width: 120px;" >
+                            <nz-option nzLabel="Suma (+)" nzValue="true"></nz-option>
+                            <nz-option nzLabel="Resta (-)" nzValue="false"></nz-option>
+                      </nz-select>
                     </nz-form-control>
                   </nz-form-item>
                 </div>
 
             </div>
 
-            <div nzSpan="8" nz-col class="row2-col3">
+            <div nzSpan="8" nzOffset="1" nz-col>
 
               <label>Porcentaje de consumo</label>
               <div nz-row>
                 <nz-form-item>
                   <nz-form-control>
-                    <input nz-input id="Descripcion" type="text" placeholder="(0.5)%" formControlName="descripcion" [disabled]="false" />
+                    <nz-input-number style="width: 166px;" formControlName="porcentaje" placeholder="(0.5)%" [nzMax]="1" [nzMin]="0.01" nzInputMode="decimal" nzPrecisionMode="toFixed" [nzStep]="0.1"></nz-input-number>
                   </nz-form-control>
                 </nz-form-item>
               </div>
@@ -71,11 +52,11 @@
           <div nz-row class="row-3">
 
             <div nzSpan="24" nz-col class="row3-col1">
-              <nz-form-label  nzRequired>Observacion</nz-form-label>
+              <label>Observacion</label>
               <div nz-row>
                 <nz-form-item>
                   <nz-form-control>
-                    <textarea class="inputLarge" formControlName="observacion" nz-input rows="2" placeholder="Escriba algo"></textarea>
+                    <textarea formControlName="observacion" class="inputLarge" nz-input rows="2" placeholder="Escriba algo"></textarea>
                   </nz-form-control>
                 </nz-form-item>
               </div>
@@ -83,26 +64,45 @@
 
           </div>
 
-          <div nz-row class="row-4">
-            <div nz-col [nzSpan]="6"  [nzOffset]="14" class="row4-col1">
-                <nz-form-item  nzFlex>
-                    <button nz-button nzType="default">Cancelar</button>
-                </nz-form-item>
-            </div>
-            <div nz-col [nzSpan]="4" class="row4-col2">
-                <nz-form-item  nzFlex>
-                    <button nz-button nzType="primary">Guardar</button>
-                </nz-form-item>
 
+          <div nz-row class="row-4">
+            <div nz-col nzOffset="19" nzSpan="1">
+                <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
+            </div>
+            <div nz-col nzOffset="1" nzSpan="1">
+              <div *ngIf="listOfData[0]; else disable" >
+                <button nz-button (click)="submitForm(true)"><i nz-icon nzTheme="outline" nzType="save"></i></button>
+              </div>
+              <ng-template #disable>
+                <button nz-button (click)="submitForm(false)"><i nz-icon nzTheme="outline" nzType="save"></i></button>
+
+              </ng-template>
+            </div>
+
+          </div>
+
+
+          <br>
+
+
+          <div nz-row>
+            <div nz-col>
+              <div *ngIf="!VMIsDisable ; else enableClients">
+                <button nz-button [nzType]="'primary'" (click)="GetVirtualMeters(false, true)"><span>Mostrar desabilitados</span></button>
+              </div>
+              <ng-template #enableClients>
+                <button nz-button [nzType]="'primary'" (click)="GetVirtualMeters(true, true)"><span>Mostrar Habilitados</span></button>
+              </ng-template>
+          
             </div>
           </div>
-  
+          <br>
           <div nz-row class="row-5">
             <div nz-col>
-                <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '600px', y: '240px' }"  [nzPageSize]="10">
+                <nz-table [nzData]="listOfVMeters" nzTableLayout="fixed" [nzScroll]="{  x: '600px', y: '240px' }"  [nzPageSize]="10">
                   <thead>
                     <tr>
-                    <th nzLeft nzWidth="80px">ID</th>
+                    <th nzLeft nzWidth="90px">ID</th>
                       <th
                         *ngFor="let column of listOfColumns"
                         [nzSortOrder]="column.sortOrder"
@@ -120,12 +120,31 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let data of listOfData">
-                      <td nzLeft>{{ data.name }}</td>
-                      <td>{{ data.age }}</td>
-                      <td>{{ data.address }}</td>
+                      <td nzLeft>{{ data.id }}</td>
+                      <td>{{ (data.porcentaje * 100) }} %</td>
+                      <td>
+                        <div *ngIf="data.operacion;else Resta">
+                          <span>Suma (+)</span>
+                        </div>
+                        <ng-template #Resta>
+                          <span>Resta (-)</span>
+                        </ng-template>
+                      </td>
+                      <td>
+                        <div *ngIf="data.operacion;else Generacion">
+                          <span>Consumo</span>
+                        </div>
+                        <ng-template #Generacion>
+                          <span>Generacion</span>
+                        </ng-template>
+                      </td>
                       <td nzRight>
-                        <button class="edit" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-                        <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                        <div *ngIf="data.estado; else disablesList"> 
+                            <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableVMeter(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                        </div>
+                        <ng-template #disablesList>
+                            <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableVMeter(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                        </ng-template>
                       </td>
                     </tr>
                   </tbody>

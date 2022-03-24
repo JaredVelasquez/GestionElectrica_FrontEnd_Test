@@ -1,7 +1,7 @@
-import { Component, OnInit , Input} from '@angular/core';
+import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { Router } from "@angular/router";
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 
 @Component({
@@ -10,6 +10,9 @@ import { MeterSchema } from 'src/Core/interfaces/meter.interface';
   styleUrls: ['./meters-modal.component.css']
 })
 export class MetersModalComponent implements OnInit {
+  @Input() listOfMPoinst: MeasurePointSchema[] = [];
+  @Output() DataUpdated : EventEmitter<MeasurePointSchema> = new EventEmitter<MeasurePointSchema>();
+  
   validateForm!: FormGroup;
   isVisible:boolean = false;
   meter!: MeterSchema;
@@ -34,17 +37,8 @@ export class MetersModalComponent implements OnInit {
     tipo: ['', [Validators.required]],
   });
 
-  options = [
-    { label: 'tipo 1', value: 0 },
-    { label: 'tipo 2', value: 1 }
-  ];
-  options2 = [
-    { label: 'Baja Tension', value: 0 },
-    { label: 'Media Tension', value: 1 }
-  ];
   constructor(
     private fb: FormBuilder,
-    private router: Router,
     private  globalService : EndPointGobalService,
 
   ) { }
@@ -69,32 +63,31 @@ export class MetersModalComponent implements OnInit {
   submitForm(){
     
     console.log(this.validateForm.value);
-    // if (this.validateForm.valid) {
+    if (this.validateForm.valid) {
 
-    //   console.log(this.validateForm.value);
-    //   this.meter = {
-    //     ... this.validateForm.value,
-    //     estado: true
-    //   }
-    //   this.isVisible = false;
-    //   this.globalService.Post(this.url.postMeter, this.meter).subscribe(
-    //     (result:any) => {
-    //       if(result){
+      console.log(this.validateForm.value);
+      this.meter = {
+        ... this.validateForm.value,
+        estado: true
+      }
+      this.globalService.Post(this.url.postMeter, this.meter).subscribe(
+        (result:any) => {
+          if(result){
+            this.DataUpdated.emit(result);
+            this.isVisible = false;
             
-    //       }
-    //         console.log(result);
-          
-    //     }
-    //   );
+          }
+        }
+      );
       
-    // } else {
-    //   Object.values(this.validateForm.controls).forEach(control => {
-    //     if (control.invalid) {
-    //       control.markAsDirty();
-    //       control.updateValueAndValidity({ onlySelf: true });
-    //     }
-    //   });
-    // }
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
 
   }

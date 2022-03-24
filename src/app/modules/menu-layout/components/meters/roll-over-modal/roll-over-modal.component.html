@@ -1,5 +1,5 @@
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>RollOver</span></button>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+<button nz-button [nzType]="'primary'" (click)="showModal()"><i nz-icon nzType="clock-circle" nzTheme="outline"></i></button>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="RollOver" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <ng-container *nzModalContent>
       <div nz-row>
           <div nz-col>
@@ -15,11 +15,11 @@
           <div nz-row>
           
             <div nz-col nzSpan="11">
-              <label>Codigo de medidor</label>
+              <label>SourceID de medidor</label>
               <div nz-row>
                 <nz-form-item  nzFlex>
                   <nz-form-control>
-                    <nz-select class="inputMedium" formControlName="medidorId" [(ngModel)]="dataPosition.idMedidor" nzAllowClear>
+                    <nz-select class="inputMedium" formControlName="medidorId" [(ngModel)]="dataPosition.idMedidor" nzAllowClear [nzDisabled]="true">
                           <nz-option [nzLabel]="dataPosition.sourceId" [nzValue]="dataPosition.idMedidor"></nz-option>
                     </nz-select>
                   </nz-form-control>
@@ -128,9 +128,16 @@
                   </td>
                   <td>{{ data.fechaInicial  | date:'dd/M/yyyy' }}</td>
                   <td>{{ data.fechaFinal  | date:'dd/M/yyyy'  }}</td>
-                  <td>{{ data.energia }}</td>
                   <td>{{ data.lecturaAnterior }}</td>
                   <td>{{ data.lecturaNueva }}</td>
+                  <td>
+                    <div *ngIf="data.energia;else Reactiva">
+                      <span>Activa</span>
+                    </div>
+                    <ng-template #Reactiva>
+                      <span>Reactiva</span>
+                    </ng-template>
+                  </td>
                   <td nzRight> 
                       <button nz-button nzType="primary"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                   </td> 

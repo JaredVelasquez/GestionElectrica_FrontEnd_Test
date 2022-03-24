@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { MeterInterface, MeterSchema } from 'src/Core/interfaces/meter.interface';
+import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 
 interface DataItemTest {
@@ -16,15 +17,18 @@ interface DataItemTest {
   templateUrl: './meters.component.html',
   styleUrls: ['./meters.component.css']
 })
-export class MetersComponent implements OnInit, OnChanges {
+export class MetersComponent implements OnInit {
   listOfData: MeterInterface[] = [];
   listOfDataVM: any [] = [];
   meterIsActive: boolean = false;
   vmeterIsActive: boolean = false;
+  listOfMPoinst: MeasurePointSchema[] =[];
   
   url = {
     getMeters: 'get-meters',
     getVMeters: 'get-vmeters',
+    getVMetersmodel: 'medidor-virtuals',
+    getMeasurePoints: 'punto-medicions',
     get: 'medidors',
     post:'medidors',
     delete:'medidors',
@@ -39,34 +43,13 @@ export class MetersComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.GetMeters(1, false);
-    this.GetVirtualMeters(1, false);
+    this.GetVirtualMeters();
+    this.GetMeasurePoint();
   }
 
-  ngOnChanges(): void {
-
+  updateTable(list: any){
+    this.listOfData.push(list);
   }
-
-  // GetMeters(){
-  //   this.globalService.Get(this.url.getMeters).subscribe(
-  //     (result:any) => {
-  //       this.listOfData = result;
-
-  //       if(this.listOfData){
-  //         for(let i = 0 ; i < this.listOfData.length ; i++){
-
-  //           this.filterModel.push({text: this.listOfData[i].modeloMedidor+'', value: this.listOfData[i].modeloMedidor});
-  //           this.filterSerie.push({text: this.listOfData[i].serieMedidor+'', value: this.listOfData[i].serieMedidor})
-  //           this.filterCodigo.push({text: this.listOfData[i].codigoPM+'', value: this.listOfData[i].codigoPM});
-  //         }
-
-  //         for(let property in this.listOfData){
-  //           this.property.push(property);
-  //         }
-
-  //       }
-  //     }
-  //   );
-  // }
 
   GetMeters(estado: number, switched: boolean){
     if(switched){
@@ -83,39 +66,23 @@ export class MetersComponent implements OnInit, OnChanges {
       }
     );
   }
-  
-  GetVirtualMeters(estado: number, switched: boolean){
-    // if(switched){
-    //   if((!this.vmeterIsActive) && estado === 0){
-    //     this.vmeterIsActive = true;
-    //   }else{
-    //     this.vmeterIsActive = false;
-    //   }
-    // }
 
-    // this.globalService.GetId(this.url.getVMeters, estado).subscribe(
-    //   (result:any) => {
-    //     this.listOfDataVM = result;
-    //   }
-    // );
+  GetMeasurePoint(): void{
+    this.globalService.Get(this.url.getMeasurePoints).subscribe(
+      (result:any) => {
+        this.listOfMPoinst = result;
+      }
+    );
   }
 
- 
-  // disableVirtualMeter(vmeter: any, estado : number){
-  //   let newEstado = Boolean(estado);
-  //   this.globalService.Patch(this.url.update, zone.id, {estado: newEstado}).subscribe(
-  //     result => {
-  //       if(!result){
-  //         if(estado === 1){
-  //           this.GetZones(0, false);
-  //         }else{
-  //           this.GetZones(1, false);
-  //         }
+  GetVirtualMeters(){
+    this.globalService.Get(this.url.getVMetersmodel).subscribe(
+      (result:any) => {
+        this.listOfDataVM = result;
+      }
+    );
+  }
 
-  //       }
-  //     }
-  //   );
-  // } 
   disableMeter(meter: MeterInterface, estado : number){
     let newEstado = Boolean(estado);
     this.globalService.Patch(this.url.update, meter.idMedidor, {estado: newEstado}).subscribe(

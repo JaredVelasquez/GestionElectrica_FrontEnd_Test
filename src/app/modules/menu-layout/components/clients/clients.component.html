@@ -126,26 +126,26 @@
 
 <div nz-row class="row-2">
     
-    <div nz-col nzOffset="1" *ngFor="let provider of clients">
-    
-        <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionEdit]">
-            <nz-card-meta
-              nzTitle= {{provider.nombre}}
-              nzDescription= {{provider.direccion}}
-            ></nz-card-meta>
-          </nz-card>
-          <ng-template #coverTemplate>
-            <img alt="example" src="{{provider.imagen}}" />
-          </ng-template>
-          <ng-template #actionEdit>
-            <div *ngIf="provider.estado ; else disable">
-              <button nz-button (click)="disableClient(provider, 0)"><i nz-icon nzType="minus-square"></i></button>
-            </div>
-            <ng-template #disable>
-              <button nz-button (click)="disableClient(provider, 1)"><i nz-icon nzType="plus-square"></i></button>
-            </ng-template>
-          </ng-template>  
+  <div nz-col nzOffset="1" *ngFor="let provider of clients">
+  
+    <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionEdit]">
+        <nz-card-meta
+          nzTitle= {{provider.nombre}}
+          nzDescription= {{provider.direccion}}
+        ></nz-card-meta>
+      </nz-card>
+      <ng-template #coverTemplate>
+        <img alt="example" src="{{provider.imagen}}" />
+      </ng-template>
+      <ng-template #actionEdit>
+        <div *ngIf="provider.estado ; else disable">
+          <button nz-button (click)="disableClient(provider, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+        </div>
+        <ng-template #disable>
+          <button nz-button (click)="disableClient(provider, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+        </ng-template>
+      </ng-template>  
 
-    </div>
+</div>
     
 </div>
