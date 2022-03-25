@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } fro
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { MeterInterface, MeterSchema } from 'src/Core/interfaces/meter.interface';
+import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 
@@ -18,7 +18,7 @@ interface DataItemTest {
   styleUrls: ['./meters.component.css']
 })
 export class MetersComponent implements OnInit {
-  listOfData: MeterInterface[] = [];
+  listOfData: MeterSchema[] = [];
   listOfDataVM: any [] = [];
   meterIsActive: boolean = false;
   vmeterIsActive: boolean = false;
@@ -47,7 +47,8 @@ export class MetersComponent implements OnInit {
     this.GetMeasurePoint();
   }
 
-  updateTable(list: any){
+  updateTable(list: MeterSchema){
+    
     this.listOfData.push(list);
   }
 
@@ -83,9 +84,9 @@ export class MetersComponent implements OnInit {
     );
   }
 
-  disableMeter(meter: MeterInterface, estado : number){
+  disableMeter(meter: MeterSchema, estado : number){
     let newEstado = Boolean(estado);
-    this.globalService.Patch(this.url.update, meter.idMedidor, {estado: newEstado}).subscribe(
+    this.globalService.Patch(this.url.update, meter.id, {estado: newEstado}).subscribe(
       result => {
         if(!result){
           if(estado === 1){
@@ -103,7 +104,7 @@ export class MetersComponent implements OnInit {
     {
       name: '#',
       sortOrder: 'ascend',
-      sortFn: (a: MeterInterface, b: MeterInterface) => a.idMedidor - b.idMedidor,
+      sortFn: (a: MeterSchema, b: MeterSchema) => a.id - b.id,
       sortDirections: ['ascend', 'descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -112,20 +113,20 @@ export class MetersComponent implements OnInit {
     {
       name: 'Codigo',
       sortOrder: null,
-      sortFn: (a: MeterInterface, b: MeterInterface) => a.codigoPM.localeCompare(b.codigoPM),
+      sortFn: (a: MeterSchema, b: MeterSchema) => a.codigo.localeCompare(b.codigo),
       sortDirections: ['ascend', 'descend', null],
       filterMultiple: true,
       listOfFilter: [],
-      filterFn: (list: string[], item: MeterInterface) => list.some(codigo => item.codigoPM.indexOf(codigo) !== -1)
+      filterFn: (list: string[], item: MeterSchema) => list.some(codigo => item.codigo.indexOf(codigo) !== -1)
     },
     {
       name: 'Source ID',
       sortOrder: null,
-      sortFn: (a: MeterInterface, b: MeterInterface) => a.sourceId.localeCompare(b.sourceId),
+      sortFn: (a: MeterSchema, b: MeterSchema) => a.sourceId.localeCompare(b.sourceId),
       sortDirections: ['ascend', 'descend', null],
       filterMultiple: true,
       listOfFilter: [],
-      filterFn: (list: string[], item: MeterInterface) => list.some(codigo => item.codigoPM.indexOf(codigo) !== -1)
+      filterFn: (list: string[], item: MeterSchema) => list.some(codigo => item.sourceId.indexOf(codigo) !== -1)
     },
     {
       name: 'Descripcion',
@@ -140,25 +141,25 @@ export class MetersComponent implements OnInit {
       name: 'Modelo',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: MeterInterface, b: MeterInterface) => a.modeloMedidor.localeCompare(b.modeloMedidor),
+      sortFn: (a: MeterSchema, b: MeterSchema) => a.modelo.localeCompare(b.modelo),
       filterMultiple: false,
       listOfFilter: [],
-      filterFn: (address: string, item: MeterInterface) => item.modeloMedidor.indexOf(address) !== -1
+      filterFn: (address: string, item: MeterSchema) => item.modelo.indexOf(address) !== -1
     },
     {
       name: 'Serie',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: MeterInterface, b: MeterInterface) => a.serieMedidor.localeCompare(b.serieMedidor),
+      sortFn: (a: MeterSchema, b: MeterSchema) => a.serie.localeCompare(b.serie),
       filterMultiple: false,
       listOfFilter: [],
-      filterFn: (address: string, item: MeterInterface) => item.serieMedidor.indexOf(address) !== -1
+      filterFn: (address: string, item: MeterSchema) => item.serie.indexOf(address) !== -1
     },
     {
       name: 'Tipo',
       sortOrder: null,
       sortDirections: [null],
-      sortFn: (a: MeterInterface, b: MeterInterface) => Number(a.tipoMedidor) - Number(b.tipoMedidor),
+      sortFn: (a: MeterSchema, b: MeterSchema) => Number(a.tipo) - Number(b.tipo),
       filterMultiple: false,
       listOfFilter: [],
       filterFn: null

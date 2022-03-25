@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
-import { Observable } from 'rxjs';
 import { ChargesShema } from 'src/Core/interfaces/charges.interface';
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 

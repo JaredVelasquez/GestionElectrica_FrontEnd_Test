@@ -4,9 +4,8 @@ import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RollOverSchema } from 'src/Core/interfaces/roll-over.interface';
 import { endOfMonth } from 'date-fns';
-import { formatDate } from '@angular/common';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
-import { MeterInterface, MeterSchema } from 'src/Core/interfaces/meter.interface';
+import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 
 @Component({
   selector: 'app-roll-over-modal',
@@ -16,7 +15,7 @@ import { MeterInterface, MeterSchema } from 'src/Core/interfaces/meter.interface
 export class RollOverModalComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
-  @Input() dataPosition!: MeterInterface;
+  @Input() dataPosition!: MeterSchema;
   newRollOver!: RollOverSchema;
   ListOfRollOver: RollOverSchema[] = [];
   dates:{from: any, to: any} = {from: '', to: ''};
@@ -88,6 +87,18 @@ export class RollOverModalComponent implements OnInit {
       }
     );
   }
+
+  
+  cleanForm(): void{
+    this.validateForm = this.fb.group({
+      medidorId: [this.dataPosition.id],
+      energia: [ '', [Validators.required]],
+      lecturaAnterior: ['', [Validators.required]],
+      lecturaNueva: ['', [Validators.required]],
+      observacion: [''],
+    });
+  }
+
   ngOnInit(): void {
     this.validateForm = this.EmptyForm;
     this.GetRollOver();

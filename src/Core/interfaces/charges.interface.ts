@@ -7,7 +7,7 @@ export interface ChargesInterface{
 }
 
 export interface ChargesShema{
-    id?: number;
+    id: number;
     fechaInicio: string;
     fechaFinal: string;
     descripcion: string;

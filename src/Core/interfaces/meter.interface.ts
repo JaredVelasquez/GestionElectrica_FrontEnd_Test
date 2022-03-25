@@ -1,24 +1,7 @@
-
-export interface MeterInterface {
-    estado: boolean;
-    idMedidor: number;
-    sourceId: string;
-    codigoPM: string;
-    descripcionPM: string;
-    tipoMedidor: boolean;
-    modeloMedidor: string;
-    lecturaMax: number;
-    serieMedidor: string;
-    multiplicador: number;
-    puntoMedicionId: number;
-    puntoConexion: string;
-
-  }
-
-  export interface MeterSchema{
+export interface MeterSchema{
     id: number;
     codigo: string;
-    souceId: string;
+    sourceId: string;
     descripcion: string;
     modelo: string;
     serie: string;
@@ -26,7 +9,7 @@ export interface MeterInterface {
     multiplicador: number;
     puntoMedicionId: number;
     observacion: string;
-    puntoConexion: boolean;
+    puntoConexion: number;
     tipo: number;
     estado: boolean;
   }

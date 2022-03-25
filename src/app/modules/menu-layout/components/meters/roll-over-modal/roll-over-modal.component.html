@@ -19,8 +19,8 @@
               <div nz-row>
                 <nz-form-item  nzFlex>
                   <nz-form-control>
-                    <nz-select class="inputMedium" formControlName="medidorId" [(ngModel)]="dataPosition.idMedidor" nzAllowClear [nzDisabled]="true">
-                          <nz-option [nzLabel]="dataPosition.sourceId" [nzValue]="dataPosition.idMedidor"></nz-option>
+                    <nz-select class="inputMedium" formControlName="medidorId" [(ngModel)]="dataPosition.id" nzAllowClear [nzDisabled]="true">
+                          <nz-option [nzLabel]="dataPosition.sourceId" [nzValue]="dataPosition.id"></nz-option>
                     </nz-select>
                   </nz-form-control>
                 </nz-form-item>
@@ -89,7 +89,7 @@
 
           <div nz-row>
             <div nz-col nzOffset="19" nzSpan="1">
-                <button nz-button><i nz-icon nzTheme="outline" nzType="clear"></i></button>
+                <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
             </div>
             <div nz-col nzOffset="1" nzSpan="1">
                 <button nz-button (click)="submitForm()"><i nz-icon nzTheme="outline" nzType="save"></i></button>

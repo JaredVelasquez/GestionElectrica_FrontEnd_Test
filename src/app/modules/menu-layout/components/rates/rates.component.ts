@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+import { ZoneShema } from 'src/Core/interfaces/zones.interface';
+import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
 
 
 
@@ -16,10 +18,13 @@ export class RatesComponent implements OnInit{
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: RatesInterface[] = [];
+  listOfParamRelation: InputParametersInterface[] = [];
+  ratesIsActive: boolean = false;
   dataPosition: any[] = [];
   
   url = {
     get: 'get-rates',
+    getParams: 'get-parameter',
     post: 'tarifas',
     delete: 'tarifas',
     update: 'tarifas',
@@ -31,7 +36,8 @@ export class RatesComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    this.GetRates();
+    this.GetRates(1, false);
+    this.GetParams();
     
   }
 
@@ -50,18 +56,46 @@ export class RatesComponent implements OnInit{
   handleCancel(): void {
     this.isVisible = false;
   }
-  GetRates(){
-    this.globalService.Get(this.url.get).subscribe( 
+  
+  GetParams(){
+    this.globalService.Get(this.url.getParams).subscribe(
+      (result:any) => {
+        console.log(result);
+        
+        this.listOfParamRelation = result;
+      }
+    );
+  }
+
+  GetRates(estado: number, switched: boolean){
+    if(switched){
+      if((!this.ratesIsActive) && estado === 0){
+        this.ratesIsActive = true;
+      }else{
+        this.ratesIsActive = false;
+      }
+    }
+
+    this.globalService.GetId(this.url.get, estado).subscribe(
       (result:any) => {
         this.listOfData = result;
       }
     );
   }
-  DeleteRate(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
+
+
+  disableRate(meter: RatesInterface, estado : number){
+    let newEstado = Boolean(estado);
+    this.globalService.Patch(this.url.update, meter.id, {estado: newEstado}).subscribe(
       result => {
-        this.GetRates();
+        if(!result){
+          if(estado === 1){
+            this.GetRates(0, false);
+          }else{
+            this.GetRates(1, false);
+          }
+
+        }
       }
     );
   }

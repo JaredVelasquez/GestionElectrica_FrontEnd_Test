@@ -1,6 +1,7 @@
 import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { toNumber } from 'ng-zorro-antd/core/util';
 import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 
@@ -11,8 +12,8 @@ import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 })
 export class MetersModalComponent implements OnInit {
   @Input() listOfMPoinst: MeasurePointSchema[] = [];
-  @Output() DataUpdated : EventEmitter<MeasurePointSchema> = new EventEmitter<MeasurePointSchema>();
-  
+  @Output() DataUpdated : EventEmitter<MeterSchema> = new EventEmitter<MeterSchema>();
+
   validateForm!: FormGroup;
   isVisible:boolean = false;
   meter!: MeterSchema;
@@ -64,6 +65,8 @@ export class MetersModalComponent implements OnInit {
     
     console.log(this.validateForm.value);
     if (this.validateForm.valid) {
+      this.validateForm.value.puntoConexion = toNumber(this.validateForm.value.puntoConexion)
+      this.validateForm.value.tipo = toNumber(this.validateForm.value.tipo)
 
       console.log(this.validateForm.value);
       this.meter = {

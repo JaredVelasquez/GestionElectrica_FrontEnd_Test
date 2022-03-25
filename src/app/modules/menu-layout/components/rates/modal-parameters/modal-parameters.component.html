@@ -1,77 +1,46 @@
-<button nz-button [nzType]="'primary'" (click)="showModal2()"><span>Parametros</span></button>
-<nz-modal nzWidth="530px" [(nzVisible)]="isVisible2" nzTitle="Parametros" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()" 
+<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Parametros</span></button>
+<nz-modal nzWidth="530px" [(nzVisible)]="isVisible" nzTitle="Parametros" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" 
 [nzStyle]="{ top: '40px' }">
 <ng-container *nzModalContent>
     <form nz-form  [formGroup]="validateForm" nzLayout="horizontal">
 
-
-    <div nz-row class="row-1">
-
-        <div nz-col nzSpan="10">
-
-        <label>Fecha Inicial</label>
-        <div nz-row>
-            <nz-form-item>
-            <nz-form-control>
-                <nz-date-picker class="inputMedium" formControlName="fechaInicio"></nz-date-picker>
-            </nz-form-control>
-            </nz-form-item>
-        </div>
+      <div nz-row>
+        <div nz-col nzSpan="24">
+            <label>Fecha de RollOver</label>
+            <div nz-row>
+                    <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+            </div>
 
         </div>
-
-        <div nz-col nzOffset="2" nzSpan="12">
-
-        <label>Fecha Final</label>
-        <div nz-row>
-            <nz-form-item>
-            <nz-form-control>
-                <nz-date-picker class="inputMedium" formControlName="fechaFinal"></nz-date-picker>
-            </nz-form-control>
-            </nz-form-item>
-        </div>
-
-        </div>
-
     </div>
+    <br>
 
     <div nz-row class="row-2">
 
-        <div nz-col nzSpan="10">
+        <div nz-col nzSpan="11">
 
         <label>Cargo</label>
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <div *ngIf="editableSchema; else Empty">
-                        <nz-select formControlName="cargo" class="inputMedium" >
-                            <div *ngFor="let charge of ListOfCharges">
-                                <nz-option nzLabel={{charge.nombre}} nzValue={{charge.id}}></nz-option>
-                            </div>
-                        </nz-select> 
-                        
-                    
-                </div>  
-                <ng-template #Empty>
-                    <nz-select formControlName="cargo" class="inputMedium">
+                    <nz-select formControlName="cargoId" class="inputMedium">
                         <div *ngFor="let charge of ListOfCharges">
-                            <nz-option nzLabel={{charge.nombre}} nzValue={{charge.id}}></nz-option>
+                            <nz-option [nzLabel]="charge.nombre" [nzValue]="charge.id"></nz-option>
                         </div>
-                    </nz-select> 
-                </ng-template>                
+                    </nz-select>             
             </nz-form-control>
             </nz-form-item>
         </div>
 
         </div>
 
-        <div nz-col nzOffset="2" nzSpan="10">
+        <div nz-col nzOffset="2" nzSpan="11">
 
         <label>Valor</label>
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <input nz-input formControlName="valor" class="inputMedium" id="Descripcion" type="number" placeholder="(0.5)%"  [disabled]="false" />
+                <nz-input-number formControlName="valor" class="inputMedium" placeholder="(0.5)%"></nz-input-number>
             </nz-form-control>
             </nz-form-item>
         </div>
@@ -99,30 +68,32 @@
 
     
     <div nz-row class="row-4">
-        <div nz-col nzSpan="2"  nzOffset="16" class="row4-col1">
-            <nz-form-item *ngIf="!currentAction"  nzFlex>
-                <button nz-button nzType="default" nzShape="circle" (click)="CleanForm()"><i nz-icon nzType="clear"></i></button>
-            </nz-form-item>
+        
+        <div nz-col nzOffset="19" nzSpan="1">
+            <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
         </div>
-        <div nzSpan="2" nz-col>
-            <div *ngIf="currentAction; else Edit">
-                    <nz-form-item  nzFlex>
-                        <button nz-button nzType="primary" (click)="Post()">Guardar</button>
-                    </nz-form-item>
-            </div>
-        </div>
+        <div nz-col nzOffset="1" nzSpan="1">
+                <button nz-button (click)="submitForm()"><i nz-icon nzTheme="outline" nzType="save"></i></button>
 
-            <ng-template #Edit>
-                <nz-form-item  nzFlex>
-                    <button nz-button nzType="primary" (click)="Post()">Actualizar</button>
-                </nz-form-item>
-            </ng-template>
+        </div>
 
     </div>
 
+    <div nz-row>
+        <div nz-col>
+          <div *ngIf="!paramIsDisable ; else enableClients">
+            <button nz-button [nzType]="'primary'" (click)="GetParams(false, true)"><span>Mostrar desabilitados</span></button>
+          </div>
+          <ng-template #enableClients>
+            <button nz-button [nzType]="'primary'" (click)="GetParams(true, true)"><span>Mostrar Habilitados</span></button>
+          </ng-template>
+      
+        </div>
+      </div>
+
     <div nz-row class="row-5">
         <div nz-col>
-            <nz-table #filterTable [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+            <nz-table [nzData]="listOfParamRelation" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
               <thead>
                 <tr>
                 <th nzLeft nzWidth="80px">ID</th>
@@ -142,15 +113,19 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of filterTable.data">
+                <tr *ngFor="let data of ListOfData">
                 <td nzLeft>{{ data.idParametro }}</td>
                 <td>{{ data.cargoNombre }}</td>
                 <td>{{ data.valor }}</td>
-                <td>{{ data.fechaInicio }}</td>
-                <td>{{ data.fechaFinal }}</td>
+                <td>{{ data.fechaInicio  | date:'dd/M/yyyy'  }}</td>
+                <td>{{ data.fechaFinal  | date:'dd/M/yyyy' }}</td>
                 <td nzRight>
-                    <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="SelectEdit(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-                    <button class="delete" nz-button nzType="primary"  nzShape="circle" (click)="Delete(data.idParametro)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                    <div *ngIf="data.estado; else disablesList"> 
+                        <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRelation(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                    </div>
+                    <ng-template #disablesList>
+                        <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRelation(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                    </ng-template>
                 </td>
                 </tr>
               </tbody>

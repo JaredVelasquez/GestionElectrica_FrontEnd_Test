@@ -10,4 +10,23 @@ export interface InputParametersInterface{
     fechaFinal: string;
     estado: boolean;
     observacion: string;
+    tarifaId: number;
+}
+
+export interface InputParamSchema{
+    id: number;
+    tipoCargoId: number;
+    fechaInicio: string;
+    fechaFinal: string;
+    valor: string;
+    observacion: string;
+    tipo: boolean;
+    estado: boolean; 
+}
+
+export interface ParamRelationSchema { 
+    id: number;
+    tarifaId: number;
+    parametroId: number;
+    estado: boolean;
 }

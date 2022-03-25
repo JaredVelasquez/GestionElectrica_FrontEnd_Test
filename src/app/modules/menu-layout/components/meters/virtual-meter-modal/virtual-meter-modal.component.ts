@@ -2,10 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
-import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { MeterInterface } from 'src/Core/interfaces/meter.interface';
-import { VirtualMeterShema, VirtualMeterView } from 'src/Core/interfaces/virtual-meter.interface';
+import { MeterSchema } from 'src/Core/interfaces/meter.interface';
+import { VirtualMeterShema } from 'src/Core/interfaces/virtual-meter.interface';
 
 
 @Component({
@@ -17,7 +16,7 @@ import { VirtualMeterShema, VirtualMeterView } from 'src/Core/interfaces/virtual
 export class VirtualMeterModalComponent implements OnInit {
   isVisible = false;
   @Input() listOfVMeters: VirtualMeterShema[] = [];
-  @Input() dataPosition!: MeterInterface;
+  @Input() dataPosition!: MeterSchema;
   newVMeter!: VirtualMeterShema;
   validateForm!: FormGroup;
   listOfData: VirtualMeterShema[] = [];
@@ -48,7 +47,7 @@ export class VirtualMeterModalComponent implements OnInit {
     if(switched){
       this.listOfData.length = 0;
       for(let i = 0; i < this.listOfVMeters.length ; i++){
-        if(this.dataPosition.idMedidor === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
+        if(this.dataPosition.id === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
           this.listOfData.push(this.listOfVMeters[i]);
         }
       }
@@ -60,14 +59,11 @@ export class VirtualMeterModalComponent implements OnInit {
     }else{
       this.listOfData.length = 0;
       for(let i = 0; i < this.listOfVMeters.length ; i++){
-        if(this.dataPosition.idMedidor === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
+        if(this.dataPosition.id === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
           this.listOfData.push(this.listOfVMeters[i]);
         }
       }
-
     }
-    
-
   }
   
   disableVMeter(vmeter: VirtualMeterShema, estado : boolean){
@@ -94,7 +90,7 @@ export class VirtualMeterModalComponent implements OnInit {
 
   cleanForm(): void{
     this.validateForm = this.fb.group({
-      medidorId: [this.dataPosition.idMedidor],
+      medidorId: [this.dataPosition.id],
       porcentaje: ['', [Validators.required]],
       operacion: ['', [Validators.required]],
       observacion: ['', [Validators.required]],

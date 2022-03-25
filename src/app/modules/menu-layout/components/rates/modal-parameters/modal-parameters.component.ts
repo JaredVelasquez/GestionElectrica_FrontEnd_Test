@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
-import { InputParametersInterface } from "src/Core/interfaces/input-parameters.interface";
+import { InputParametersInterface, InputParamSchema } from "src/Core/interfaces/input-parameters.interface";
+import { ChargesInterface } from 'src/Core/interfaces/charges.interface';
+import { endOfMonth } from 'date-fns';
 
 @Component({
   selector: 'app-modal-parameters',
@@ -13,31 +15,25 @@ import { InputParametersInterface } from "src/Core/interfaces/input-parameters.i
 export class ModalParametersComponent implements OnInit {
   ListOfData: InputParametersInterface[] = [];
   @Input() dataPosition !: RatesInterface;
-  isVisible2 = false;
-  listOfDataModal: any[] = [];
-  ListOfCharges: any[] = [];
+  @Input() listOfParamRelation : InputParametersInterface[] = [];
+  isVisible = false;
+  ListOfCharges: ChargesInterface[] = [];
   validateForm!: FormGroup;
-  filterFechaInicio : Array<{text: string, value: any}>  = [];
-  filterFechaFinal : Array<{text: string, value: any}>  = [];
-  currentAction : boolean = true;
-  editableSchema !: InputParametersInterface | undefined;
+  paramIsDisable: boolean = false;
+  dates:{from: any, to: any} = {from: '', to: ''};
+  ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+
+  newParam!: any;
   url = {
     get: 'get-parameter',
     getcargo: 'tipo-cargos',
     post: 'parametro-tarifa',
-    delete: 'parametro-tarifas',
-    update: 'parametro-tarifas',
+    update: 'tarifa-parametro-detalles',
   };
 
-  action = {
-    post: true,
-    edit: false,
-  }
-
   EmptyForm = this.fb.group({
-    fechaInicio: ['', [Validators.required]],
-    fechaFinal: ['', [Validators.required]],
-    cargo: ['', [Validators.required]],
+    fecha: ['', [Validators.required]],
+    cargoId: ['', [Validators.required]],
     valor: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
   })
@@ -48,25 +44,11 @@ export class ModalParametersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.Get();  
+    this.GetParams(true, false);  
     this.GetCargo();
-    
-    
     this.validateForm = this.EmptyForm;
-
   }
 
-  Get(){
-    if(this.dataPosition.id){
-      this.globalService.GetId(this.url.get, this.dataPosition.id).subscribe(
-        (result: any) => {
-          
-          this.ListOfData = result;
-      }
-      );
-
-    }
-  }
 
   GetCargo(){
     this.globalService.Get(this.url.getcargo).subscribe(
@@ -78,57 +60,76 @@ export class ModalParametersComponent implements OnInit {
     );
   }
 
-  Post(): void{
+
+  
+  GetParams(estado: boolean, switched: boolean){
+    if(switched){
+      this.ListOfData.length = 0;
+      for(let i = 0; i < this.listOfParamRelation.length ; i++){
+        if(this.dataPosition.id === this.listOfParamRelation[i].tarifaId && this.listOfParamRelation[i].estado === estado){
+          this.ListOfData.push(this.listOfParamRelation[i]);
+        }
+      }
+      if((!this.paramIsDisable) && estado === false){
+        this.paramIsDisable = true;
+      }else{
+        this.paramIsDisable = false;
+      }
+    }else{
+      this.ListOfData.length = 0;
+      for(let i = 0; i < this.listOfParamRelation.length ; i++){
+        if(this.dataPosition.id === this.listOfParamRelation[i].tarifaId && this.listOfParamRelation[i].estado === estado){
+          this.ListOfData.push(this.listOfParamRelation[i]);
+        }
+      }
+    }
+    
+  }
+  
+  disableRelation(param: InputParametersInterface, estado : boolean){
+    this.globalService.Patch(this.url.update, param.id, {estado: estado}).subscribe(
+      result => {
+        if(!result){
+          for(let i = 0; i < this.listOfParamRelation.length; i++){
+            if(this.listOfParamRelation[i].id === param.id){
+              this.listOfParamRelation[i].estado = estado;
+            }
+          }
+
+          if(estado === true){
+            this.GetParams(false, false);
+          }else{
+            this.GetParams(true, false);
+          }
+
+        }
+      }
+    );
+  }
+
+
+  submitForm(): void{
     if (this.validateForm.valid) {
-      if(this.currentAction){
-        const providerPost = {
+        this.newParam = {
           idTarifa: this.dataPosition.id,
-          cargoId: Number(this.validateForm.value.cargo),
-          valor:  Number(this.validateForm.value.valor),
-          fechaInicio:  this.validateForm.value.fechaInicio,
-          fechaFinal:  this.validateForm.value.fechaFinal,
-          observacion:  this.validateForm.value.observacion,
+          ... this.validateForm.value,
+          fechaInicio: this.validateForm.value.fecha[0],
+          fechaFinal: this.validateForm.value.fecha[1],
           estado: true,
         }
-        console.log(providerPost);
         
-        this.globalService.Post(this.url.post, providerPost).subscribe(
+        console.log(this.newParam);
+        
+        this.globalService.Post(this.url.post, this.newParam).subscribe(
           (result:any) => {
-              this.Get();
+            if(result){
+              this.listOfParamRelation.push(result);
+              this.GetParams(true, false);
+              this.cleanForm();
+            }
           }
         );
-        this.EmptyForm = this.fb.group({
-          fechaInicio: ['', [Validators.required]],
-          fechaFinal: ['', [Validators.required]],
-          cargo: ['', [Validators.required]],
-          valor: ['', [Validators.required]],
-          observacion: ['', [Validators.required]],
-        })
-        this.CleanForm();
-      }
-      else{
-        
-      const providerUpdate = {
-        tipoCargoId: Number(this.validateForm.value.cargo),
-        fechaInicio:  this.validateForm.value.fechaInicio,
-        fechaFinal:  this.validateForm.value.fechaFinal,
-        valor:  this.validateForm.value.valor,
-        observacion:  this.validateForm.value.observacion,
-        tipo: this.editableSchema?.tipo,
-        estado: true,
-      }
-        if(this.editableSchema){
-          this.globalService.PutId(this.url.update, this.editableSchema.idParametro, providerUpdate).subscribe(
-            (result:any) => {
-                this.Get();
-                this.CleanForm();
-            }
-          );  
-          this.editableSchema = undefined;
-          
-        }
-      }
-      this.CleanForm();
+      
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
@@ -141,80 +142,42 @@ export class ModalParametersComponent implements OnInit {
 
   }
 
-  
-  Delete(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
-      result => {
-        console.log(result);
-        
-        this.Get();
-      }
-    );
-  }
-
-  SelectEdit(data: InputParametersInterface){
-    this.currentAction = this.action.edit;
-    data.cargoId = String(data.cargoId);
-    this.editableSchema = data;
+  cleanForm(): void{
     this.validateForm = this.fb.group({
-      fechaInicio: [data.fechaInicio, [Validators.required]],
-      fechaFinal: [data.fechaFinal, [Validators.required]],
-      cargo: [data.cargoId, [Validators.required]],
-      valor: [data.valor, [Validators.required]],
-      observacion: [data.observacion, [Validators.required]],
+      fecha: ['', [Validators.required]],
+      cargoId: ['', [Validators.required]],
+      valor: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
     })
-
-    console.log(this.validateForm.value);
-    
-
   }
 
-  CleanForm(){
-    this.currentAction = this.action.post;
-    this.validateForm = this.EmptyForm;
-    this.editableSchema = undefined;
-  }
-
-  showModal2(): void {
-    this.getFilters();
-    this.isVisible2 = true;
-    this.currentAction = this.action.post;
-  }
-
-  handleOk2(): void {
-    this.isVisible2 = false;
-    this.currentAction = this.action.post;
-  }
-
-  handleCancel2(): void {
-    this.isVisible2 = false;
-    this.currentAction = this.action.post;
-  }
-
-  getFilters(): void {
-    let fechaInicioAux: any[] = [];
-    let fechaFinalAux: any[] = [];
-    let filterAux: any[] = [];
-    if(this.ListOfData){
-      for(let i = 0 ; i < this.ListOfData.length ; i++){
-        fechaInicioAux.push(this.ListOfData[i].fechaInicio);
-        fechaFinalAux.push(this.ListOfData[i].fechaFinal);        
-      }
-
-      filterAux = [... new Set(fechaInicioAux)];
-      for(let i = 0; i < filterAux.length; i++){
-        this.filterFechaInicio.push({text: filterAux[i], value: filterAux[i]});      
-      }      
-      filterAux = [... new Set(fechaFinalAux)];      
-      for(let i = 0; i < filterAux.length; i++){
-        this.filterFechaFinal.push({text: filterAux[i], value: filterAux[i]});      
-      }  
+  onChange(result: Date[]): void {
+    this.dates = {
+      from: result[0],
+      to: result[1]
     }
-
+    console.log(this.dates);
   }
+
   
-  
+  showModal(): void {
+    this.validateForm = this.EmptyForm;
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    console.log('Button ok clicked!');
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    console.log('Button cancel clicked!');
+    this.isVisible = false;
+  }
+
+
+
+
   listOfColumns: ColumnItem[] = [
     {
       name: 'Cargo',
@@ -239,7 +202,7 @@ export class ModalParametersComponent implements OnInit {
       sortOrder: null,
       sortFn: (a: InputParametersInterface, b: InputParametersInterface)=> a.fechaInicio.localeCompare(b.fechaInicio),
       sortDirections: ['ascend' ,'descend', null],
-      listOfFilter: this.filterFechaInicio,
+      listOfFilter:[],
       filterFn: null,
       filterMultiple: true
     },
@@ -248,7 +211,7 @@ export class ModalParametersComponent implements OnInit {
       sortOrder: null,
       sortFn: (a: InputParametersInterface, b: InputParametersInterface)=> a.fechaFinal.localeCompare(b.fechaFinal),
       sortDirections: ['ascend' ,'descend', null],
-      listOfFilter: this.filterFechaFinal,
+      listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },

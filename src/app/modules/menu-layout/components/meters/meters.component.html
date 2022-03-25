@@ -15,7 +15,7 @@
 
   <div nz-col nzSpan="5">
 
-    <app-meters-modal [listOfMPoinst]="listOfMPoinst"></app-meters-modal>
+    <app-meters-modal [listOfMPoinst]="listOfMPoinst" (DataUpdated)="updateTable($event)"></app-meters-modal>
 
   </div>
 </div>
@@ -56,13 +56,13 @@
                 <button class="edit" nz-button nzType="primary" (click)=" disableMeter(data, 1)">Activar Contrato</button>
             </ng-template>
           </td>
-          <td>{{ data.idMedidor }}</td>
-          <td>{{ data.codigoPM }}</td>
+          <td>{{ data.id }}</td>
+          <td>{{ data.codigo }}</td>
           <td>{{ data.sourceId }}</td>
-          <td>{{ data.descripcionPM }}</td>
-          <td>{{ data.modeloMedidor }}</td>
-          <td>{{ data.serieMedidor }}</td>
-          <td>{{ data.tipoMedidor }}</td>
+          <td>{{ data.descripcion }}</td>
+          <td>{{ data.modelo }}</td>
+          <td>{{ data.serie }}</td>
+          <td>{{ data.tipo }}</td>
           <td nzRight> 
             <div *ngIf="data.estado; else contractDisable"> 
                 <p><span>Contrato Activo</span></p>

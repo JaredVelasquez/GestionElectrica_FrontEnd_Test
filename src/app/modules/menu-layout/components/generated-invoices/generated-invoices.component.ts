@@ -4,7 +4,7 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
-import { MeterInterface } from 'src/Core/interfaces/meter.interface';
+import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { ContractMeterInterface } from 'src/Core/interfaces/contract-meter.interface';
 import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
 
@@ -19,7 +19,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: InvoiceInterface[] = [];
-  listOfMeters: MeterInterface[] = [];
+  listOfMeters: MeterSchema[] = [];
   ListOfContractMeditors: ContractMeterInterface[] = [];
   ListOfCharges: EspecialChargesInterface[] = [];
   list: any[] = [];
