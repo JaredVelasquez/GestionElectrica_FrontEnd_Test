@@ -72,10 +72,13 @@
         <div nz-col nzOffset="19" nzSpan="1">
             <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
         </div>
-        <div nz-col nzOffset="1" nzSpan="1">
-                <button nz-button (click)="submitForm()"><i nz-icon nzTheme="outline" nzType="save"></i></button>
-
+        <div nz-col nzOffset="1" nzSpan="1" *ngIf="!editIsActive; else edit">
+                <button nz-button (click)="submitPostParam(ListOfData[0].estado)"><i nz-icon nzTheme="outline" nzType="save"></i></button>
         </div>
+        <ng-template #edit>
+            <button nz-button (click)="submitEditableForm(editIsActive)"><i nz-icon nzTheme="outline" nzType="save"></i></button>
+
+        </ng-template>
 
     </div>
 
@@ -122,6 +125,9 @@
                 <td nzRight>
                     <div *ngIf="data.estado; else disablesList"> 
                         <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRelation(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                    </div>
+                    <div> 
+                        <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                     </div>
                     <ng-template #disablesList>
                         <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRelation(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>

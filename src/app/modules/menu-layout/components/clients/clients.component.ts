@@ -41,7 +41,6 @@ export class ClientsComponent implements OnInit {
     telefono: ['', [Validators.required]],
     direccion: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
-    file: ['', [Validators.required]],
   })
   constructor(
     private globalService: EndPointGobalService,
@@ -53,18 +52,18 @@ export class ClientsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.GetClients(1);
+    this.GetClients(1, false);
     this.validateForm = this.EmptyForm;
   }
 
-  GetClients(estado: number){
-
+  GetClients(estado: number, switched: boolean){
+  if(switched){
     if((!this.disableClients) && estado === 0){
       this.disableClients = true;
     }else{
       this.disableClients = false;
     }
-
+  }
     this.globalService.GetId(this.url.get, estado).subscribe(
       (result:any) => {
         this.clients = result;
@@ -78,9 +77,9 @@ export class ClientsComponent implements OnInit {
       result => {
         if(!result){
           if(estado === 1){
-            this.GetClients(0)
+            this.GetClients(0, false)
           }else{
-            this.GetClients(1);
+            this.GetClients(1, false);
           }
 
         }
@@ -89,7 +88,6 @@ export class ClientsComponent implements OnInit {
   }
   
   PostClient(){
-    console.log(this.validateForm.value.file);
     
     if (this.validateForm.valid) {
       const provider = {
@@ -103,16 +101,20 @@ export class ClientsComponent implements OnInit {
       }
       
       
-      // console.log(provider);
-      // this.isVisible = false;
-      // this.globalService.Post(this.url.post, provider).subscribe(
-      //   (result:any) => {
-      //     if(result){
-      //       this.GetClients();
-      //     }
+      console.log(provider);
+      this.isVisible = false;
+      this.globalService.Post(this.url.post, provider).subscribe(
+        (result:any) => {
+          if(result){
+            if(this.disableClients === true){
+              this.GetClients(1, false);
+            }else{
+              this.GetClients(0, false);
+            }
+          }
           
-      //   }
-      // );
+        }
+      );
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {

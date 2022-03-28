@@ -6,7 +6,7 @@
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nueva tarifa</span></button>
 </ng-template>
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Tarifas Mensuales" (nzOnCancel)="handleCancel()" (nzOnOk)="Post()">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Tarifas Mensuales" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
     <ng-container *nzModalContent>
 
     <form nz-form [formGroup]="validateForm" nzLayout="horizontal">

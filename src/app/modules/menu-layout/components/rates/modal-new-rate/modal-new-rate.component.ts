@@ -37,7 +37,6 @@ export class ModalNewRateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.GetRates();
     this.validateForm = this.EmptyForm;
 
     
@@ -45,6 +44,7 @@ export class ModalNewRateComponent implements OnInit {
 
   showModal(): void {
     this.isVisible = true;
+    this.validateForm = this.EmptyForm;
     if(this.dataPosition){
       this.validateForm =this.fb.group({
         tipo: [String(this.dataPosition.tipo), [Validators.required]],
@@ -64,28 +64,32 @@ export class ModalNewRateComponent implements OnInit {
     this.isVisible = false;
     this.validateForm = this.EmptyForm;
   }
-  GetRates(){
-    this.globalService.Get(this.url.get).subscribe( 
-      (result:any) => {
-        this.listOfData2 = result;
-      }
-    );
-  }
-  Post(){
+
+  submitForm(){
+    console.log(this.dataPosition);
+    
     if (this.validateForm.valid) {
+      this.validateForm.value.tipo = Boolean(this.validateForm.value.tipo);
       const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
+        ... this.validateForm.value,
         puntoMedicionId: 1,
-        tipo: Boolean(this.validateForm.value.tipo),
-        observacion: this.validateForm.value.observacion,
         estado: true,
       }
 
       if(this.dataPosition){
         this.globalService.PutId( this.url.post, this.dataPosition?.id, provider).subscribe(
           (result:any) => {
-            
+            if(!result){
+              if(this.dataPosition){
+                
+                this.dataPosition.codigo = provider.codigo;
+                this.dataPosition.descripcion = provider.descripcion;
+                this.dataPosition.observacion = provider.observacion;
+                this.dataPosition.tipo = provider.tipo;
+                
+              }
+              this.isVisible = false;
+            }
           }
         );
         
@@ -102,12 +106,6 @@ export class ModalNewRateComponent implements OnInit {
 
       }
 
-      if(this.dataPosition){
-        this.dataPosition.codigo = provider.codigo;
-        this.dataPosition.descripcion = provider.descripcion;
-        this.dataPosition.observacion = provider.observacion;
-      }
-      this.isVisible = false;
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
@@ -119,14 +117,4 @@ export class ModalNewRateComponent implements OnInit {
     }
 
   }
-
-  DeleteRate(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
-      result => {
-        this.GetRates();
-      }
-    );
-  }
-
 }

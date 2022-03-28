@@ -27,7 +27,7 @@
     <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
       <thead>
         <tr>
-          <th nzLeft nzWidth="180px">Accion</th>
+          <th nzLeft nzWidth="100px">Accion</th>
           <th
             *ngFor="let column of listOfColumns"
             [nzSortOrder]="column.sortOrder"
@@ -39,8 +39,8 @@
           >
             {{ column.name }}
           </th>
-          <th nzRight nzWidth="100px">Estado</th>
-          <th nzRight nzWidth="100px">RollOver</th>
+          <th nzRight nzWidth="80px">Estado</th>
+          <th nzRight nzWidth="90px">RollOver</th>
           <th nzRight nzWidth="100px">Medidores Virtuales</th>
         </tr>
       </thead>
@@ -49,12 +49,25 @@
       <tbody>
         <tr *ngFor="let data of listOfData">
           <td nzLeft> 
-            <div *ngIf="data.estado; else disablesList"> 
-                <button class="edit" nz-button nzType="primary" nzDanger (click)=" disableMeter(data, 0)">Desactivar Contrato</button>
+            <div nz-row>
+              <div nz-col>
+                <div *ngIf="data.estado; else disablesList"> 
+                    <button nzSize="small" nz-button nzType="primary" nzDanger (click)=" disableMeter(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+    
+                </div>
+                <ng-template #disablesList>
+                    <button nzSize="small"  nz-button nzType="primary" (click)=" disableMeter(data, 1)"><i nz-icon nzType="file-done" nzTheme="outline"></i></button>
+    
+                </ng-template>
+
+              </div>
+              <div nz-col nzOffset="3">
+                <app-meters-modal [listOfMPoinst]="listOfMPoinst" [dataPosition]="data"></app-meters-modal>
+
+
+              </div>
             </div>
-            <ng-template #disablesList>
-                <button class="edit" nz-button nzType="primary" (click)=" disableMeter(data, 1)">Activar Contrato</button>
-            </ng-template>
+
           </td>
           <td>{{ data.id }}</td>
           <td>{{ data.codigo }}</td>
@@ -63,12 +76,12 @@
           <td>{{ data.modelo }}</td>
           <td>{{ data.serie }}</td>
           <td>{{ data.tipo }}</td>
-          <td nzRight> 
+          <td nzRight nzAlign="center"> 
             <div *ngIf="data.estado; else contractDisable"> 
-                <p><span>Contrato Activo</span></p>
+                <i nz-icon nzType="check-circle" nzTheme="outline"></i>
             </div>
             <ng-template #contractDisable>
-                <p><span>Contrato Inactivo</span></p>
+              <i nz-icon nzType="close-circle" nzTheme="outline"></i>
             </ng-template>
           </td> 
           <td nzAlign="center"  nzRight> 

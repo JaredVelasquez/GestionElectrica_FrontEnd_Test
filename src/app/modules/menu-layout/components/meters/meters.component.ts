@@ -6,11 +6,6 @@ import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 
-interface DataItemTest {
-  name: string;
-  age: number;
-  address: string;
-}
 
 @Component({
   selector: 'app-meters',

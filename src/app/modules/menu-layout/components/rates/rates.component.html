@@ -42,9 +42,11 @@
           <tr *ngFor="let data of listOfData">
             <td nzLeft>
               <div *ngIf="data.estado; else disablesList"> 
+                <app-modal-new-rate [dataPosition]="data"></app-modal-new-rate>
                   <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRate(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
               </div>
               <ng-template #disablesList>
+                <app-modal-new-rate [dataPosition]="data"></app-modal-new-rate>
                   <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRate(data, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
               </ng-template>
             </td>

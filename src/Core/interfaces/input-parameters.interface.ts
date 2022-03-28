@@ -18,7 +18,7 @@ export interface InputParamSchema{
     tipoCargoId: number;
     fechaInicio: string;
     fechaFinal: string;
-    valor: string;
+    valor: number;
     observacion: string;
     tipo: boolean;
     estado: boolean; 

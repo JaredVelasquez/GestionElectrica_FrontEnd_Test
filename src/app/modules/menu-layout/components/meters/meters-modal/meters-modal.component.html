@@ -1,5 +1,12 @@
   <!-- inicia modal -->
-  <button nzSpan="6" nz-button [nzType]="'primary'" (click)="showModal()"><span>Agregar Medidor Fisico</span></button>
+  <div>
+    <div *ngIf="dataPosition; else guardar">
+      <button nz-button nzSize="small"  nzType="primary" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+    </div>
+    <ng-template #guardar>
+      <button nz-button  [nzType]="'primary'" (click)="showModal()"><span>Agregar Medidor Fisico</span></button>
+    </ng-template>
+  </div>
 
   <nz-modal class="modal" [(nzVisible)]="isVisible" nzTitle="Medidor Fisico" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
     <ng-container  *nzModalContent>
@@ -26,9 +33,9 @@
               <nz-form-item  nzFlex>
                 <nz-form-control>
                     <nz-select class="inputMedium" formControlName="tipo" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
-                          <nz-option nzLabel="Baja Tension" nzValue="0"></nz-option>
-                          <nz-option nzLabel="Media Tension" nzValue="1"></nz-option>
-                          <nz-option nzLabel="Alta Tension" nzValue="2"></nz-option>
+                          <nz-option nzLabel="Baja Tension" [nzValue]=0></nz-option>
+                          <nz-option nzLabel="Media Tension" [nzValue]=1></nz-option>
+                          <nz-option nzLabel="Alta Tension" [nzValue]=2></nz-option>
                     </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -65,7 +72,7 @@
                 <nz-form-control>
                   <nz-select class="inputMedium" formControlName="puntoMedicionId" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
                     <div *ngFor="let point of listOfMPoinst">
-                      <nz-option [nzLabel]="point.descripcion" [nzValue]="point.id"></nz-option>
+                      <nz-option [nzLabel]="point.descripcion" [nzValue]=point.id></nz-option>
                     </div>
                   </nz-select>
                 </nz-form-control>
@@ -139,9 +146,9 @@
               <nz-form-item  nzFlex>
                 <nz-form-control>
                   <nz-select class="inputMedium" formControlName="puntoConexion" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
-                        <nz-option nzLabel="Baja Tension" nzValue="0"></nz-option>
-                        <nz-option nzLabel="Media Tension" nzValue="1"></nz-option>
-                        <nz-option nzLabel="Alta Tension" nzValue="2"></nz-option>
+                        <nz-option nzLabel="Baja Tension" [nzValue]="0"></nz-option>
+                        <nz-option nzLabel="Media Tension" [nzValue]="1"></nz-option>
+                        <nz-option nzLabel="Alta Tension" [nzValue]="2"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>

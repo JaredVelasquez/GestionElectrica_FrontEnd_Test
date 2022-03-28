@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
@@ -12,24 +12,19 @@ import { endOfMonth } from 'date-fns';
   templateUrl: './modal-parameters.component.html',
   styleUrls: ['./modal-parameters.component.css']
 })
-export class ModalParametersComponent implements OnInit {
+export class ModalParametersComponent implements OnInit, OnChanges {
   ListOfData: InputParametersInterface[] = [];
   @Input() dataPosition !: RatesInterface;
   @Input() listOfParamRelation : InputParametersInterface[] = [];
-  isVisible = false;
+  newParam!: InputParametersInterface | InputParamSchema;
   ListOfCharges: ChargesInterface[] = [];
-  validateForm!: FormGroup;
+  isVisible = false;
+  editIsActive!: InputParametersInterface | undefined;
   paramIsDisable: boolean = false;
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
 
-  newParam!: any;
-  url = {
-    get: 'get-parameter',
-    getcargo: 'tipo-cargos',
-    post: 'parametro-tarifa',
-    update: 'tarifa-parametro-detalles',
-  };
+  validateForm!: FormGroup;
 
   EmptyForm = this.fb.group({
     fecha: ['', [Validators.required]],
@@ -38,17 +33,28 @@ export class ModalParametersComponent implements OnInit {
     observacion: ['', [Validators.required]],
   })
 
+  url = {
+    get: 'get-parameter',
+    getcargo: 'tipo-cargos',
+    post: 'parametro-tarifas',
+    update: 'parametro-tarifas',
+  };
+
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
-  ngOnInit(): void {
-    this.GetParams(true, false);  
+  ngOnInit(): void { 
     this.GetCargo();
+    this.GetParams(true, false); 
     this.validateForm = this.EmptyForm;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.GetParams(true, false); 
+    
+  }
 
   GetCargo(){
     this.globalService.Get(this.url.getcargo).subscribe(
@@ -107,30 +113,18 @@ export class ModalParametersComponent implements OnInit {
     );
   }
 
-
-  submitForm(): void{
+  submitPostParam(estado: boolean): void {
     if (this.validateForm.valid) {
-        this.newParam = {
-          idTarifa: this.dataPosition.id,
-          ... this.validateForm.value,
-          fechaInicio: this.validateForm.value.fecha[0],
-          fechaFinal: this.validateForm.value.fecha[1],
-          estado: true,
-        }
-        
-        console.log(this.newParam);
-        
+        this.initializePostParam();
         this.globalService.Post(this.url.post, this.newParam).subscribe(
           (result:any) => {
             if(result){
               this.listOfParamRelation.push(result);
-              this.GetParams(true, false);
+              this.GetParams(estado, false);
               this.cleanForm();
             }
           }
         );
-      
-      
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -141,14 +135,84 @@ export class ModalParametersComponent implements OnInit {
     }
 
   }
+  initializePostParam(): void{
+    this.newParam = {
+      idTarifa: this.dataPosition.id,
+      ... this.validateForm.value,
+      fechaInicio: this.validateForm.value.fecha[0],
+      fechaFinal: this.validateForm.value.fecha[1],
+      estado: true,
+    }
+
+  }
+
+  submitEditableForm(dataEditable?: InputParametersInterface){    
+    if (this.validateForm.valid) {
+      if(dataEditable){
+        const {valor, observacion} = this.validateForm.value;
+        this.newParam = {
+        ... {valor, observacion},
+        id: dataEditable.idParametro,
+        tipo: dataEditable.tipo,
+        tipoCargoId: this.validateForm.value.cargoId,
+        fechaInicio: this.validateForm.value.fecha[0],
+        fechaFinal: this.validateForm.value.fecha[1],
+        estado: dataEditable.estado,
+        }
+        
+        dataEditable.cargoId = this.newParam.tipoCargoId;
+        dataEditable.fechaFinal = this.newParam.fechaFinal;
+        dataEditable.fechaInicio = this.newParam.fechaInicio;
+        dataEditable.valor = this.newParam.valor;
+        dataEditable.observacion = this.newParam.observacion;
+        
+        this.globalService.Patch(this.url.update, dataEditable.idParametro, this.newParam).subscribe(
+          (result:any) => {
+            if(!result){
+              if(dataEditable)
+              this.update(dataEditable, dataEditable.estado);
+              this.cleanForm();
+              this.editIsActive = undefined;
+            }
+          }
+        );  
+        
+      }
+  } else {
+    Object.values(this.validateForm.controls).forEach(control => {
+      if (control.invalid) {
+        control.markAsDirty();
+        control.updateValueAndValidity({ onlySelf: true });
+      }
+    });
+  }
+  }
 
   cleanForm(): void{
+    this.validateForm = this.EmptyForm;
+  }
+
+  update(data: InputParametersInterface, estado: boolean): void{
+    for(let i = 0; i < this.listOfParamRelation.length; i++){
+      if(this.listOfParamRelation[i].id === data.id){
+        this.listOfParamRelation[i] = {
+          ... data
+        }
+      }
+    }
+    this.GetParams(estado, false)
+  }
+
+  editableForm(data: InputParametersInterface){
+
     this.validateForm = this.fb.group({
-      fecha: ['', [Validators.required]],
-      cargoId: ['', [Validators.required]],
-      valor: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
+      fecha: [[data.fechaInicio.toString(), data.fechaFinal.toString()], [Validators.required]],
+      cargoId: [data.cargoId, [Validators.required]],
+      valor: [data.valor, [Validators.required]],
+      observacion: [data.observacion, [Validators.required]],
     })
+    this.editIsActive = data;
+    
   }
 
   onChange(result: Date[]): void {

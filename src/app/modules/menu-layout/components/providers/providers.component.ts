@@ -40,7 +40,6 @@ export class ProvidersComponent implements OnInit {
     telefono: ['', [Validators.required]],
     direccion: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
-    file: ['', [Validators.required]],
   })
 
   ngOnInit(): void {

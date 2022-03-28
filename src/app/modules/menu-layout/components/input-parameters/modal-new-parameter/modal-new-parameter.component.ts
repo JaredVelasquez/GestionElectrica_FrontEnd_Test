@@ -28,6 +28,13 @@ export class ModalNewParameterComponent implements OnInit {
     update: 'parametro-tarifas',
   };
 
+  EmptyForm = this.fb.group({
+    fechaInicio: [ '', [Validators.required]],
+    fechaFinal: [ '', [Validators.required]],
+    cargo: ['', [Validators.required]],
+    valor: ['', [Validators.required]],
+    observacion: ['', [Validators.required]],
+  });
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
@@ -35,7 +42,7 @@ export class ModalNewParameterComponent implements OnInit {
 
   ngOnInit(): void {
     this.Get();
-    this.validateForm =this.fb.group({
+    this.validateForm = this.fb.group({
       fechaInicio: [ '', [Validators.required]],
       fechaFinal: [ '', [Validators.required]],
       cargo: ['', [Validators.required]],
@@ -47,7 +54,7 @@ export class ModalNewParameterComponent implements OnInit {
   showModal(): void {
     this.isVisible = true;
     if(this.dataPosition){
-      this.validateForm =this.fb.group({
+      this.validateForm = this.fb.group({
         fechaInicio: [ this.dataPosition.fechaInicio, [Validators.required]],
         fechaFinal: [ this.dataPosition.fechaFinal, [Validators.required]],
         cargo: [String(this.dataPosition.cargoId), [Validators.required]],
@@ -57,13 +64,7 @@ export class ModalNewParameterComponent implements OnInit {
     }
     else{
       
-    this.validateForm =this.fb.group({
-      fechaInicio: [ '', [Validators.required]],
-      fechaFinal: [ '', [Validators.required]],
-      cargo: ['', [Validators.required]],
-      valor: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    });
+    this.validateForm = this.EmptyForm;
   
     }
   }

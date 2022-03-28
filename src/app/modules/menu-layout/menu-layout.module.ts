@@ -58,6 +58,7 @@ import { ModalNewRateComponent } from './components/rates/modal-new-rate/modal-n
 import { ModalNewInvoicesComponent } from './components/generated-invoices/modal-new-invoices/modal-new-invoices.component';
 import { ReportComponent } from './components/report/report.component';
 import { RollOverModalComponent } from './components/meters/roll-over-modal/roll-over-modal.component';
+import { SubmitZoneModalComponent } from './components/zones/submit-zone-modal/submit-zone-modal.component';
 
 
 @NgModule({
@@ -88,8 +89,8 @@ import { RollOverModalComponent } from './components/meters/roll-over-modal/roll
     ModalNewRateComponent,
     ModalNewInvoicesComponent,
     ReportComponent,
-    RollOverModalComponent
-    
+    RollOverModalComponent,
+    SubmitZoneModalComponent
   ],
   imports: [
     CommonModule,

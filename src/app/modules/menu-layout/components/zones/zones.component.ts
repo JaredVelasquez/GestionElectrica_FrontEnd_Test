@@ -15,6 +15,7 @@ export class ZonesComponent implements OnInit {
   listOfData: ZoneShema[] = [];
   validateForm!: FormGroup;
   provider!: ZoneShema;
+  
   url = {
     get: 'get-zones',
     post: 'zonas',
@@ -37,6 +38,12 @@ export class ZonesComponent implements OnInit {
     this.validateForm = this.EmptyForm;
   }
   
+
+  updateTable(list: ZoneShema){
+    
+    this.listOfData.push(list);
+  }
+
 
   GetZones(estado: number, switched: boolean){
     if(switched){
@@ -69,55 +76,6 @@ export class ZonesComponent implements OnInit {
       }
     );
   }
-  
-  PostZone(){
-    if (this.validateForm.valid) {
-      this.provider = {
-        ... this.validateForm.value,
-        estado: true
-      }
-      console.log(this.provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, this.provider).subscribe(
-        (result:any) => {
-          if(result){
-            if(result.estado === true){
-              this.GetZones(1, false);
-            }else{
-              this.GetZones(0, false);
-            }
-  
-          }
-        }
-      );
-      
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
-
-  }
-  
-  showModal(): void {
-    this.isVisible = true;
-    this.validateForm = this.EmptyForm;
-  }
-
-  handleOk(): void {
-    console.log('Button ok clicked!');
-    this.isVisible = false;
-  }
-
-  handleCancel(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible = false;
-  }
-
-
 
   
   listOfColumns: ColumnItem[] = [
