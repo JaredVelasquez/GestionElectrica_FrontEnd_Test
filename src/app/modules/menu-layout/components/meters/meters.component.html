@@ -1,8 +1,8 @@
 <h1>Medidores Fisicos</h1>
-
+<br>
 <div nz-row>
 
-  <div nz-col nzSpan="8">
+  <div nz-col nzSpan="5">
 
     <div *ngIf="!meterIsActive ; else enableClients">
       <button nz-button [nzType]="'primary'" (click)="GetMeters(0, true)"><span>Medidores desabilitados</span></button>
@@ -19,6 +19,8 @@
 
   </div>
 </div>
+
+<br>
 
 <div nz-row>
 

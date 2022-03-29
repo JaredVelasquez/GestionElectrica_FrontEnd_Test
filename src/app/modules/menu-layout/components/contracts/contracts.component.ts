@@ -1,7 +1,7 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
-import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
+import { ContractInterface, ContractSchema } from 'src/Core/interfaces/contracts.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 
@@ -12,6 +12,7 @@ import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 })
 export class ContractsComponent implements OnInit{
   isVisible = false;
+  constractsIsDisable: boolean = false;
   validateForm!: FormGroup;
   ListOfData!: ContractInterface[];
   ListOfClients: ActorInterface[] = [];
@@ -30,7 +31,7 @@ export class ContractsComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    this.GetRates();
+    this.GetContracts(1, false);
     this.GetClients();
   }
 
@@ -47,18 +48,8 @@ export class ContractsComponent implements OnInit{
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
-  GetRates(){
-    this.globalService.Get(this.url.get).subscribe( 
-      (result:any) => {
-        this.ListOfData = result;
-        console.log(this.ListOfData);
-        
-      }
-    );
-  }
-
   GetClients(){
-    this.globalService.Get(this.url.getClients).subscribe(
+    this.globalService.GetId(this.url.getClients, 1).subscribe(
       (result: ActorInterface[] | any) => {
         this.ListOfClients = result;
       }
@@ -66,22 +57,41 @@ export class ContractsComponent implements OnInit{
     );
   }
 
-  DeleteRate(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
+  
+  GetContracts(estado: number, switched: boolean){
+    if(switched){
+      if((!this.constractsIsDisable) && estado === 0){
+        this.constractsIsDisable = true;
+      }else{
+        this.constractsIsDisable = false;
+      }
+    }
+
+    this.globalService.GetId(this.url.get, estado).subscribe(
+      (result:any) => {
+        this.ListOfData = result;
+      }
+    );
+  }
+  
+  disableContract(constract: ContractInterface, estado : number){
+    let newEstado = Boolean(estado);
+    this.globalService.Patch(this.url.update, constract.id, {estado: newEstado}).subscribe(
       result => {
-        this.GetRates();
+        if(!result){
+          if(estado === 1){
+            this.GetContracts(0, false);
+          }else{
+            this.GetContracts(1, false);
+          }
+
+        }
       }
     );
   }
 
   TablaUpdated(list: any){
-
     this.ListOfData.push(list);
-    console.log(this.ListOfData);
-    
-      
-    
   }
 
 
@@ -128,6 +138,15 @@ export class ContractsComponent implements OnInit{
       name: 'Creacion',
       sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaCreacion.localeCompare(b.fechaCreacion),
+      sortDirections: ['ascend','descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Vencimiento',
+      sortOrder: null,
+      sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaVenc.localeCompare(b.fechaVenc),
       sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,

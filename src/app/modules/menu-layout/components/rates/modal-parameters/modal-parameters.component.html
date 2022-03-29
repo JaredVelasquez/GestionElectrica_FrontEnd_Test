@@ -1,4 +1,4 @@
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Parametros</span></button>
+<button nz-button nzSize="small" [nzType]="'primary'" (click)="showModal()"><i nz-icon nzType="file-text" nzTheme="outline"></i></button>
 <nz-modal nzWidth="530px" [(nzVisible)]="isVisible" nzTitle="Parametros" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" 
 [nzStyle]="{ top: '40px' }">
 <ng-container *nzModalContent>
@@ -72,8 +72,8 @@
         <div nz-col nzOffset="19" nzSpan="1">
             <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
         </div>
-        <div nz-col nzOffset="1" nzSpan="1" *ngIf="!editIsActive; else edit">
-                <button nz-button (click)="submitPostParam(ListOfData[0].estado)"><i nz-icon nzTheme="outline" nzType="save"></i></button>
+        <div nz-col nzOffset="1" nzSpan="1" >
+                <button *ngIf="!editIsActive; else edit" nz-button (click)="submitPostParam(ListOfData[0].estado)"><i nz-icon nzTheme="outline" nzType="save"></i></button>
         </div>
         <ng-template #edit>
             <button nz-button (click)="submitEditableForm(editIsActive)"><i nz-icon nzTheme="outline" nzType="save"></i></button>
@@ -96,7 +96,7 @@
 
     <div nz-row class="row-5">
         <div nz-col>
-            <nz-table [nzData]="listOfParamRelation" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+            <nz-table  [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="3">
               <thead>
                 <tr>
                 <th nzLeft nzWidth="80px">ID</th>

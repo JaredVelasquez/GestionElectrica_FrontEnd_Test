@@ -1,11 +1,11 @@
 
 <div *ngIf="dataPosition; else Guardar">
-    <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+    <button nz-button nzSize="small" nzType="primary" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
 </div>
 <ng-template #Guardar>
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
 </ng-template>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Contrato" (nzOnCancel)="handleCancel()" (nzOnOk)="PushData()">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Contrato" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
     <ng-container *nzModalContent>
 
     <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
@@ -31,7 +31,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <nz-select formControlName="clasificacion" class="inputMedium">
+                        <nz-select formControlName="Clasificacion" class="inputMedium">
                             <nz-option nzLabel="Permanente" nzValue="P"></nz-option>
                             <nz-option nzLabel="Temporal" nzValue="C"></nz-option>
                             <nz-option nzLabel="Anual" nzValue="I"></nz-option>
@@ -53,7 +53,7 @@
                     <nz-form-control>
                         <nz-select formControlName="actorId" class="inputLarge">
                             <div *ngFor="let client of ListOfClients">
-                                <nz-option nzLabel={{client.nombre}} nzValue={{client.id}}></nz-option>
+                                <nz-option [nzLabel]=client.nombre [nzValue]=client.id></nz-option>
                             </div>
                         </nz-select>                   
                     </nz-form-control>
@@ -107,13 +107,13 @@
                             <nz-form-item nzFlex>
                             <nz-form-control>
                                 <nz-select formControlName="diaGeneracion" class="inputMedium">
-                                    <nz-option nzLabel="Lunes" nzValue="1"></nz-option>
-                                    <nz-option nzLabel="Martes" nzValue="2"></nz-option>
-                                    <nz-option nzLabel="Miercoles" nzValue="3"></nz-option>
-                                    <nz-option nzLabel="Jueves" nzValue="4"></nz-option>
-                                    <nz-option nzLabel="Viernes" nzValue="5"></nz-option>
-                                    <nz-option nzLabel="Sabado" nzValue="6"></nz-option>
-                                    <nz-option nzLabel="Domingo" nzValue="7"></nz-option>
+                                    <nz-option nzLabel="Lunes" [nzValue]=1></nz-option>
+                                    <nz-option nzLabel="Martes" [nzValue]=2></nz-option>
+                                    <nz-option nzLabel="Miercoles" [nzValue]=3></nz-option>
+                                    <nz-option nzLabel="Jueves" [nzValue]=4></nz-option>
+                                    <nz-option nzLabel="Viernes" [nzValue]=5></nz-option>
+                                    <nz-option nzLabel="Sabado" [nzValue]=6></nz-option>
+                                    <nz-option nzLabel="Domingo" [nzValue]=7></nz-option>
                                 </nz-select>                   
                             </nz-form-control>
                             </nz-form-item>
@@ -144,8 +144,8 @@
                     <nz-form-control>
                       <nz-radio-group >
                         <nz-select formControlName="exportacion" class="inputLarge">
-                            <nz-option nzLabel="Fecha de contrato" nzValue="true"></nz-option>
-                            <nz-option nzLabel="Fecha especifica" nzValue="false"></nz-option>
+                            <nz-option nzLabel="Fecha de contrato" [nzValue]='true'></nz-option>
+                            <nz-option nzLabel="Fecha especifica" [nzValue]='false'></nz-option>
                         </nz-select>  
                       </nz-radio-group>
                     </nz-form-control>

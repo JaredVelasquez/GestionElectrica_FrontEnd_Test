@@ -1,6 +1,7 @@
 <h1>Clientes</h1>
-<div nz-row class="row-1">
-  <div nz-col nzOffset="3" nzSpan="5">
+<br>
+<div nz-row>
+  <div nz-col nzOffset="1" nzSpan="4">
     <div *ngIf="!disableClients ; else enableClients">
       <button nz-button [nzType]="'primary'" (click)="GetClients(0, true)"><span>Mostrar desabilitados</span></button>
     </div>
@@ -9,143 +10,40 @@
     </ng-template>
 
   </div>
-    
-  <div nz-col nzOffset="1" nzSpan="4" class="row1-col1">
-  
-  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Cliente</span></button>
-  <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="PostClient()">
-    <ng-container *nzModalContent>
-    <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
-
-                  <div nz-row class="row-2">
-                    
-                    <div nz-col [nzSpan]="24" class="row3-col1">
-      
-                        <label>Nombre</label>
-                        <div nz-row>
-                          <nz-form-item>
-                            <nz-form-control>
-                              <input nz-input  class="inputLarge" id="nombre" type="text" placeholder=" Nombre de proveedor " formControlName="nombre" />
-                            </nz-form-control>
-                          </nz-form-item>
-                        </div>
-        
-      
-                    </div>
-      
-                  </div>
-      
-                  
-                  <div nz-row class="row-1">
-                      <div nz-col  [nzSpan]="24" class="row1-col1">
-                          <label>Telefono</label>
-                          <div nz-row>
-                            <nz-form-item>
-                              <nz-form-control>
-                                <input nz-input  class="inputLarge" id="Descripcion" type="text" placeholder=" +50498####98 " formControlName="telefono" />
-                              </nz-form-control>
-                            </nz-form-item>
-                          </div>
-          
-        
-                      </div>
-                    </div>
-      
-                    
-                  <div nz-row class="row-1">
-                      <div nz-col  [nzSpan]="24" class="row1-col1">
-                          <label>Direccion</label>
-                          <div nz-row>
-                            <nz-form-item>
-                              <nz-form-control>
-                                <input nz-input  class="inputLarge" id="direccion" type="text" placeholder=" 1 ave 2 calle bloque#2 " formControlName="direccion" />
-                              </nz-form-control>
-                            </nz-form-item>
-                          </div>
-          
-        
-                      </div>
-                    </div>
-<!-- 
-                    <div nz-row>
-                      <div nz-col>
-                        <label>Logo de cliente</label>
-                        <div nz-row>
-                          <nz-form-item>
-                            <nz-form-control>
-                              <input nz-input id="file" type="file" formControlName="file" />
-                            </nz-form-control>
-                          </nz-form-item>
-                        </div>
-
-                      </div>
-                    </div> -->
-
-      
-                    
-      
-      
-      
-                      <div nz-row class="row-3">
-                    
-                          <div nz-col [nzSpan]="24" class="row3-col1">
-                          
-                              <label>Observacion</label>
-                              <div nz-row>
-                                  <nz-form-item>
-                                  <nz-form-control>
-                                      <textarea class="inputLarge" formControlName="observacion" nz-input rows="2" placeholder=" Escriba algo respecto al proveedor "></textarea>
-                                  </nz-form-control>
-                                  </nz-form-item>
-                              </div>
-        
-                            </div>
-                          </div>
-            
-          </form>
-
-
-          </ng-container>
-          
-        </nz-modal>
-
+  <div nz-col> 
+    <app-submit-provider-modal (DataUpdated)="updateTable($event)"></app-submit-provider-modal>
   </div>
-  
-  <div nz-col nzOffset="1" nzSpan="10" class="row1-col2">
-
-    <nz-input-group [nzSuffix]="suffixIconSearch">
-      <input type="text" nz-input placeholder="input search text" />
-    </nz-input-group>
-    <ng-template #suffixIconSearch>
-      <i nz-icon nzType="search"></i>
-    </ng-template>
-    
-  </div>  
 </div>
-
-
+<br>
 <div nz-row class="row-2">
     
-  <div nz-col nzOffset="1" *ngFor="let provider of clients">
+  <div nz-col nzOffset="1" *ngFor="let provider of listOfClients">
   
-    <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionEdit]">
-        <nz-card-meta
-          nzTitle= {{provider.nombre}}
-          nzDescription= {{provider.direccion}}
-        ></nz-card-meta>
-      </nz-card>
-      <ng-template #coverTemplate>
-        <img alt="example" src="{{provider.imagen}}" />
-      </ng-template>
-      <ng-template #actionEdit>
-        <div *ngIf="provider.estado ; else disable">
-          <button nz-button (click)="disableClient(provider, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-        </div>
-        <ng-template #disable>
-          <button nz-button (click)="disableClient(provider, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+      <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionEdit]">
+          <nz-card-meta
+            nzTitle= {{provider.nombre}}
+            nzDescription= {{provider.direccion}}
+          ></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="{{provider.imagen}}" />
         </ng-template>
-      </ng-template>  
+        <ng-template #actionEdit>
+          <div nz-row nzAlign="middle" nzJustify="center">
+            <div nz-col>
+              <div *ngIf="provider.estado ; else disable">
+                <button nz-button nzDanger nzType="primary" (click)="disableProvider(provider, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+              </div>
+              <ng-template #disable>
+                <button nz-button (click)="disableProvider(provider, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+              </ng-template>
+            </div>
+              <div nz-col nzOffset="1">
+                <app-submit-provider-modal [dataPosition]="provider"></app-submit-provider-modal>
+              </div>
+            </div> 
+          </ng-template> 
 
-</div>
-    
+
+  </div>
 </div>

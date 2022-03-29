@@ -1,7 +1,8 @@
 <h1>Tarifas</h1>
 <div nz-row class="row-1">
+
   
-  <div nz-col nzSpan="8">
+  <div nz-col nzSpan="5">
 
     <div *ngIf="!ratesIsActive ; else enableClients">
       <button nz-button [nzType]="'primary'" (click)="GetRates(0, true)"><span>Medidores desabilitados</span></button>
@@ -12,7 +13,7 @@
 
   </div>
   <br>
-    <div nz-col nzOffset="1" nzSpan="4" class="row1-col1">
+    <div nz-col nzOffset="1" nzSpan="4">
       <app-modal-new-rate (DataUpdated)="updateTable($event)"></app-modal-new-rate>
     </div>
 </div>
@@ -22,7 +23,7 @@
       <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1300px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="80px">Acciones</th>
+          <th nzLeft nzWidth="50px">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -30,31 +31,40 @@
               [nzSortDirections]="column.sortDirections"
               [nzFilterMultiple]="column.filterMultiple"
               [nzFilters]="column.listOfFilter"
-              [nzFilterFn]="column.filterFn"
-              nzWidth="120px"
+              [nzFilterFn]="column.filterFn" nzWidth="120px"
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="100px">Parametros</th>
+            <th nzRight nzWidth="48px">Parametros</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of listOfData">
             <td nzLeft>
-              <div *ngIf="data.estado; else disablesList"> 
-                <app-modal-new-rate [dataPosition]="data"></app-modal-new-rate>
-                  <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRate(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+              <div nz-row nzAlign="middle" nzJustify="center">
+                <div nz-col>
+                  <app-modal-new-rate [dataPosition]="data"></app-modal-new-rate>
+                </div>
+                
+                <div nz-col nzOffset="1">
+                  <div nz-col>
+                    <div *ngIf="data.estado; else disablesList"> 
+                        <button nz-button nzSize="small" nzDanger nzType="primary" (click)="disableRate(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                    </div>
+                    <ng-template #disablesList>
+                        <button nz-button nzSize="small" nzType="primary" (click)=" disableRate(data, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                    </ng-template>
+    
+                  </div>
+                </div>
+
               </div>
-              <ng-template #disablesList>
-                <app-modal-new-rate [dataPosition]="data"></app-modal-new-rate>
-                  <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRate(data, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
-              </ng-template>
             </td>
             <td>{{data.id}}</td>
             <td>{{data.codigo}}</td>
             <td>{{ data.descripcion }}</td>
             <td>{{ data.observacion }}</td>
-            <td nzRight>
+            <td nzRight nzAlign="center">
               <app-modal-parameters [dataPosition]="data" [listOfParamRelation]="listOfParamRelation"></app-modal-parameters>
             </td>
           </tr>

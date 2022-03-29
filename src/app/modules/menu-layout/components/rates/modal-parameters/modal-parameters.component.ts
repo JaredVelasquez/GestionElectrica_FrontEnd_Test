@@ -36,8 +36,8 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   url = {
     get: 'get-parameter',
     getcargo: 'tipo-cargos',
-    post: 'parametro-tarifas',
-    update: 'parametro-tarifas',
+    post: 'parametro-tarifa',
+    update: 'tarifa-parametro-detalles',
   };
 
   constructor(
@@ -119,7 +119,9 @@ export class ModalParametersComponent implements OnInit, OnChanges {
         this.globalService.Post(this.url.post, this.newParam).subscribe(
           (result:any) => {
             if(result){
-              this.listOfParamRelation.push(result);
+              console.log(result);
+              
+              this.ListOfData.push(result);
               this.GetParams(estado, false);
               this.cleanForm();
             }

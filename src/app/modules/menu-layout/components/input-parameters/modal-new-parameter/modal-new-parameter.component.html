@@ -1,35 +1,22 @@
 
 <div *ngIf="dataPosition; else Guardar">
-    <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+    <button nz-button nzSize="small" nzType="primary" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
 </div>
 <ng-template #Guardar>
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
 </ng-template>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Parametros de entrada" (nzOnCancel)="handleCancel()" (nzOnOk)="PushData()">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Parametros de entrada" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
     <ng-container *nzModalContent>
 
     <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
 
         <div nz-row>
-            <div nz-col nzSpan="11">
-                <label>Fecha Inicial</label>
-                    <div nz-row>
-                        <nz-form-item>
-                        <nz-form-control>
-                            <nz-date-picker formControlName="fechaInicio" class="inputMedium"></nz-date-picker>
-                        </nz-form-control>
-                        </nz-form-item>
-                    </div>
-            </div>
-            <div nz-col nzSpan="11" nzOffset="2">
-                <label>Fecha Final</label>
+            <div nz-col nzSpan="24">
+                <label>Fecha de RollOver</label>
                 <div nz-row>
-                    <nz-form-item >
-                    <nz-form-control>
-                        <nz-date-picker formControlName="fechaFinal" class="inputMedium"></nz-date-picker>
-                    </nz-form-control>
-                    </nz-form-item>
+                        <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges"></nz-range-picker>
                 </div>
+    
             </div>
         </div>
 
@@ -39,9 +26,9 @@
                 <div nz-row>
                     <nz-form-item nzFlex>
                     <nz-form-control>
-                        <nz-select formControlName="cargo" class="inputMedium">
+                        <nz-select formControlName="tipoCargoId" class="inputMedium">
                             <div *ngFor="let charge of ListOfCharges">
-                                <nz-option nzLabel={{charge.nombre}} nzValue={{charge.id}}></nz-option>
+                                <nz-option [nzLabel]=charge.nombre [nzValue]=charge.id></nz-option>
                             </div>
                         </nz-select>                   
                     </nz-form-control>

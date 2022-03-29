@@ -1,6 +1,6 @@
 
 <div *ngIf="dataPosition; else Guardar">
-    <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+    <button class="edit" nz-button nzSize="small" nzType="primary" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
 </div>
 <ng-template #Guardar>
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nueva tarifa</span></button>

@@ -59,6 +59,8 @@ import { ModalNewInvoicesComponent } from './components/generated-invoices/modal
 import { ReportComponent } from './components/report/report.component';
 import { RollOverModalComponent } from './components/meters/roll-over-modal/roll-over-modal.component';
 import { SubmitZoneModalComponent } from './components/zones/submit-zone-modal/submit-zone-modal.component';
+import { SubmitProviderModalComponent } from './components/providers/submit-provider-modal/submit-provider-modal.component';
+import { SubmitClientModalComponent } from './components/clients/submit-client-modal/submit-client-modal.component';
 
 
 @NgModule({
@@ -90,7 +92,9 @@ import { SubmitZoneModalComponent } from './components/zones/submit-zone-modal/s
     ModalNewInvoicesComponent,
     ReportComponent,
     RollOverModalComponent,
-    SubmitZoneModalComponent
+    SubmitZoneModalComponent,
+    SubmitProviderModalComponent,
+    SubmitClientModalComponent
   ],
   imports: [
     CommonModule,

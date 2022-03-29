@@ -1,29 +1,33 @@
 <h1>Parametros de Entrada</h1>
+<br>
 <div nz-row class="row-1">
+  
+  <div nz-col nzSpan="5">
+    <div *ngIf="!paramIsDisable ; else enable">
+      <button nz-button [nzType]="'primary'" (click)="GetParams(0, true)"><span>Mostrar desabilitados</span></button>
+    </div>
+    <ng-template #enable>
+      <button nz-button [nzType]="'primary'" (click)="GetParams(1, true)"><span>Mostrar Habilitados</span></button>
+    </ng-template>
 
-    <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
+  </div>
+
+    <div nz-col nzSpan="5" class="row1-col1">
       <app-modal-new-parameter  [ListOfCharges]="ListOfCharges"  (DataUpdated)="updateTable($event)"></app-modal-new-parameter>
     </div>
 
-    <div nz-col nzSpan="12" class="row1-col2">
-
-        <nz-input-group [nzSuffix]="suffixIconSearch">
-          <input type="text" nz-input placeholder="input search text" />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-          <i nz-icon nzType="search"></i>
-        </ng-template>
+    <div nz-col nzSpan="5" class="row1-col2">
         
     </div>
 
-
 </div>
+<br>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table #table [nzData]="listOfData" nzTableLayout="fixed"  [nzPageSize]="5">
         <thead>
           <tr>
-          <th nzLeft nzWidth="80px">Acciones</th>
+          <th nzWidth="88px">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -36,22 +40,33 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="80px">Valor</th>
+            <th nzWidth="80px">Valor</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of listOfData">
-            <td nzLeft>
-                <app-modal-new-parameter [dataPosition]="data" [ListOfCharges]="ListOfCharges"></app-modal-new-parameter>
-                <button class="delete" nz-button nzType="primary"  nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline" (click)="DeleteRate(data.idParametro)"></i></button>
-              </td>
-            <td>{{data.idParametro}}</td>
-            <td>{{data.codigo}}</td>
-            <td>{{data.cargoNombre}}</td>
-            <td>{{ data.fechaInicio }}</td>
-            <td>{{ data.fechaFinal }}</td>  
+          <tr *ngFor="let data of table.data">
+            <td>
+              <div nz-row>
+                <div nz-col>
+                  <app-modal-new-parameter [dataPosition]="data" [ListOfCharges]="ListOfCharges"></app-modal-new-parameter>
+  
+                </div>
+                <div nz-col nzOffset="3">
+                  <div *ngIf="data.estado; else disablesList"> 
+                      <button nz-button nzSize="small" nzDanger nzType="primary" (click)="disableParam(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                  </div>
+                  <ng-template #disablesList>
+                      <button nz-button nzSize="small" nzType="primary" (click)=" disableParam(data, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                  </ng-template>
+  
+                </div>
+              </div>
+            </td>
+            <td>{{data.id}}</td>
+            <td>{{ data.fechaInicio   | date:'dd/M/yyyy'  }}</td>
+            <td>{{ data.fechaFinal   | date:'dd/M/yyyy'  }}</td>  
             <td>{{ data.observacion }}</td>  
-            <td nzRight>{{data.valor}}</td>  
+            <td>{{data.valor}}</td>  
           </tr>
         </tbody>
       </nz-table>

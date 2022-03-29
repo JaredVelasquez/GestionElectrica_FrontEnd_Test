@@ -3,8 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
-import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
+import { InputParametersInterface, InputParamSchema } from 'src/Core/interfaces/input-parameters.interface';
 import { ChargesInterface } from 'src/Core/interfaces/charges.interface';
+import { endOfMonth } from 'date-fns';
 
 @Component({
   selector: 'app-modal-new-parameter',
@@ -14,10 +15,12 @@ import { ChargesInterface } from 'src/Core/interfaces/charges.interface';
 export class ModalNewParameterComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
-  listOfData: InputParametersInterface[] = [];
-  @Input() dataPosition!: InputParametersInterface | undefined;
+  newParam!: any;
+  @Input() dataPosition!: InputParamSchema;
   @Input() ListOfCharges: ChargesInterface[] = [];
-  @Output() DataUpdated : EventEmitter<InputParametersInterface> = new EventEmitter<InputParametersInterface>();
+  @Output() DataUpdated : EventEmitter<InputParamSchema> = new EventEmitter<InputParamSchema>();
+  dates:{from: any, to: any} = {from: '', to: ''};
+  ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
 
   
   url = {
@@ -29,9 +32,8 @@ export class ModalNewParameterComponent implements OnInit {
   };
 
   EmptyForm = this.fb.group({
-    fechaInicio: [ '', [Validators.required]],
-    fechaFinal: [ '', [Validators.required]],
-    cargo: ['', [Validators.required]],
+    fecha: [ '', [Validators.required]],
+    tipoCargoId: ['', [Validators.required]],
     valor: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
   });
@@ -41,31 +43,105 @@ export class ModalNewParameterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.Get();
-    this.validateForm = this.fb.group({
-      fechaInicio: [ '', [Validators.required]],
-      fechaFinal: [ '', [Validators.required]],
-      cargo: ['', [Validators.required]],
-      valor: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    });
+    this.validateForm = this.EmptyForm;
   }
   
-  showModal(): void {
-    this.isVisible = true;
-    if(this.dataPosition){
-      this.validateForm = this.fb.group({
-        fechaInicio: [ this.dataPosition.fechaInicio, [Validators.required]],
-        fechaFinal: [ this.dataPosition.fechaFinal, [Validators.required]],
-        cargo: [String(this.dataPosition.cargoId), [Validators.required]],
-        valor: [this.dataPosition.valor, [Validators.required]],
-        observacion: [this.dataPosition.observacion, [Validators.required]],
+  submitForm(): void{
+    if(!this.dataPosition){
+      this.submitPostForm();
+    }else{
+      this.submitUpdateForm();
+    }
+  }
+  
+  submitPostForm(){
+    if (this.validateForm.valid) {
+      this.fullSchema();
+      console.log(this.newParam);
+      this.isVisible = false;
+      this.globalService.Post(this.url.post, this.newParam).subscribe(
+        (result:any) => {
+          if(result){
+            this.DataUpdated.emit(result);
+          }
+        }
+      );
+      
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
       });
     }
-    else{
-      
-    this.validateForm = this.EmptyForm;
+
+  }
   
+  submitUpdateForm(){
+    if (this.validateForm.valid) {
+      this.fullSchema();
+      console.log(this.newParam);
+      if(this.dataPosition.id)
+      this.globalService.Patch(this.url.update, this.dataPosition.id , this.newParam).subscribe(
+        (result:any) => {
+          if(!result){
+            this.updateMainTable();
+            this.isVisible = false;
+          }
+        }
+      );
+      
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+  }
+  editableFrom(data: InputParamSchema): void{
+    console.log(data);
+    
+    this.validateForm = this.fb.group({
+      fecha: [[data.fechaInicio.toString(), data.fechaFinal.toString()], [Validators.required]],
+      tipoCargoId: [data.tipoCargoId, [Validators.required]],
+      valor: [data.valor, [Validators.required]],
+      observacion: [data.observacion, [Validators.required]],
+    });
+    console.log(this.validateForm.value);
+    
+  }
+
+  fullSchema(){
+    const {tipoCargoId, valor, observacion} = this.validateForm.value;
+      this.newParam = {
+        ... {tipoCargoId, valor, observacion},
+        fechaInicio: this.validateForm.value.fecha[0],
+        fechaFinal: this.validateForm.value.fecha[1],
+        tipo: false,
+        estado: true
+      }
+  }
+
+  updateMainTable(): void{
+    this.dataPosition.fechaInicio = this.newParam.fechaInicio;
+    this.dataPosition.fechaFinal = this.newParam.fechaFinal;
+    this.dataPosition.observacion = this.newParam.observacion;
+    this.dataPosition.tipoCargoId = this.newParam.tipoCargoId;
+    this.dataPosition.valor = this.newParam.valor;
+  }
+
+
+  showModal(): void {
+    this.isVisible = true;
+    if(!this.dataPosition){
+      this.validateForm = this.EmptyForm;
+
+    }else{
+      this.editableFrom(this.dataPosition);
     }
   }
 
@@ -78,86 +154,6 @@ export class ModalNewParameterComponent implements OnInit {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
-  Get(){
-    this.globalService.Get(this.url.get).subscribe( 
-      (result:any) => {
-        this.listOfData = result;
-      }
-    );
-  }
-  
-    PushData(){
-    if (this.validateForm.valid) {
-      
-      const provider = {
-        tipoCargoId: Number(this.validateForm.value.cargo),
-        fechaInicio: this.validateForm.value.fechaInicio,
-        fechaFinal: this.validateForm.value.fechaFinal,
-        valor: this.validateForm.value.valor,
-        observacion: this.validateForm.value.observacion,
-        tipo: true,
-        estado: true,
-      }
-      console.log(provider);
-      
 
-      if(this.dataPosition){
-        this.globalService.PutId( this.url.update, this.dataPosition?.idParametro, provider).subscribe(
-          (result:any) => {
-            
-          }
-        );
-        
-      }else{
-        this.globalService.Post(this.url.post, provider).subscribe(
-          (result:any) => {
-            if(result){
-              this.DataUpdated.emit(result);
-              this.isVisible = false;
-            }
-            
-          }
-        );
 
-      }
-
-      if(this.dataPosition){
-        if(this.ListOfCharges){
-          for(let i=0; i<this.ListOfCharges.length ; i++){
-            if(this.ListOfCharges[i].id == provider.tipoCargoId){
-              this.dataPosition.cargoNombre = this.ListOfCharges[i].nombre;
-              
-            }
-          }
-        }
-        this.dataPosition.cargoId = provider.tipoCargoId;
-        this.dataPosition.fechaInicio = provider.fechaInicio;
-        this.dataPosition.fechaFinal = provider.fechaFinal;
-        this.dataPosition.valor = provider.valor;
-        this.dataPosition.observacion = provider.observacion;
-        console.log(this.dataPosition);
-        
-      }
-      this.Get();
-      this.isVisible = false;
-      
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
-
-  }
-
-  DeleteRate(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
-      result => {
-        this.Get();
-      }
-    );
-  }
 }
