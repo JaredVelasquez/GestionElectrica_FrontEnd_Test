@@ -23,6 +23,7 @@ export class VirtualMeterModalComponent implements OnInit {
   VMIsDisable: boolean = false;
   url = { 
     post: 'medidor-virtuals',
+    getVMetersDetail: 'get-vmeters-detail',
     update: 'medidor-virtuals'
   }
 
@@ -68,7 +69,7 @@ export class VirtualMeterModalComponent implements OnInit {
   
   disableVMeter(vmeter: VirtualMeterShema, estado : boolean){
 
-    this.globalService.Patch(this.url.update, vmeter.id, {estado: estado}).subscribe(
+    this.globalService.Patch(this.url.getVMetersDetail, vmeter.id, {estado: estado}).subscribe(
       result => {
         if(!result){
           for(let i = 0; i < this.listOfVMeters.length; i++){
@@ -111,7 +112,7 @@ export class VirtualMeterModalComponent implements OnInit {
       this.globalService.Post(this.url.post, this.newVMeter).subscribe(
         (result:any) => {
           if(result){
-            this.listOfVMeters.push(result);
+            this.listOfVMeters = [...this.listOfVMeters,result];
             this.GetVirtualMeters(estado, false);
           }
         }

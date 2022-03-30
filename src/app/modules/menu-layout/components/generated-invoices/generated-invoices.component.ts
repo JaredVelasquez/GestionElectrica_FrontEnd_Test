@@ -95,15 +95,6 @@ export class GeneratedInvoicesComponent implements OnInit {
       }
     );
   }
-  DeleteRate(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
-      result => {
-        console.log(result);
-        this.GetRates();
-      }
-    );
-  }
   
   GetContratos(){
     this.globalService.GetId(this.url.getcontratosM, 1).subscribe( 
@@ -123,15 +114,8 @@ export class GeneratedInvoicesComponent implements OnInit {
   }
   CancelarFactura(invoicePosition: InvoiceInterface){
     let provider = {
-      contratoMedidorId: invoicePosition.contratoMedidorId,
+      ... invoicePosition,
       descripcion: "actualizado",
-      codigo: invoicePosition.codigo,
-      fechaLectura: invoicePosition.fechaLectura,
-      fechaVencimiento: invoicePosition.fechaVencimiento,
-      fechaInicio: invoicePosition.fechaInicio,
-      fechaFin: invoicePosition.fechaFin,
-      tipoConsumo: invoicePosition.tipoConsumo,
-      observacion: invoicePosition.observacion,
       estado: 0,
     }
     console.log(provider);

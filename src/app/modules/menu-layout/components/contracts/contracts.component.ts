@@ -13,6 +13,7 @@ import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 export class ContractsComponent implements OnInit{
   isVisible = false;
   constractsIsDisable: boolean = false;
+  IsLoading: boolean = false;
   validateForm!: FormGroup;
   ListOfData!: ContractInterface[];
   ListOfClients: ActorInterface[] = [];
@@ -75,6 +76,7 @@ export class ContractsComponent implements OnInit{
   }
   
   disableContract(constract: ContractInterface, estado : number){
+    this.IsLoading = true;
     let newEstado = Boolean(estado);
     this.globalService.Patch(this.url.update, constract.id, {estado: newEstado}).subscribe(
       result => {
@@ -86,12 +88,14 @@ export class ContractsComponent implements OnInit{
           }
 
         }
+        
+      this.IsLoading = false;
       }
     );
   }
 
   TablaUpdated(list: any){
-    this.ListOfData.push(list);
+    this.ListOfData = [...this.ListOfData,list]
   }
 
 

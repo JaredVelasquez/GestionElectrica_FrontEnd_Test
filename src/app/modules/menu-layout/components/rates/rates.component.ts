@@ -43,8 +43,9 @@ export class RatesComponent implements OnInit{
 
   
   updateTable(list: any){
-    this.listOfData.push(list);
+    this.listOfData = [... this.listOfData, list];
   }
+  
   showModal(): void {
     this.isVisible = true;
   }

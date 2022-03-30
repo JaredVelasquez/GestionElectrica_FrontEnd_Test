@@ -26,7 +26,7 @@
 
   <div nz-col>
 
-    <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
+    <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
       <thead>
         <tr>
           <th nzLeft nzWidth="100px">Accion</th>
@@ -49,7 +49,7 @@
     <!-- Cuerpo de tabla -->
     
       <tbody>
-        <tr *ngFor="let data of listOfData">
+        <tr *ngFor="let data of table.data">
           <td nzLeft> 
             <div nz-row>
               <div nz-col>

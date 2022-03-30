@@ -96,7 +96,7 @@
 
     <div nz-row class="row-5">
         <div nz-col>
-            <nz-table  [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="3">
+            <nz-table #table [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="3">
               <thead>
                 <tr>
                 <th nzLeft nzWidth="80px">ID</th>
@@ -116,7 +116,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of ListOfData">
+                <tr *ngFor="let data of table.data">
                 <td nzLeft>{{ data.idParametro }}</td>
                 <td>{{ data.cargoNombre }}</td>
                 <td>{{ data.valor }}</td>

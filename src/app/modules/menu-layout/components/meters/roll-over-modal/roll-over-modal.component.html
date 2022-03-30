@@ -102,7 +102,7 @@
         
           <div nz-col>
         
-            <nz-table [nzData]="ListOfRollOver" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
+            <nz-table #table [nzData]="ListOfRollOver" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
               <thead>
                 <tr>
                   <th nzLeft nzWidth="180px"> # </th>
@@ -122,7 +122,7 @@
               </thead>
             
               <tbody>
-                <tr *ngFor="let data of ListOfRollOver">
+                <tr *ngFor="let data of table.data">
                   <td nzLeft> 
                     {{ data.id }}
                   </td>

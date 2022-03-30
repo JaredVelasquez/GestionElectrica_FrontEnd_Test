@@ -1,7 +1,7 @@
 
 <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
 
-    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Medidores</span></button>
+    <button nz-button nzSize="small" [nzType]="'primary'" (click)="showModal()"><i nz-icon nzType="file-text" nzTheme="outline"></i></button>
     <nz-modal [(nzVisible)]="isVisible" nzTitle="Medidores" (nzOnCancel)="handleCancel()" (nzOnOk)="Post()" nzWidth="920px">
         <ng-container *nzModalContent>
 
@@ -291,18 +291,31 @@
             
                 </div>
     
-                <div nz-row class="row-5">
-                    <div nz-col [nzSpan]="4"  [nzOffset]="15" class="row4-col1">
-                        <nz-form-item  nzFlex>
-                            <button nz-button nzType="default">Cancelar</button>
-                        </nz-form-item>
+                <div nz-row class="row-4">
+                    
+                    <div nz-col nzOffset="22" nzSpan="1">
+                        <button nz-button ><i nz-icon nzTheme="outline" nzType="clear"></i></button>
                     </div>
-                    <div nz-col nzOffset="1" [nzSpan]="4" class="row4-col2">
-                        <nz-form-item  nzFlex>
-                            <button nz-button nzType="primary">Guardar</button>
-                        </nz-form-item>
+                    <div nz-col nzSpan="1" >
+                            <button nz-button><i nz-icon nzTheme="outline" nzType="save"></i></button>
+                    </div>
+                    <ng-template #edit>
+                        <button nz-button><i nz-icon nzTheme="outline" nzType="save"></i></button>
             
+                    </ng-template>
+            
+                </div>
+    
+                <div nz-row>
+                  <div nz-col>
+                    <div >
+                      <button nz-button [nzType]="'primary'" ><span>Mostrar desabilitados</span></button>
                     </div>
+                    <ng-template #enableClients>
+                      <button nz-button [nzType]="'primary'" ><span>Mostrar Habilitados</span></button>
+                    </ng-template>
+                
+                  </div>
                 </div>
             
                 <div nz-row class="row-6">

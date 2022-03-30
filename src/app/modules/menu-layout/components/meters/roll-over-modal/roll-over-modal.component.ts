@@ -62,9 +62,7 @@ export class RollOverModalComponent implements OnInit {
       this.globalService.Post(this.url.post, this.newRollOver).subscribe(
         (result:any) => {
           if(result){
-            // result.fechaFinal = formatDate(result.fechaFinal, 'dd/M/yyyy', '');
-            // result.fechaInicial = formatDate(result.fechaInicial, 'dd/M/yyyy', '');
-            this.ListOfRollOver.push(result);
+            this.ListOfRollOver = [...this.ListOfRollOver,result];
           }
         }
       );

@@ -32,7 +32,7 @@ export class ModalNewContractComponent implements OnInit {
   
   EmptyForm  = this.fb.group({
     codigo: ['', [Validators.required]],
-    Clasificacion: ['', [Validators.required]],
+    clasificacion: ['', [Validators.required]],
     actorId: ['', [Validators.required]],
     fechaCreacion: ['', [Validators.required]],
     fechaVencimiento: ['', [Validators.required]],
@@ -66,7 +66,7 @@ export class ModalNewContractComponent implements OnInit {
   editableForm(){
     this.validateForm = this.fb.group({
       codigo: [ this.dataPosition.codigo , [Validators.required]],
-      Clasificacion: [ this.dataPosition.clasificacion, [Validators.required]],
+      clasificacion: [ this.dataPosition.clasificacion, [Validators.required]],
       actorId: [ this.dataPosition.actorId, [Validators.required]],
       fechaCreacion: [ this.dataPosition.fechaCreacion, [Validators.required]],
       fechaVencimiento: [ this.dataPosition.fechaVenc, [Validators.required]],
@@ -129,7 +129,7 @@ export class ModalNewContractComponent implements OnInit {
       this.globalService.PutId( this.url.post, this.dataPosition.id , this.newContract).subscribe(
         (result:any) => {
           if(!result){
-            
+            this.updateMainTable(this.newContract);
             this.isVisible = false;
           }
         }
@@ -155,7 +155,7 @@ export class ModalNewContractComponent implements OnInit {
     
     for(let i=0; i<this.ListOfClients.length ; i++){
       if(this.ListOfClients[i].id == this.newContract.actorId){
-        this.dataPosition.cliente = this.ListOfClients[i].nombre;
+        this.dataPosition.nombre = this.ListOfClients[i].nombre;
         
       }
     }
@@ -164,7 +164,7 @@ export class ModalNewContractComponent implements OnInit {
     this.dataPosition.fechaCreacion = this.newContract.fechaCreacion;
     this.dataPosition.fechaVenc = this.newContract.fechaVenc;
     this.dataPosition.exportacion = this.newContract.exportacion;
-    this.dataPosition.clasificacion = this.newContract.Clasificacion;
+    this.dataPosition.clasificacion = this.newContract.clasificacion;
     this.dataPosition.actorId = this.newContract.actorId;
     this.dataPosition.diaGeneracion = this.newContract.diaGeneracion;
     this.dataPosition.diasDisponibles = this.newContract.diasDisponibles;

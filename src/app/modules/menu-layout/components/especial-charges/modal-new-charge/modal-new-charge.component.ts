@@ -5,6 +5,7 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
 import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+import { endOfMonth } from 'date-fns';
 
 @Component({
   selector: 'app-modal-new-charge',
@@ -14,9 +15,13 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 export class ModalNewChargeComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
-  @Input() dataPosition!: EspecialChargesInterface | undefined;
+  provider!: any;
+  @Input() dataPosition!: EspecialChargesInterface;
   @Output() DataUpdated : EventEmitter<EspecialChargesInterface> = new EventEmitter<EspecialChargesInterface>();
 
+  dates:{from: any, to: any} = {from: '', to: ''};
+  ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+  
   listOfData: any[] = [];
   url = {
     get: 'get-especial-charges',
@@ -25,9 +30,8 @@ export class ModalNewChargeComponent implements OnInit {
     update: 'cargos-facturas',
   };
 
-  EmptyForm: FormGroup = this.fb.group({
-    fechaInicio: ['', [Validators.required]],
-    fechaFinal: ['', [Validators.required]],
+  EmptyForm = this.fb.group({
+    fecha: ['', [Validators.required]],
     descripcion: ['', [Validators.required]],
     cargoFinanciamiento: ['', [Validators.required]],
     ajuste: ['', [Validators.required]],
@@ -54,137 +58,66 @@ export class ModalNewChargeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.Get();
     
     this.validateForm = this.EmptyForm;
   }
   
   showModal(): void {
-    this.validateForm = this.EmptyForm;
-    this.isVisible = true;
     if(this.dataPosition){
-      this.validateForm = this.fb.group({
-        fechaInicio: [this.dataPosition?.fechaInicio, [Validators.required]],
-        fechaFinal: [this.dataPosition?.fechaFinal, [Validators.required]],
-        descripcion: [this.dataPosition?.descripcion, [Validators.required]],
-        cargoFinanciamiento: [this.dataPosition?.cargoFinanciamiento, [Validators.required]],
-        ajuste: [this.dataPosition?.ajuste, [Validators.required]],
-        cargoCorte: [this.dataPosition?.cargoCorte, [Validators.required]],
-        cargoMora: [this.dataPosition?.cargoMora, [Validators.required]],
-        otrosCargos: [this.dataPosition?.otrosCargos, [Validators.required]],
-        observacion: [this.dataPosition?.observacion, [Validators.required]],
-      });
-      console.log(this.validateForm.value);
-      
+      this.editableForm();
     }else{
-      this.validateForm = this.fb.group({
-        fechaInicio: ['', [Validators.required]],
-        fechaFinal: ['', [Validators.required]],
-        descripcion: ['', [Validators.required]],
-        cargoFinanciamiento: ['', [Validators.required]],
-        ajuste: ['', [Validators.required]],
-        cargoCorte: ['', [Validators.required]],
-        cargoMora: ['', [Validators.required]],
-        otrosCargos: ['', [Validators.required]],
-        observacion: ['', [Validators.required]],
-      });
+      this.validateForm = this.EmptyForm;
     }
-    
+    this.isVisible = true;
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
   Get(){
     this.globalService.Get(this.url.get).subscribe( 
       (result:any) => {
-        console.log(result);
         result.Id = Number(result.Id);
         this.listOfData = result;
       }
     );
   }
 
+  editableForm(){
+    this.validateForm = this.fb.group({
+      fecha: [[this.dataPosition.fechaInicio.toString(), this.dataPosition.fechaFinal.toString()], [Validators.required]],
+      descripcion: [this.dataPosition.descripcion, [Validators.required]],
+      cargoFinanciamiento: [this.dataPosition.cargoFinanciamiento, [Validators.required]],
+      ajuste: [this.dataPosition.ajuste, [Validators.required]],
+      cargoCorte: [this.dataPosition.cargoCorte, [Validators.required]],
+      cargoMora: [this.dataPosition.cargoMora, [Validators.required]],
+      otrosCargos: [this.dataPosition.otrosCargos, [Validators.required]],
+      observacion: [this.dataPosition.observacion, [Validators.required]],
+    });
+
+  }
+
+  submitForm(){
+    if(!this.dataPosition)
+    this.submitPostForm();
+    else
+    this.submitUpdateForm();
+  }
   
-  PushData(): void{
+  submitPostForm(): void{
     if (this.validateForm.valid) {
-      let updateData;
-      
-      
-      const provider = {
-        fechaInicio: this.validateForm.value.fechaInicio,
-        fechaFinal: this.validateForm.value.fechaFinal,
-        descripcion: this.validateForm.value.descripcion,
-        cargoFinanciamiento: this.validateForm.value.cargoFinanciamiento,
-        ajuste: this.validateForm.value.ajuste,
-        cargoCorte: this.validateForm.value.cargoCorte,
-        cargoMora: this.validateForm.value.cargoMora,
-        otrosCargos: this.validateForm.value.otrosCargos,
-        observacion: this.validateForm.value.observacion,
-        totalCargos: 
-        toNumber(this.validateForm.value.cargoCorte + this.validateForm.value.cargoMora
-        + this.validateForm.value.otrosCargos + this.validateForm.value.ajuste),
-        estado: 1
-      }   
-
-      if(this.dataPosition?.id){
-          this.globalService.PutId( this.url.post, this.dataPosition.id , provider).subscribe(
-            (result:any) => {
-            }
-            );
-      }else{
-        this.globalService.Post(this.url.post, provider).subscribe(
-          (result:any) => { 
-            console.log(result);
-            
-            if(result){
-              updateData = result;
-              this.DataUpdated.emit(updateData);
-            }
+      this.fullSchema();
+      this.globalService.Post(this.url.post, this.provider).subscribe(
+        (result:any) => { 
+          if(result){
+            this.DataUpdated.emit(result);
           }
-        );
-
-
-      }
-
-      if(this.dataPosition){
-        this.dataPosition.ajuste = provider.ajuste;
-        this.dataPosition.cargoCorte = provider.cargoCorte;
-        this.dataPosition.cargoFinanciamiento = provider.cargoFinanciamiento;
-        this.dataPosition.cargoMora = provider.cargoMora;
-        this.dataPosition.descripcion = provider.descripcion;
-        this.dataPosition.estado = provider.estado;
-        this.dataPosition.fechaFinal = provider.fechaFinal;
-        this.dataPosition.fechaInicio = provider.fechaInicio;
-        this.dataPosition.observacion = provider.observacion;
-        this.dataPosition.otrosCargos = provider.otrosCargos;
-        this.dataPosition.totalCargos = provider.totalCargos;
-        
-
-
-        
-      }
-      this.isVisible = false;
-      
-      this.validateForm = this.fb.group({
-        codigo: ['', [Validators.required]],
-        clasificacion: ['', [Validators.required]],
-        actorId: ['', [Validators.required]],
-        fechaCreacion: ['', [Validators.required]],
-        fechaVencimiento: ['', [Validators.required]],
-        diaGeneracion: ['', [Validators.required]],
-        diasDisponibles: ['', [Validators.required]],
-        exportacion: ['', [Validators.required]],
-        descripcion: ['', [Validators.required]],
-        observacion: ['', [Validators.required]],
-      })
-      
+        }
+      );
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -196,14 +129,65 @@ export class ModalNewChargeComponent implements OnInit {
 
   }
 
+  submitUpdateForm(){
+    if (this.validateForm.valid) {
+      this.fullSchema();
+      this.globalService.PutId( this.url.post, this.dataPosition.id , this.provider).subscribe(
+        (result:any) => {
+          if(!result){
+            this.updateMainTable(this.provider);
+            this.isVisible = false;
+          }
+        }
+        );
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
 
-  DeleteRate(Id: any){
-    this.globalService.Delete(this.url.delete, Id).subscribe(
-      result => {
-        console.log(result);
-        this.Get();
-      }
-    );
   }
+
+  fullSchema(){
+    const {descripcion, cargoFinanciamiento, ajuste, cargoCorte, cargoMora, otrosCargos, observacion} = this.validateForm.value;
+    this.provider = {
+      ... {descripcion, cargoFinanciamiento, ajuste, cargoCorte, cargoMora, otrosCargos, observacion} ,
+      fechaInicio: this.validateForm.value.fecha[0],
+      fechaFinal: this.validateForm.value.fecha[1],
+      totalCargos: 
+      toNumber(this.validateForm.value.cargoCorte + this.validateForm.value.cargoMora
+      + this.validateForm.value.otrosCargos + this.validateForm.value.ajuste),
+      estado: true
+    }  
+  }
+
+  updateMainTable(data: any){
+    
+    this.dataPosition.ajuste = data.ajuste;
+    this.dataPosition.cargoCorte = data.cargoCorte;
+    this.dataPosition.cargoFinanciamiento = data.cargoFinanciamiento;
+    this.dataPosition.cargoMora = data.cargoMora;
+    this.dataPosition.descripcion = data.descripcion;
+    this.dataPosition.estado = data.estado;
+    this.dataPosition.fechaFinal = data.fechaFinal;
+    this.dataPosition.fechaInicio = data.fechaInicio;
+    this.dataPosition.observacion = data.observacion;
+    this.dataPosition.otrosCargos = data.otrosCargos;
+    this.dataPosition.totalCargos = data.totalCargos;
+
+  }
+
+
+  
+  onChange(result: Date[]): void {
+    this.dates = {
+      from: result[0],
+      to: result[1]
+    }
+  }
+
 }
 

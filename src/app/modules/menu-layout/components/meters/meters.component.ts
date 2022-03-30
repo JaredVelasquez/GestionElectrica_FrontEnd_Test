@@ -21,6 +21,7 @@ export class MetersComponent implements OnInit {
   
   url = {
     getMeters: 'get-meters',
+    getVMetersDetail: 'get-vmeters-detail',
     getVMeters: 'get-vmeters',
     getVMetersmodel: 'medidor-virtuals',
     getMeasurePoints: 'punto-medicions',
@@ -43,8 +44,7 @@ export class MetersComponent implements OnInit {
   }
 
   updateTable(list: MeterSchema){
-    
-    this.listOfData.push(list);
+    this.listOfData = [...this.listOfData,list];
   }
 
   GetMeters(estado: number, switched: boolean){
@@ -72,7 +72,7 @@ export class MetersComponent implements OnInit {
   }
 
   GetVirtualMeters(){
-    this.globalService.Get(this.url.getVMetersmodel).subscribe(
+    this.globalService.Get(this.url.getVMetersDetail).subscribe(
       (result:any) => {
         this.listOfDataVM = result;
       }

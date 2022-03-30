@@ -20,7 +20,7 @@
 <br>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1300px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1300px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="50px">Acciones</th>
@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of listOfData">
+          <tr *ngFor="let data of table.data">
             <td nzLeft>
               <div nz-row nzAlign="middle" nzJustify="center">
                 <div nz-col>

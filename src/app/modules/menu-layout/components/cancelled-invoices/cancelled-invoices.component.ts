@@ -43,7 +43,7 @@ export class CancelledInvoicesComponent implements OnInit {
 
   
   updateTable(list: any){
-    this.list = list;
+    this.listOfData = [...this.listOfData,list]
     
   }
   showModal(): void {

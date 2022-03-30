@@ -10,5 +10,5 @@ export interface EspecialChargesInterface {
     fechaInicio: string;
     fechaFinal: string;
     observacion: string;
-    estado: number;
+    estado: boolean;
 }

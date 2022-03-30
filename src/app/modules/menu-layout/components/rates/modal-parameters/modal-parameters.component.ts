@@ -119,9 +119,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
         this.globalService.Post(this.url.post, this.newParam).subscribe(
           (result:any) => {
             if(result){
-              console.log(result);
-              
-              this.ListOfData.push(result);
+              this.ListOfData = [...this.ListOfData,result];
               this.GetParams(estado, false);
               this.cleanForm();
             }

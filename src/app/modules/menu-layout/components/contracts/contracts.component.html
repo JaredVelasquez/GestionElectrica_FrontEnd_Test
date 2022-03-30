@@ -19,7 +19,7 @@
 
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
+      <nz-table #table [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="80px" nzAlign="center">Acciones</th>
@@ -35,16 +35,16 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="120px" nzAlign="center">Medidores</th>
+            <th nzRight nzWidth="55px" nzAlign="center">Medidor</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of ListOfData">    
+          <tr *ngFor="let data of table.data">    
             <td nzLeft nzAlign="center">
               <div nz-row>
                 <div nz-col>
                   <div *ngIf="data.estado; else disablesList"> 
-                      <button nz-button nzSize="small" nzDanger nzType="primary" (click)="disableContract(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                      <button nz-button [nzLoading]="IsLoading" nzSize="small" nzDanger nzType="primary" (click)="disableContract(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                   </div>
                   <ng-template #disablesList>
                       <button nz-button nzSize="small" nzType="primary" (click)=" disableContract(data, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
@@ -61,7 +61,7 @@
             <td>{{data.id}}</td>
             <td>{{data.codigo}}</td>  
             <td>{{data.descripcion}}</td>
-            <td>{{ data.cliente }}</td>
+            <td>{{ data.nombre }}</td>
             <td>{{ data.fechaCreacion   | date:'dd/M/yyyy'  }}</td>  
             <td>{{ data.fechaVenc   | date:'dd/M/yyyy'  }}</td> 
             <td nzRight nzAlign="center">

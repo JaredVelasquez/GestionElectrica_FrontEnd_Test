@@ -1,22 +1,29 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ChargesShema } from 'src/Core/interfaces/charges.interface';
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 
+
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { SpinerLoaderComponent } from "../spiner-loader/spiner-loader.component";
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+
 @Component({
   selector: 'app-digital-invoice',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './digital-invoice.component.html',
   styleUrls: ['./digital-invoice.component.css']
 })
-export class DigitalInvoiceComponent implements OnInit {
-
+export class DigitalInvoiceComponent implements OnInit, OnChanges {
+  private overlayRef!: OverlayRef;
   @Input() dataInvoice !: InvoiceInterface;
-  SpinVisible: boolean = false;
+  Spinner: {isVisible: boolean} = { 
+    isVisible: false
+  }
   ChargePosition!: ChargesShema;
   dataSource: Object;
   title: string;
@@ -24,7 +31,8 @@ export class DigitalInvoiceComponent implements OnInit {
 
   constructor(
     private globalService: EndPointGobalService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private overlay: Overlay
 
   ) {
     this.title = 'Angular  FusionCharts Sample';
@@ -59,9 +67,12 @@ export class DigitalInvoiceComponent implements OnInit {
       }
     );
   }
+  ngOnChanges(changes: SimpleChanges): void {
+  }
 
   GenerarFactura(): void {
-    this.SpinVisible = true;
+    this.Spinner.isVisible = true;
+    console.log(this.Spinner.isVisible);
     const div = document.getElementById('content');
 
     const options = {
@@ -83,7 +94,8 @@ export class DigitalInvoiceComponent implements OnInit {
   
         (doc as any).addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
 
-        this.SpinVisible = false;
+        this.Spinner.isVisible =false ;
+        console.log(this.Spinner.isVisible);
         return doc;
       }).then((doc) => {
           doc.save(`factura-${this.dataInvoice.codigo}.pdf`);
@@ -94,8 +106,39 @@ export class DigitalInvoiceComponent implements OnInit {
       console.log("No se pudo generar factura, content no existe");
       
     }
+    
+      
 
 
   }
+
+
+
+
+
+
+
+  
+
+  public show(message = '') {
+    // Returns an OverlayRef (which is a PortalHost)
+
+    if (!this.overlayRef) {
+      this.overlayRef = this.overlay.create();
+    }
+
+    // Create ComponentPortal that can be attached to a PortalHost
+    const spinnerOverlayPortal = new ComponentPortal(SpinerLoaderComponent);
+    const component = this.overlayRef.attach(spinnerOverlayPortal); // Attach ComponentPortal to PortalHost
+  }
+
+  public hide() {
+    if (!!this.overlayRef) {
+      this.overlayRef.detach();
+    }
+  }
+
+
+  
 }
     

@@ -13,6 +13,7 @@ export class EspecialChargesComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   listOfData: EspecialChargesInterface[] = [];
+  newECharge!: EspecialChargesInterface; 
   url = {
     get: 'get-especial-charges',
     post: 'cargos-facturas',
@@ -20,27 +21,26 @@ export class EspecialChargesComponent implements OnInit {
     update: 'cargos-facturas',
   };
 
+  
+  editIsActive!: EspecialChargesInterface | undefined;
+  chargeIsDisable: boolean = false;
+
+  EmptyForm = this.fb.group({
+    codigo: ['', [Validators.required]],
+    descripcion: ['', [Validators.required]],
+    observacion: ['', [Validators.required]],
+  })
+
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
-    this.GetRates();
-    
-    this.validateForm = this.fb.group({
-      codigo: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      observacion: ['', [Validators.required]],
-    })
+    this.GetCharges(1, false);
+    this.validateForm = this.EmptyForm;
   }
   
-  
-  updateTable(list: EspecialChargesInterface){
-    if(list){
-      this.GetRates();
-    }
-  }
 
   showModal(): void {
     this.isVisible = true;
@@ -55,25 +55,47 @@ export class EspecialChargesComponent implements OnInit {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
-  GetRates(){
-    this.globalService.Get(this.url.get).subscribe( 
+
+  updateTable(list: EspecialChargesInterface){
+    this.listOfData = [... this.listOfData, list]
+  }
+
+  GetCharges(estado: number, switched: boolean){
+    if(switched){
+      if((!this.chargeIsDisable) && estado === 0){
+        this.chargeIsDisable = true;
+      }else{
+        this.chargeIsDisable = false;
+      }
+    }
+
+    this.globalService.GetId(this.url.get, estado).subscribe(
       (result:any) => {
         this.listOfData = result;
       }
     );
   }
-  DeleteRate(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
+
+
+  disableCharge(charge: EspecialChargesInterface, estado : boolean){
+    
+    this.globalService.Patch(this.url.update, charge.id, {estado: estado}).subscribe(
       result => {
-        console.log(result);
-        this.GetRates();
+        if(!result){
+          console.log(result);
+          
+          if(estado === true){
+            this.GetCharges(0, false);
+          }else{
+            this.GetCharges(1, false);
+          }
+
+        }
       }
     );
+    
   }
-
-
-
+  
   
   listOfColumns: ColumnItem[] = [
     {

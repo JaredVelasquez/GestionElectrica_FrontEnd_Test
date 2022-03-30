@@ -40,8 +40,7 @@ export class ZonesComponent implements OnInit {
   
 
   updateTable(list: ZoneShema){
-    
-    this.listOfData.push(list);
+    this.listOfData = [... this.listOfData, list];
   }
 
 

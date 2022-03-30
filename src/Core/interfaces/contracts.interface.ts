@@ -2,7 +2,7 @@ export interface ContractInterface{
     id: number;
     codigo: string;
     clasificacion: string;
-    cliente: string; 
+    nombre: string; 
     actorId:number;
     exportacion: boolean;
     diaGeneracion: number;
@@ -16,7 +16,7 @@ export interface ContractInterface{
 
 export interface ContractSchema{
   codigo: string;
-  Clasificacion: string;
+  clasificacion: string;
   descripcion: string;
   actorId: number;
   fechaCreacion: string;

@@ -36,9 +36,9 @@ export class IssuedInvoicesComponent implements OnInit {
 
   
   updateTable(list: any){
-    this.list = list;
-    
+    this.listOfData = [...this.listOfData,list];
   }
+  
   showModal(): void {
     this.isVisible = true;
   }
