@@ -320,14 +320,4 @@
 </div>
 </div>
 </div>
-<div class="wrapper" *ngIf="this.Spinner.isVisible">
-    <div class="overlay">
-      <div class="spinner-wrapper">
-        <app-spiner-loader></app-spiner-loader>
-      </div>
-    </div>
-  
-    <div class="loaded-content" [class.blurred]="this.Spinner.isVisible">
-      <ng-content></ng-content>
-    </div>
-  </div>
+<app-spinner-loader-superimposed *ngIf="spinnerIsVisible" [triger]="isVisible" (disableSpiner)="disableSpinner($event)"></app-spinner-loader-superimposed>

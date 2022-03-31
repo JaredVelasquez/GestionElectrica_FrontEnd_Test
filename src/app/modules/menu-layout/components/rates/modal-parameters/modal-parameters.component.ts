@@ -24,6 +24,13 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
 
+  onChange(result: Date[]): void {
+    this.dates = {
+      from: result[0],
+      to: result[1]
+    }
+    console.log(this.dates);
+  }
   validateForm!: FormGroup;
 
   EmptyForm = this.fb.group({
@@ -213,14 +220,6 @@ export class ModalParametersComponent implements OnInit, OnChanges {
     })
     this.editIsActive = data;
     
-  }
-
-  onChange(result: Date[]): void {
-    this.dates = {
-      from: result[0],
-      to: result[1]
-    }
-    console.log(this.dates);
   }
 
   

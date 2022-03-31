@@ -1,4 +1,4 @@
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
+<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Factura manual</span></button>
 <nz-modal nzCentered [(nzVisible)]="isVisible" nzTitle="Factura" (nzOnCancel)="handleCancel()" (nzOnOk)="PushData()">
     <ng-container *nzModalContent>
         <form nz-form [formGroup]="validateForm" nzLayout="horizontal">

@@ -8,6 +8,5 @@ export interface VirtualMeterShema{
     porcentaje: number;
     operacion: boolean;
     observacion: string;
-    tipo: boolean;
     estado: boolean;
 }

@@ -1,26 +1,12 @@
 <h1>Facturas Emitidas</h1>
-<div nz-row class="row-1">
-
-
-    <div nz-col nzOffset="12" nzSpan="12" class="row1-col2">
-
-        <nz-input-group [nzSuffix]="suffixIconSearch">
-          <input type="text" nz-input placeholder="input search text" />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-          <i nz-icon nzType="search"></i>
-        </ng-template>
-        
-    </div>
-
-
-</div>
-<div nz-row class="row-2">
+<br>
+<div *ngIf="!FacturaIsVisible">
+  <div nz-row class="row-2">
   <div nz-col>
       <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="150px">ID</th>
+          <th nzLeft nzWidth="90px" nzAlign="center">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -33,26 +19,41 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="100px">
-                Total a pagar
-                
+            <th nzRight nzWidth="90px" nzAlign="center">
+                Generar Factura
             </th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of listOfData">
-            <td nzLeft>
-            {{data.detalleFacturaId}}
+            <td nzLeft nzAlign="center">
+              <button nz-button nzSize="small" nzDanger nzType="primary" (click)="CancelarFactura(data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+              
+
             </td>
+            <td>{{data.detalleFacturaId}}</td>
             <td>{{data.codigo}}</td>
             <td>{{ data.codigoContrato }}</td>
             <td>{{data.actorNombre}}</td>
             <td>{{data.fechaLectura}}</td>
             <td>{{ data.energiaConsumida }}</td>
-            <td nzRight>{{ data.total }}</td>
+            <td>{{data.total + "  LPS"}}</td>
+            <td nzRight nzAlign="center">
+              <button nz-button nzSize="small" nzType="primary" (click)="GenerateInvoice(data)"><i nz-icon nzType="file-done"></i></button>
+
+            </td>
           </tr>
         </tbody>
       </nz-table>
       
   </div>
+</div>
+
+
+</div>
+
+<div *ngIf="FacturaIsVisible"> 
+  <button class="back-btn" nz-button nzType="primary" (click)="Back()"><i nz-icon nzType="arrow-left"></i></button>
+  <app-digital-invoice [dataInvoice]="dataInvoice"></app-digital-invoice>
+
 </div>

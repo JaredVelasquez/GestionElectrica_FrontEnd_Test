@@ -11,6 +11,9 @@ export interface MeterSchema{
     observacion: string;
     puntoConexion: number;
     tipo: number;
+    registroDatos: boolean,
+    almacenamientoLocal: boolean,
+    funcionalidad: boolean,
     estado: boolean;
   }
   

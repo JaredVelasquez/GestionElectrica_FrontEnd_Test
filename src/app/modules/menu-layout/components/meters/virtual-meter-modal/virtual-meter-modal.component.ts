@@ -23,7 +23,7 @@ export class VirtualMeterModalComponent implements OnInit {
   VMIsDisable: boolean = false;
   url = { 
     post: 'medidor-virtuals',
-    getVMetersDetail: 'get-vmeters-detail',
+    getVMetersDetail: 'medidor-virtual-detalles',
     update: 'medidor-virtuals'
   }
 
@@ -44,12 +44,14 @@ export class VirtualMeterModalComponent implements OnInit {
   }
   
   
-  GetVirtualMeters(estado: boolean, switched: boolean){
+  GetVirtualMeters(estado: boolean, switched: boolean){    
+    
     if(switched){
       this.listOfData.length = 0;
       for(let i = 0; i < this.listOfVMeters.length ; i++){
         if(this.dataPosition.id === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
-          this.listOfData.push(this.listOfVMeters[i]);
+          this.listOfData = [... this.listOfData, this.listOfVMeters[i]];
+          
         }
       }
       if((!this.VMIsDisable) && estado === false){
@@ -61,10 +63,12 @@ export class VirtualMeterModalComponent implements OnInit {
       this.listOfData.length = 0;
       for(let i = 0; i < this.listOfVMeters.length ; i++){
         if(this.dataPosition.id === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
-          this.listOfData.push(this.listOfVMeters[i]);
+          this.listOfData = [... this.listOfData, this.listOfVMeters[i]];
         }
       }
     }
+    
+    this.listOfData = [... this.listOfData];
   }
   
   disableVMeter(vmeter: VirtualMeterShema, estado : boolean){
@@ -99,7 +103,6 @@ export class VirtualMeterModalComponent implements OnInit {
   }
 
   submitForm(estado: boolean): void{
-    console.log(this.validateForm.value);
     
     if (this.validateForm.valid) {
       this.validateForm.value.operacion = toBoolean(this.validateForm.value.operacion);
@@ -108,7 +111,6 @@ export class VirtualMeterModalComponent implements OnInit {
         ... this.validateForm.value,
         estado: true
       }
-      console.log(this.newVMeter);
       this.globalService.Post(this.url.post, this.newVMeter).subscribe(
         (result:any) => {
           if(result){
@@ -136,12 +138,10 @@ export class VirtualMeterModalComponent implements OnInit {
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 

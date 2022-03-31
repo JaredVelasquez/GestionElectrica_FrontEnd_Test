@@ -10,6 +10,8 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
   styleUrls: ['./issued-invoices.component.css']
 })
 export class IssuedInvoicesComponent implements OnInit {
+  FacturaIsVisible: boolean = false;
+  dataInvoice!: InvoiceInterface;
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
@@ -70,9 +72,44 @@ export class IssuedInvoicesComponent implements OnInit {
     );
   }
 
-  
+    
+
+  GenerateInvoice(data: InvoiceInterface): void{
+    this.dataInvoice = data;
+    this.FacturaIsVisible = true;
+  }
+
+  CancelarFactura(invoicePosition: InvoiceInterface){
+    let provider = {
+      ... invoicePosition,
+      descripcion: "actualizado",
+      estado: 0,
+    }
+    console.log(provider);
+    this.globalService.PutId(this.url.update, invoicePosition.facturaId, provider).subscribe(
+      (result: any) => {
+        console.log(result);
+        this.GetRates();
+        
+      }
+    );
+
+  }
+
+  Back(): void {
+    this.FacturaIsVisible = false;
+  }
   
   listOfColumns: ColumnItem[] = [
+    {
+      name: 'ID',
+      sortOrder: 'descend',
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.detalleFacturaId - b.detalleFacturaId,
+      sortDirections: ['descend', 'ascend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
     {
       name: 'Codigo',
       sortOrder: 'descend',
@@ -113,6 +150,15 @@ export class IssuedInvoicesComponent implements OnInit {
       name: 'Energia consumida',
       sortOrder: 'descend',
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.energiaConsumida - b.energiaConsumida,
+      sortDirections: ['descend', 'ascend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Total',
+      sortOrder: 'descend',
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.total - b.total,
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,

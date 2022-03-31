@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { SpinerLoaderComponent } from "../components/spiner-loader/spiner-loader.component";
+import { SpinnerLoaderSuperimposedComponent } from "../components/spinner-loader-superimposed/spinner-loader-superimposed.component";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class SpinnerLoaderServiceService {
   
   
 
-  public show(message = '') {
+  public show() {
     // Returns an OverlayRef (which is a PortalHost)
 
     if (!this.overlayRef) {
@@ -23,8 +24,8 @@ export class SpinnerLoaderServiceService {
     }
 
     // Create ComponentPortal that can be attached to a PortalHost
-    const spinnerOverlayPortal = new ComponentPortal(SpinerLoaderComponent);
-    const component = this.overlayRef.attach(spinnerOverlayPortal); // Attach ComponentPortal to PortalHost
+    const spinnerOverlayPortal = new ComponentPortal(SpinnerLoaderSuperimposedComponent);
+    this.overlayRef.attach(spinnerOverlayPortal); // Attach ComponentPortal to PortalHost
   }
 
   public hide() {

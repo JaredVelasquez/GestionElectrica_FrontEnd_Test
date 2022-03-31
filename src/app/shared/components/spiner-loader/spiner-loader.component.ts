@@ -5,7 +5,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./spiner-loader.component.css']
 })
 export class SpinerLoaderComponent implements OnInit {
-  @Input() public message!: string;
+  @Input() public message!: boolean;
   constructor() {}
 
   public ngOnInit() {}

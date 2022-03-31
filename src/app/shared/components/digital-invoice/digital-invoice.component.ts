@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ChargesShema } from 'src/Core/interfaces/charges.interface';
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
@@ -11,6 +11,7 @@ import html2canvas from 'html2canvas';
 import { SpinerLoaderComponent } from "../spiner-loader/spiner-loader.component";
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-digital-invoice',
@@ -18,12 +19,12 @@ import { ComponentPortal } from '@angular/cdk/portal';
   templateUrl: './digital-invoice.component.html',
   styleUrls: ['./digital-invoice.component.css']
 })
-export class DigitalInvoiceComponent implements OnInit, OnChanges {
+export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   private overlayRef!: OverlayRef;
   @Input() dataInvoice !: InvoiceInterface;
-  Spinner: {isVisible: boolean} = { 
-    isVisible: false
-  }
+  isVisible: boolean = false;
+  spinnerIsVisible: boolean = false;
+  
   ChargePosition!: ChargesShema;
   dataSource: Object;
   title: string;
@@ -32,7 +33,8 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges {
   constructor(
     private globalService: EndPointGobalService,
     private spinner: NgxSpinnerService,
-    private overlay: Overlay
+    private overlay: Overlay,
+    private router: Router
 
   ) {
     this.title = 'Angular  FusionCharts Sample';
@@ -60,7 +62,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges {
   }
   
   ngOnInit(): void {
-    
+    this.isVisible = false;
     this.globalService.GetId( 'cargos-facturas', this.dataInvoice.cargoFacturaId).subscribe(
       (result: any) => {
         this.ChargePosition = result;
@@ -68,11 +70,14 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges {
     );
   }
   ngOnChanges(changes: SimpleChanges): void {
+
+  }
+  ngOnDestroy(): void {
+    
   }
 
   GenerarFactura(): void {
-    this.Spinner.isVisible = true;
-    console.log(this.Spinner.isVisible);
+    this.spinnerIsVisible = true;
     const div = document.getElementById('content');
 
     const options = {
@@ -94,8 +99,8 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges {
   
         (doc as any).addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
 
-        this.Spinner.isVisible =false ;
-        console.log(this.Spinner.isVisible);
+        
+        this.isVisible = true;
         return doc;
       }).then((doc) => {
           doc.save(`factura-${this.dataInvoice.codigo}.pdf`);
@@ -139,6 +144,9 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges {
   }
 
 
+  disableSpinner(disable: boolean){
+    this.spinnerIsVisible = disable;
+  }
   
 }
     

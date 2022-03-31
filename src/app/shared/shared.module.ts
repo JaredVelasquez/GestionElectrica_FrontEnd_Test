@@ -26,6 +26,7 @@ import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import { SpinerLoaderComponent } from './components/spiner-loader/spiner-loader.component';
+import { SpinnerLoaderSuperimposedComponent } from './components/spinner-loader-superimposed/spinner-loader-superimposed.component';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
 @NgModule({
@@ -33,6 +34,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
     MenuLayoutComponent,
     DigitalInvoiceComponent,
     SpinerLoaderComponent,
+    SpinnerLoaderSuperimposedComponent,
   ],
   imports: [
     RouterModule,

@@ -7,6 +7,8 @@ import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface'
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { ContractMeterInterface } from 'src/Core/interfaces/contract-meter.interface';
 import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
+import { endOfMonth } from 'date-fns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-generated-invoices',
@@ -24,6 +26,16 @@ export class GeneratedInvoicesComponent implements OnInit {
   ListOfCharges: EspecialChargesInterface[] = [];
   list: any[] = [];
   
+  dates:{from: any, to: any} = {from: '', to: ''};
+  ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+
+  onChange(result: Date[]): void {
+    this.dates = {
+      from: result[0],
+      to: result[1]
+    }
+    console.log(this.dates);
+  }
   url = {
     id: 1,
     get: 'get-invoices',
@@ -38,6 +50,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -52,11 +65,6 @@ export class GeneratedInvoicesComponent implements OnInit {
   updateTable(list: any){
     this.GetRates();
     
-  }
-
-  GenerateInvoice(data: InvoiceInterface): void{
-    this.dataInvoice = data;
-    this.FacturaIsVisible = true;
   }
 
   Back(): void {
@@ -112,6 +120,13 @@ export class GeneratedInvoicesComponent implements OnInit {
       }
     );
   }
+  
+
+  GenerateInvoice(data: InvoiceInterface): void{
+    this.dataInvoice = data;
+    this.FacturaIsVisible = true;
+  }
+
   CancelarFactura(invoicePosition: InvoiceInterface){
     let provider = {
       ... invoicePosition,
@@ -131,16 +146,9 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   EmitirFactura(invoicePosition: InvoiceInterface){
     let provider = {
-      contratoMedidorId: invoicePosition.contratoMedidorId,
+      ... invoicePosition,
       descripcion: "actualizado",
-      codigo: invoicePosition.codigo,
-      fechaLectura: invoicePosition.fechaLectura,
       fechaEmision: (new Date()).toISOString(),
-      fechaVencimiento: invoicePosition.fechaVencimiento,
-      fechaInicio: invoicePosition.fechaInicio,
-      fechaFin: invoicePosition.fechaFin,
-      tipoConsumo: invoicePosition.tipoConsumo,
-      observacion: invoicePosition.observacion,
       estado: 2,
     }
     console.log(provider);

@@ -1,29 +1,35 @@
 <div *ngIf="!FacturaIsVisible">
 <h1>Facturas Generadas</h1>
-<div nz-row class="row-1">
-    <div nz-col nzOffset="8" nzSpan="4">
-      <app-modal-new-invoices [ListOfCharges]="ListOfCharges" [ListOfContractMeditors]="ListOfContractMeditors" (DataUpdated)="updateTable($event)"></app-modal-new-invoices>
+<br>
+<div nz-row>
+  <div nz-col nzOffset="7">
+    <label>Rango de fecha</label>
+  </div>
+</div>
+<div nz-row class="row-1" class="generar-facturas">
+  
+    <div nz-col nzSpan="4">
+      <app-modal-new-invoices  [ListOfCharges]="ListOfCharges" [ListOfContractMeditors]="ListOfContractMeditors" (DataUpdated)="updateTable($event)"></app-modal-new-invoices>
     </div>
-
-    <div nz-col nzSpan="12" class="row1-col2">
-
-        <nz-input-group [nzSuffix]="suffixIconSearch">
-          <input type="text" nz-input placeholder="input search text" />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-          <i nz-icon nzType="search"></i>
-        </ng-template>
-        
+    <div nz-col nzSpan="3">
+      <button nz-button nzType="primary" nzSize="default" >Emitir todas</button>
     </div>
-
+      <div nz-col nzSpan="8">
+                <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+      </div>
+      
+      <div nz-col>
+        <button nz-button nzType="primary" nzSize="default" >Generar Facturas</button>
+      </div>
 
 </div>
+<br>
 <div nz-row class="row-2">
   <div nz-col>
       <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="90px">Acciones</th>
+          <th nzLeft nzWidth="90px" nzAlign="center">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -36,16 +42,16 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="100px">Emitir</th>
-            <th nzRight nzWidth="120px">
+            <th nzRight nzWidth="70px" nzAlign="center">Emitir</th>
+            <th nzRight nzWidth="90px" nzAlign="center">
                 Generar Factura
             </th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of listOfData">
-            <td nzLeft>
-              <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="CancelarFactura(data)"><i nz-icon nzType="minus-square" nzTheme="outline"></i></button>
+            <td nzLeft nzAlign="center">
+              <button nz-button nzSize="small" nzDanger nzType="primary" (click)="CancelarFactura(data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
               
 
             </td>
@@ -56,11 +62,11 @@
             <td>{{data.fechaLectura}}</td>
             <td>{{ data.energiaConsumida }}</td>
             <td>{{data.total + "  LPS"}}</td>
-            <td nzRight>
-                <button nz-button nzType="primary" (click)="EmitirFactura(data)"><i nz-icon nzType="check"></i></button>
+            <td nzRight nzAlign="center">
+                <button nz-button nzSize="small" nzType="primary" (click)="EmitirFactura(data)"><i nz-icon nzType="check"></i></button>
             </td>
-            <td nzRight>
-              <button nz-button nzType="primary" (click)="GenerateInvoice(data)"><i nz-icon nzType="file-done"></i></button>
+            <td nzRight nzAlign="center">
+              <button nz-button nzSize="small" nzType="primary" (click)="GenerateInvoice(data)"><i nz-icon nzType="file-done"></i></button>
 
             </td>
           </tr>

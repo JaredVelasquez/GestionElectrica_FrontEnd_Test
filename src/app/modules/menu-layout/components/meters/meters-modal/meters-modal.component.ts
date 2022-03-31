@@ -32,11 +32,13 @@ export class MetersModalComponent implements OnInit {
     modelo: ['', [Validators.required]],
     serie: ['', [Validators.required]],
     lecturaMax: ['', [Validators.required]],
-    multiplicador: ['', [Validators.required]],
     puntoConexion: ['', [Validators.required]],
     puntoMedicionId: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
     tipo: ['', [Validators.required]],
+    registroDatos: ['', [Validators.required]],
+    almacenamientoLocal: ['', [Validators.required]],
+    funcionalidad: ['', [Validators.required]],
   });
 
   constructor(
