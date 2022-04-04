@@ -4,7 +4,7 @@ import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
-import { VirtualMeterShema } from 'src/Core/interfaces/virtual-meter.interface';
+import { VirtualMeterInterface, VirtualMeterShema } from 'src/Core/interfaces/virtual-meter.interface';
 
 
 @Component({
@@ -15,14 +15,17 @@ import { VirtualMeterShema } from 'src/Core/interfaces/virtual-meter.interface';
 
 export class VirtualMeterModalComponent implements OnInit {
   isVisible = false;
-  @Input() listOfVMeters: VirtualMeterShema[] = [];
+  @Input() listOfVMeters: VirtualMeterInterface[] = [];
   @Input() dataPosition!: MeterSchema;
-  newVMeter!: VirtualMeterShema;
+  newVMeter!: any;
   validateForm!: FormGroup;
-  listOfData: VirtualMeterShema[] = [];
+  listOfData: VirtualMeterInterface[] = [];
   VMIsDisable: boolean = false;
+  IsEditableForm: boolean = false;
+  IsEditableSchema!: VirtualMeterInterface;
+
   url = { 
-    post: 'medidor-virtuals',
+    post: 'medidor-virtuals-custom',
     getVMetersDetail: 'medidor-virtual-detalles',
     update: 'medidor-virtuals'
   }
@@ -71,7 +74,93 @@ export class VirtualMeterModalComponent implements OnInit {
     this.listOfData = [... this.listOfData];
   }
   
-  disableVMeter(vmeter: VirtualMeterShema, estado : boolean){
+  submitForm(estado: boolean){
+    if(!this.IsEditableForm){
+      this.submitPostForm(estado);
+    }
+    else if(this.IsEditableForm){
+      this.submitUpdateForm();
+    }
+  }
+
+  submitPostForm(estado: boolean): void{
+    if (this.validateForm.valid) {
+      this.newVMeter = {
+        ... this.validateForm.value,
+        estado: true
+      }
+      this.globalService.Post(this.url.post, this.newVMeter).subscribe(
+        (result:any) => {
+          if(result){
+            
+            this.listOfVMeters = [...this.listOfVMeters, result];
+            this.GetVirtualMeters(estado, false);
+            this.cleanForm();
+          }
+        }
+      );
+      
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+  }
+  
+  submitUpdateForm(){
+    
+    if (this.validateForm.valid) {
+      const {porcentaje, operacion, observacion} =  this.validateForm.value;
+      this.newVMeter = {
+        ... {porcentaje, operacion, observacion},
+        estado: true
+      }
+      this.IsEditableSchema.observacion = this.newVMeter.observacion;
+      this.IsEditableSchema.operacion = this.newVMeter.operacion;
+      this.IsEditableSchema.porcentaje = this.newVMeter.porcentaje;
+      
+      if(this.IsEditableSchema)
+      this.globalService.PutId(this.url.update, this.IsEditableSchema.vmedidorId, this.newVMeter).subscribe(
+        (result:any) => {
+          if(!result){
+            this.updateTable(this.IsEditableSchema);
+            this.IsEditableForm = false;
+            this.cleanForm();
+          }
+        }
+      );
+      
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+
+  }
+
+  editableForm(data: VirtualMeterInterface){
+    
+    console.log(data);
+    this.IsEditableSchema = data;
+    this.IsEditableForm = true;
+    this.validateForm = this.fb.group({
+      medidorId: [data.medidorId],
+      porcentaje: [data.porcentaje, [Validators.required]],
+      operacion: [data.operacion, [Validators.required]],
+      observacion: [data.observacion, [Validators.required]],
+    })
+
+  }
+  
+  disableVMeter(vmeter: VirtualMeterInterface, estado : boolean){
 
     this.globalService.Patch(this.url.getVMetersDetail, vmeter.id, {estado: estado}).subscribe(
       result => {
@@ -93,6 +182,7 @@ export class VirtualMeterModalComponent implements OnInit {
     );
   }
 
+
   cleanForm(): void{
     this.validateForm = this.fb.group({
       medidorId: [this.dataPosition.id],
@@ -102,35 +192,22 @@ export class VirtualMeterModalComponent implements OnInit {
     })
   }
 
-  submitForm(estado: boolean): void{
-    
-    if (this.validateForm.valid) {
-      this.validateForm.value.operacion = toBoolean(this.validateForm.value.operacion);
-      this.validateForm.value.medidorId = toNumber(this.validateForm.value.medidorId);
-      this.newVMeter = {
-        ... this.validateForm.value,
-        estado: true
-      }
-      this.globalService.Post(this.url.post, this.newVMeter).subscribe(
-        (result:any) => {
-          if(result){
-            this.listOfVMeters = [...this.listOfVMeters,result];
-            this.GetVirtualMeters(estado, false);
-          }
-        }
-      );
-      
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
 
+  updateTable(data: any){
+    console.log(data);
+    for(let i = 0;i < this.listOfData.length; i++){
+      if(this.listOfData[i].vmedidorId === data.vmedidorId && this.listOfData[i].id === data.id ){
+        console.log(data);
+        
+        this.listOfData[i] = data;
+      }
+    }
+    
+    console.log(this.listOfData);
+    this.listOfData = [... this.listOfData];
+    
   }
-  
+
   showModal(): void {
     this.isVisible = true;
     this.GetVirtualMeters(true, false);
@@ -170,15 +247,6 @@ export class VirtualMeterModalComponent implements OnInit {
       ],
       filterFn: null
     },
-    {
-      name: 'Tipo',
-      sortOrder: null,
-      sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: VirtualMeterShema, b: VirtualMeterShema) => Number(a.tipo) - Number(b.tipo),
-      filterMultiple: false,
-      listOfFilter: [],
-      filterFn: null
-    }
   ];
 
 }

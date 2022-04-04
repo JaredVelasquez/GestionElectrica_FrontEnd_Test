@@ -25,8 +25,8 @@
                   <nz-form-item>
                     <nz-form-control>
                       <nz-select formControlName="operacion" style="width: 120px;" >
-                            <nz-option nzLabel="Suma (+)" nzValue="true"></nz-option>
-                            <nz-option nzLabel="Resta (-)" nzValue="false"></nz-option>
+                            <nz-option nzLabel="Suma (+)" [nzValue]="true"></nz-option>
+                            <nz-option nzLabel="Resta (-)" [nzValue]="false"></nz-option>
                       </nz-select>
                     </nz-form-control>
                   </nz-form-item>
@@ -40,7 +40,7 @@
               <div nz-row>
                 <nz-form-item>
                   <nz-form-control>
-                    <nz-input-number style="width: 166px;" formControlName="porcentaje" placeholder="(0.5)%" [nzMax]="1" [nzMin]="0.01" nzInputMode="decimal" nzPrecisionMode="toFixed" [nzStep]="0.1"></nz-input-number>
+                    <nz-input-number style="width: 166px;" formControlName="porcentaje" placeholder="(0.5)%" [nzMax]="1" [nzMin]="0.01" nzInputMode="decimal" [nzStep]="0.1"></nz-input-number>
                   </nz-form-control>
                 </nz-form-item>
               </div>
@@ -99,7 +99,7 @@
           <br>
           <div nz-row class="row-5">
             <div nz-col>
-                <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '600px', y: '240px' }"  [nzPageSize]="10">
+                <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '100%', y: '240px' }"  [nzPageSize]="10">
                   <thead>
                     <tr>
                     <th nzLeft nzWidth="90px">ID</th>
@@ -115,7 +115,8 @@
                       >
                         {{ column.name }}
                       </th>
-                      <th nzRight nzWidth="80px">Acciones</th>
+                      <th nzWidth="110px">Tipo</th>
+                      <th nzRight nzWidth="90px">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -138,13 +139,25 @@
                           <span>Generacion</span>
                         </ng-template>
                       </td>
-                      <td nzRight>
-                        <div *ngIf="data.estado; else disablesList"> 
-                            <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableVMeter(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                      <td nzRight nzAlign="center">
+                        <div nz-row>
+
+                          <div nz-col>
+                            <div *ngIf="data.estado; else disablesList"> 
+                                <button nz-button nzSize="small" nzType="primary" (click)=" disableVMeter(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                            </div>
+                            <ng-template #disablesList>
+                                <button nz-button nzSize="small" nzType="primary" (click)=" disableVMeter(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                            </ng-template>
+
+                          </div>
+
+                          <div nz-col nzOffset="1">
+                            <button nz-button nzSize="small" nzType="primary" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+                            
+                          </div>
+
                         </div>
-                        <ng-template #disablesList>
-                            <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableVMeter(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
-                        </ng-template>
                       </td>
                     </tr>
                   </tbody>

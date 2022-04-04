@@ -1,5 +1,11 @@
-export interface VirtualMeterView{
-
+export interface VirtualMeterInterface{
+    id: number;
+    medidorId: number;
+    vmedidorId: number;
+    operacion: number;
+    porcentaje: number;
+    observacion: string;
+    estado: boolean;
 }
 
 export interface VirtualMeterShema{

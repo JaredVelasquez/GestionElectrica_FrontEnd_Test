@@ -13,6 +13,12 @@
 
   </div>
 
+  <div nz-col>
+    <div>
+      <button nz-button nzType="primary" (click)="GetManualSchemas()">Medidores Manuales</button>
+    </div>
+  </div>
+
   <div nz-col nzSpan="5">
 
     <app-meters-modal [listOfMPoinst]="listOfMPoinst" (DataUpdated)="updateTable($event)"></app-meters-modal>
@@ -26,7 +32,7 @@
 
   <div nz-col>
 
-    <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
+    <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '100%', y: '240px' }" nzSize="middle">
       <thead>
         <tr>
           <th nzLeft nzWidth="100px">Accion</th>
@@ -44,6 +50,7 @@
           <th nzRight nzWidth="80px">Estado</th>
           <th nzRight nzWidth="90px">RollOver</th>
           <th nzRight nzWidth="100px">Medidores Virtuales</th>
+          <th nzRight nzWidth="120px">Registro manual</th>
         </tr>
       </thead>
     <!-- Cuerpo de tabla -->
@@ -55,18 +62,13 @@
               <div nz-col>
                 <div *ngIf="data.estado; else disablesList"> 
                     <button nzSize="small" nz-button nzType="primary" nzDanger (click)=" disableMeter(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-    
                 </div>
                 <ng-template #disablesList>
                     <button nzSize="small"  nz-button nzType="primary" (click)=" disableMeter(data, 1)"><i nz-icon nzType="file-done" nzTheme="outline"></i></button>
-    
                 </ng-template>
-
               </div>
               <div nz-col nzOffset="3">
                 <app-meters-modal [listOfMPoinst]="listOfMPoinst" [dataPosition]="data"></app-meters-modal>
-
-
               </div>
             </div>
 
@@ -92,6 +94,13 @@
           <td nzAlign="center" nzRight>
             <app-virtual-meter-modal [listOfVMeters]="listOfDataVM" [dataPosition]="data"></app-virtual-meter-modal>
           </td>
+          <td nzAlign="center" nzRight *ngIf="data.registroDatos; else automatico">
+            <app-manual-registration-modal [dataPosition]="data" [listOfVariables]="listOfVariables"></app-manual-registration-modal>
+          </td>
+          <ng-template #automatico>
+            <td nzAlign="center" nzRight><i nz-icon nzType="alert" nzTheme="outline"></i></td>
+          </ng-template>
+          
         </tr>
       </tbody>
     </nz-table>  

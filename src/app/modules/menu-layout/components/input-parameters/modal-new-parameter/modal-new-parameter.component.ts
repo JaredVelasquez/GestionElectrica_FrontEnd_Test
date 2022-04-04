@@ -58,11 +58,11 @@ export class ModalNewParameterComponent implements OnInit {
     if (this.validateForm.valid) {
       this.fullSchema();
       console.log(this.newParam);
-      this.isVisible = false;
       this.globalService.Post(this.url.post, this.newParam).subscribe(
         (result:any) => {
           if(result){
             this.DataUpdated.emit(result);
+            this.isVisible = false;
           }
         }
       );

@@ -1,17 +1,17 @@
 <button nz-button [nzType]="'primary'" nzSize="small" (click)="showModal()"><i nz-icon nzType="clock-circle" nzTheme="outline"></i></button>
 <nz-modal [(nzVisible)]="isVisible" nzTitle="RollOver" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <ng-container *nzModalContent>
-      <div nz-row>
-          <div nz-col>
-              <label>Fecha de RollOver</label>
-              <div nz-row>
-                      <nz-range-picker style="width: 475px;" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
-              </div>
-
-          </div>
-
-      </div>
         <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
+          <div nz-row>
+              <div nz-col>
+                  <label>Fecha de RollOver</label>
+                  <div nz-row>
+                          <nz-range-picker formControlName="fecha" style="width: 475px;" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+                  </div>
+    
+              </div>
+    
+          </div>
           <div nz-row>
           
             <div nz-col nzSpan="11">
@@ -35,8 +35,8 @@
                   <nz-form-control>
                       <nz-form-item  nzFlex>
                           <nz-select class="inputMedium" formControlName="energia" nzPlaceHolder="Activa, Reactiva" nzAllowClear>
-                                  <nz-option nzLabel="Activa" nzValue="true"></nz-option>
-                                  <nz-option nzLabel="Reactiva" nzValue="false"></nz-option>
+                                  <nz-option nzLabel="Activa" [nzValue]="true"></nz-option>
+                                  <nz-option nzLabel="Reactiva" [nzValue]="false"></nz-option>
                           </nz-select>
                       </nz-form-item>
                   </nz-form-control>
@@ -97,16 +97,30 @@
           </div>
           <br>
         </form>
+
+
+        <div nz-row>
+          <div nz-col>
+            <div *ngIf="!IsDisableRollOver ; else enable">
+              <button nz-button [nzType]="'primary'" (click)="filterData(false, true)"><span>Mostrar desabilitados</span></button>
+            </div>
+            <ng-template #enable>
+              <button nz-button [nzType]="'primary'" (click)="filterData(true, true)"><span>Mostrar Habilitados</span></button>
+            </ng-template>
+        
+          </div>
+        </div>
         
         <div nz-row>
         
           <div nz-col>
         
-            <nz-table #table [nzData]="ListOfRollOver" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
+            <nz-table #table [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{ x: '1150px', y: '240px' }">
               <thead>
                 <tr>
-                  <th nzLeft nzWidth="180px"> # </th>
-                  <th
+                  
+                  <th  nzLeft nzWidth="90px">Acciones</th>
+                  <th 
                     *ngFor="let column of listOfColumns"
                     [nzSortOrder]="column.sortOrder"
                     [nzSortFn]="column.sortFn"
@@ -117,20 +131,41 @@
                   >
                     {{ column.name }}
                   </th>
-                  <th nzRight nzWidth="80px">Acciones</th>
+                  <th   nzRight nzWidth="90px">Energia</th>
                 </tr>
               </thead>
             
               <tbody>
                 <tr *ngFor="let data of table.data">
+
+
                   <td nzLeft> 
+                    <div nz-row>
+                      <div nz-col>
+                        <div *ngIf="data.estado; else disablesList"> 
+                            <button nzSize="small" nz-button nzType="primary" nzDanger (click)=" disableVMeter(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                        </div>
+                        <ng-template #disablesList>
+                            <button nzSize="small"  nz-button nzType="primary" (click)=" disableVMeter(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                        </ng-template>
+                      </div>
+                      <div nz-col nzOffset="1">
+                        <button nz-button nzSize="small" nzType="primary" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+
+                      </div>
+                    </div>
+                  </td>
+
+
+
+                  <td> 
                     {{ data.id }}
                   </td>
                   <td>{{ data.fechaInicial  | date:'dd/M/yyyy' }}</td>
                   <td>{{ data.fechaFinal  | date:'dd/M/yyyy'  }}</td>
                   <td>{{ data.lecturaAnterior }}</td>
                   <td>{{ data.lecturaNueva }}</td>
-                  <td>
+                  <td nzRight>
                     <div *ngIf="data.energia;else Reactiva">
                       <span>Activa</span>
                     </div>
@@ -138,9 +173,6 @@
                       <span>Reactiva</span>
                     </ng-template>
                   </td>
-                  <td nzRight> 
-                      <button nz-button nzType="primary"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-                  </td> 
                 </tr>
               </tbody>
             </nz-table>  

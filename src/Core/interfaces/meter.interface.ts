@@ -10,7 +10,7 @@ export interface MeterSchema{
     puntoMedicionId: number;
     observacion: string;
     puntoConexion: number;
-    tipo: number;
+    tipo: boolean;
     registroDatos: boolean,
     almacenamientoLocal: boolean,
     funcionalidad: boolean,

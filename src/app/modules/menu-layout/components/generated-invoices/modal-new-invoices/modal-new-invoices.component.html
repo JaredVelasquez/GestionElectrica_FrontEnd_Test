@@ -23,7 +23,7 @@
                     <div nz-row>
                         <nz-form-control>
                             <nz-form-item  nzFlex>
-                                <nz-select formControlName="cargo" nzPlaceHolder="MD_123120" nzAllowClear>
+                                <nz-select formControlName="cargoId" nzPlaceHolder="MD_123120" nzAllowClear>
                                     <div *ngFor="let charge of ListOfCharges">
                                         <nz-option [nzLabel]="charge.descripcion" [nzValue]="charge.id"></nz-option>
                                     </div>
@@ -98,7 +98,7 @@
                     <div nz-row>
                         <nz-form-control>
                           <nz-form-item  nzFlex>
-                              <nz-date-picker class="inputMedium" formControlName="fechaFinal"></nz-date-picker>
+                              <nz-date-picker class="inputMedium" formControlName="fechaFin"></nz-date-picker>
                           </nz-form-item>
                         </nz-form-control>
                     </div>

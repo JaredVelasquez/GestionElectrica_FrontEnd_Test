@@ -19,7 +19,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   newParam!: InputParametersInterface | InputParamSchema;
   ListOfCharges: ChargesInterface[] = [];
   isVisible = false;
-  editIsActive!: InputParametersInterface | undefined;
+  editIsActive!: InputParametersInterface;
   paramIsDisable: boolean = false;
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
@@ -120,14 +120,14 @@ export class ModalParametersComponent implements OnInit, OnChanges {
     );
   }
 
-  submitPostParam(estado: boolean): void {
+  submitPostParam(): void {
     if (this.validateForm.valid) {
         this.initializePostParam();
         this.globalService.Post(this.url.post, this.newParam).subscribe(
           (result:any) => {
             if(result){
               this.ListOfData = [...this.ListOfData,result];
-              this.GetParams(estado, false);
+              this.GetParams(this.ListOfData[0].estado, false);
               this.cleanForm();
             }
           }
@@ -179,7 +179,6 @@ export class ModalParametersComponent implements OnInit, OnChanges {
               if(dataEditable)
               this.update(dataEditable, dataEditable.estado);
               this.cleanForm();
-              this.editIsActive = undefined;
             }
           }
         );  
@@ -211,6 +210,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   }
 
   editableForm(data: InputParametersInterface){
+    this.editIsActive = data;
 
     this.validateForm = this.fb.group({
       fecha: [[data.fechaInicio.toString(), data.fechaFinal.toString()], [Validators.required]],
@@ -218,7 +218,6 @@ export class ModalParametersComponent implements OnInit, OnChanges {
       valor: [data.valor, [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
     })
-    this.editIsActive = data;
     
   }
 

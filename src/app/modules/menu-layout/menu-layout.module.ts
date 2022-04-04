@@ -35,6 +35,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 
 
@@ -61,6 +62,7 @@ import { RollOverModalComponent } from './components/meters/roll-over-modal/roll
 import { SubmitZoneModalComponent } from './components/zones/submit-zone-modal/submit-zone-modal.component';
 import { SubmitProviderModalComponent } from './components/providers/submit-provider-modal/submit-provider-modal.component';
 import { SubmitClientModalComponent } from './components/clients/submit-client-modal/submit-client-modal.component';
+import { ManualRegistrationModalComponent } from './components/meters/manual-registration-modal/manual-registration-modal.component';
 
 
 @NgModule({
@@ -94,7 +96,8 @@ import { SubmitClientModalComponent } from './components/clients/submit-client-m
     RollOverModalComponent,
     SubmitZoneModalComponent,
     SubmitProviderModalComponent,
-    SubmitClientModalComponent
+    SubmitClientModalComponent,
+    ManualRegistrationModalComponent
   ],
   imports: [
     CommonModule,
@@ -120,6 +123,7 @@ import { SubmitClientModalComponent } from './components/clients/submit-client-m
     NzSwitchModule,
     NzInputNumberModule,
     NzMessageModule,
+    NzDropDownModule
   ],
   bootstrap: [MainPageComponent],
 })

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
@@ -12,14 +12,18 @@ import { MeterSchema } from 'src/Core/interfaces/meter.interface';
   templateUrl: './roll-over-modal.component.html',
   styleUrls: ['./roll-over-modal.component.css']
 })
-export class RollOverModalComponent implements OnInit {
+export class RollOverModalComponent implements OnInit, OnChanges {
   isVisible = false;
   validateForm!: FormGroup;
   @Input() dataPosition!: MeterSchema;
-  newRollOver!: RollOverSchema;
+  newRollOver!: any;
   ListOfRollOver: RollOverSchema[] = [];
+  ListOfData: RollOverSchema[] = [];
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+  IsEditableSchema!: RollOverSchema;
+  IsEditableForm: boolean = false;
+  IsDisableRollOver: boolean = false;
 
   onChange(result: Date[]): void {
     this.dates = {
@@ -35,6 +39,7 @@ export class RollOverModalComponent implements OnInit {
     update: 'roll-overs'
   }
   EmptyForm = this.fb.group({
+    fecha: [ '', [Validators.required]],
     medidorId: [ '', [Validators.required]],
     energia: [ '', [Validators.required]],
     lecturaAnterior: ['', [Validators.required]],
@@ -47,11 +52,89 @@ export class RollOverModalComponent implements OnInit {
     private fb: FormBuilder,
     ) {}
 
-  submitForm(): void{
+
+    
+
+  ngOnInit(): void {
+    this.validateForm = this.EmptyForm;
+    this.GetRollOver();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+
+  GetRollOver(){
+    this.globalService.Get(this.url.get).subscribe(
+      (result: any) => {
+        this.ListOfRollOver = result;
+        this.filterData(true, false);
+      }
+    );
+  }
+
+  filterData(estado: boolean, switched: boolean){
+    if(switched){
+      if(estado)
+        this.IsDisableRollOver = false;
+      else
+        this.IsDisableRollOver = true;
+
+    }
+    this.ListOfData.length = 0;
+    for(let i = 0; i < this.ListOfRollOver.length; i++){
+      if(this.ListOfRollOver[i].estado === estado && this.ListOfRollOver[i].medidorId === this.dataPosition.id){
+        this.ListOfData = [... this.ListOfData, this.ListOfRollOver[i]];
+      }
+    }
+    
+    this.ListOfData = [... this.ListOfData];
+  }
+
+
+  editableForm(data: RollOverSchema){
+    this.IsEditableSchema = data;
+    this.IsEditableForm = true;
+    this.validateForm = this.fb.group({
+      fecha: [ [data.fechaInicial.toString(), data.fechaFinal.toString()], [Validators.required]],
+      medidorId: [ data.medidorId, [Validators.required]],
+      energia: [ data.energia, [Validators.required]],
+      lecturaAnterior: [ data.lecturaAnterior, [Validators.required]],
+      lecturaNueva: [data.lecturaNueva, [Validators.required]],
+      observacion: [data.observacion],
+    });
+  }
+  
+  disableVMeter(rollOver: RollOverSchema, estado : boolean){
+    rollOver.estado = estado;
+    this.globalService.Patch(this.url.update, rollOver.id, {estado: estado}).subscribe(
+      result => {
+        console.log(result);
+        
+        if(!result){
+          this.UpdateTable(rollOver);
+          
+          if(estado === true){
+            this.filterData(false, false);
+          }else{
+            this.filterData(true, false);
+          }
+
+        }
+      }
+    );
+  }
+  submitForm(){
+    if(!this.IsEditableForm){
+      this.submitPostForm();
+    }
+    else if(this.IsEditableForm){
+      this.submitUpdateForm();
+    }
+
+  }
+
+  submitPostForm(): void{
     
     if (this.validateForm.valid) {
-      this.validateForm.value.energia = toBoolean(this.validateForm.value.energia);
-      this.validateForm.value.medidorId = toNumber(this.validateForm.value.medidorId);
       this.newRollOver = {
         ... this.validateForm.value,
         fechaInicial: this.dates.from,
@@ -62,7 +145,8 @@ export class RollOverModalComponent implements OnInit {
       this.globalService.Post(this.url.post, this.newRollOver).subscribe(
         (result:any) => {
           if(result){
-            this.ListOfRollOver = [...this.ListOfRollOver,result];
+            this.ListOfRollOver = [... this.ListOfRollOver, result];
+            this.ListOfData = [... this.ListOfRollOver];
           }
         }
       );
@@ -78,15 +162,57 @@ export class RollOverModalComponent implements OnInit {
 
   }
 
-  GetRollOver(){
-    this.globalService.Get(this.url.get).subscribe(
-      (result: any) => {
-        this.ListOfRollOver = result;
+
+  submitUpdateForm(){
+    
+    if (this.validateForm.valid) {
+      const {medidorId, energia, lecturaAnterior, lecturaNueva, observacion} = this.validateForm.value;
+
+      this.newRollOver = {
+        ... {medidorId, energia, lecturaAnterior, lecturaNueva, observacion},
+        fechaInicial: this.validateForm.value.fecha[0],
+        fechaFinal: this.validateForm.value.fecha[1],
+        estado: true
       }
-    );
+      this.IsEditableSchema.observacion = this.newRollOver.observacion;
+      this.IsEditableSchema.energia = this.newRollOver.energia;
+      this.IsEditableSchema.fechaFinal = this.newRollOver.fechaFinal;
+      this.IsEditableSchema.fechaInicial = this.newRollOver.fechaInicial;
+      this.IsEditableSchema.lecturaAnterior = this.newRollOver.lecturaAnterior;
+      this.IsEditableSchema.lecturaNueva = this.newRollOver.lecturaNueva;
+      
+      if(this.IsEditableSchema)
+      this.globalService.PutId(this.url.update, this.IsEditableSchema.id, this.newRollOver).subscribe(
+        (result:any) => {
+          if(!result){
+            this.UpdateTable(this.IsEditableSchema);
+            this.IsEditableForm = false;
+            this.cleanForm();
+          }
+        }
+      );
+      
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+
+  }
+  
+  UpdateTable(data: RollOverSchema){
+    for(let i = 0; i < this.ListOfRollOver.length; i++){
+      if(this.ListOfRollOver[i].id === data.id){
+        this.ListOfRollOver[i] = data;
+      }
+    }
+    this.ListOfData = [... this.ListOfRollOver];
   }
 
-  
   cleanForm(): void{
     this.validateForm = this.fb.group({
       medidorId: [this.dataPosition.id],
@@ -97,11 +223,6 @@ export class RollOverModalComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.validateForm = this.EmptyForm;
-    this.GetRollOver();
-    
-  }
   showModal(): void {
     this.validateForm = this.EmptyForm;
     this.isVisible = true;
@@ -122,6 +243,15 @@ export class RollOverModalComponent implements OnInit {
 
   
   listOfColumns: ColumnItem[] = [
+    {
+      name: 'ID',
+      sortOrder: null,
+      sortDirections: ['ascend', 'descend', null],
+      sortFn: (a: RollOverSchema, b: RollOverSchema) => a.id - (b.id),
+      filterMultiple: false,
+      listOfFilter: [],
+      filterFn: null,
+    },
     {
       name: 'Fecha inicial',
       sortOrder: null,
@@ -158,14 +288,5 @@ export class RollOverModalComponent implements OnInit {
       listOfFilter: [],
       filterFn: null,
     },
-    {
-      name: 'Energia',
-      sortOrder: null,
-      sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: RollOverSchema, b: RollOverSchema) => Number(a.energia) - Number(b.energia),
-      filterMultiple: false,
-      listOfFilter: [],
-      filterFn: null
-    }
   ];
 }

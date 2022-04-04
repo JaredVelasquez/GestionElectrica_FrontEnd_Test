@@ -111,8 +111,9 @@ export class GeneratedInvoicesComponent implements OnInit {
       }
     );
   }
+
   GetCargos(){
-    this.globalService.Get(this.url.getECharges).subscribe( 
+    this.globalService.GetId(this.url.getECharges, 1).subscribe( 
       (result:any) => {
         this.ListOfCharges = result;
         console.log(this.ListOfCharges);
@@ -128,13 +129,15 @@ export class GeneratedInvoicesComponent implements OnInit {
   }
 
   CancelarFactura(invoicePosition: InvoiceInterface){
-    let provider = {
-      ... invoicePosition,
-      descripcion: "actualizado",
+    const {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion} = invoicePosition;
+    const provider = {
+      ... {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion},
+      descripcion: "CANCELADA",
+      fechaEmision: (new Date()).toISOString(),
       estado: 0,
-    }
+    } 
     console.log(provider);
-    this.globalService.PutId(this.url.update, invoicePosition.facturaId, provider).subscribe(
+    this.globalService.Patch(this.url.update, invoicePosition.facturaId, provider).subscribe(
       (result: any) => {
         console.log(result);
         this.GetRates();
@@ -145,12 +148,15 @@ export class GeneratedInvoicesComponent implements OnInit {
   }
 
   EmitirFactura(invoicePosition: InvoiceInterface){
-    let provider = {
-      ... invoicePosition,
-      descripcion: "actualizado",
+
+    const {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion} = invoicePosition;
+    const provider = {
+      ... {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion},
+      descripcion: "Emitida",
       fechaEmision: (new Date()).toISOString(),
       estado: 2,
-    }
+    } 
+
     console.log(provider);
     
     this.globalService.PutId(this.url.update, invoicePosition.facturaId, provider).subscribe(

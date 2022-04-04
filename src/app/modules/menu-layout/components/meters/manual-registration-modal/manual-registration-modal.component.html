@@ -1,0 +1,133 @@
+<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <ng-container *nzModalContent>
+          <div nz-row>
+              <div nz-col>
+                <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
+      
+                  <div nz-row>
+                      <div nz-col>
+                          <label>Source Id Medidor</label>
+                          <div nz-row>
+                              <nz-form-item  nzFlex>
+                                  <nz-form-control >
+                                      <nz-select class="inputMedium" formControlName="medidorId" nzPlaceHolder="1252153012" nzAllowClear nzDisabled>
+                                        <nz-option  [nzLabel]="dataPosition.sourceId" [nzValue]="dataPosition.id"> </nz-option>
+                                      </nz-select>
+                                  </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                      </div>
+      
+                      <div nz-col>
+                          <label>Variable</label>
+                          <div nz-row>
+                              <nz-form-item  nzFlex>
+                                  <nz-form-control >
+                                      <nz-select class="inputMedium" formControlName="variableId" nzPlaceHolder="KWh" nzAllowClear>
+                                          <nz-option *ngFor="let variable of listOfVariables" [nzLabel]="variable.descripcion" [nzValue]="variable.id"> </nz-option>
+                                      </nz-select>
+                                  </nz-form-control>
+                              </nz-form-item>
+                          </div>
+      
+                      </div>
+                  </div>
+      
+                  <div nz-row>
+                      <div nz-col>
+                          <label>Fecha de registro</label>
+                          <div nz-row>
+                              <nz-form-item  nzFlex>
+                                  <nz-form-control >
+                                      <nz-date-picker class="inputMedium" formControlName="fecha"></nz-date-picker>
+                                  </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                      </div>
+      
+                      <div nz-col>
+                          <label>Valor</label>
+                          <div nz-row>
+                              <nz-form-item  nzFlex>
+                                  <nz-form-control >
+                                      <nz-input-number class="inputMedium" formControlName="valor" [nzPlaceHolder]="'1300'"></nz-input-number>
+                                  </nz-form-control>
+                              </nz-form-item>
+                          </div>
+      
+                      </div>
+                  </div>
+                  
+                  <div nz-row>
+                    <div nz-col nzOffset="19" nzSpan="1">
+                        <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
+                    </div>
+                    <div nz-col nzOffset="1" nzSpan="1">
+                        <button nz-button (click)="submitForm()"><i nz-icon nzTheme="outline" nzType="save"></i></button>
+                    </div>
+                  </div>
+                  <br>
+                </form>
+
+              </div>
+          </div>
+
+          <div nz-row>
+            <div nz-col nzSpan="5">
+          
+              <div *ngIf="!manualRegistersIsActive ; else enable">
+                <button nz-button [nzType]="'primary'" (click)="FilterManualRegisters(false, true)"><span>Medidores desabilitados</span></button>
+              </div>
+              <ng-template #enable>
+                <button nz-button [nzType]="'primary'" (click)="FilterManualRegisters(true, true)"><span>Medidores Habilitados</span></button>
+              </ng-template>
+          
+            </div>
+            
+          </div>
+
+          <div nz-row>
+            <div nz-col>
+
+                <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
+                  <thead>
+                    <tr>
+                      <th nzWidth="80px">
+                        ID
+                      </th>
+                      <th nzWidth="100px">Medidor</th>
+                      <th nzWidth="100px">Variable</th>
+                      <th nzCustomFilter>
+                        Fecha
+                        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+                          <i nz-icon nzType="search"></i>
+                        </nz-filter-trigger>
+                      </th>
+                      <th>Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of nzTable.data">
+                      <td>{{ data.id }}</td>
+                      <td>{{ data.codigo }}</td>
+                      <td>{{ data.descripcion }}</td>
+                      <td>{{ data.fecha  | date:'dd/M/yyyy' }}</td>
+                      <td>{{ data.valor }}</td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <div class="ant-table-filter-dropdown">
+                    <div class="search-box">
+                      <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+                      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Search</button>
+                      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+                    </div>
+                  </div>
+                </nz-dropdown-menu>
+                
+            </div>
+          </div>
+      </ng-container>
+</nz-modal>

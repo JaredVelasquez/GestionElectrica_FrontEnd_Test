@@ -5,6 +5,9 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { ManualInterface, ManualSchema } from 'src/Core/interfaces/manualRegister.interface';
+import { VariableSchema } from 'src/Core/interfaces/variable.interface';
+import { VirtualMeterInterface } from 'src/Core/interfaces/virtual-meter.interface';
 
 
 @Component({
@@ -12,12 +15,15 @@ import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
   templateUrl: './meters.component.html',
   styleUrls: ['./meters.component.css']
 })
-export class MetersComponent implements OnInit {
+export class MetersComponent implements OnInit, OnChanges {
   listOfData: MeterSchema[] = [];
-  listOfDataVM: any [] = [];
+  listOfDataVM: VirtualMeterInterface [] = [];
   meterIsActive: boolean = false;
   vmeterIsActive: boolean = false;
-  listOfMPoinst: MeasurePointSchema[] =[];
+  listOfMPoinst: MeasurePointSchema[] = [];
+  listOfManualRegister: MeterSchema[] = [];
+  listOfVariables: VariableSchema[] = [];
+  listOfManualRegisters: ManualInterface[] = [];
   
   url = {
     getMeters: 'get-meters',
@@ -25,6 +31,7 @@ export class MetersComponent implements OnInit {
     getVMeters: 'get-vmeters',
     getVMetersmodel: 'medidor-virtuals',
     getMeasurePoints: 'punto-medicions',
+    getVariables: "variables",
     get: 'medidors',
     post:'medidors',
     delete:'medidors',
@@ -41,8 +48,15 @@ export class MetersComponent implements OnInit {
     this.GetMeters(1, false);
     this.GetVirtualMeters();
     this.GetMeasurePoint();
+    this.GetVariables();
+    console.log(this.listOfData);
+    
   }
-
+ ngOnChanges(changes: SimpleChanges): void {
+   console.log(this.listOfData );
+   
+   
+ }
   updateTable(list: MeterSchema){
     this.listOfData = [...this.listOfData,list];
   }
@@ -58,9 +72,12 @@ export class MetersComponent implements OnInit {
 
     this.globalService.GetId(this.url.getMeters, estado).subscribe(
       (result:any) => {
-        this.listOfData = result;
+        this.listOfData =  result;
+        console.log(this.listOfData);
+        
       }
     );
+    
   }
 
   GetMeasurePoint(): void{
@@ -75,6 +92,25 @@ export class MetersComponent implements OnInit {
     this.globalService.Get(this.url.getVMetersDetail).subscribe(
       (result:any) => {
         this.listOfDataVM = result;
+      }
+    );
+  }
+
+  GetManualSchemas(){
+    this.listOfManualRegister.length = 0;
+    for(let i = 0; i < this.listOfData.length; i++){
+      if(this.listOfData[i].registroDatos){
+        this.listOfManualRegister = [... this.listOfManualRegister,this.listOfData[i]];
+      }
+    }
+    this.listOfData.length = 0;
+    this.listOfData = [... this.listOfManualRegister];
+  }
+
+  GetVariables(){
+    this.globalService.Get(this.url.getVariables).subscribe(
+      (result:any) => {
+        this.listOfVariables = result;
       }
     );
   }
@@ -153,8 +189,8 @@ export class MetersComponent implements OnInit {
     {
       name: 'Tipo',
       sortOrder: null,
-      sortDirections: [null],
-      sortFn: (a: MeterSchema, b: MeterSchema) => Number(a.tipo) - Number(b.tipo),
+      sortDirections: ['ascend', 'descend', null],
+      sortFn: null,
       filterMultiple: false,
       listOfFilter: [],
       filterFn: null

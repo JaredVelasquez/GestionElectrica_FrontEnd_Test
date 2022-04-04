@@ -73,7 +73,7 @@
             <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
         </div>
         <div nz-col nzOffset="1" nzSpan="1" >
-                <button *ngIf="!editIsActive; else edit" nz-button (click)="submitPostParam(ListOfData[0].estado)"><i nz-icon nzTheme="outline" nzType="save"></i></button>
+                <button *ngIf="!editIsActive; else edit" nz-button (click)="submitPostParam()"><i nz-icon nzTheme="outline" nzType="save"></i></button>
         </div>
         <ng-template #edit>
             <button nz-button (click)="submitEditableForm(editIsActive)"><i nz-icon nzTheme="outline" nzType="save"></i></button>

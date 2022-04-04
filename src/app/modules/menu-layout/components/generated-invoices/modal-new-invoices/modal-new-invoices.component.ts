@@ -31,12 +31,12 @@ export class ModalNewInvoicesComponent implements OnInit {
 
   EmptyForm = this.fb.group({
     contratoMedidorId: [ '', [Validators.required]],
-    cargo: [ '', [Validators.required]],
+    cargoId: [ '', [Validators.required]],
     codigo: [ '', [Validators.required]],
     fechaLectura: ['', [Validators.required]],
     fechaVencimiento: ['', [Validators.required]],
     fechaInicio: ['', [Validators.required]],
-    fechaFinal: ['', [Validators.required]],
+    fechaFin: ['', [Validators.required]],
     tipoConsumo: ['', [Validators.required]],
     energiaConsumida: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
@@ -72,16 +72,7 @@ export class ModalNewInvoicesComponent implements OnInit {
     if (this.validateForm.valid) {
 
       const provider = {
-        contratoMedidorId:  1,
-        codigo:  this.validateForm.value.codigo,
-        fechaLectura:  this.validateForm.value.fechaLectura,
-        fechaVencimiento:  this.validateForm.value.fechaVencimiento,
-        fechaInicio:  this.validateForm.value.fechaInicio,
-        fechaFin:  this.validateForm.value.fechaFinal,
-        tipoConsumo:  Number(this.validateForm.value.tipoConsumo),
-        energiaConsumida: this.validateForm.value.energiaConsumida,
-        observacion:  this.validateForm.value.observacion,
-        cargoId: Number(this.validateForm.value.cargo),
+        ... this.validateForm.value,
         estado: 1,
       }  
        
@@ -89,7 +80,6 @@ export class ModalNewInvoicesComponent implements OnInit {
       
         this.globalService.Post(this.url.post, provider).subscribe(
           (result:any) => { 
-            console.log(result);
             
             if(result){
               this.DataUpdated.emit(result);
