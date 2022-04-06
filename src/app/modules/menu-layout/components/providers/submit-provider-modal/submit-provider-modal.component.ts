@@ -59,7 +59,7 @@ export class SubmitProviderModalComponent implements OnInit {
       this.globalService.Post(this.url.post, this.newProvider).subscribe(
         (result:any) => {
           if(result){
-            this.DataUpdated.emit(this.newProvider);
+            this.DataUpdated.emit(result);
             this.isVisible = false;
   
           }

@@ -36,7 +36,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   EmptyForm = this.fb.group({
     fecha: ['', [Validators.required]],
     cargoId: ['', [Validators.required]],
-    valor: ['', [Validators.required]],
+    valor: [0 , [Validators.required]],
     observacion: ['', [Validators.required]],
   })
 
@@ -60,6 +60,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.GetParams(true, false); 
+
     
   }
 
@@ -76,26 +77,23 @@ export class ModalParametersComponent implements OnInit, OnChanges {
 
   
   GetParams(estado: boolean, switched: boolean){
+    this.ListOfData.length = 0;
+    
     if(switched){
-      this.ListOfData.length = 0;
-      for(let i = 0; i < this.listOfParamRelation.length ; i++){
-        if(this.dataPosition.id === this.listOfParamRelation[i].tarifaId && this.listOfParamRelation[i].estado === estado){
-          this.ListOfData.push(this.listOfParamRelation[i]);
-        }
-      }
-      if((!this.paramIsDisable) && estado === false){
+      if(estado === false){
         this.paramIsDisable = true;
       }else{
         this.paramIsDisable = false;
       }
-    }else{
-      this.ListOfData.length = 0;
-      for(let i = 0; i < this.listOfParamRelation.length ; i++){
-        if(this.dataPosition.id === this.listOfParamRelation[i].tarifaId && this.listOfParamRelation[i].estado === estado){
-          this.ListOfData.push(this.listOfParamRelation[i]);
-        }
+    }
+    for(let i = 0; i < this.listOfParamRelation.length ; i++){
+      if(this.dataPosition.id === this.listOfParamRelation[i].tarifaId && this.listOfParamRelation[i].estado === estado){
+        this.ListOfData = [... this.ListOfData,this.listOfParamRelation[i]];
       }
     }
+
+    this.ListOfData = [... this.ListOfData];
+    
     
   }
   
@@ -125,8 +123,11 @@ export class ModalParametersComponent implements OnInit, OnChanges {
         this.initializePostParam();
         this.globalService.Post(this.url.post, this.newParam).subscribe(
           (result:any) => {
+            console.log(result);
+            
             if(result){
               this.ListOfData = [...this.ListOfData,result];
+              
               this.GetParams(this.ListOfData[0].estado, false);
               this.cleanForm();
             }
@@ -206,6 +207,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
         }
       }
     }
+    this.listOfParamRelation = [... this.listOfParamRelation];
     this.GetParams(estado, false)
   }
 
@@ -246,15 +248,6 @@ export class ModalParametersComponent implements OnInit, OnChanges {
       sortOrder: null,
       sortFn: null,
       sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Valor',
-      sortOrder: null,
-      sortFn: (a: InputParametersInterface, b: InputParametersInterface)=> a.valor - b.valor,
-      sortDirections: ['ascend' ,'descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true

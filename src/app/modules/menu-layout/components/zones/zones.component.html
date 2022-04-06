@@ -1,7 +1,8 @@
 <h1>Zona</h1>
+<br>
 <div nz-row class="row-1">
 
-  <div nz-col nzSpan="6">
+  <div nz-col nzSpan="5">
     <div *ngIf="!zonaIsDisable ; else enableClients">
       <button nz-button [nzType]="'primary'" (click)="GetZones(0, true)"><span>Mostrar desabilitados</span></button>
     </div>
@@ -14,12 +15,13 @@
   <app-submit-zone-modal  (DataUpdated)="updateTable($event)"></app-submit-zone-modal>
 
 </div>
+<br>
 <div nz-row class="row-2">
   <div nz-col>
       <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzWidth="80px">ID</th>
+          <th nzWidth="80px">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -32,7 +34,6 @@
             >
               {{ column.name }}
             </th>
-            <th nzWidth="80px">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -56,7 +57,6 @@
             
           </td>
             
-            <td >{{data.id}}</td>
             <td>{{data.codigo}}</td>
             <td>{{ data.descripcion }}</td>
             <td>{{ data.observacion }}</td>

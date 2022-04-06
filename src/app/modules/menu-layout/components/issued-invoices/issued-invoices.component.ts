@@ -102,15 +102,6 @@ export class IssuedInvoicesComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'ID',
-      sortOrder: 'descend',
-      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.detalleFacturaId - b.detalleFacturaId,
-      sortDirections: ['descend', 'ascend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Codigo',
       sortOrder: 'descend',
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigo.localeCompare(b.codigo),

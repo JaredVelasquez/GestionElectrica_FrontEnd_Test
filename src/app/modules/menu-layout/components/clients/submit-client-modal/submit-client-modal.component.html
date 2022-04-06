@@ -4,10 +4,10 @@
             <button nz-button [nzType]="'primary'"  (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
         </div>
         <ng-template #guardar>
-            <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Proveedor</span></button>
+            <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Cliente</span></button>
         </ng-template>
     
-        <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
+        <nz-modal [(nzVisible)]="isVisible" nzTitle="Cliente" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
           <ng-container *nzModalContent>
           <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
             
@@ -64,7 +64,7 @@
       
                           <div nz-row>
                             <div nz-col>
-                              <label>Logo de proveedor</label>
+                              <label>Logo de cliente</label>
                               <div nz-row>
                                 <nz-form-item>
                                   <nz-form-control>

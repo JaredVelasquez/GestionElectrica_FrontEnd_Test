@@ -103,15 +103,6 @@ export class ContractsComponent implements OnInit{
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'ID',
-      sortOrder: 'ascend',
-      sortFn: (a: ContractInterface, b: ContractInterface) => a.id - b.id,
-      sortDirections: ['ascend','descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Codigo',
       sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.codigo.localeCompare(b.codigo),

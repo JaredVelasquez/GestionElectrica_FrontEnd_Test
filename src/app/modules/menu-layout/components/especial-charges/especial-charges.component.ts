@@ -99,15 +99,6 @@ export class EspecialChargesComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'ID',
-      sortOrder: 'ascend',
-      sortFn: (a: EspecialChargesInterface, b: EspecialChargesInterface) => a.id - (b.id),
-      sortDirections: [ 'ascend','descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Fecha Inicio',
       sortOrder: null,
       sortFn: (a: EspecialChargesInterface, b: EspecialChargesInterface) => a.fechaInicio.localeCompare(b.fechaInicio),
@@ -124,7 +115,16 @@ export class EspecialChargesComponent implements OnInit {
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
-    }
+    },
+    {
+      name: 'Total Cargos',
+      sortOrder: 'descend',
+      sortFn: (a: EspecialChargesInterface, b: EspecialChargesInterface) => a.totalCargos - (b.totalCargos),
+      sortDirections: [ 'ascend','descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
   ];
 
 }

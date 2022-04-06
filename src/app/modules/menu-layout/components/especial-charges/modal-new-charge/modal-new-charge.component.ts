@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { toNumber } from 'ng-zorro-antd/core/util';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
@@ -12,7 +12,7 @@ import { endOfMonth } from 'date-fns';
   templateUrl: './modal-new-charge.component.html',
   styleUrls: ['./modal-new-charge.component.css']
 })
-export class ModalNewChargeComponent implements OnInit {
+export class ModalNewChargeComponent implements OnInit, OnChanges {
   isVisible = false;
   validateForm!: FormGroup;
   provider!: any;
@@ -42,8 +42,7 @@ export class ModalNewChargeComponent implements OnInit {
   });
 
   EditableForm: FormGroup = this.fb.group({
-    fechaInicio: [this.dataPosition?.fechaInicio, [Validators.required]],
-    fechaFinal: [this.dataPosition?.fechaFinal, [Validators.required]],
+    fecha: ['', [Validators.required]],
     descripcion: [this.dataPosition?.descripcion, [Validators.required]],
     cargoFinanciamiento: [this.dataPosition?.cargoFinanciamiento, [Validators.required]],
     ajuste: [this.dataPosition?.ajuste, [Validators.required]],
@@ -59,14 +58,46 @@ export class ModalNewChargeComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.validateForm = this.EmptyForm;
+    this.validateForm = this.fb.group({
+      fecha: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      cargoFinanciamiento: ['', [Validators.required]],
+      ajuste: ['', [Validators.required]],
+      cargoCorte: ['', [Validators.required]],
+      cargoMora: ['', [Validators.required]],
+      otrosCargos: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+    });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if(this.dataPosition){
+      this.EditableForm = this.fb.group({
+        fecha: [[this.dataPosition.fechaInicio.toString(), this.dataPosition.fechaFinal.toString()], [Validators.required]],
+        descripcion: [this.dataPosition?.descripcion, [Validators.required]],
+        cargoFinanciamiento: [this.dataPosition?.cargoFinanciamiento, [Validators.required]],
+        ajuste: [this.dataPosition?.ajuste, [Validators.required]],
+        cargoCorte: [this.dataPosition?.cargoCorte, [Validators.required]],
+        cargoMora: [this.dataPosition?.cargoMora, [Validators.required]],
+        otrosCargos: [this.dataPosition?.otrosCargos, [Validators.required]],
+        observacion: [this.dataPosition?.observacion, [Validators.required]],
+      });
+    }
   }
   
   showModal(): void {
     if(this.dataPosition){
       this.editableForm();
     }else{
-      this.validateForm = this.EmptyForm;
+      this.validateForm = this.fb.group({
+        fecha: ['', [Validators.required]],
+        descripcion: ['', [Validators.required]],
+        cargoFinanciamiento: ['', [Validators.required]],
+        ajuste: ['', [Validators.required]],
+        cargoCorte: ['', [Validators.required]],
+        cargoMora: ['', [Validators.required]],
+        otrosCargos: ['', [Validators.required]],
+        observacion: ['', [Validators.required]],
+      });
     }
     this.isVisible = true;
   }
@@ -102,10 +133,15 @@ export class ModalNewChargeComponent implements OnInit {
   }
 
   submitForm(){
-    if(!this.dataPosition)
-    this.submitPostForm();
-    else
-    this.submitUpdateForm();
+    if(!this.dataPosition){
+      this.submitPostForm();
+
+    }
+    else{
+      this.submitUpdateForm();
+  
+
+    }
   }
   
   submitPostForm(): void{
@@ -115,6 +151,7 @@ export class ModalNewChargeComponent implements OnInit {
         (result:any) => { 
           if(result){
             this.DataUpdated.emit(result);
+            this.isVisible = false;
           }
         }
       );

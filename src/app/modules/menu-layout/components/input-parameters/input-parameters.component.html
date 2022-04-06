@@ -2,7 +2,7 @@
 <br>
 <div nz-row class="row-1">
   
-  <div nz-col nzSpan="5">
+  <div nz-col nzSpan="4">
     <div *ngIf="!paramIsDisable ; else enable">
       <button nz-button [nzType]="'primary'" (click)="GetParams(0, true)"><span>Mostrar desabilitados</span></button>
     </div>
@@ -12,7 +12,7 @@
 
   </div>
 
-    <div nz-col nzSpan="5" class="row1-col1">
+    <div nz-col class="row1-col1">
       <app-modal-new-parameter  [ListOfCharges]="ListOfCharges"  (DataUpdated)="updateTable($event)"></app-modal-new-parameter>
     </div>
 
@@ -40,7 +40,6 @@
             >
               {{ column.name }}
             </th>
-            <th nzWidth="80px">Valor</th>
           </tr>
         </thead>
         <tbody>
@@ -62,7 +61,6 @@
                 </div>
               </div>
             </td>
-            <td>{{data.id}}</td>
             <td>{{ data.fechaInicio   | date:'dd/M/yyyy'  }}</td>
             <td>{{ data.fechaFinal   | date:'dd/M/yyyy'  }}</td>  
             <td>{{ data.observacion }}</td>  

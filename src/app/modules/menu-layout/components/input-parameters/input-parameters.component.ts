@@ -92,15 +92,6 @@ export class InputParametersComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'ID',
-      sortOrder: 'descend',
-      sortFn: (a: InputParamSchema, b: InputParamSchema) => a.id - b.id,
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Fecha Inicio',
       sortOrder: 'descend',
       sortFn: (a: InputParamSchema, b: InputParamSchema) => a.fechaInicio.localeCompare(b.fechaInicio),
@@ -126,7 +117,16 @@ export class InputParametersComponent implements OnInit {
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
-    }
+    },
+    {
+      name: 'Valor',
+      sortOrder: 'descend',
+      sortFn: (a: InputParamSchema, b: InputParamSchema) => a.valor - b.valor,
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
   ];
 
 }

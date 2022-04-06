@@ -1,29 +1,31 @@
 <h1>Cargos Especiales</h1>
+<br>
 <div nz-row class="row-1">
     
-  <div nz-col nzSpan="5">
+  <div nz-col nzSpan="4">
 
     <div *ngIf="!chargeIsDisable ; else enable">
-      <button nz-button [nzType]="'primary'" (click)="GetCharges(0, true)"><span>Medidores desabilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetCharges(0, true)"><span>Mostrar desabilitados</span></button>
     </div>
     <ng-template #enable>
-      <button nz-button [nzType]="'primary'" (click)="GetCharges(1, true)"><span>Medidores Habilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetCharges(1, true)"><span>Mostrar Habilitados</span></button>
     </ng-template>
 
   </div>
 
-    <div nz-col nzSpan="4" class="row1-col1">
+    <div nz-col class="row1-col1">
         <app-modal-new-charge (DataUpdated)="updateTable($event)"></app-modal-new-charge>
     </div>
 
 
 </div>
+ <br>
 <div nz-row class="row-2">
   <div nz-col>
       <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{   x: '100%', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="80px">Acciones</th>
+          <th  nzWidth="80px">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -36,7 +38,6 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="60px">Total cargos</th>
           </tr>
         </thead>
         <tbody>
@@ -61,10 +62,9 @@
 
               </div>
             </td>
-            <td>{{data.id}}</td>
             <td>{{data.fechaInicio  | date:'dd/M/yyyy'  }}</td>
             <td>{{ data.fechaFinal  | date:'dd/M/yyyy'  }}</td>
-            <td nzRight>
+            <td>
                 {{ data.totalCargos }}
                 
             </td>

@@ -2,18 +2,18 @@
 <div nz-row class="row-1">
 
   
-  <div nz-col nzSpan="5">
+  <div nz-col nzSpan="4">
 
     <div *ngIf="!ratesIsActive ; else enableClients">
-      <button nz-button [nzType]="'primary'" (click)="GetRates(0, true)"><span>Medidores desabilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetRates(0, true)"><span>Mostrar desabilitados</span></button>
     </div>
     <ng-template #enableClients>
-      <button nz-button [nzType]="'primary'" (click)="GetRates(1, true)"><span>Medidores Habilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetRates(1, true)"><span>Mostrar habilitados</span></button>
     </ng-template>
 
   </div>
   <br>
-    <div nz-col nzOffset="1" nzSpan="4">
+    <div nz-col>
       <app-modal-new-rate (DataUpdated)="updateTable($event)"></app-modal-new-rate>
     </div>
 </div>
@@ -60,7 +60,6 @@
 
               </div>
             </td>
-            <td>{{data.id}}</td>
             <td>{{data.codigo}}</td>
             <td>{{ data.descripcion }}</td>
             <td>{{ data.observacion }}</td>

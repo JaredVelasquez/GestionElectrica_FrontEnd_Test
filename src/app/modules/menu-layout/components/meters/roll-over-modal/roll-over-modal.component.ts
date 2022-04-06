@@ -6,6 +6,7 @@ import { RollOverSchema } from 'src/Core/interfaces/roll-over.interface';
 import { endOfMonth } from 'date-fns';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-roll-over-modal',
@@ -135,8 +136,10 @@ export class RollOverModalComponent implements OnInit, OnChanges {
   submitPostForm(): void{
     
     if (this.validateForm.valid) {
+      const {medidorId, energia, lecturaAnterior, lecturaNueva, observacion} = this.validateForm.value;
+
       this.newRollOver = {
-        ... this.validateForm.value,
+        ... {medidorId, energia, lecturaAnterior, lecturaNueva, observacion},
         fechaInicial: this.dates.from,
         fechaFinal: this.dates.to,
         estado: true
@@ -185,6 +188,7 @@ export class RollOverModalComponent implements OnInit, OnChanges {
       this.globalService.PutId(this.url.update, this.IsEditableSchema.id, this.newRollOver).subscribe(
         (result:any) => {
           if(!result){
+            this.newRollOver.id = this.dataPosition.id;
             this.UpdateTable(this.IsEditableSchema);
             this.IsEditableForm = false;
             this.cleanForm();
@@ -205,6 +209,7 @@ export class RollOverModalComponent implements OnInit, OnChanges {
   }
   
   UpdateTable(data: RollOverSchema){
+    this.ListOfData.length = 0;
     for(let i = 0; i < this.ListOfRollOver.length; i++){
       if(this.ListOfRollOver[i].id === data.id){
         this.ListOfRollOver[i] = data;

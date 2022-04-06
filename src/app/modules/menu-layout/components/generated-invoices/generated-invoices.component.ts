@@ -174,15 +174,6 @@ export class GeneratedInvoicesComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'ID',
-      sortOrder: 'descend',
-      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.detalleFacturaId - b.detalleFacturaId,
-      sortDirections: ['descend', 'ascend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Codigo',
       sortOrder: null,
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigo.localeCompare(b.codigo),
@@ -229,7 +220,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     },
     {
       name: 'Total a pagar',
-      sortOrder: null,
+      sortOrder: 'descend',
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.total - (b.total),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],

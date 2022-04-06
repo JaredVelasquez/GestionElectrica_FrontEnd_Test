@@ -51,15 +51,17 @@ export class SubmitClientModalComponent implements OnInit {
     if (this.validateForm.valid) {
       this.newProvider = {
         ... this.validateForm.value,
-        tipo: false,
+        tipo: true,
         imagen: 'https://us.123rf.com/450wm/blankstock/blankstock1408/blankstock140800126/30454176-signo-de-interrogaci%C3%B3n-signo-icono-s%C3%ADmbolo-de-ayuda-signo-de-preguntas-frecuentes-bot%C3%B3n-plano-gris-c.jpg?ver=6',
         estado: true
       }
 
       this.globalService.Post(this.url.post, this.newProvider).subscribe(
         (result:any) => {
+          console.log(result);
+          
           if(result){
-            this.DataUpdated.emit(this.newProvider);
+            this.DataUpdated.emit(result);
             this.isVisible = false;
   
           }
@@ -80,7 +82,7 @@ export class SubmitClientModalComponent implements OnInit {
     if (this.validateForm.valid) {
       this.newProvider = {
         ... this.validateForm.value,
-        tipo: false,
+        tipo: true,
         imagen: 'https://us.123rf.com/450wm/blankstock/blankstock1408/blankstock140800126/30454176-signo-de-interrogaci%C3%B3n-signo-icono-s%C3%ADmbolo-de-ayuda-signo-de-preguntas-frecuentes-bot%C3%B3n-plano-gris-c.jpg?ver=6',
         estado: true
       }
@@ -88,6 +90,7 @@ export class SubmitClientModalComponent implements OnInit {
       this.globalService.Patch(this.url.update, this.dataPosition.id ,this.newProvider).subscribe(
         (result:any) => {
           if(!result){
+            this.newProvider.id = this.dataPosition.id;
             this.UpdateMainTable(this.newProvider);
             this.isVisible = false;
             

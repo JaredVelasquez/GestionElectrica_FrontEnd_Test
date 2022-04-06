@@ -1,26 +1,10 @@
 <h1>Facturas Canceladas</h1>
-<div nz-row class="row-1">
-
-
-    <div nz-col nzOffset="12" nzSpan="12" class="row1-col2">
-
-        <nz-input-group [nzSuffix]="suffixIconSearch">
-          <input type="text" nz-input placeholder="input search text" />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-          <i nz-icon nzType="search"></i>
-        </ng-template>
-        
-    </div>
-
-
-</div>
+<br>
 <div nz-row class="row-2">
   <div nz-col>
       <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{   x: '100%', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="150px">ID</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -33,23 +17,16 @@
             >
               {{ column.name }}
             </th>
-            <th nzRight nzWidth="100px">
-                Total a pagar
-                
-            </th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of filterTable.data">
-            <td nzLeft>
-            {{data.detalleFacturaId}}
-            </td>
             <td>{{data.codigo}}</td>
             <td>{{ data.codigoContrato }}</td>
             <td>{{data.actorNombre}}</td>
-            <td>{{data.fechaLectura}}</td>
+            <td>{{data.fechaLectura  | date:'dd/M/yyyy'  }}</td>
             <td>{{ data.energiaConsumida }}</td>
-            <td nzRight>{{ data.total }}</td>
+            <td style="color: red;">{{ data.total }}</td>
           </tr>
         </tbody>
       </nz-table>

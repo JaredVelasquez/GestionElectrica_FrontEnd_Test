@@ -53,18 +53,53 @@ export class ModalNewInvoicesComponent implements OnInit {
   
   showModal(): void {
     this.isVisible = true;
-      this.validateForm = this.EmptyForm;
+      this.validateForm = this.fb.group({
+        contratoMedidorId: [ '', [Validators.required]],
+        cargoId: [ '', [Validators.required]],
+        codigo: [ '', [Validators.required]],
+        fechaLectura: ['', [Validators.required]],
+        fechaVencimiento: ['', [Validators.required]],
+        fechaInicio: ['', [Validators.required]],
+        fechaFin: ['', [Validators.required]],
+        tipoConsumo: ['', [Validators.required]],
+        energiaConsumida: ['', [Validators.required]],
+        observacion: ['', [Validators.required]],
+      });
     
   }
 
   handleOk(): void {
     console.log('Button ok clicked!');
     this.isVisible = false;
+    this.validateForm = this.fb.group({
+      contratoMedidorId: [ '', [Validators.required]],
+      cargoId: [ '', [Validators.required]],
+      codigo: [ '', [Validators.required]],
+      fechaLectura: ['', [Validators.required]],
+      fechaVencimiento: ['', [Validators.required]],
+      fechaInicio: ['', [Validators.required]],
+      fechaFin: ['', [Validators.required]],
+      tipoConsumo: ['', [Validators.required]],
+      energiaConsumida: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+    });
   }
 
   handleCancel(): void {
     console.log('Button cancel clicked!');
     this.isVisible = false;
+    this.validateForm = this.fb.group({
+      contratoMedidorId: [ '', [Validators.required]],
+      cargoId: [ '', [Validators.required]],
+      codigo: [ '', [Validators.required]],
+      fechaLectura: ['', [Validators.required]],
+      fechaVencimiento: ['', [Validators.required]],
+      fechaInicio: ['', [Validators.required]],
+      fechaFin: ['', [Validators.required]],
+      tipoConsumo: ['', [Validators.required]],
+      energiaConsumida: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+    });
   }
   
   

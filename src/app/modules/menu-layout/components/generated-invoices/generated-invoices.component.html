@@ -2,13 +2,13 @@
 <h1>Facturas Generadas</h1>
 <br>
 <div nz-row>
-  <div nz-col nzOffset="7">
+  <div nz-col nzOffset="6">
     <label>Rango de fecha</label>
   </div>
 </div>
 <div nz-row class="row-1" class="generar-facturas">
   
-    <div nz-col nzSpan="4">
+    <div nz-col nzSpan="3">
       <app-modal-new-invoices  [ListOfCharges]="ListOfCharges" [ListOfContractMeditors]="ListOfContractMeditors" (DataUpdated)="updateTable($event)"></app-modal-new-invoices>
     </div>
     <div nz-col nzSpan="3">
@@ -18,7 +18,7 @@
                 <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
       </div>
       
-      <div nz-col>
+      <div nz-col nzOffset="2">
         <button nz-button nzType="primary" nzSize="default" >Generar Facturas</button>
       </div>
 
@@ -55,13 +55,12 @@
               
 
             </td>
-            <td>{{data.detalleFacturaId}}</td>
             <td>{{data.codigo}}</td>
             <td>{{ data.codigoContrato }}</td>
             <td>{{data.actorNombre}}</td>
-            <td>{{data.fechaLectura}}</td>
+            <td>{{data.fechaLectura  | date:'dd/M/yyyy'  }}</td>
             <td>{{ data.energiaConsumida }}</td>
-            <td>{{data.total + "  LPS"}}</td>
+            <td style="color: red;">{{data.total + "  LPS"}}</td>
             <td nzRight nzAlign="center">
                 <button nz-button nzSize="small" nzType="primary" (click)="EmitirFactura(data)"><i nz-icon nzType="check"></i></button>
             </td>

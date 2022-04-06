@@ -94,7 +94,13 @@ export class VirtualMeterModalComponent implements OnInit {
           if(result){
             
             this.listOfVMeters = [...this.listOfVMeters, result];
-            this.GetVirtualMeters(estado, false);
+            if(estado){
+              this.GetVirtualMeters(false, false);
+
+            }else{
+              
+              this.GetVirtualMeters(true, false);
+            }
             this.cleanForm();
           }
         }

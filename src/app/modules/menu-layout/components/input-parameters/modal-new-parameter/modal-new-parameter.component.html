@@ -12,21 +12,22 @@
 
         <div nz-row>
             <div nz-col nzSpan="24">
-                <label>Fecha de RollOver</label>
+                <label>Fecha valida</label>
                 <div nz-row>
                         <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges"></nz-range-picker>
                 </div>
     
             </div>
         </div>
+        <br>
 
         <div nz-row>
-            <div nz-col nzSpan="11">
+            <div nz-col nzSpan="20">
                 <label>Cargo</label>
                 <div nz-row>
                     <nz-form-item nzFlex>
                     <nz-form-control>
-                        <nz-select formControlName="tipoCargoId" class="inputMedium">
+                        <nz-select formControlName="tipoCargoId" style="width: 380px;">
                             <div *ngFor="let charge of ListOfCharges">
                                 <nz-option [nzLabel]=charge.nombre [nzValue]=charge.id></nz-option>
                             </div>
@@ -35,13 +36,13 @@
                     </nz-form-item>
                 </div>
             </div>
-            <div nz-col nzSpan="11" nzOffset="2">
+            <div nz-col nzSpan="2">
 
                 <label>Valor</label>
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <input nz-input formControlName="valor" class="inputMedium" id="Descripcion" type="number" placeholder="(0.5)%"  [disabled]="false" />
+                        <input nz-input formControlName="valor" style="width: 70px;" type="number" placeholder="(0.5)%"  [disabled]="false" />
                     </nz-form-control>
                     </nz-form-item>
                 </div>

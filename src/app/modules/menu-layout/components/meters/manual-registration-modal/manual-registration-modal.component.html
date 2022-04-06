@@ -1,5 +1,5 @@
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+<button nz-button nzSize="small" [nzType]="'primary'" (click)="showModal()"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Registro Manual" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <ng-container *nzModalContent>
           <div nz-row>
               <div nz-col>

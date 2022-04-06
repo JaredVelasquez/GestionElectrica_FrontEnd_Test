@@ -2,7 +2,7 @@
 <br>
 <div nz-row>
 
-  <div nz-col nzSpan="5">
+  <div nz-col nzSpan="4">
 
     <div *ngIf="!meterIsActive ; else enableClients">
       <button nz-button [nzType]="'primary'" (click)="GetMeters(0, true)"><span>Medidores desabilitados</span></button>
@@ -13,13 +13,19 @@
 
   </div>
 
-  <div nz-col>
-    <div>
-      <button nz-button nzType="primary" (click)="GetManualSchemas()">Medidores Manuales</button>
+  <div nz-col  nzSpan="4">
+    <div *ngIf="!meterIsManual; else automatico">
+      <button nz-button nzType="primary" (click)="GetManualSchemas(true)">Medidores Manuales</button>
     </div>
+    <ng-template #automatico>
+      <div>
+        <button nz-button nzType="primary" (click)="GetManualSchemas(false)">Medidores Automaticos</button>
+      </div>
+    </ng-template>
+    
   </div>
 
-  <div nz-col nzSpan="5">
+  <div nz-col>
 
     <app-meters-modal [listOfMPoinst]="listOfMPoinst" (DataUpdated)="updateTable($event)"></app-meters-modal>
 
@@ -50,7 +56,7 @@
           <th nzRight nzWidth="80px">Estado</th>
           <th nzRight nzWidth="90px">RollOver</th>
           <th nzRight nzWidth="100px">Medidores Virtuales</th>
-          <th nzRight nzWidth="120px">Registro manual</th>
+          <th nzRight nzWidth="125px">Registro manual</th>
         </tr>
       </thead>
     <!-- Cuerpo de tabla -->
@@ -73,13 +79,17 @@
             </div>
 
           </td>
-          <td>{{ data.id }}</td>
           <td>{{ data.codigo }}</td>
           <td>{{ data.sourceId }}</td>
           <td>{{ data.descripcion }}</td>
           <td>{{ data.modelo }}</td>
           <td>{{ data.serie }}</td>
-          <td>{{ data.tipo }}</td>
+          <td *ngIf="!data.tipo; else bidireccional">Unidireccional</td>
+          <ng-template #bidireccional>
+            <td >Bidireccional</td>
+          </ng-template>
+          
+
           <td nzRight nzAlign="center"> 
             <div *ngIf="data.estado; else contractDisable"> 
                 <i nz-icon nzType="check-circle" nzTheme="outline"></i>
@@ -98,7 +108,7 @@
             <app-manual-registration-modal [dataPosition]="data" [listOfVariables]="listOfVariables"></app-manual-registration-modal>
           </td>
           <ng-template #automatico>
-            <td nzAlign="center" nzRight><i nz-icon nzType="alert" nzTheme="outline"></i></td>
+            <td nzAlign="center" nzRight><i nz-icon nzType="warning" nzTheme="outline"></i></td>
           </ng-template>
           
         </tr>

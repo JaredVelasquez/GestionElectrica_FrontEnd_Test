@@ -6,7 +6,7 @@
 
       <div nz-row>
         <div nz-col nzSpan="24">
-            <label>Fecha de RollOver</label>
+            <label>Fecha valida</label>
             <div nz-row>
                     <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
             </div>
@@ -17,13 +17,13 @@
 
     <div nz-row class="row-2">
 
-        <div nz-col nzSpan="11">
+        <div nz-col nzSpan="20">
 
-        <label>Cargo</label>
+        <label>Cargos</label>
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                    <nz-select formControlName="cargoId" class="inputMedium">
+                    <nz-select formControlName="cargoId" style="width: 380px;">
                         <div *ngFor="let charge of ListOfCharges">
                             <nz-option [nzLabel]="charge.nombre" [nzValue]="charge.id"></nz-option>
                         </div>
@@ -34,13 +34,13 @@
 
         </div>
 
-        <div nz-col nzOffset="2" nzSpan="11">
+        <div nz-col nzSpan="2">
 
         <label>Valor</label>
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                <nz-input-number formControlName="valor" class="inputMedium" placeholder="(0.5)%"></nz-input-number>
+                <nz-input-number formControlName="valor" style="width: 70px;" placeholder="(0.5)%"></nz-input-number>
             </nz-form-control>
             </nz-form-item>
         </div>
@@ -99,7 +99,7 @@
             <nz-table #table [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="3">
               <thead>
                 <tr>
-                <th nzLeft nzWidth="80px">ID</th>
+                  <th nzLeft nzWidth="100px">Acciones</th>
                   <th
                     *ngFor="let column of listOfColumns"
                     [nzSortOrder]="column.sortOrder"
@@ -108,31 +108,38 @@
                     [nzFilterMultiple]="column.filterMultiple"
                     [nzFilters]="column.listOfFilter"
                     [nzFilterFn]="column.filterFn"
-                    nzWidth="150px"
+                    nzWidth="25%"
                   >
                     {{ column.name }}
                   </th>
-                  <th nzRight nzWidth="80px">Acciones</th>
+                  <th nzRight nzWidth="80px">Valor</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let data of table.data">
-                <td nzLeft>{{ data.idParametro }}</td>
+                <td nzLeft>
+                  <div nz-row>
+                    <div nz-col>
+                      <div *ngIf="data.estado; else disablesList"> 
+                          <button class="edit" nz-button nzType="primary" nzSize="small" nzDanger (click)=" disableRelation(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                      </div>
+                      <ng-template #disablesList>
+                          <button class="edit" nz-button nzType="primary" nzSize="small" (click)=" disableRelation(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                      </ng-template>
+
+                    </div>
+
+                    <div nz-col>
+                          <button class="edit" nz-button nzType="primary" nzSize="small" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+                      
+
+                    </div>
+                  </div>
+                </td>
                 <td>{{ data.cargoNombre }}</td>
-                <td>{{ data.valor }}</td>
                 <td>{{ data.fechaInicio  | date:'dd/M/yyyy'  }}</td>
                 <td>{{ data.fechaFinal  | date:'dd/M/yyyy' }}</td>
-                <td nzRight>
-                    <div *ngIf="data.estado; else disablesList"> 
-                        <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRelation(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-                    </div>
-                    <div> 
-                        <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-                    </div>
-                    <ng-template #disablesList>
-                        <button class="edit" nz-button nzType="primary"  nzShape="circle" (click)=" disableRelation(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
-                    </ng-template>
-                </td>
+                <td nzRight>{{ data.valor }}</td>
                 </tr>
               </tbody>
             </nz-table>

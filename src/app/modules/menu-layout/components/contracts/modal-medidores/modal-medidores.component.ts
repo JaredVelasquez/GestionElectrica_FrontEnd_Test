@@ -17,6 +17,10 @@ export class ModalMedidoresComponent implements OnInit {
     { label: 'Fecha Contrato', value: 'Fecha Contrato' },
     { label: 'Especifica', value: 'Especifica' }
   ];
+  options2 = [
+    { label: 'Si', value: 'example' },
+    { label: 'No', value: 'example' }
+  ];
   
 
   constructor(

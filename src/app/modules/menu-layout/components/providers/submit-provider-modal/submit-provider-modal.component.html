@@ -7,7 +7,7 @@
         <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Proveedor</span></button>
     </ng-template>
 
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Proveedor" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
       <ng-container *nzModalContent>
       <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
         

@@ -155,6 +155,15 @@ export class CancelledInvoicesComponent implements OnInit {
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
+    },
+    {
+      name: 'Total',
+      sortOrder: null,
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.total - b.total,
+      sortDirections: ['descend', 'ascend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
     }
   ];
 }

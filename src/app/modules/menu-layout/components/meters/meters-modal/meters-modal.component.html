@@ -32,9 +32,9 @@
             <div nz-row>
               <nz-form-item  nzFlex>
                 <nz-form-control>
-                    <nz-select class="inputMedium" formControlName="registroDatos" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
-                          <nz-option nzLabel="Manual" [nzValue]=0></nz-option>
-                          <nz-option nzLabel="Automatico" [nzValue]=1></nz-option>
+                    <nz-select class="inputMedium" formControlName="registroDatos" nzPlaceHolder="Manual, Automatico" nzAllowClear>
+                          <nz-option nzLabel="Manual" [nzValue]=true></nz-option>
+                          <nz-option nzLabel="Automatico" [nzValue]=false></nz-option>
                     </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -54,7 +54,7 @@
                                   <nz-option [nzLabel]="data.sourceId" [nzValue]="data.sourceId"></nz-option>
                               </div> -->
                               <div>
-                                <nz-option [nzLabel]="'example'" [nzValue]="'example'"></nz-option>
+                                <nz-option [nzLabel]="'example'" [nzValue]=1123100></nz-option>
                             </div>
                           </nz-select>
                       </nz-form-item>
@@ -65,11 +65,11 @@
 
           
           <div nzOffset="2" nzSpan="11" nz-col class="row7-col2">
-            <label>Punto Medicion</label>
+            <label>Zona</label>
             <div nz-row>
               <nz-form-item  nzFlex>
                 <nz-form-control>
-                  <nz-select class="inputMedium"  formControlName="puntoMedicionId" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
+                  <nz-select class="inputMedium"  formControlName="puntoMedicionId" nzPlaceHolder="Norte, Sur, Este ..." nzAllowClear>
                     <div *ngFor="let point of listOfMPoinst">
                       <nz-option [nzLabel]="point.descripcion" [nzValue]=point.id></nz-option>
                     </div>
@@ -89,9 +89,9 @@
             <div nz-row>
               <nz-form-item  nzFlex>
                 <nz-form-control> 
-                  <nz-select class="inputMedium" formControlName="tipo" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
-                        <nz-option nzLabel="Unidireccional" [nzValue]="false"></nz-option>
-                        <nz-option nzLabel="Bidireccional" [nzValue]="true"></nz-option>
+                  <nz-select class="inputMedium" formControlName="tipo" nzPlaceHolder="Unidireccional, Bidireccional" nzAllowClear>
+                        <nz-option nzLabel="Unidireccional" [nzValue]=false></nz-option>
+                        <nz-option nzLabel="Bidireccional" [nzValue]=true></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -100,7 +100,7 @@
         </div>
 
         <div nzOffset="2" nzSpan="11" nz-col class="row7-col2">
-          <label>Punto de Conexion</label>
+          <label>Nivel de Tension</label>
           <div nz-row>
             <nz-form-item  nzFlex>
               <nz-form-control>
@@ -126,9 +126,9 @@
             <div nz-row>
               <nz-form-item  nzFlex>
                 <nz-form-control> 
-                  <nz-select class="inputMedium" formControlName="almacenamientoLocal" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
-                        <nz-option nzLabel="Si" [nzValue]="true"></nz-option>
-                        <nz-option nzLabel="No" [nzValue]="false"></nz-option>
+                  <nz-select class="inputMedium" formControlName="almacenamientoLocal" nzPlaceHolder="Si, No" nzAllowClear>
+                        <nz-option nzLabel="Si" [nzValue]=true></nz-option>
+                        <nz-option nzLabel="No" [nzValue]=false></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -141,9 +141,9 @@
           <div nz-row>
             <nz-form-item  nzFlex>
               <nz-form-control>
-                <nz-select class="inputMedium" formControlName="funcionalidad" nzPlaceHolder="Baja tension, media, alta" nzAllowClear>
-                      <nz-option nzLabel="Generacion" [nzValue]="true"></nz-option>
-                      <nz-option nzLabel="Consumo" [nzValue]="false"></nz-option>
+                <nz-select class="inputMedium" formControlName="funcionalidad" nzPlaceHolder="Generacion, Consumo" nzAllowClear>
+                      <nz-option nzLabel="Generacion" [nzValue]=true></nz-option>
+                      <nz-option nzLabel="Consumo" [nzValue]=false></nz-option>
                 </nz-select>
               </nz-form-control>
             </nz-form-item>

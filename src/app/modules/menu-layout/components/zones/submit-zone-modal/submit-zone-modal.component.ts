@@ -57,7 +57,7 @@ export class SubmitZoneModalComponent implements OnInit {
       this.globalService.Post(this.url.post, this.newZone).subscribe(
         (result:any) => {
           if(result){
-            this.DataUpdated.emit(this.newZone);
+            this.DataUpdated.emit(result);
   
           }
         }
@@ -103,6 +103,7 @@ export class SubmitZoneModalComponent implements OnInit {
     }
 
   }
+  
   editableFrom(data: ZoneShema): void{
     console.log(data);
     

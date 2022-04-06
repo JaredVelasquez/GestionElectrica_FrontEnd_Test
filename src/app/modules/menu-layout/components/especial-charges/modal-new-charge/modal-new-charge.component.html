@@ -3,7 +3,7 @@
     <button nzSize="small" nz-button nzType="primary" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
 </div>
 <ng-template #Guardar>
-    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Cargo</span></button>
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
 </ng-template>
 <nz-modal [(nzVisible)]="isVisible" nzTitle="Cargo" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
     <ng-container *nzModalContent>
@@ -12,13 +12,14 @@
 
         <div nz-row>
             <div nz-col nzSpan="24">
-                <label>Rango de fecha</label>
+                <label>Rango de fecha valida</label>
                 <div nz-row>
                         <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges"></nz-range-picker>
                 </div>
     
             </div>
         </div>
+        <br>
         <div nz-row>
             <div nz-col nzSpan="11">
                 <label>Descripcion</label>

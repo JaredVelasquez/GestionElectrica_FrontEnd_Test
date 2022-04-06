@@ -18,12 +18,13 @@ import { VirtualMeterInterface } from 'src/Core/interfaces/virtual-meter.interfa
 export class MetersComponent implements OnInit, OnChanges {
   listOfData: MeterSchema[] = [];
   listOfDataVM: VirtualMeterInterface [] = [];
+  meterIsManual: boolean = false;
   meterIsActive: boolean = false;
   vmeterIsActive: boolean = false;
   listOfMPoinst: MeasurePointSchema[] = [];
   listOfManualRegister: MeterSchema[] = [];
   listOfVariables: VariableSchema[] = [];
-  listOfManualRegisters: ManualInterface[] = [];
+  listOfManualMeterAux: MeterSchema[] = [];
   
   url = {
     getMeters: 'get-meters',
@@ -73,7 +74,7 @@ export class MetersComponent implements OnInit, OnChanges {
     this.globalService.GetId(this.url.getMeters, estado).subscribe(
       (result:any) => {
         this.listOfData =  result;
-        console.log(this.listOfData);
+        this.listOfManualMeterAux = result;
         
       }
     );
@@ -96,15 +97,28 @@ export class MetersComponent implements OnInit, OnChanges {
     );
   }
 
-  GetManualSchemas(){
+  GetManualSchemas(isManual: boolean){
+    if(isManual)
+      this.meterIsManual = true;
+    else
+      this.meterIsManual = false;
+
+    if(this.listOfManualMeterAux){
+      this.listOfData = [... this.listOfManualMeterAux];
+      
+    }
+    
     this.listOfManualRegister.length = 0;
+
     for(let i = 0; i < this.listOfData.length; i++){
-      if(this.listOfData[i].registroDatos){
-        this.listOfManualRegister = [... this.listOfManualRegister,this.listOfData[i]];
+      if(this.listOfData[i].registroDatos == isManual){
+        this.listOfManualRegister = [... this.listOfManualRegister, this.listOfData[i]];
       }
     }
+    
     this.listOfData.length = 0;
     this.listOfData = [... this.listOfManualRegister];
+    
   }
 
   GetVariables(){
@@ -132,15 +146,6 @@ export class MetersComponent implements OnInit, OnChanges {
   }
 
   listOfColumns: ColumnItem[] = [
-    {
-      name: '#',
-      sortOrder: 'ascend',
-      sortFn: (a: MeterSchema, b: MeterSchema) => a.id - b.id,
-      sortDirections: ['ascend', 'descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
     {
       name: 'Codigo',
       sortOrder: null,

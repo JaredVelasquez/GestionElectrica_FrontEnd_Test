@@ -62,11 +62,13 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
       (result:any) => {
         this.listOfManualRegisters = result;
         this.listOfData = result;
+        this.FilterManualRegisters(true, false);
       }
     );
 
   }
   FilterManualRegisters(estado: boolean, switched: boolean){
+    
     this.listOfData = [... this.listOfManualRegisters];
     if(switched){
       if(estado)
@@ -74,9 +76,9 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
       else
         this.manualRegistersIsActive = true;
 
-        this.listOfData.length = 0;
     }
     
+    this.listOfData.length = 0;
     for(let i=0; i < this.listOfManualRegisters.length; i++){
       if(this.listOfManualRegisters[i].medidorId === this.dataPosition.id && this.listOfManualRegisters[i].estado === estado){
         this.listOfData = [... this.listOfData, this.listOfManualRegisters[i]];
@@ -179,6 +181,7 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
 
   showModal(): void {
     this.isVisible = true;
+    this.FilterManualRegisters(true, false);
   }
 
   handleOk(): void {

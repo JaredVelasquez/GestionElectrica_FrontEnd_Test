@@ -1,7 +1,7 @@
 import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
-import { toNumber } from 'ng-zorro-antd/core/util';
+import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 
@@ -78,8 +78,6 @@ export class MetersModalComponent implements OnInit {
   }
   
   submitPostForm(){
-    
-    console.log(this.validateForm.value);
     if (this.validateForm.valid) {
       this.fullSchema();
       this.globalService.Post(this.url.postMeter, this.meter).subscribe(
@@ -104,16 +102,26 @@ export class MetersModalComponent implements OnInit {
 
   submitUpdateForm(): void {
     console.log(this.dataPosition);
+    console.log(this.validateForm.value);
     
     if (this.validateForm.valid) {
+    
+    
+    console.log(this.validateForm.value);
+      
       this.fullSchema();
-      this.globalService.Patch(this.url.postMeter, this.dataPosition.id ,this.meter).subscribe(
+      this.globalService.PutId(this.url.postMeter, this.dataPosition.id ,this.meter).subscribe(
         (result:any) => {
+          console.log(result);
+          
           if(!result){
             this.updateMainTable();
             this.isVisible = false;
-            
+
           }
+          
+            
+          
         }
       );
       
@@ -128,8 +136,7 @@ export class MetersModalComponent implements OnInit {
   }
 
   editableFrom(data: MeterSchema): void{
-    console.log(data);
-    
+    console.log(this.dataPosition.observacion);
     this.validateForm = this.fb.group({
       sourceId: [data.sourceId, [Validators.required]],
       codigo: [data.codigo, [Validators.required]],
@@ -137,20 +144,18 @@ export class MetersModalComponent implements OnInit {
       modelo: [data.modelo, [Validators.required]],
       serie: [data.serie, [Validators.required]],
       lecturaMax: [data.lecturaMax, [Validators.required]],
-      multiplicador: [data.multiplicador, [Validators.required]],
       puntoConexion: [data.puntoConexion, [Validators.required]],
       puntoMedicionId: [data.puntoMedicionId, [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
       tipo: [data.tipo, [Validators.required]],
+      registroDatos: [data.registroDatos, [Validators.required]],
+      almacenamientoLocal: [data.almacenamientoLocal, [Validators.required]],
+      funcionalidad: [data.funcionalidad, [Validators.required]],
     });
-
-    console.log(this.validateForm.value);
     
   }
 
   fullSchema(){
-    this.validateForm.value.puntoConexion = toNumber(this.validateForm.value.puntoConexion)
-    this.validateForm.value.tipo = toNumber(this.validateForm.value.tipo)
 
     this.meter = {
       ... this.validateForm.value,
@@ -159,9 +164,19 @@ export class MetersModalComponent implements OnInit {
   }
 
   updateMainTable(): void{
-    this.dataPosition = { 
-      ... this.validateForm.value
-    }
+    this.dataPosition.sourceId = this.validateForm.value.sourceId;
+    this.dataPosition.codigo = this.validateForm.value.codigo;
+    this.dataPosition.descripcion = this.validateForm.value.descripcion;
+    this.dataPosition.modelo = this.validateForm.value.modelo;
+    this.dataPosition.serie = this.validateForm.value.serie;
+    this.dataPosition.lecturaMax = this.validateForm.value.lecturaMax;
+    this.dataPosition.puntoConexion = this.validateForm.value.puntoConexion;
+    this.dataPosition.puntoMedicionId = this.validateForm.value.puntoMedicionId;
+    this.dataPosition.observacion = this.validateForm.value.observacion;
+    this.dataPosition.tipo = this.validateForm.value.tipo;
+    this.dataPosition.registroDatos = this.validateForm.value.registroDatos;
+    this.dataPosition.almacenamientoLocal = this.validateForm.value.almacenamientoLocal;
+    this.dataPosition.funcionalidad = this.validateForm.value.funcionalidad;
   }
 
 }

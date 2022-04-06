@@ -106,15 +106,6 @@ export class RatesComponent implements OnInit{
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'ID',
-      sortOrder: 'descend',
-      sortFn: (a: RatesInterface, b: RatesInterface) => a.id - b.id,
-      sortDirections: ['descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Codigo',
       sortOrder: 'descend',
       sortFn: (a: RatesInterface, b: RatesInterface) => a.codigo.localeCompare(b.codigo),
