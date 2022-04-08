@@ -77,7 +77,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   GenerarFactura(): void {
-    this.spinnerIsVisible = true;
+    this.disableSpinner(true);
     const div = document.getElementById('content');
 
     const options = {
@@ -100,21 +100,19 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
         (doc as any).addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
 
         
-        this.isVisible = true;
+    this.disableSpinner(false);
+        
         return doc;
       }).then((doc) => {
+        
           doc.save(`factura-${this.dataInvoice.codigo}.pdf`);
         
       });
       
     }else{
       console.log("No se pudo generar factura, content no existe");
-      
     }
     
-      
-
-
   }
 
 

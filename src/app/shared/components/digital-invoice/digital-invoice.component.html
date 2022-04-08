@@ -1,6 +1,8 @@
+
+
 <div nz-row>
     <div nz-col nzOffset="22">
-        <button nz-button class="print-btn" nzType="primary" (click)=" GenerarFactura()"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
+        <button nz-button class="print-btn" nzType="primary" (click)=" GenerarFactura()" [nzLoading]="spinnerIsVisible"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
     </div>
 </div>
 <br>
@@ -320,4 +322,11 @@
 </div>
 </div>
 </div>
-<app-spinner-loader-superimposed *ngIf="spinnerIsVisible" [triger]="isVisible" (disableSpiner)="disableSpinner($event)"></app-spinner-loader-superimposed>
+
+<nz-spin nzTip="Cargando ... " [nzSpinning]="spinnerIsVisible" nzSize="large">
+    <nz-alert
+      nzType="info"
+      nzMessage="Alert message title"
+      nzDescription="Further details about the context of this alert."
+    ></nz-alert>
+</nz-spin>

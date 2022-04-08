@@ -166,7 +166,8 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
 
   postTable(data: ManualInterface){
     this.listOfManualRegisters = [ ... this.listOfManualRegisters , data]
-    this.listOfData = [... this.listOfManualRegisters];
+    this.listOfData = [... this.listOfData, data];
+    this.listOfData = [... this.listOfData];
   }
 
   updateTable(data: ManualInterface): void{
