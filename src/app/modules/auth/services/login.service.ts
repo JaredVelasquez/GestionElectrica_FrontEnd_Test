@@ -13,7 +13,7 @@ export class LoginService {
   ) { }
 
   SubmitLogin(credentials:{identificator:string, password:string}){
-    return this.http.post(`${environment.api}login`, credentials);  
+    return this.http.post(`http://localhost:3000/login`, credentials);  
 
   }
 }

@@ -13,6 +13,6 @@ export class RegisterService {
   ) { }
 
   SubmitRegisterUser(user: regisUser){
-    return this.http.post(`${environment.api}register`, user);
+    return this.http.post(`http://localhost:3000/register`, user);
   }
 }
