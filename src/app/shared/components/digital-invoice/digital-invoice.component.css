@@ -1,27 +1,7 @@
-
-.example {
-    text-align: center;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-    margin-bottom: 20px;
-    padding: 30px 50px;
-    margin: 20px 0;
-}
-
 .print-btn{
     position: fixed;
     overflow: hidden;
     opacity: 0.6;
-}
-
-.card-style {
-    width: 100%;
-    color: #000010;
-    text-align: center;
-}
-
-.card-small-font {
-    font-size: 4px;
 }
 
 .grid-container {
@@ -255,24 +235,12 @@
     grid-template-rows: 1fr 0.3fr;
     grid-template-areas: ".";
 }
+
 .contenedor-cliente-regulado {
     display: grid;
     grid-template-areas: ". .";
     margin-top: 5px;
     background-color: #eaeaea;
-}
-
-.medioambiental-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.1fr 0.6fr 0.8fr 0.8fr;
-    gap: 1px 1px;
-    grid-template-areas: ". . .";
-}
-
-.div-etiquetas-medioambiente {
-    display: flex;
-    justify-content: space-between;
 }
 
 .img-formula {
@@ -329,22 +297,6 @@
     background-color: #d8d8d8;
     padding: 0px 12px 0px 12px;
 }
-
-.emisiones {
-    height: 2px;
-    width: 72%;
-    background-color: #5E7835;
-    position: absolute;
-    right: 0;
-    top: -3%;
-}
-
-
-/* .proveedores {
-    height: 3px;
-    width: 55%;
-    background-color: #E37D25;
-} */
 
 .asterisco {
     color: red;
