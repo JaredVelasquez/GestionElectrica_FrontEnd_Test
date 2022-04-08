@@ -3,15 +3,10 @@ import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ChargesShema } from 'src/Core/interfaces/charges.interface';
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 
-import { NgxSpinnerService } from 'ngx-spinner';
 
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { SpinerLoaderComponent } from "../spiner-loader/spiner-loader.component";
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-digital-invoice',
@@ -20,7 +15,6 @@ import { Router } from '@angular/router'
   styleUrls: ['./digital-invoice.component.css']
 })
 export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
-  private overlayRef!: OverlayRef;
   @Input() dataInvoice !: InvoiceInterface;
   isVisible: boolean = false;
   spinnerIsVisible: boolean = false;
@@ -32,9 +26,6 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private globalService: EndPointGobalService,
-    private spinner: NgxSpinnerService,
-    private overlay: Overlay,
-    private router: Router
 
   ) {
     this.title = 'Angular  FusionCharts Sample';
@@ -77,7 +68,6 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   GenerarFactura(): void {
-    this.disableSpinner(true);
     const div = document.getElementById('content');
 
     const options = {
@@ -100,7 +90,6 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
         (doc as any).addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
 
         
-    this.disableSpinner(false);
         
         return doc;
       }).then((doc) => {
@@ -115,36 +104,5 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
     
   }
 
-
-
-
-
-
-
-  
-
-  public show(message = '') {
-    // Returns an OverlayRef (which is a PortalHost)
-
-    if (!this.overlayRef) {
-      this.overlayRef = this.overlay.create();
-    }
-
-    // Create ComponentPortal that can be attached to a PortalHost
-    const spinnerOverlayPortal = new ComponentPortal(SpinerLoaderComponent);
-    const component = this.overlayRef.attach(spinnerOverlayPortal); // Attach ComponentPortal to PortalHost
-  }
-
-  public hide() {
-    if (!!this.overlayRef) {
-      this.overlayRef.detach();
-    }
-  }
-
-
-  disableSpinner(disable: boolean){
-    this.spinnerIsVisible = disable;
-  }
-  
 }
     

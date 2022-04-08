@@ -25,8 +25,6 @@ import { FusionChartsModule } from 'angular-fusioncharts';
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
-import { SpinerLoaderComponent } from './components/spiner-loader/spiner-loader.component';
-import { SpinnerLoaderSuperimposedComponent } from './components/spinner-loader-superimposed/spinner-loader-superimposed.component';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
@@ -35,8 +33,6 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
   declarations: [
     MenuLayoutComponent,
     DigitalInvoiceComponent,
-    SpinerLoaderComponent,
-    SpinnerLoaderSuperimposedComponent,
   ],
   imports: [
     RouterModule,
