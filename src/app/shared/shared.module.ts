@@ -18,7 +18,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { DigitalInvoiceComponent } from './components/digital-invoice/digital-invoice.component';
 
 //import graphics module
-import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
 
 import { FusionChartsModule } from 'angular-fusioncharts';
@@ -48,7 +47,6 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
     NzRadioModule,
     NzSpinModule,
     FusionChartsModule,
-    NgxSpinnerModule,
     NzAlertModule,
   ],
   exports: [
