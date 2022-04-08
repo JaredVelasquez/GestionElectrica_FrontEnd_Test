@@ -164,7 +164,7 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     gap: 1px 1px;
-    grid-template-areas: ". .";
+    grid-template-areas: ".";
     margin-top: 5px;
     width: 80%;
     margin: auto;
@@ -195,7 +195,7 @@
     grid-template-columns: 1fr;
     grid-template-rows: 0.3fr 0.3fr 0.3fr;
     gap: 1px 1px;
-    grid-template-areas: ". . .";
+    grid-template-areas: ".";
     margin-top: 5px;
 }
 
@@ -211,7 +211,7 @@
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 0.1fr 0.1fr;
     gap: 1px 1px;
-    grid-template-areas: ". . .";
+    grid-template-areas: ".";
     margin-top: 5px;
 }
 
@@ -253,7 +253,7 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 0.3fr;
-    grid-template-areas: ". .";
+    grid-template-areas: ".";
 }
 .contenedor-cliente-regulado {
     display: grid;
@@ -267,7 +267,7 @@
     grid-template-columns: 1fr;
     grid-template-rows: 0.1fr 0.6fr 0.8fr 0.8fr;
     gap: 1px 1px;
-    grid-template-areas: ". . . .";
+    grid-template-areas: ". . .";
 }
 
 .div-etiquetas-medioambiente {
