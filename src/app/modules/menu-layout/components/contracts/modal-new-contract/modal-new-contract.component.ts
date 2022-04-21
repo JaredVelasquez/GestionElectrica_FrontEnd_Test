@@ -5,6 +5,7 @@ import { ContractInterface, ContractSchema } from 'src/Core/interfaces/contracts
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
+import { endOfMonth } from 'date-fns';
 
 
 
@@ -21,7 +22,9 @@ export class ModalNewContractComponent implements OnInit {
   @Input() dataPosition!: ContractInterface;
   @Input() ListOfClients: ActorInterface[] = [];
   @Output() DataUpdated : EventEmitter<ContractInterface> = new EventEmitter<ContractInterface>();
-
+  ListOfClientsAux: ActorInterface[] = [];
+  dates:{from: any, to: any} = {from: '', to: ''};
+  ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
   
   url = {
     get: 'get-contracts',
@@ -30,25 +33,14 @@ export class ModalNewContractComponent implements OnInit {
     update: 'contratos',
   };
   
-  EmptyForm  = this.fb.group({
-    codigo: ['', [Validators.required]],
-    clasificacion: ['', [Validators.required]],
-    actorId: ['', [Validators.required]],
-    fechaCreacion: ['', [Validators.required]],
-    fechaVencimiento: ['', [Validators.required]],
-    diaGeneracion: ['', [Validators.required]],
-    diasDisponibles: ['', [Validators.required]],
-    exportacion: ['', [Validators.required]],
-    descripcion: ['', [Validators.required]],
-    observacion: ['', [Validators.required]],
-  })
+
   constructor(
     private fb: FormBuilder,
     private globalService: EndPointGobalService
     ) { }
 
   ngOnInit(): void {
-    this.validateForm = this.EmptyForm;
+    this.cleanForm();
   }
 
   showModal(): void {
@@ -56,9 +48,10 @@ export class ModalNewContractComponent implements OnInit {
     console.log(this.dataPosition);
     
     if(this.dataPosition){
+      this.filterActores(this.dataPosition.clasificacion);
       this.editableForm();
     }else{
-      this.validateForm = this.EmptyForm;
+      this.cleanForm();
       
     }
   }
@@ -68,13 +61,26 @@ export class ModalNewContractComponent implements OnInit {
       codigo: [ this.dataPosition.codigo , [Validators.required]],
       clasificacion: [ this.dataPosition.clasificacion, [Validators.required]],
       actorId: [ this.dataPosition.actorId, [Validators.required]],
-      fechaCreacion: [ this.dataPosition.fechaCreacion, [Validators.required]],
-      fechaVencimiento: [ this.dataPosition.fechaVenc, [Validators.required]],
+      fecha: [ [this.dataPosition.fechaCreacion.toString(), this.dataPosition.fechaVenc.toString()], [Validators.required]],
       diaGeneracion: [ this.dataPosition.diaGeneracion, [Validators.required]],
       diasDisponibles: [ this.dataPosition.diasDisponibles, [Validators.required]],
       exportacion: [ this.dataPosition.exportacion, [Validators.required]],
       descripcion: [ this.dataPosition.descripcion, [Validators.required]],
       observacion: [ this.dataPosition.observacion, [Validators.required]],
+    })
+  }
+
+  cleanForm(){
+    this.validateForm = this.fb.group({
+      codigo: ['', [Validators.required]],
+      clasificacion: ['', [Validators.required]],
+      actorId: ['', [Validators.required]],
+      fecha: ['', [Validators.required]],
+      diaGeneracion: ['', [Validators.required]],
+      diasDisponibles: ['', [Validators.required]],
+      exportacion: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
     })
   }
 
@@ -134,12 +140,6 @@ export class ModalNewContractComponent implements OnInit {
           }
         }
         );
-
-        
-        
-
-
-      
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -172,13 +172,31 @@ export class ModalNewContractComponent implements OnInit {
   }
 
   fullSchema(){
+    const {codigo, clasificacion, actorId, diaGeneracion, diasDisponibles, exportacion, descripcion, observacion} = this.validateForm.value;
+
     this.newContract = {
-      ... this.validateForm.value,
+      ... {codigo, clasificacion, actorId, diaGeneracion, diasDisponibles, exportacion, descripcion, observacion},
+      fechaCreacion: this.validateForm.value.fecha[0],
+      fechaVenc: this.validateForm.value.fecha[1],
       estado: true,
     }    
 
   }
 
+  filterActores(tipoActor: any){
+    if(tipoActor === 'P'){
+      tipoActor = false;
+    }
+    else
+      tipoActor = true;
+
+    this.ListOfClientsAux.length = 0;
+    for(let i = 0; i < this.ListOfClients.length; i++){
+      if(this.ListOfClients[i].tipo === tipoActor && this.ListOfClients[i].estado === true){
+        this.ListOfClientsAux = [... this.ListOfClientsAux, this.ListOfClients[i]];
+      }
+    }
+  }
   
   listOfColumns: ColumnItem[] = [
     {

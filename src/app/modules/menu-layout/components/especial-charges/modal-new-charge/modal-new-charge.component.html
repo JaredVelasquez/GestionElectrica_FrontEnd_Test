@@ -5,7 +5,7 @@
 <ng-template #Guardar>
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
 </ng-template>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Cargo" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Cargo" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()" [nzStyle]="{ top: '50px' }">
     <ng-container *nzModalContent>
 
     <form nz-form [formGroup]="validateForm" nzLayout="horizontal">

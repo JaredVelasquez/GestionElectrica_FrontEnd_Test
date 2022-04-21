@@ -16,6 +16,17 @@
     <div nz-col>
       <app-modal-new-rate (DataUpdated)="updateTable($event)"></app-modal-new-rate>
     </div>
+    
+    <!-- <div nz-col nzOffset="1">
+      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a global param">
+        <nz-option *ngFor="let param of listOfGeneralParams" [nzLabel]=param.observacion [nzValue]=param.id ></nz-option>
+      </nz-select>
+    </div>
+    
+    <div nz-col>
+      <button nz-button nzType="primary" nzSize="default"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+    </div> -->
+    
 </div>
 <br>
 <div nz-row class="row-2">

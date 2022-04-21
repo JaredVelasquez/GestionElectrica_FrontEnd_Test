@@ -4,6 +4,9 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { ContractInterface, ContractSchema } from 'src/Core/interfaces/contracts.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
+import { ZoneShema } from 'src/Core/interfaces/zones.interface';
+import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
+import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 
 @Component({
   selector: 'app-contracts',
@@ -17,10 +20,17 @@ export class ContractsComponent implements OnInit{
   validateForm!: FormGroup;
   ListOfData!: ContractInterface[];
   ListOfClients: ActorInterface[] = [];
+  listOfZones: ZoneShema[] = [];
+  listOfRates: RatesInterface[] = [];
+  listOfMeters: MeterSchema[] = [];
 
   url = {
     get: 'get-contracts',
     getClients: 'get-clients',
+    getRates: 'get-pt-detail',
+    getMeters: 'medidors',
+    getZones: 'zonas',
+    getActores: 'actores',
     post: 'contratos',
     delete: 'contratos',
     update: 'contratos',
@@ -34,6 +44,9 @@ export class ContractsComponent implements OnInit{
   ngOnInit(): void {
     this.GetContracts(1, false);
     this.GetClients();
+    this.GetRatess();
+    this.GetZoness();
+    this.GetMeters();
   }
 
   showModal(): void {
@@ -41,17 +54,15 @@ export class ContractsComponent implements OnInit{
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
   GetClients(){
-    this.globalService.GetId(this.url.getClients, 1).subscribe(
-      (result: ActorInterface[] | any) => {
+    this.globalService.Get(this.url.getActores).subscribe(
+      (result: any) => {
         this.ListOfClients = result;
       }
     
@@ -74,7 +85,80 @@ export class ContractsComponent implements OnInit{
       }
     );
   }
+
   
+  GetZones(estado: number, switched: boolean){
+    if(switched){
+      if((!this.constractsIsDisable) && estado === 0){
+        this.constractsIsDisable = true;
+      }else{
+        this.constractsIsDisable = false;
+      }
+    }
+
+    this.globalService.GetId(this.url.get, estado).subscribe(
+      (result:any) => {
+        this.ListOfData = result;
+      }
+    );
+  }
+
+  
+  GetRates(estado: number, switched: boolean){
+    if(switched){
+      if((!this.constractsIsDisable) && estado === 0){
+        this.constractsIsDisable = true;
+      }else{
+        this.constractsIsDisable = false;
+      }
+    }
+
+    this.globalService.GetId(this.url.get, estado).subscribe(
+      (result:any) => {
+        this.ListOfData = result;
+      }
+    );
+  }
+  
+  GetRatess(){
+
+    this.globalService.GetId(this.url.getRates, 1).subscribe(
+      (result:any) => {
+        console.log(result);
+        this.listOfRates = result;
+      }
+    );
+    
+  }
+  
+  
+  GetMeters(){
+
+    this.globalService.Get(this.url.getMeters).subscribe(
+      (result:any) => {
+        for(let i=0; i< result.length; i++){
+          if(result[i].estado === true){
+            this.listOfMeters = [... this.listOfMeters, result[i]];
+          }
+        }
+      }
+    );
+  }
+
+  GetZoness(){
+
+    this.globalService.Get(this.url.getZones).subscribe(
+      (result:any) => {
+        for(let i=0; i< result.length; i++){
+          if(result[i].estado === true){
+            this.listOfZones = [... this.listOfZones, result[i]];
+          }
+        }
+      }
+    );
+  }
+
+
   disableContract(constract: ContractInterface, estado : number){
     this.IsLoading = true;
     let newEstado = Boolean(estado);

@@ -54,6 +54,8 @@ export class InputParametersComponent implements OnInit {
 
     this.globalService.GetId(this.url.get, estado).subscribe(
       (result:any) => {
+        console.log(result);
+        
         this.listOfData = result;
       }
     );

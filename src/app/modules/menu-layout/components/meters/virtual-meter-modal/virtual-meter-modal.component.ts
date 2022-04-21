@@ -48,28 +48,21 @@ export class VirtualMeterModalComponent implements OnInit {
   
   
   GetVirtualMeters(estado: boolean, switched: boolean){    
+    this.listOfData.length = 0;
     
     if(switched){
-      this.listOfData.length = 0;
-      for(let i = 0; i < this.listOfVMeters.length ; i++){
-        if(this.dataPosition.id === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
-          this.listOfData = [... this.listOfData, this.listOfVMeters[i]];
-          
-        }
-      }
       if((!this.VMIsDisable) && estado === false){
         this.VMIsDisable = true;
       }else{
         this.VMIsDisable = false;
       }
-    }else{
-      this.listOfData.length = 0;
+    }
       for(let i = 0; i < this.listOfVMeters.length ; i++){
         if(this.dataPosition.id === this.listOfVMeters[i].medidorId && this.listOfVMeters[i].estado === estado){
           this.listOfData = [... this.listOfData, this.listOfVMeters[i]];
         }
       }
-    }
+    
     
     this.listOfData = [... this.listOfData];
   }
@@ -94,13 +87,8 @@ export class VirtualMeterModalComponent implements OnInit {
           if(result){
             
             this.listOfVMeters = [...this.listOfVMeters, result];
-            if(estado){
-              this.GetVirtualMeters(false, false);
+              this.GetVirtualMeters(result.estado, false);
 
-            }else{
-              
-              this.GetVirtualMeters(true, false);
-            }
             this.cleanForm();
           }
         }
@@ -177,7 +165,7 @@ export class VirtualMeterModalComponent implements OnInit {
             }
           }
 
-          if(estado === true){
+          if(estado){
             this.GetVirtualMeters(false, false);
           }else{
             this.GetVirtualMeters(true, false);

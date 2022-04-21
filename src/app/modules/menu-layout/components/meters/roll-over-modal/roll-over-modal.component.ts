@@ -149,7 +149,8 @@ export class RollOverModalComponent implements OnInit, OnChanges {
         (result:any) => {
           if(result){
             this.ListOfRollOver = [... this.ListOfRollOver, result];
-            this.ListOfData = [... this.ListOfRollOver];
+            this.filterData(true, false);
+            this.cleanForm();
           }
         }
       );
@@ -190,6 +191,7 @@ export class RollOverModalComponent implements OnInit, OnChanges {
           if(!result){
             this.newRollOver.id = this.dataPosition.id;
             this.UpdateTable(this.IsEditableSchema);
+            this.filterData(this.IsEditableSchema.estado, false);
             this.IsEditableForm = false;
             this.cleanForm();
           }
@@ -220,6 +222,7 @@ export class RollOverModalComponent implements OnInit, OnChanges {
 
   cleanForm(): void{
     this.validateForm = this.fb.group({
+      fecha:  [ '', [Validators.required]],
       medidorId: [this.dataPosition.id],
       energia: [ '', [Validators.required]],
       lecturaAnterior: ['', [Validators.required]],

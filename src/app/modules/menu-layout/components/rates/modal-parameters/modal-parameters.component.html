@@ -1,6 +1,6 @@
 <button nz-button nzSize="small" [nzType]="'primary'" (click)="showModal()"><i nz-icon nzType="file-text" nzTheme="outline"></i></button>
 <nz-modal nzWidth="530px" [(nzVisible)]="isVisible" nzTitle="Parametros" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" 
-[nzStyle]="{ top: '40px' }">
+[nzStyle]="{ top: '5px' }">
 <ng-container *nzModalContent>
     <form nz-form  [formGroup]="validateForm" nzLayout="horizontal">
 
@@ -8,7 +8,7 @@
         <div nz-col nzSpan="24">
             <label>Fecha valida</label>
             <div nz-row>
-                    <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+                    <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges"></nz-range-picker>
             </div>
 
         </div>
@@ -23,9 +23,9 @@
         <div nz-row>
             <nz-form-item>
             <nz-form-control>
-                    <nz-select formControlName="cargoId" style="width: 380px;">
+                    <nz-select formControlName="tipoCargoId" style="width: 380px;">
                         <div *ngFor="let charge of ListOfCharges">
-                            <nz-option [nzLabel]="charge.nombre" [nzValue]="charge.id"></nz-option>
+                            <nz-option [nzLabel]="charge.nombre" [nzValue]=charge.id></nz-option>
                         </div>
                     </nz-select>             
             </nz-form-control>
@@ -82,6 +82,7 @@
 
     </div>
 
+    <br>  
     <div nz-row>
         <div nz-col>
           <div *ngIf="!paramIsDisable ; else enableClients">
@@ -92,14 +93,26 @@
           </ng-template>
       
         </div>
+        <div nz-col nzOffset="1">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a global param">
+            <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+            <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+            <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+          </nz-select>
+        </div>
+
+        <div nz-col>
+          <button nz-button nzType="primary" nzSize="default"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+        </div>
       </div>
+      <br>
 
     <div nz-row class="row-5">
         <div nz-col>
             <nz-table #table [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '1150px', y: '385px' }"  [nzPageSize]="3">
               <thead>
                 <tr>
-                  <th nzLeft nzWidth="100px">Acciones</th>
+                  <th nzLeft nzWidth="90px">Acciones</th>
                   <th
                     *ngFor="let column of listOfColumns"
                     [nzSortOrder]="column.sortOrder"
@@ -108,7 +121,6 @@
                     [nzFilterMultiple]="column.filterMultiple"
                     [nzFilters]="column.listOfFilter"
                     [nzFilterFn]="column.filterFn"
-                    nzWidth="25%"
                   >
                     {{ column.name }}
                   </th>
@@ -139,7 +151,7 @@
                 <td>{{ data.cargoNombre }}</td>
                 <td>{{ data.fechaInicio  | date:'dd/M/yyyy'  }}</td>
                 <td>{{ data.fechaFinal  | date:'dd/M/yyyy' }}</td>
-                <td nzRight>{{ data.valor }}</td>
+                <td nzRight>Lps. {{  data.valor }}</td>
                 </tr>
               </tbody>
             </nz-table>

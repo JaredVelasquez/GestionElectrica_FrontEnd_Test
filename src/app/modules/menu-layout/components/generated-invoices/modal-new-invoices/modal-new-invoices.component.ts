@@ -115,6 +115,7 @@ export class ModalNewInvoicesComponent implements OnInit {
       
         this.globalService.Post(this.url.post, provider).subscribe(
           (result:any) => { 
+            console.log(result);
             
             if(result){
               this.DataUpdated.emit(result);

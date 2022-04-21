@@ -1,11 +1,29 @@
 export interface ContractMeterInterface{
-    estado: number;
+    estado: boolean;
     codigoContrato: string;
     contratoMedidorId: number;
     nombreActor: string;
-    actorId: number;
     codigoMedidor: string;
-    medidorId: number;
     ptarifaValor: number;
     parametroId: number;
+    medidorId: number;
+    actorId: number;
+    tarifaId: number;
+    zonaId: number;
+    contratoId: number;
+    fechaInicial: string;
+    fechaFinal: string;
+    observacion: string;
+}
+
+export interface ContractMeterSchema{
+    id: number;
+    medidorId: number;
+    tarifaId: number;
+    zonaId: number;
+    contratoId: number;
+    fechaInicial: string;
+    fechaFinal: string;
+    observacion: string;
+    estado: number;
 }

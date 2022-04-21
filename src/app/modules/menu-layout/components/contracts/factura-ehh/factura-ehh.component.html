@@ -1,0 +1,14 @@
+<div *ngIf="dataPosition; else Guardar">
+    <button nz-button nzSize="small" nzType="primary" (click)="showModal()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+</div>
+<ng-template #Guardar>
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Nuevo Registro</span></button>
+</ng-template>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Contrato" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzStyle]="{ top: '5px' }">
+    <ng-container *nzModalContent>
+
+    <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
+        <p>PRUEBA</p>
+    </form>
+    </ng-container>
+</nz-modal>

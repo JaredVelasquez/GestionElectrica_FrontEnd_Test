@@ -4,7 +4,7 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { ZoneShema } from 'src/Core/interfaces/zones.interface';
-import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
+import { InputParametersInterface, InputParamSchema } from 'src/Core/interfaces/input-parameters.interface';
 
 
 
@@ -19,12 +19,14 @@ export class RatesComponent implements OnInit{
   validateForm!: FormGroup;
   listOfData: RatesInterface[] = [];
   listOfParamRelation: InputParametersInterface[] = [];
+  listOfGeneralParams: InputParamSchema[] = [];
   ratesIsActive: boolean = false;
   dataPosition: any[] = [];
   
   url = {
     get: 'get-rates',
     getParams: 'get-parameter',
+    getAllParams: 'get-allparameters',
     post: 'tarifas',
     delete: 'tarifas',
     update: 'tarifas',
@@ -38,6 +40,7 @@ export class RatesComponent implements OnInit{
   ngOnInit(): void {
     this.GetRates(1, false);
     this.GetParams();
+    this.GetGeneralParams();
     
   }
 
@@ -61,13 +64,21 @@ export class RatesComponent implements OnInit{
   GetParams(){
     this.globalService.Get(this.url.getParams).subscribe(
       (result:any) => {
-        console.log(result);
         
         this.listOfParamRelation = result;
       }
     );
   }
 
+  GetGeneralParams(){
+    this.globalService.GetId(this.url.getAllParams, 1).subscribe(
+      (result:any) => {
+        console.log(result);
+        
+        this.listOfGeneralParams = result;
+      }
+    );
+  }
   GetRates(estado: number, switched: boolean){
     if(switched){
       if((!this.ratesIsActive) && estado === 0){

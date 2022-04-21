@@ -13,6 +13,7 @@ import { endOfMonth } from 'date-fns';
   styleUrls: ['./modal-parameters.component.css']
 })
 export class ModalParametersComponent implements OnInit, OnChanges {
+  selectedValue = null;
   ListOfData: InputParametersInterface[] = [];
   @Input() dataPosition !: RatesInterface;
   @Input() listOfParamRelation : InputParametersInterface[] = [];
@@ -23,19 +24,11 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   paramIsDisable: boolean = false;
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
-
-  onChange(result: Date[]): void {
-    this.dates = {
-      from: result[0],
-      to: result[1]
-    }
-    console.log(this.dates);
-  }
   validateForm!: FormGroup;
 
   EmptyForm = this.fb.group({
     fecha: ['', [Validators.required]],
-    cargoId: ['', [Validators.required]],
+    tipoCargoId: ['', [Validators.required]],
     valor: [0 , [Validators.required]],
     observacion: ['', [Validators.required]],
   })
@@ -45,6 +38,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
     getcargo: 'tipo-cargos',
     post: 'parametro-tarifa',
     update: 'tarifa-parametro-detalles',
+    updateParam: 'parametro-tarifas',
   };
 
   constructor(
@@ -126,7 +120,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
             console.log(result);
             
             if(result){
-              this.ListOfData = [...this.ListOfData,result];
+              this.listOfParamRelation = [...this.listOfParamRelation,result];
               
               this.GetParams(this.ListOfData[0].estado, false);
               this.cleanForm();
@@ -157,12 +151,11 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   submitEditableForm(dataEditable?: InputParametersInterface){    
     if (this.validateForm.valid) {
       if(dataEditable){
-        const {valor, observacion} = this.validateForm.value;
+        const {valor, observacion, tipoCargoId} = this.validateForm.value;
         this.newParam = {
-        ... {valor, observacion},
+        ... {valor, observacion, tipoCargoId},
         id: dataEditable.idParametro,
         tipo: dataEditable.tipo,
-        tipoCargoId: this.validateForm.value.cargoId,
         fechaInicio: this.validateForm.value.fecha[0],
         fechaFinal: this.validateForm.value.fecha[1],
         estado: dataEditable.estado,
@@ -174,7 +167,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
         dataEditable.valor = this.newParam.valor;
         dataEditable.observacion = this.newParam.observacion;
         
-        this.globalService.Patch(this.url.update, dataEditable.idParametro, this.newParam).subscribe(
+        this.globalService.PutId(this.url.updateParam, dataEditable.idParametro, this.newParam).subscribe(
           (result:any) => {
             if(!result){
               if(dataEditable)
@@ -196,7 +189,13 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   }
 
   cleanForm(): void{
-    this.validateForm = this.EmptyForm;
+    this.validateForm = this.fb.group({
+      fecha: ['', [Validators.required]],
+      tipoCargoId: ['', [Validators.required]],
+      valor: [0 , [Validators.required]],
+      observacion: ['', [Validators.required]],
+    })
+  
   }
 
   update(data: InputParametersInterface, estado: boolean): void{
@@ -216,7 +215,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
 
     this.validateForm = this.fb.group({
       fecha: [[data.fechaInicio.toString(), data.fechaFinal.toString()], [Validators.required]],
-      cargoId: [data.cargoId, [Validators.required]],
+      tipoCargoId: [data.cargoId, [Validators.required]],
       valor: [data.valor, [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
     })
@@ -244,7 +243,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
 
   listOfColumns: ColumnItem[] = [
     {
-      name: 'Cargo',
+      name: 'Descripcion',
       sortOrder: null,
       sortFn: null,
       sortDirections: ['descend', null],

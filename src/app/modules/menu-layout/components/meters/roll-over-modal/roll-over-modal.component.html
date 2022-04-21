@@ -1,5 +1,5 @@
 <button nz-button [nzType]="'primary'" nzSize="small" (click)="showModal()"><i nz-icon nzType="clock-circle" nzTheme="outline"></i></button>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="RollOver" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="RollOver" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzStyle]="{ top: '5px' }">
     <ng-container *nzModalContent>
         <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
           <div nz-row>
