@@ -1,5 +1,10 @@
 <h1>Contratos</h1>
 <br>
+<div nz-row>
+  <div nz-col nzOffset="7">
+    <label>Filtrar Contratos Por:</label>
+  </div>
+</div>
 <div nz-row class="row-1">
 
   <div nz-col nzSpan="4">
@@ -12,8 +17,14 @@
 
   </div>
 
-    <div nz-col nzSpan="5" class="row1-col1">
+    <div nz-col nzSpan="3" class="row1-col1">
       <app-modal-new-contract [ListOfClients]="ListOfClients" (DataUpdated)="TablaUpdated($event)"></app-modal-new-contract>
+    </div>
+
+    <div nz-col nzSpan="8">  
+      <nz-select nzMode="tags" nzPlaceHolder="Tag Mode" [(ngModel)]="listOfTagOptions" (ngModelChange)="SelectFilterEvent($event)">
+        <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
     </div>
 
 </div>
@@ -69,6 +80,9 @@
             <td>{{ data.fechaVenc   | date:'dd/M/yyyy'  }}</td> 
             <td nzRight nzAlign="center">
                 <app-modal-medidores [dataPosition]="data" [listOfZones]="listOfZones" [listOfRates] = "listOfRates" [listOfMeters]="listOfMeters"></app-modal-medidores>
+              </td>
+              <td nzAlign="center">
+                <app-factura-ehh></app-factura-ehh>
               </td>
           </tr>
         </tbody>

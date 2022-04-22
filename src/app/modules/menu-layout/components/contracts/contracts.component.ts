@@ -23,6 +23,8 @@ export class ContractsComponent implements OnInit{
   listOfZones: ZoneShema[] = [];
   listOfRates: RatesInterface[] = [];
   listOfMeters: MeterSchema[] = [];
+  listOfOption: Array<{ label: string; value: string }> = [];
+  listOfTagOptions = [];
 
   url = {
     get: 'get-contracts',
@@ -42,6 +44,12 @@ export class ContractsComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
+    const children: Array<{ label: string; value: string }> = [];
+    for (let i = 10; i < 36; i++) {
+      children.push({ label: i.toString(36) + i, value: i.toString(36) + i });
+    }
+    this.listOfOption = children;
+
     this.GetContracts(1, false);
     this.GetClients();
     this.GetRatess();
@@ -180,6 +188,11 @@ export class ContractsComponent implements OnInit{
 
   TablaUpdated(list: any){
     this.ListOfData = [...this.ListOfData,list]
+  }
+
+  SelectFilterEvent(option: any): void{
+    console.log(option);
+    
   }
 
 
