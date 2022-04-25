@@ -92,10 +92,12 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
         this.listOfDataAux = [... result];
         this.filterData();
 
-        
       }
     )
-      console.log(this.listOfData);
+
+    this.listOfData = [... this.listOfData]
+    console.log(this.listOfData);
+    
       
   }
 

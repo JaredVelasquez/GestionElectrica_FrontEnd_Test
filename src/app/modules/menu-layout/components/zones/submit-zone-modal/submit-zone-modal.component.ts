@@ -137,7 +137,7 @@ export class SubmitZoneModalComponent implements OnInit {
   showModal(): void {
     this.isVisible = true;
     if(!this.dataPosition){
-      this.validateForm = this.EmptyForm;
+      this.CleanForm();
 
     }else{
       this.editableFrom(this.dataPosition);
@@ -152,6 +152,14 @@ export class SubmitZoneModalComponent implements OnInit {
   handleCancel(): void {
     console.log('Button cancel clicked!');
     this.isVisible = false;
+  }
+
+  CleanForm(){
+    this.validateForm = this.fb.group({
+      codigo: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+    })
   }
 
 

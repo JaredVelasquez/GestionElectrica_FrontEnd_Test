@@ -121,8 +121,11 @@ export class ModalParametersComponent implements OnInit, OnChanges {
             
             if(result){
               this.listOfParamRelation = [...this.listOfParamRelation,result];
-              
-              this.GetParams(this.ListOfData[0].estado, false);
+              if(this.paramIsDisable)
+                this.GetParams(false, false);
+              else
+                this.GetParams(true, false);
+
               this.cleanForm();
             }
           }
