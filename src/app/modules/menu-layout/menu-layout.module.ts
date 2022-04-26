@@ -64,6 +64,7 @@ import { SubmitProviderModalComponent } from './components/providers/submit-prov
 import { SubmitClientModalComponent } from './components/clients/submit-client-modal/submit-client-modal.component';
 import { ManualRegistrationModalComponent } from './components/meters/manual-registration-modal/manual-registration-modal.component';
 import { FacturaEHHComponent } from './components/contracts/factura-ehh/factura-ehh.component';
+import { ModalCargosEehComponent } from './components/contracts/modal-cargos-eeh/modal-cargos-eeh.component';
 
 
 @NgModule({
@@ -100,6 +101,7 @@ import { FacturaEHHComponent } from './components/contracts/factura-ehh/factura-
     SubmitClientModalComponent,
     ManualRegistrationModalComponent,
     FacturaEHHComponent,
+    ModalCargosEehComponent,
   ],
   imports: [
     CommonModule,

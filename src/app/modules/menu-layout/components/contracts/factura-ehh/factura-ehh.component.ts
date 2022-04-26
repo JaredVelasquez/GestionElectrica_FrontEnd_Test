@@ -4,6 +4,7 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 import { endOfMonth } from 'date-fns';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { EEHSchema } from 'src/Core/interfaces/eeh-invoice';
 
 @Component({
   selector: 'app-factura-ehh',
@@ -14,14 +15,17 @@ export class FacturaEHHComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   @Input() dataPosition!: ContractInterface;
-  listOfData!: any;
+  listOfData!: EEHSchema[];
+  listOfDataAux!: EEHSchema[];
   IsDisable: boolean = false;
   editIsActive: boolean = false;
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
   listOfOption: Array<{ label: string; value: string }> = [];
   listOfTagOptions = [];
-  
+  url = {
+    get: "factura-manuals",
+  }
   constructor(
     private fb: FormBuilder,
     private globalService: EndPointGobalService
@@ -35,10 +39,24 @@ export class FacturaEHHComponent implements OnInit {
       children.push({ label: i.toString(36) + i, value: i.toString(36) + i });
     }
     this.listOfOption = children;
+
+    this.GetFacturas();
   }
 
   showModal(): void {
     this.isVisible = true;
+  }
+
+  GetFacturas(){
+
+    this.globalService.Get(this.url.get).subscribe(
+      (result: any) => {
+        this.listOfDataAux = [... result];
+        this.listOfData = [... result];
+        console.log(this.listOfData);
+        
+      }
+    );
   }
 
   editableForm(){
@@ -69,9 +87,18 @@ export class FacturaEHHComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'Fecha Facturacion',
+      name: 'Codigo',
       sortOrder: null,
-      sortFn: (a: ContractInterface, b: ContractInterface) => a.codigo.localeCompare(b.codigo),
+      sortFn: (a: EEHSchema, b: EEHSchema) => a.codigo.localeCompare(b.codigo),
+      sortDirections: ['ascend','descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Fecha Emision',
+      sortOrder: null,
+      sortFn: (a: EEHSchema, b: EEHSchema) => a.fechaEmision.localeCompare(b.fechaEmision),
       sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -80,48 +107,30 @@ export class FacturaEHHComponent implements OnInit {
     {
       name: 'Fecha Vencimiento',
       sortOrder: null,
-      sortFn: (a: ContractInterface, b: ContractInterface) => a.descripcion.localeCompare(b.descripcion),
+      sortFn: (a: EEHSchema, b: EEHSchema) => a.fechaVencimiento.localeCompare(b.fechaVencimiento),
       sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
     {
-      name: 'Consumo Kwh',
+      name: 'Fecha Inicial',
       sortOrder: null,
-      sortFn: null,
+      sortFn:  (a: EEHSchema, b: EEHSchema) => a.fechaInicial.localeCompare(b.fechaInicial),
       sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
     {
-      name: 'Tarifa',
+      name: 'Fecha Final',
       sortOrder: null,
-      sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaCreacion.localeCompare(b.fechaCreacion),
+      sortFn: (a: EEHSchema, b: EEHSchema) => a.fechaFinal.localeCompare(b.fechaFinal),
       sortDirections: ['ascend','descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
     },
-    {
-      name: 'Total Energia Lps.',
-      sortOrder: null,
-      sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaVenc.localeCompare(b.fechaVenc),
-      sortDirections: ['ascend','descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
-      name: 'Total Cargos Lps.',
-      sortOrder: null,
-      sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaVenc.localeCompare(b.fechaVenc),
-      sortDirections: ['ascend','descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    }
   ];
 
 }

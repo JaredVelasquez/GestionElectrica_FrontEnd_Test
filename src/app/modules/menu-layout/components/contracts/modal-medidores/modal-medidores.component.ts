@@ -94,9 +94,6 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
 
       }
     )
-
-    this.listOfData = [... this.listOfData]
-    console.log(this.listOfData);
     
       
   }
@@ -109,6 +106,8 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
       }
     }
     this.listOfData = [... this.listOfData];
+    console.log(this.listOfData);
+    
   }
 
   submitForm(estado: boolean):void{
