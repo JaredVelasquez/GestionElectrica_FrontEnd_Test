@@ -5,6 +5,7 @@ import { ContractInterface } from 'src/Core/interfaces/contracts.interface';
 import { endOfMonth } from 'date-fns';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { EEHSchema } from 'src/Core/interfaces/eeh-invoice';
+import { ManualInvoiceDetailView } from 'src/Core/interfaces/manual-invoice-detail.interface';
 
 @Component({
   selector: 'app-factura-ehh',
@@ -15,8 +16,11 @@ export class FacturaEHHComponent implements OnInit {
   isVisible = false;
   validateForm!: FormGroup;
   @Input() dataPosition!: ContractInterface;
-  listOfData!: EEHSchema[];
-  listOfDataAux!: EEHSchema[];
+  listOfData: EEHSchema[] = [];
+  listOfDataAux: EEHSchema[] = [];
+  listOfManualInvoiceDetail: ManualInvoiceDetailView[] = [];
+  localPosition!: EEHSchema;
+  newFacturaEEH!:any;
   IsDisable: boolean = false;
   editIsActive: boolean = false;
   dates:{from: any, to: any} = {from: '', to: ''};
@@ -25,7 +29,12 @@ export class FacturaEHHComponent implements OnInit {
   listOfTagOptions = [];
   url = {
     get: "factura-manuals",
+    getdetalle: "get-manual-invoices-detail",
+    post: "factura-manuals",
+    update: "factura-manuals",
+
   }
+
   constructor(
     private fb: FormBuilder,
     private globalService: EndPointGobalService
@@ -40,38 +49,181 @@ export class FacturaEHHComponent implements OnInit {
     }
     this.listOfOption = children;
 
-    this.GetFacturas();
+    this.GetFacturas(true, false);
+    this.GetManualInvoicesDetail();
+    
   }
 
   showModal(): void {
     this.isVisible = true;
   }
 
-  GetFacturas(){
+  GetFacturas(estado: boolean, switched: boolean){
 
     this.globalService.Get(this.url.get).subscribe(
       (result: any) => {
         this.listOfDataAux = [... result];
-        this.listOfData = [... result];
-        console.log(this.listOfData);
+        this.filterInvoices(estado, switched);
         
+      }
+    );  
+  }
+
+  GetManualInvoicesDetail(){
+    this.globalService.Get(this.url.getdetalle).subscribe(
+      (result: any) => {
+        this.listOfManualInvoiceDetail = [... result];
       }
     );
   }
 
-  editableForm(){
+  filterInvoices(estado: boolean, switched: boolean){
+    if(switched){
+      if(estado == false)
+        this.IsDisable = true;
+      else
+        this.IsDisable = false;
+    }
+      this.listOfData.length = 0;
+
+    for(let i = 0; i < this.listOfDataAux.length; i++){
+      if(this.dataPosition.id === this.listOfDataAux[i].contratoId && this.listOfDataAux[i].estado === estado){
+        this.listOfData = [... this.listOfData, this.listOfDataAux[i]]
+      }
+    }
+    this.listOfData = [... this.listOfData];
+    
+  }
+
+
+  submitForm():void{
+    if(this.editIsActive){
+      this.submitUpdateForm();
+    }
+    else{
+      this.submitPostForm();
+    }
+  }
+  submitPostForm(): void{
+    
+    if (this.validateForm.valid) {
+      this.fullSchema();
+      this.newFacturaEEH.estado = true;
+      this.globalService.Post(this.url.post, this.newFacturaEEH).subscribe(
+        (result:any) => { 
+          if(result){
+            this.GetFacturas(this.listOfData[0].estado, false);
+            this.cleanForm();
+          }
+        }
+      );
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+  }
+
+  submitUpdateForm(): void{
+    
+    if (this.validateForm.valid) {
+      this.fullSchema();
+      this.newFacturaEEH.estado = this.localPosition.estado;
+      this.globalService.PutId( this.url.post, this.localPosition.id, this.newFacturaEEH).subscribe(
+        (result:any) => {
+          console.log(result);
+          if(!result){
+            if(this.localPosition.estado)
+              this.GetFacturas(true, false);
+            else
+              this.GetFacturas(false, false);
+
+            this.cleanForm();
+          }
+        }
+        );
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+  }
+
+  updateTable(data: EEHSchema){
+
+    for(let i = 0; i < this.listOfDataAux.length; i++){
+      if(this.listOfDataAux[i].id === data.id){
+        this.listOfDataAux[i].codigo = this.validateForm.value.codigo;
+        this.listOfDataAux[i].fechaEmision = this.validateForm.value.fechaVencimiento[0];
+        this.listOfDataAux[i].fechaVencimiento = this.validateForm.value.fechaVencimiento[1];
+        this.listOfDataAux[i].fechaInicial = this.validateForm.value.fechaFacturacion[0];
+        this.listOfDataAux[i].fechaFinal = this.validateForm.value.fechaFacturacion[1];
+      }
+    }
+    
+    this.filterInvoices(true, false);
+    
+    
+  }
+
+  fullSchema(): void{
+    const {codigo} = this.validateForm.value;
+
+    this.newFacturaEEH = {
+      ... {codigo},
+      contratoId: this.dataPosition.id,
+      tipoFacturaId: 1,
+      fechaEmision: this.validateForm.value.fechaVencimiento[0],
+      fechaVencimiento: this.validateForm.value.fechaVencimiento[1],
+      fechaInicial: this.validateForm.value.fechaFacturacion[0],
+      fechaFinal: this.validateForm.value.fechaFacturacion[1],
+      estado: true,
+    }
+  }
+
+  disable(data: EEHSchema, estado: boolean): void{
+    this.globalService.Patch(this.url.update, data.id, {estado: estado}).subscribe(
+      result => {
+        
+        if(!result){
+          if(estado === true){
+            this.GetFacturas(false, false);
+          }else{
+            this.GetFacturas(true, false);
+          }
+
+        }
+      }
+    );
+    
+  }
+
+  editableForm(data: EEHSchema){
+    
+    this.validateForm = this.fb.group({
+      fechaVencimiento: [[data.fechaEmision.toString(), data.fechaVencimiento.toString()], [Validators.required]],
+      fechaFacturacion: [[data.fechaInicial.toString(), data.fechaFinal.toString()], [Validators.required]],
+      codigo: [data.codigo, [Validators.required]],
+    })
+    this.localPosition = data;
+    this.editIsActive = true;
   }
 
   cleanForm(){
     this.validateForm = this.fb.group({
       fechaVencimiento: ['', [Validators.required]],
       fechaFacturacion: ['', [Validators.required]],
-      consumoEnergeticoKwh: ['', [Validators.required]],
-      tarifaId: ['', [Validators.required]],
-      totalCostoEnergia: ['', [Validators.required]],
-      cargoId: ['', [Validators.required]],
-      totalCargos: ['', [Validators.required]],
+      codigo: ["", [Validators.required]],
     })
+    this.editIsActive = false;
   }
 
   handleOk(): void {

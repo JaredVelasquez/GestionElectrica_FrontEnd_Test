@@ -53,12 +53,8 @@
                 <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
             </div>
             <div nz-col nzOffset="1" nzSpan="1" >
-                    <button *ngIf="!editIsActive; else edit" nz-button ><i nz-icon nzTheme="outline" nzType="save"></i></button>
+                    <button nz-button (click)="submitForm()"><i nz-icon nzTheme="outline" nzType="save"></i></button>
             </div>
-            <ng-template #edit>
-                <button nz-button><i nz-icon nzTheme="outline" nzType="save"></i></button>
-    
-            </ng-template>
     
         </div>
     
@@ -66,10 +62,10 @@
         <div nz-row>
             <div nz-col>
               <div *ngIf="!IsDisable ; else enableClients">
-                <button nz-button [nzType]="'primary'" ><span>Mostrar desabilitados</span></button>
+                <button nz-button [nzType]="'primary'" (click)="filterInvoices(false, true)"><span>Mostrar desabilitados</span></button>
               </div>
               <ng-template #enableClients>
-                <button nz-button [nzType]="'primary'" ><span>Mostrar Habilitados</span></button>
+                <button nz-button [nzType]="'primary'" (click)="filterInvoices(true, true)"><span>Mostrar Habilitados</span></button>
               </ng-template>
           
             </div>
@@ -101,12 +97,12 @@
                             <td nzLeft>
                               <div nz-row>
                                 <div nz-col>
-                                  <button class="edit" nzSize="small" nz-button nzType="primary" ><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+                                  <button class="edit" nzSize="small" nz-button nzType="primary" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                                 </div>
                                 <div nz-col nzOffset="1">
-                                  <button *ngIf="data.estado; else enable" class="delete" nzSize="small" nz-button nzType="primary" nzDanger ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                                  <button *ngIf="data.estado; else enable" class="delete" nzSize="small" nz-button nzType="primary" nzDanger (click)="disable(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                                   <ng-template #enable>
-                                    <button class="delete" nzSize="small" nz-button nzType="primary"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                                    <button class="delete" nzSize="small" nz-button nzType="primary"><i nz-icon nzType="undo" nzTheme="outline" (click)="disable(data, true)"></i></button>
 
                                   </ng-template>
                                   
@@ -120,7 +116,7 @@
                           <td>{{data.fechaFinal   | date:'dd/M/yyyy'}}</td>
 
                           <td nzRight nzAlign="center">
-                            <app-modal-cargos-eeh></app-modal-cargos-eeh>
+                            <app-modal-cargos-eeh [dataPosition]="data" [listOfDataAux]="listOfManualInvoiceDetail"></app-modal-cargos-eeh>
                           </td>
                           </tr>
                       </tbody>

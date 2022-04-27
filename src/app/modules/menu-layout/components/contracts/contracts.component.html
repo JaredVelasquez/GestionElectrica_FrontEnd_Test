@@ -80,10 +80,17 @@
             <td>{{ data.fechaVenc   | date:'dd/M/yyyy'  }}</td> 
             <td nzRight nzAlign="center">
                 <app-modal-medidores [dataPosition]="data" [listOfZones]="listOfZones" [listOfRates] = "listOfRates" [listOfMeters]="listOfMeters"></app-modal-medidores>
-              </td>
+            </td>
+            <td nzAlign="center"  *ngIf="data.tipoContratoId === 1; else Client">
+              <app-factura-ehh [dataPosition]="data"></app-factura-ehh>
+            </td>
+            <ng-template #Client>   
               <td nzAlign="center">
-                <app-factura-ehh></app-factura-ehh>
+                <i nz-icon nzTheme="outline" nzType="alert"></i>
               </td>
+            </ng-template>
+            
+
           </tr>
         </tbody>
       </nz-table>

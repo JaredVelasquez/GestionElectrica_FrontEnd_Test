@@ -12,6 +12,7 @@ export interface ContractInterface{
     fechaVenc: string;
     observacion: string;
     estado: boolean;
+    tipoContratoId: number;
 }
 
 export interface ContractSchema{

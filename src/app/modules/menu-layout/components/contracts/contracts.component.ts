@@ -18,7 +18,7 @@ export class ContractsComponent implements OnInit{
   constractsIsDisable: boolean = false;
   IsLoading: boolean = false;
   validateForm!: FormGroup;
-  ListOfData!: ContractInterface[];
+  ListOfData: ContractInterface[] = [];
   ListOfClients: ActorInterface[] = [];
   listOfZones: ZoneShema[] = [];
   listOfRates: RatesInterface[] = [];
@@ -90,6 +90,8 @@ export class ContractsComponent implements OnInit{
     this.globalService.GetId(this.url.get, estado).subscribe(
       (result:any) => {
         this.ListOfData = result;
+        console.log(this.ListOfData);
+        
       }
     );
   }
@@ -132,7 +134,6 @@ export class ContractsComponent implements OnInit{
 
     this.globalService.GetId(this.url.getRates, 1).subscribe(
       (result:any) => {
-        console.log(result);
         this.listOfRates = result;
       }
     );
@@ -191,7 +192,6 @@ export class ContractsComponent implements OnInit{
   }
 
   SelectFilterEvent(option: any): void{
-    console.log(option);
     
   }
 
