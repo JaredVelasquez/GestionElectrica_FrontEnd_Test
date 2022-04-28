@@ -35,12 +35,8 @@
                 <button nz-button (click)="CleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
             </div>
             <div nz-col nzOffset="1" nzSpan="1" >
-                    <button *ngIf="!editIsActive; else edit" nz-button ><i nz-icon nzTheme="outline" nzType="save"></i></button>
+                    <button nz-button ><i nz-icon nzTheme="outline" nzType="save" (click)="submitForm()"></i></button>
             </div>
-            <ng-template #edit>
-                <button nz-button><i nz-icon nzTheme="outline" nzType="save"></i></button>
-    
-            </ng-template>
     
         </div>
     
@@ -60,7 +56,7 @@
                  
               <div nz-row class="row-6">
                   <div nz-col>
-                      <nz-table #table [nzData]="listOfData" nzTableLayout="fixed"  [nzPageSize]="10">
+                      <nz-table #table [nzData]="listOfData" nzTableLayout="fixed"  [nzPageSize]="4">
                       <thead>
                           <tr>
                           <th nzWidth="70px">Acciones</th>
