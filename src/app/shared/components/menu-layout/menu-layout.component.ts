@@ -12,5 +12,8 @@ export class MenuLayoutComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  notify(): void {
+    console.log('notify');
+  }
 
 }

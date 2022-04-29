@@ -14,13 +14,38 @@
     <div nz-col nzSpan="3">
       <button nz-button nzType="primary" nzSize="default" >Emitir todas</button>
     </div>
-      <div nz-col nzSpan="8">
-                <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
-      </div>
-      
-      <div nz-col nzOffset="2">
-        <button nz-button nzType="primary" nzSize="default" >Generar Facturas</button>
-      </div>
+
+    <div nz-col>
+      <form nz-form [formGroup]="generateInvoicesForm">
+        <div nz-row>
+          <div nz-col>
+            <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+          
+
+          </div>
+          <div nz-col nzOffset="2">
+            <label>Utilizar factura EEH:  </label>
+            
+            <nz-switch
+              [ngModel]="true"
+              [nzCheckedChildren]="checkedTemplate"
+              [nzUnCheckedChildren]="unCheckedTemplate" 
+              formControlName="facturaEEH"
+            ></nz-switch>
+            <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+            <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
+
+          </div>
+          <div nz-col>
+            <button nz-button nzType="primary" nzSize="default" (click)="submitForm()">Generar Facturas</button>
+          
+
+          </div>
+        </div>
+
+        
+      </form>
+    </div>
 
 </div>
 <br>

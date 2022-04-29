@@ -27,6 +27,8 @@ import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzBackTopModule } from 'ng-zorro-antd/back-top';
+
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
     NzSpinModule,
     FusionChartsModule,
     NzAlertModule,
+    NzBackTopModule
   ],
   exports: [
     MenuLayoutComponent,

@@ -78,3 +78,14 @@ nz-content {
   font-weight: bold;
   font-size: larger;
 }
+
+
+
+:host ::ng-deep .ant-back-top {
+  right: 150px;
+}
+
+:host ::ng-deep .ant-back-top-rtl {
+  right: unset;
+  left: 150px;
+}

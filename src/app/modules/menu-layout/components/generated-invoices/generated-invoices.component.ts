@@ -20,12 +20,13 @@ export class GeneratedInvoicesComponent implements OnInit {
   dataInvoice!: InvoiceInterface;
   isVisible = false;
   validateForm!: FormGroup;
+  generateInvoicesForm!: FormGroup;
   listOfData: InvoiceInterface[] = [];
   listOfMeters: MeterSchema[] = [];
   ListOfContractMeditors: ContractMeterInterface[] = [];
   ListOfCharges: EspecialChargesInterface[] = [];
   list: any[] = [];
-  
+  newFacturas!:any;
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
 
@@ -45,6 +46,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     post: 'facturas',
     delete: 'facturas',
     update: 'facturas',
+    generateFacturas: 'generate-invoice',
   };
 
   constructor(
@@ -57,6 +59,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     this.GetRates();
     this.GetContratos();
     this.GetCargos();
+    this.GenerateInvoicesCleanForm();
     
     
   }
@@ -169,6 +172,43 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   }
 
+  GenerateInvoicesCleanForm(){
+    this.generateInvoicesForm = this.fb.group({
+      fecha: [ '', [Validators.required]],
+      facturaEEH: [ '', [Validators.required]],
+    });
+  }
+
+  submitForm(){
+    console.log(this.generateInvoicesForm.value);
+    this.fullSchema();
+    console.log(this.newFacturas);
+
+    let generateFacturaSchema = {
+      fechaInicial: (this.generateInvoicesForm.value.fecha[0]).toISOString(),
+      fechaFinal: this.generateInvoicesForm.value.fecha[1].toISOString(),
+      facturaEEH: this.generateInvoicesForm.value.facturaEEH,
+    }
+    console.log(generateFacturaSchema);
+    
+    
+    this.globalService.Post(this.url.generateFacturas, generateFacturaSchema).subscribe(
+      (result: any) => {
+        console.log(result);
+        
+      }
+    );
+    
+    
+  }
+
+  fullSchema(){
+    this.newFacturas = {
+      facturaInicial: this.generateInvoicesForm.value.fecha[0],
+      facturaFinal: this.generateInvoicesForm.value.fecha[1],
+      facturaEEH: this.generateInvoicesForm.value.facturaEEH
+    }
+  }
 
   
   
