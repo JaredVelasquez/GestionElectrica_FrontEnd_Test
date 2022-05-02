@@ -9,6 +9,7 @@ import { ContractMeterInterface } from 'src/Core/interfaces/contract-meter.inter
 import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
 import { endOfMonth } from 'date-fns';
 import { Router } from '@angular/router';
+const moment = require('moment');
 
 @Component({
   selector: 'app-generated-invoices',
@@ -180,17 +181,12 @@ export class GeneratedInvoicesComponent implements OnInit {
   }
 
   submitForm(){
-    console.log(this.generateInvoicesForm.value);
-    this.fullSchema();
-    console.log(this.newFacturas);
 
     let generateFacturaSchema = {
-      fechaInicial: (this.generateInvoicesForm.value.fecha[0]).toISOString(),
-      fechaFinal: this.generateInvoicesForm.value.fecha[1].toISOString(),
+      fechaInicial: this.generateInvoicesForm.value.fecha[0],
+      fechaFinal:  this.generateInvoicesForm.value.fecha[1],
       facturaEEH: this.generateInvoicesForm.value.facturaEEH,
     }
-    console.log(generateFacturaSchema);
-    
     
     this.globalService.Post(this.url.generateFacturas, generateFacturaSchema).subscribe(
       (result: any) => {
@@ -204,8 +200,8 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   fullSchema(){
     this.newFacturas = {
-      facturaInicial: this.generateInvoicesForm.value.fecha[0],
-      facturaFinal: this.generateInvoicesForm.value.fecha[1],
+      fechaInicial: (this.generateInvoicesForm.value.fecha[0]).toISOString().format('dd-m-yy'),
+      fechaFinal: this.generateInvoicesForm.value.fecha[1].toISOString().format('dd-m-yy'),
       facturaEEH: this.generateInvoicesForm.value.facturaEEH
     }
   }
