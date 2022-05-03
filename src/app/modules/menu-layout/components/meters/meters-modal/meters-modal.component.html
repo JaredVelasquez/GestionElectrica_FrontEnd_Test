@@ -49,14 +49,9 @@
               <div nz-row>
                   <nz-form-control>
                       <nz-form-item  nzFlex>
-                          <nz-select class="inputMedium" formControlName="sourceId" nzPlaceHolder="51535498" nzAllowClear>
-                              <!-- <div *ngFor="let data of ListOfSourceId">
-                                  <nz-option [nzLabel]="data.sourceId" [nzValue]="data.sourceId"></nz-option>
-                              </div> -->
-                              <div>
-                                <nz-option [nzLabel]="'example'" [nzValue]=1123100></nz-option>
-                            </div>
-                          </nz-select>
+                        <nz-select [ngModel]="listOfSourceId" class="inputMedium" formControlName="sourceId" nzPlaceHolder="51535498">
+                          <nz-option *ngFor="let option of listOfSourceId" [nzLabel]="option.DisplayName" [nzValue]="option.ID"></nz-option>
+                        </nz-select>
                       </nz-form-item>
                   </nz-form-control>
 
@@ -69,10 +64,8 @@
             <div nz-row>
               <nz-form-item  nzFlex>
                 <nz-form-control>
-                  <nz-select class="inputMedium"  formControlName="puntoMedicionId" nzPlaceHolder="Norte, Sur, Este ..." nzAllowClear>
-                    <div *ngFor="let point of listOfMPoinst">
-                      <nz-option [nzLabel]="point.descripcion" [nzValue]=point.id></nz-option>
-                    </div>
+                  <nz-select [(ngModel)]="listOfMPoinst" class="inputMedium"  formControlName="puntoMedicionId" nzPlaceHolder="Norte, Sur, Este ..." >
+                    <nz-option *ngFor="let option of listOfMPoinst" [nzLabel]="option.descripcion" [nzValue]="option.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>

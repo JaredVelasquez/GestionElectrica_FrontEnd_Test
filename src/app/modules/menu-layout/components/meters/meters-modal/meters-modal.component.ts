@@ -2,6 +2,7 @@ import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
+import { SourceSchema } from 'src/Core/interfaces/iondata-source.interface';
 import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 
@@ -13,6 +14,7 @@ import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 export class MetersModalComponent implements OnInit {
   @Input() dataPosition!: MeterSchema;
   @Input() listOfMPoinst: MeasurePointSchema[] = [];
+  @Input() listOfSourceId: SourceSchema[] = [];
   @Output() DataUpdated : EventEmitter<MeterSchema> = new EventEmitter<MeterSchema>();
 
   validateForm!: FormGroup;

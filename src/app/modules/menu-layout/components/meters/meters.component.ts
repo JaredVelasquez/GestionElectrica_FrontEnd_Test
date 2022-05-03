@@ -8,6 +8,7 @@ import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ManualInterface, ManualSchema } from 'src/Core/interfaces/manualRegister.interface';
 import { VariableSchema } from 'src/Core/interfaces/variable.interface';
 import { VirtualMeterInterface } from 'src/Core/interfaces/virtual-meter.interface';
+import { SourceSchema } from 'src/Core/interfaces/iondata-source.interface';
 
 
 @Component({
@@ -25,11 +26,13 @@ export class MetersComponent implements OnInit, OnChanges {
   listOfManualRegister: MeterSchema[] = [];
   listOfVariables: VariableSchema[] = [];
   listOfManualMeterAux: MeterSchema[] = [];
+  listOfSource: SourceSchema[] = [];
   
   url = {
     getMeters: 'get-meters',
     getVMetersDetail: 'get-vmeters-detail',
     getVMeters: 'get-vmeters',
+    getSource: 'get-source',
     getVMetersmodel: 'medidor-virtuals',
     getMeasurePoints: 'punto-medicions',
     getVariables: "variables",
@@ -50,7 +53,7 @@ export class MetersComponent implements OnInit, OnChanges {
     this.GetVirtualMeters();
     this.GetMeasurePoint();
     this.GetVariables();
-    console.log(this.listOfData);
+    this.GetSource();
     
   }
  ngOnChanges(changes: SimpleChanges): void {
@@ -96,6 +99,17 @@ export class MetersComponent implements OnInit, OnChanges {
       }
     );
   }
+
+  GetSource(){
+    this.globalService.Get(this.url.getSource).subscribe(
+      (result:any) => {
+        console.log(result);
+        
+        this.listOfSource = result;
+      }
+    );
+  }
+
 
   GetManualSchemas(isManual: boolean){
     if(isManual)
