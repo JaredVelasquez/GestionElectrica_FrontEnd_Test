@@ -49,8 +49,9 @@
               <div nz-row>
                   <nz-form-control>
                       <nz-form-item  nzFlex>
-                        <nz-select [ngModel]="listOfSourceId" class="inputMedium" formControlName="sourceId" nzPlaceHolder="51535498">
+                        <nz-select  class="inputMedium" formControlName="sourceId" nzPlaceHolder="51535498">
                           <nz-option *ngFor="let option of listOfSourceId" [nzLabel]="option.DisplayName" [nzValue]="option.ID"></nz-option>
+                          <nz-option [nzLabel]="'Manual'" [nzValue]="0"></nz-option>
                         </nz-select>
                       </nz-form-item>
                   </nz-form-control>
@@ -64,7 +65,7 @@
             <div nz-row>
               <nz-form-item  nzFlex>
                 <nz-form-control>
-                  <nz-select [(ngModel)]="listOfMPoinst" class="inputMedium"  formControlName="puntoMedicionId" nzPlaceHolder="Norte, Sur, Este ..." >
+                  <nz-select class="inputMedium"  formControlName="puntoMedicionId" nzPlaceHolder="Norte, Sur, Este ..." >
                     <nz-option *ngFor="let option of listOfMPoinst" [nzLabel]="option.descripcion" [nzValue]="option.id"></nz-option>
                   </nz-select>
                 </nz-form-control>

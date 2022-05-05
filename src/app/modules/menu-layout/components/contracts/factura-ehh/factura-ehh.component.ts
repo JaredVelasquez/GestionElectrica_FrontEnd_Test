@@ -112,7 +112,7 @@ export class FacturaEHHComponent implements OnInit {
       this.globalService.Post(this.url.post, this.newFacturaEEH).subscribe(
         (result:any) => { 
           if(result){
-            this.GetFacturas(this.listOfData[0].estado, false);
+            this.GetFacturas(this.newFacturaEEH.estado, false);
             this.cleanForm();
           }
         }

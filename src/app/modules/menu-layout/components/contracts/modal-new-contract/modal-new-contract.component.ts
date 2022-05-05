@@ -107,7 +107,6 @@ export class ModalNewContractComponent implements OnInit {
   submitPostForm(): void{
     if (this.validateForm.valid) {
       this.fullSchema();
-
       this.globalService.Post(this.url.post, this.newContract).subscribe(
         (result:any) => { 
           console.log(result);
@@ -159,6 +158,13 @@ export class ModalNewContractComponent implements OnInit {
         
       }
     }
+    for(let i = 0; i< this.ListOfClientsAux.length; i++){
+      if(data.actorId === this.ListOfClients[i].id){
+        this.dataPosition.nombre = this.ListOfClientsAux[i].nombre;
+      }
+    }
+    console.log(this.dataPosition.nombre);
+    
     this.dataPosition.codigo = this.newContract.codigo;
     this.dataPosition.descripcion = this.newContract.descripcion;
     this.dataPosition.fechaCreacion = this.newContract.fechaCreacion;
@@ -169,6 +175,7 @@ export class ModalNewContractComponent implements OnInit {
     this.dataPosition.diaGeneracion = this.newContract.diaGeneracion;
     this.dataPosition.diasDisponibles = this.newContract.diasDisponibles;
     this.dataPosition.observacion = this.newContract.observacion;
+    this.dataPosition.tipoContratoId = this.DefineContractType();
   }
 
   fullSchema(){
@@ -179,10 +186,20 @@ export class ModalNewContractComponent implements OnInit {
       fechaCreacion: this.validateForm.value.fecha[0],
       fechaVenc: this.validateForm.value.fecha[1],
       estado: true,
-    }    
+      tipoContratoId: this.DefineContractType(), 
+    }   
 
   }
+  DefineContractType(){
+    if(this.validateForm.value.clasificacion === 'P'){
+      return 1;
+    }
+    else
+      return 3;
 
+
+
+  }
   filterActores(tipoActor: any){
     if(tipoActor === 'P'){
       tipoActor = false;

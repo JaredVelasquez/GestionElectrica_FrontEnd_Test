@@ -81,7 +81,7 @@
             <td nzRight nzAlign="center">
                 <app-modal-medidores [dataPosition]="data" [listOfZones]="listOfZones" [listOfRates] = "listOfRates" [listOfMeters]="listOfMeters"></app-modal-medidores>
             </td>
-            <td nzAlign="center"  *ngIf="data.tipoContratoId === 1; else Client">
+            <td nzAlign="center"  *ngIf="data.clasificacion === 'P'; else Client">
               <app-factura-ehh [dataPosition]="data"></app-factura-ehh>
             </td>
             <ng-template #Client>   

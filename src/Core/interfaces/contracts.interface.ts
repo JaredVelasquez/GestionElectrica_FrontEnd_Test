@@ -17,6 +17,7 @@ export interface ContractInterface{
 
 export interface ContractSchema{
   codigo: string;
+  tipoContratoId: number;
   clasificacion: string;
   descripcion: string;
   actorId: number;
