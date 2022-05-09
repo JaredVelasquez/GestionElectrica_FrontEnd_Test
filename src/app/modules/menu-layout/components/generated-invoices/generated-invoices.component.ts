@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
@@ -9,6 +9,8 @@ import { ContractMeterInterface } from 'src/Core/interfaces/contract-meter.inter
 import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.interface';
 import { endOfMonth } from 'date-fns';
 import { Router } from '@angular/router';
+import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
+import { formatDate } from '@angular/common';
 const moment = require('moment');
 
 @Component({
@@ -183,10 +185,12 @@ export class GeneratedInvoicesComponent implements OnInit {
   submitForm(){
 
     let generateFacturaSchema = {
-      fechaInicial: this.generateInvoicesForm.value.fecha[0],
-      fechaFinal:  this.generateInvoicesForm.value.fecha[1],
+      fechaInicial: formatDate(this.generateInvoicesForm.value.fecha[0],'yyyyMMdd','en-US'),
+      fechaFinal:  formatDate(this.generateInvoicesForm.value.fecha[1],'yyyyMMdd','en-US'),
       facturaEEH: this.generateInvoicesForm.value.facturaEEH,
     }
+    console.log(generateFacturaSchema);
+    
     
     this.globalService.Post(this.url.generateFacturas, generateFacturaSchema).subscribe(
       (result: any) => {
@@ -198,13 +202,13 @@ export class GeneratedInvoicesComponent implements OnInit {
     
   }
 
-  fullSchema(){
-    this.newFacturas = {
-      fechaInicial: (this.generateInvoicesForm.value.fecha[0]).toISOString().format('dd-m-yy'),
-      fechaFinal: this.generateInvoicesForm.value.fecha[1].toISOString().format('dd-m-yy'),
-      facturaEEH: this.generateInvoicesForm.value.facturaEEH
-    }
-  }
+  // fullSchema(){
+  //   this.newFacturas = {
+  //     fechaInicial: (this.generateInvoicesForm.value.fecha[0]).toISOString().format('dd-m-yy'),
+  //     fechaFinal: this.generateInvoicesForm.value.fecha[1].toISOString().format('dd-m-yy'),
+  //     facturaEEH: this.generateInvoicesForm.value.facturaEEH
+  //   }
+  // }
 
   
   
