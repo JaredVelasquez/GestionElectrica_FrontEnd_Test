@@ -185,8 +185,8 @@ export class GeneratedInvoicesComponent implements OnInit {
   submitForm(){
 
     let generateFacturaSchema = {
-      fechaInicial: formatDate(this.generateInvoicesForm.value.fecha[0],'yyyyMMdd','en-US'),
-      fechaFinal:  formatDate(this.generateInvoicesForm.value.fecha[1],'yyyyMMdd','en-US'),
+      fechaInicial: formatDate(this.generateInvoicesForm.value.fecha[0],'yyyy-MM-dd','en-US'),
+      fechaFinal:  formatDate(this.generateInvoicesForm.value.fecha[1],'yyyy-MM-dd','en-US'),
       facturaEEH: this.generateInvoicesForm.value.facturaEEH,
     }
     console.log(generateFacturaSchema);

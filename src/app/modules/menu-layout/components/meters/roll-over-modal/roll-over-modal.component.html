@@ -6,7 +6,7 @@
               <div nz-col>
                   <label>Fecha de RollOver</label>
                   <div nz-row>
-                          <nz-range-picker formControlName="fecha" style="width: 475px;" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+                          <nz-range-picker formControlName="fecha" [nzShowTime]="true" style="width: 475px;" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
                   </div>
     
               </div>
