@@ -18,6 +18,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "lodash",
+               "rxjs-compat"
+            ],
             "outputPath": "dist/gestion-electrica-front-end-test",
             "index": "src/index.html",
             "main": "src/main.ts",

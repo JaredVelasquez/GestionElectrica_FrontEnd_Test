@@ -27,7 +27,7 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
   isVisible = false;
   IsDisable: boolean= false;
   editIsActive: boolean = false;
-  dates:{from: any, to: any} = {from: '', to: ''};
+  dates!:any[];
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
   validateForm!: FormGroup;
   url = {
@@ -56,9 +56,10 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
         tarifaId: ['', [Validators.required]],
         zonaId: ['', [Validators.required]],
         contratoId: [this.dataPosition.id, [Validators.required]],
-        fecha: ['', [Validators.required]],
+        fecha: [[this.dataPosition.fechaCreacion, this.dataPosition.fechaVenc.toString()], [Validators.required]],
         observacion: ['', [Validators.required]],
       })
+      this.dates = [this.dataPosition.fechaCreacion, this.dataPosition.fechaVenc];
     }
     
     
@@ -251,7 +252,7 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
     {
       name: 'Codigo Medidor',
       sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.codigo.localeCompare(b.codigo),
+      sortFn: (a: ContractMeterInterface, b: ContractMeterInterface) => a.codigoMedidor.localeCompare(b.codigoMedidor),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -260,7 +261,7 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
     {
       name: 'Fecha Inicial',
       sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
+      sortFn: (a: ContractMeterInterface, b: ContractMeterInterface) => a.fechaInicial.localeCompare(b.fechaInicial),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -269,7 +270,7 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
     {
       name: 'Fecha Final',
       sortOrder: 'descend',
-      sortFn: (a: any, b: any) => a.descripcion.localeCompare(b.descripcion),
+      sortFn: (a: ContractMeterInterface, b: ContractMeterInterface) => a.fechaFinal.localeCompare(b.fechaFinal),
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,

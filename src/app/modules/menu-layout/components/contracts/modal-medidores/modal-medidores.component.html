@@ -70,7 +70,7 @@
                   <nz-form-control>
                   
                       <div nz-row>
-                              <nz-range-picker style="width: 580px;" formControlName="fecha" [nzRanges]="ranges"></nz-range-picker>
+                              <nz-range-picker style="width: 580px;" formControlName="fecha" [nzRanges]="ranges" [nzDisabled]="true" [(ngModel)]="dates"></nz-range-picker>
                       </div>
                     
                   </nz-form-control>
@@ -125,7 +125,7 @@
                    
                 <div nz-row class="row-6">
                     <div nz-col>
-                        <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '900px', y: '240px' }"  [nzPageSize]="10">
+                        <nz-table #table [nzData]="listOfData" [nzScroll]="{  x: '100%', y: '240px' }"  [nzPageSize]="4">
                         <thead>
                             <tr>
                             <th nzLeft nzWidth="80px">Acciones</th>
