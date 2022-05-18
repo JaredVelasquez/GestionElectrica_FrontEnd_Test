@@ -1,5 +1,6 @@
 export interface ContractMeterInterface{
     estado: boolean;
+    descripcion: string;
     codigoContrato: string;
     contratoMedidorId: number;
     nombreActor: string;

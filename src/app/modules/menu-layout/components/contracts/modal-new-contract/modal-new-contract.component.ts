@@ -112,7 +112,7 @@ export class ModalNewContractComponent implements OnInit {
           console.log(result);
           if(result){
             this.DataUpdated.emit(result);
-            this.isVisible = false;
+            //this.isVisible = false;
 
           }
         }
