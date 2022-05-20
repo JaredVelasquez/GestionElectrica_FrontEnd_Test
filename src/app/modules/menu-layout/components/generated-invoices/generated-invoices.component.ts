@@ -12,6 +12,57 @@ import { Router } from '@angular/router';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { formatDate } from '@angular/common';
 const moment = require('moment');
+export interface LecturasPorContrato {
+  factura?: {
+    fechaInicial: string,
+    fechaFinal: string,
+    fechaGeneracion?: string,
+    fechaVencimiento: string,
+    fechaEmision?: string,
+  },
+  contrato: {
+    contratoId: number,
+    contratoMedId: number,
+    contratoCodigo: string,
+    fechaInicial: string,
+    fechaFinal: string,
+    cliente: string
+  },
+  cargo?:
+  [
+    {
+      nombre: string,
+      valorAjustado: number
+    }
+  ],
+  medidor: [
+    {
+      sourceID: number,
+      sourceName: string,
+      LecturaActiva: number,
+      LecturaReactiva: number,
+      CEF: number,
+      PCF: number,
+      FP: number,
+      PCFR: number
+
+    }
+  ],
+  vmedidor?: [
+    {
+      descripcion: string,
+      LecturaActiva: number,
+      LecturaReactiva: number,
+    }
+  ],
+  totalLecturaActivaAjustada: number,
+  totalLecturaReactivaAjustada: number,
+  CEFTotal: number,
+  PCFTotal: number,
+  PCFRTotal: number
+
+
+}
 
 @Component({
   selector: 'app-generated-invoices',
@@ -20,11 +71,11 @@ const moment = require('moment');
 })
 export class GeneratedInvoicesComponent implements OnInit {
   FacturaIsVisible: boolean = false;
-  dataInvoice!: InvoiceInterface;
+  dataInvoice!: LecturasPorContrato;
   isVisible = false;
   validateForm!: FormGroup;
   generateInvoicesForm!: FormGroup;
-  listOfData: InvoiceInterface[] = [];
+  listOfData: LecturasPorContrato[] = [];
   listOfMeters: MeterSchema[] = [];
   ListOfContractMeditors: ContractMeterInterface[] = [];
   ListOfCharges: EspecialChargesInterface[] = [];
@@ -59,19 +110,19 @@ export class GeneratedInvoicesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.GetRates();
-    this.GetContratos();
-    this.GetCargos();
+    // this.GetRates();
+    // this.GetContratos();
+    // this.GetCargos();
     this.GenerateInvoicesCleanForm();
     
     
   }
 
   
-  updateTable(list: any){
-    this.GetRates();
+  // updateTable(list: any){
+  //   this.GetRates();
     
-  }
+  // }
 
   Back(): void {
     this.FacturaIsVisible = false;
@@ -90,90 +141,90 @@ export class GeneratedInvoicesComponent implements OnInit {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
-  GetRates(){
-    this.globalService.GetId(this.url.get, this.url.id).subscribe( 
-      (result:any) => {
-        console.log(result);
-        result.Id = Number(result.Id);
-        this.listOfData = result;
-      }
-    );
-  }
+  // GetRates(){
+  //   this.globalService.GetId(this.url.get, this.url.id).subscribe( 
+  //     (result:any) => {
+  //       console.log(result);
+  //       result.Id = Number(result.Id);
+  //       this.listOfData = result;
+  //     }
+  //   );
+  // }
   
-  GetMeters(){
-    this.globalService.Get(this.url.getMeters).subscribe(
-      (result:any) => {
-        this.listOfMeters = result;
+  // GetMeters(){
+  //   this.globalService.Get(this.url.getMeters).subscribe(
+  //     (result:any) => {
+  //       this.listOfMeters = result;
 
         
-      }
-    );
-  }
+  //     }
+  //   );
+  // }
   
-  GetContratos(){
-    this.globalService.GetId(this.url.getcontratosM, 1).subscribe( 
-      (result:any) => {
-        this.ListOfContractMeditors = result;
-      }
-    );
-  }
+  // GetContratos(){
+  //   this.globalService.GetId(this.url.getcontratosM, 1).subscribe( 
+  //     (result:any) => {
+  //       this.ListOfContractMeditors = result;
+  //     }
+  //   );
+  // }
 
-  GetCargos(){
-    this.globalService.GetId(this.url.getECharges, 1).subscribe( 
-      (result:any) => {
-        this.ListOfCharges = result;
-        console.log(this.ListOfCharges);
+  // GetCargos(){
+  //   this.globalService.GetId(this.url.getECharges, 1).subscribe( 
+  //     (result:any) => {
+  //       this.ListOfCharges = result;
+  //       console.log(this.ListOfCharges);
         
-      }
-    );
-  }
+  //     }
+  //   );
+  // }
   
 
-  GenerateInvoice(data: InvoiceInterface): void{
+  GenerateInvoice(data: LecturasPorContrato): void{
     this.dataInvoice = data;
     this.FacturaIsVisible = true;
   }
 
-  CancelarFactura(invoicePosition: InvoiceInterface){
-    const {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion} = invoicePosition;
-    const provider = {
-      ... {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion},
-      descripcion: "CANCELADA",
-      fechaEmision: (new Date()).toISOString(),
-      estado: 0,
-    } 
-    console.log(provider);
-    this.globalService.Patch(this.url.update, invoicePosition.facturaId, provider).subscribe(
-      (result: any) => {
-        console.log(result);
-        this.GetRates();
+  // CancelarFactura(invoicePosition: InvoiceInterface){
+  //   const {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion} = invoicePosition;
+  //   const provider = {
+  //     ... {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion},
+  //     descripcion: "CANCELADA",
+  //     fechaEmision: (new Date()).toISOString(),
+  //     estado: 0,
+  //   } 
+  //   console.log(provider);
+  //   this.globalService.Patch(this.url.update, invoicePosition.facturaId, provider).subscribe(
+  //     (result: any) => {
+  //       console.log(result);
+  //       this.GetRates();
         
-      }
-    );
+  //     }
+  //   );
 
-  }
+  // }
 
-  EmitirFactura(invoicePosition: InvoiceInterface){
+  // EmitirFactura(invoicePosition: InvoiceInterface){
 
-    const {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion} = invoicePosition;
-    const provider = {
-      ... {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion},
-      descripcion: "Emitida",
-      fechaEmision: (new Date()).toISOString(),
-      estado: 2,
-    } 
+  //   const {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion} = invoicePosition;
+  //   const provider = {
+  //     ... {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion},
+  //     descripcion: "Emitida",
+  //     fechaEmision: (new Date()).toISOString(),
+  //     estado: 2,
+  //   } 
 
-    console.log(provider);
+  //   console.log(provider);
     
-    this.globalService.PutId(this.url.update, invoicePosition.facturaId, provider).subscribe(
-      (result: any) => {
-        console.log(result);
-        this.GetRates();
+  //   this.globalService.PutId(this.url.update, invoicePosition.facturaId, provider).subscribe(
+  //     (result: any) => {
+  //       console.log(result);
+  //       this.GetRates();
         
-      }
-    );
+  //     }
+  //   );
 
-  }
+  // }
 
   GenerateInvoicesCleanForm(){
     this.generateInvoicesForm = this.fb.group({
@@ -194,7 +245,8 @@ export class GeneratedInvoicesComponent implements OnInit {
     
     this.globalService.Post(this.url.generateFacturas, generateFacturaSchema).subscribe(
       (result: any) => {
-        console.log(result);
+        this.listOfData = result;
+        this.listOfData = [... this.listOfData];
         
       }
     );
@@ -214,15 +266,6 @@ export class GeneratedInvoicesComponent implements OnInit {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'Codigo',
-      sortOrder: null,
-      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigo.localeCompare(b.codigo),
-      sortDirections: ['descend', 'ascend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
-    },
-    {
       name: 'Contrato',
       sortOrder: null,
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigo.localeCompare(b.codigo),
@@ -241,7 +284,16 @@ export class GeneratedInvoicesComponent implements OnInit {
       filterMultiple: true
     },
     {
-      name: 'Fecha generacion',
+      name: 'Fecha Inicial',
+      sortOrder: null,
+      sortFn: null ,
+      sortDirections: ['descend', 'ascend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Fecha Final',
       sortOrder: null,
       sortFn: null ,
       sortDirections: ['descend', 'ascend', null],

@@ -3,6 +3,56 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+export interface LecturasPorContrato {
+  factura?: {
+    fechaInicial: string,
+    fechaFinal: string,
+    fechaGeneracion?: string,
+    fechaVencimiento: string,
+    fechaEmision?: string,
+  },
+  contrato: {
+    contratoId: number,
+    contratoMedId: number,
+    contratoCodigo: string,
+    fechaInicial: string,
+    fechaFinal: string,
+    cliente: string
+  },
+  cargo?:
+  [
+    {
+      nombre: string,
+      valorAjustado: number
+    }
+  ],
+  medidor: [
+    {
+      sourceID: number,
+      sourceName: string,
+      LecturaActiva: number,
+      LecturaReactiva: number,
+      CEF: number,
+      PCF: number,
+      FP: number,
+      PCFR: number
+
+    }
+  ],
+  vmedidor?: [
+    {
+      descripcion: string,
+      LecturaActiva: number,
+      LecturaReactiva: number,
+    }
+  ],
+  totalLecturaActivaAjustada: number,
+  totalLecturaReactivaAjustada: number,
+  CEFTotal: number,
+  PCFTotal: number,
+  PCFRTotal: number
+
+}
 
 @Component({
   selector: 'app-issued-invoices',
@@ -11,7 +61,7 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 })
 export class IssuedInvoicesComponent implements OnInit {
   FacturaIsVisible: boolean = false;
-  dataInvoice!: InvoiceInterface;
+  dataInvoice!: LecturasPorContrato;
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
@@ -74,10 +124,10 @@ export class IssuedInvoicesComponent implements OnInit {
 
     
 
-  GenerateInvoice(data: InvoiceInterface): void{
-    this.dataInvoice = data;
-    this.FacturaIsVisible = true;
-  }
+  // GenerateInvoice(data: InvoiceInterface): void{
+  //   this.dataInvoice = data;
+  //   this.FacturaIsVisible = true;
+  // }
 
   CancelarFactura(invoicePosition: InvoiceInterface){
     let provider = {

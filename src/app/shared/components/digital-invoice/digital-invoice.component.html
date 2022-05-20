@@ -10,7 +10,7 @@
 <div id="content">
     <div class="cabecera">
         <img style="width: 50px;" src="../../../../assets/Images/LogoSmall.png" alt="Cliente">
-        <h2> {{dataInvoice.actorNombre}} </h2>
+        <h2> {{dataInvoice.contrato.cliente}} </h2>
         <div style="text-align: end;">
             <p class="direccion"> Dirección: 800 Metros, Camino a la Jutosa, Choloma, Cortés </p>
             <p class="direccion"> Honduras, Centro América </p>
@@ -35,13 +35,13 @@
                     <p class="etiqueta-izq"> Número factura: </p>
                 </div>
                 <div>
-                    <p class="etiqueta-der">{{dataInvoice.fechaLectura | date:'dd/M/yyyy' }} </p>
-                    <p class="etiqueta-der">{{dataInvoice.fechaVencimiento | date:'dd/M/yyyy' }}</p>
-                    <p class="etiqueta-der" *ngIf="dataInvoice.fechaEmision; else Vacio">{{dataInvoice.fechaEmision | date:'dd/M/yyyy' }}</p>
-                    <p class="etiqueta-der">{{dataInvoice.fechaInicio | date:'dd/M/yyyy' }}  hasta  {{dataInvoice.fechaFin | date:'dd/M/yyyy' }} </p>
+                    <p class="etiqueta-der">{{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }} </p>
+                    <p class="etiqueta-der">{{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }}</p>
+                    <p class="etiqueta-der" *ngIf="dataInvoice.factura?.fechaInicial; else Vacio">{{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }}</p>
+                    <p class="etiqueta-der">{{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }}  hasta  {{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }} </p>
                     <p class="etiqueta-der"> xxxx </p>
                     <p class="etiqueta-der"> xxxx </p>
-                    <p class="etiqueta-der">{{dataInvoice.detalleFacturaId}} </p>
+                    <p class="etiqueta-der"> xxxx </p>
                     <ng-template #Vacio>
                         <p class="etiqueta-der"> --- </p>
                     </ng-template>
@@ -290,21 +290,8 @@
             </p>
 
         </div>
-        <div>
-            <p class="datos-cliente-regulado">{{dataInvoice.total}} Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">---    Lps</p>
-            <p class="datos-cliente-regulado">{{ChargePosition.ajuste}} Lps</p>
-            <p class="datos-cliente-regulado">{{ChargePosition.cargoCorte}} Lps</p>
-            <p class="datos-cliente-regulado">{{ChargePosition.cargoMora}} Lps</p>
-            <p class="datos-cliente-regulado">{{ChargePosition.otrosCargos}} Lps</p>
+        <div *ngFor="let data of dataInvoice.cargo">
+            <p class="datos-cliente-regulado">{{data.valorAjustado}} Lps</p>
         </div>
     </div>
     <div style="background-color:#a9a9a9; margin: 1% 0% 0% 0%;">
@@ -312,9 +299,16 @@
             <span style="color: black; font-weight: bold; font-size: 16px;">
                 Total:
             </span>
-            <span style="color: black; font-weight: bold; font-size: 16px;">
-                {{ChargePosition.totalCargos + dataInvoice.total}} Lps
+            <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
+                L {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado }}
             </span>
+            <ng-template #sinTotal>
+                <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
+                    L {{'0' }} 
+                </span>
+
+            </ng-template>
+            
         </p>
     </div>
     

@@ -55,7 +55,6 @@
       <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{   x: '100%', y: '385px' }"  [nzPageSize]="10">
         <thead>
           <tr>
-          <th nzLeft nzWidth="90px" nzAlign="center">Acciones</th>
             <th
               *ngFor="let column of listOfColumns"
               [nzSortOrder]="column.sortOrder"
@@ -76,19 +75,18 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of listOfData">
-            <td nzLeft nzAlign="center">
-              <button nz-button nzSize="small" nzDanger nzType="primary" (click)="CancelarFactura(data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-              
-
-            </td>
-            <td>{{data.codigo}}</td>
-            <td>{{ data.codigoContrato }}</td>
-            <td>{{data.actorNombre}}</td>
-            <td>{{data.fechaLectura  | date:'dd/M/yyyy'  }}</td>
-            <td>{{ data.energiaConsumida }}</td>
-            <td style="color: red;">{{data.total + "  LPS"}}</td>
+            <td>{{ data.contrato.contratoCodigo }}</td>
+            <td>{{data.contrato.cliente}}</td>
+            <td>{{data.factura?.fechaInicial  | date:'dd/M/yyyy'  }}</td>
+            <td>{{ data.factura?.fechaFinal  | date:'dd/M/yyyy'   }}</td>
+            <td>{{ data.totalLecturaActivaAjustada | number:'1.0':'en-US'}} kWh</td>
+            <td style="color: red;" *ngIf="data.cargo; else sinTotal">L {{data.cargo[data.cargo.length -1].valorAjustado  | number:'1.0':'en-US' }}</td>
+            <ng-template #sinTotal>
+              <td style="color: green;">L {{0  | number:'1.0':'en-US'}}</td> 
+            </ng-template>
+            
             <td nzRight nzAlign="center">
-                <button nz-button nzSize="small" nzType="primary" (click)="EmitirFactura(data)"><i nz-icon nzType="check"></i></button>
+                <button nz-button nzSize="small" nzType="primary" ><i nz-icon nzType="check"></i></button>
             </td>
             <td nzRight nzAlign="center">
               <button nz-button nzSize="small" nzType="primary" (click)="GenerateInvoice(data)"><i nz-icon nzType="file-done"></i></button>

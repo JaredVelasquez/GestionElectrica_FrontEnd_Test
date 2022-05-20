@@ -7,6 +7,57 @@ import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface'
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+export interface LecturasPorContrato {
+  factura?: {
+    fechaInicial: string,
+    fechaFinal: string,
+    fechaGeneracion?: string,
+    fechaVencimiento: string,
+    fechaEmision?: string,
+  },
+  contrato: {
+    contratoId: number,
+    contratoMedId: number,
+    contratoCodigo: string,
+    fechaInicial: string,
+    fechaFinal: string,
+    cliente: string
+  },
+  cargo?:
+  [
+    {
+      nombre: string,
+      valorAjustado: number
+    }
+  ],
+  medidor: [
+    {
+      sourceID: number,
+      sourceName: string,
+      LecturaActiva: number,
+      LecturaReactiva: number,
+      CEF: number,
+      PCF: number,
+      FP: number,
+      PCFR: number
+
+    }
+  ],
+  vmedidor?: [
+    {
+      descripcion: string,
+      LecturaActiva: number,
+      LecturaReactiva: number,
+    }
+  ],
+  totalLecturaActivaAjustada: number,
+  totalLecturaReactivaAjustada: number,
+  CEFTotal: number,
+  PCFTotal: number,
+  PCFRTotal: number
+
+
+}
 
 @Component({
   selector: 'app-digital-invoice',
@@ -15,7 +66,7 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./digital-invoice.component.css']
 })
 export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() dataInvoice !: InvoiceInterface;
+  @Input() dataInvoice !: LecturasPorContrato;
   isVisible: boolean = false;
   spinnerIsVisible: boolean = false;
   
@@ -54,11 +105,11 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   
   ngOnInit(): void {
     this.isVisible = false;
-    this.globalService.GetId( 'cargos-facturas', this.dataInvoice.cargoFacturaId).subscribe(
-      (result: any) => {
-        this.ChargePosition = result;
-      }
-    );
+    // this.globalService.GetId( 'cargos-facturas', this.dataInvoice.cargoFacturaId).subscribe(
+    //   (result: any) => {
+    //     this.ChargePosition = result;
+    //   }
+    // );
   }
   ngOnChanges(changes: SimpleChanges): void {
 
@@ -94,7 +145,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
         return doc;
       }).then((doc) => {
         
-          doc.save(`factura-${this.dataInvoice.codigo}.pdf`);
+          doc.save(`factura-${'prueba'}.pdf`);
         
       });
       
