@@ -81,10 +81,6 @@
                 <p class="etiqueta-consumo-total"> Consumo total en KVArh </p>
                 <p class="etiqueta-valor"> xxx </p>
             </div>
-            <div class="consumo" >
-                <p class="etiqueta-consumo-total"> Consumo en kWh </p>
-                <p class="etiqueta-valor"> xxx </p>
-            </div>
             <div class="consumo">
                 <p class="etiqueta-consumo-total"> Consumo total en kWh </p>
                 <p class="etiqueta-valor"> xxx </p>
@@ -241,20 +237,31 @@
         <p style="color: black; font-size: 17px; margin: 0% 0% 1% 0%; font-weight: bold;"> Factor de potencia
         </p>
         <div style="position: relative;">
-            <p class="formula-dividendo"> xxx </p>
-            <p class="formula-divisor1"> xxx </p>
+            <p class="formula-dividendo"> {{dataInvoice.totalLecturaActivaAjustada | number:'1.0':'en-US'}} </p>
+            <p class="formula-divisor1"> {{dataInvoice.totalLecturaActivaAjustada | number:'1.0':'en-US'}} <sup>2</sup> </p>
             <p class="mas"> + </p>
-            <p class="formula-divisor2"> xxx = </p>
-            <p class="resultado-factor"> xxx </p>
+            <p class="formula-divisor2"> {{dataInvoice.totalLecturaReactivaAjustada | number:'1.0':'en-US'}} <sup>2</sup> = </p>
+            <p class="resultado-factor"> {{ dataInvoice.FPTotal * 100 | number:'1.0':'en-US'}} % </p>
             <img class="img-formula" src="assets/raiz.svg">
 
         </div>
         <p style="    color: black; font-size: 17px; margin: 2% 0% 1% 0%; font-weight: bold;"> Penalidad
         </p>
-        <p class="formula-penalidad" > xxxx = <span class="resultado-penalidad">
-                xxxx Lps</span> </p>
+        <p class="formula-penalidad" > {{dataInvoice.PCFRTotal * 100 | number:'1.0':'en-US'}}% = 
+            <span class="resultado-penalidad" *ngIf="dataInvoice.cargo; else sinPenalizacion">
+                {{ dataInvoice.cargo[dataInvoice.cargo.length -2].valorAjustado | number:'1.0':'en-US'}} Lps
+            </span> 
+            <ng-template #sinPenalizacion>
+                <span class="resultado-penalidad">
+                    {{ 0 }} Lps
+                </span> 
+
+            </ng-template>
+            
+        </p>
         <p class="formula-penalidad" > xxxx = <span class="resultado-penalidad">
                     xxxx Lps</span> </p>
+
     </div>
 </div>
 
@@ -285,13 +292,13 @@
 <div class="detalle-cliente-container">
     <div class="contenedor-cliente-regulado">
         <div>
-            <p *ngFor="let name of ClienteReguladoCampos" class="datos-cliente-regulado"> 
-                {{name}}
+            <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado"> 
+                {{data.nombre}}
             </p>
 
         </div>
-        <div *ngFor="let data of dataInvoice.cargo">
-            <p class="datos-cliente-regulado">{{data.valorAjustado}} Lps</p>
+        <div >
+            <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado">L {{data.valorAjustado  | number:'1.0':'en-US'}} </p>
         </div>
     </div>
     <div style="background-color:#a9a9a9; margin: 1% 0% 0% 0%;">
@@ -300,11 +307,11 @@
                 Total:
             </span>
             <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
-                L {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado }}
+                L {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado   | number:'1.0':'en-US'}}
             </span>
             <ng-template #sinTotal>
                 <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
-                    L {{'0' }} 
+                    L {{'0'   | number:'1.0':'en-US'}} 
                 </span>
 
             </ng-template>

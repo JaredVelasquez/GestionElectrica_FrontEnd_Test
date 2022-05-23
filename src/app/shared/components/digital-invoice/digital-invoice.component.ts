@@ -54,7 +54,8 @@ export interface LecturasPorContrato {
   totalLecturaReactivaAjustada: number,
   CEFTotal: number,
   PCFTotal: number,
-  PCFRTotal: number
+  PCFRTotal: number,
+  FPTotal: number
 
 
 }
