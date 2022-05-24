@@ -104,13 +104,13 @@
           <td nzAlign="center" nzRight>
             <app-virtual-meter-modal [listOfVMeters]="listOfDataVM" [dataPosition]="data"></app-virtual-meter-modal>
           </td>
-          <td nzAlign="center" nzRight *ngIf="data.registroDatos; else automatico">
+          <td nzAlign="center" nzRight>
             <app-manual-registration-modal [dataPosition]="data" [listOfVariables]="listOfVariables"></app-manual-registration-modal>
           </td>
-          <ng-template #automatico>
+          <!-- <ng-template #automatico>
             <td nzAlign="center" nzRight><i nz-icon nzType="warning" nzTheme="outline"></i></td>
           </ng-template>
-          
+           -->
         </tr>
       </tbody>
     </nz-table>  

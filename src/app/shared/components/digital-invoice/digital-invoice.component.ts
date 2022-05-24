@@ -1,64 +1,13 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ChargesShema } from 'src/Core/interfaces/charges.interface';
-import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
+import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
+import { formatDate } from '@angular/common';
 
 
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-export interface LecturasPorContrato {
-  factura?: {
-    fechaInicial: string,
-    fechaFinal: string,
-    fechaGeneracion?: string,
-    fechaVencimiento: string,
-    fechaEmision?: string,
-  },
-  contrato: {
-    contratoId: number,
-    contratoMedId: number,
-    contratoCodigo: string,
-    fechaInicial: string,
-    fechaFinal: string,
-    cliente: string
-  },
-  cargo?:
-  [
-    {
-      nombre: string,
-      valorAjustado: number
-    }
-  ],
-  medidor: [
-    {
-      sourceID: number,
-      sourceName: string,
-      LecturaActiva: number,
-      LecturaReactiva: number,
-      CEF: number,
-      PCF: number,
-      FP: number,
-      PCFR: number
-
-    }
-  ],
-  vmedidor?: [
-    {
-      descripcion: string,
-      LecturaActiva: number,
-      LecturaReactiva: number,
-    }
-  ],
-  totalLecturaActivaAjustada: number,
-  totalLecturaReactivaAjustada: number,
-  CEFTotal: number,
-  PCFTotal: number,
-  PCFRTotal: number,
-  FPTotal: number
-
-
-}
 
 @Component({
   selector: 'app-digital-invoice',
@@ -68,40 +17,26 @@ export interface LecturasPorContrato {
 })
 export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() dataInvoice !: LecturasPorContrato;
+  diaFacturacion: string = '';
   isVisible: boolean = false;
   spinnerIsVisible: boolean = false;
-  
+  UnDiaMLS = 86400000;
+  hoy = Date.now();
+  vencimiento: any;
   ChargePosition!: ChargesShema;
-  dataSource: Object;
+  dataSource!: {chart:{}, data: [{}]};
   title: string;
-  ClienteReguladoCampos = [ "Costo de energía: ", "Demanda: ", "Cargo Reactivo: ", "Cargo costos operativos: ", "Cargos por perdidas de distribución: ", "Cargo por transformacion: ", "Cargo por iluminación comunitaria: ", "Cargo servicios comunitarios: ", "Cargo comercialización: ", 'Cargo por financiamiento: ', 'Rectificación/Ajuste: ', 'Cargo por corte: ', 'Recargo por mora: ', 'Otros Conceptos: '];
 
+  
+  url = {
+    getHistorico: "get-invoices-contract",
+  }
   constructor(
     private globalService: EndPointGobalService,
 
   ) {
-    this.title = 'Angular  FusionCharts Sample';
+    this.title = 'Historico consumo energia activa';
 
-    this.dataSource = {
-      chart: {
-        caption: 'Countries With Most Oil Reserves [2017-18]',
-        subCaption: 'In MMbbl = One Million barrels',
-        xAxisName: 'Country',
-        yAxisName: 'Reserves (MMbbl)',
-        numberSuffix: 'K',
-        theme: 'fusion'
-      },
-      data: [
-        { label: 'Venezuela', value: '290' },
-        { label: 'Saudi', value: '260' },
-        { label: 'Canada', value: '180' },
-        { label: 'Iran', value: '140' },
-        { label: 'Russia', value: '115' },
-        { label: 'UAE', value: '100' },
-        { label: 'US', value: '30' },
-        { label: 'China', value: '30' }
-      ]
-    };
   }
   
   ngOnInit(): void {
@@ -113,12 +48,75 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
     // );
   }
   ngOnChanges(changes: SimpleChanges): void {
+    if(this.dataInvoice){
+      this.vencimiento = (this.UnDiaMLS * this.dataInvoice.contrato.diasDisponibles) + this.hoy;
+      this.diaFacturacion = this.numeroADia(this.dataInvoice.contrato.diaGeneracion);
+      this.GetHistorico(this.dataInvoice.contrato.contratoId);
+      if(!this.dataSource){
+        this.dataSource = {
+          chart: {
+            caption: 'Countries With Most Oil Reserves [2017-18]',
+            subCaption: 'In MMbbl = One Million barrels',
+            xAxisName: 'Country',
+            yAxisName: 'Reserves (MMbbl)',
+            numberSuffix: 'K',
+            theme: 'fusion'
+          },
+          data: [{
+            
+           label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US').toString(), value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() ,
 
+          }
+          ]
+        };
+
+      }else{
+        this.dataSource.data.push(
+          { label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US').toString(), value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() },
+
+        );
+
+      }
+
+      console.log(this.dataSource);
+      
+    }
+    
   }
   ngOnDestroy(): void {
     
   }
 
+  GetHistorico(id : number){
+    this.globalService.GetId( this.url.getHistorico, id).subscribe(
+      (result : any) => {
+        if(result){
+            this.dataSource = {
+              chart: {
+                caption: 'Countries With Most Oil Reserves [2017-18]',
+                subCaption: 'In MMbbl = One Million barrels',
+                xAxisName: 'Country',
+                yAxisName: 'Reserves (MMbbl)',
+                numberSuffix: 'K',
+                theme: 'fusion'
+              },
+              data: [{
+                
+              }
+              ]
+            };
+            
+            for(let data of result){
+              this.dataSource.data.push(
+                { label: '[' + formatDate(data.fechaInicio.toISOString(),'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFinal.toISOString(),'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() },
+              );
+            }
+          
+
+        }
+      }
+    );
+  }
   GenerarFactura(): void {
     const div = document.getElementById('content');
 
@@ -155,6 +153,32 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
     }
     
   }
+
+  numeroADia(dia: number){
+    let day;
+    switch (dia) { 
+      case 1: day = "Lunes"; 
+      break; 
+      case 2: day = "Martes"; 
+      break; 
+      case 3: day = "Miercoles"; 
+      break; 
+      case 4: day = "Jueves"; 
+      break; 
+      case 5: day = "Viernes"; 
+      break; 
+      case 6: day = "Sabado"; 
+      break; 
+      case 7: day = "Domingo"; 
+      break;
+      default:
+        day = '';
+       }
+  
+    return day;
+  
+  }
+  
 
 }
     

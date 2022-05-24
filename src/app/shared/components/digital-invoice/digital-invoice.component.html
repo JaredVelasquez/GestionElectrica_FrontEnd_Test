@@ -30,17 +30,15 @@
                     <p class="etiqueta-izq"> Fecha vencimiento: </p>
                     <p class="etiqueta-izq"> Fecha emisión: </p>
                     <p class="etiqueta-izq"> Fechas facturadas: </p>
-                    <p class="etiqueta-izq"> Periodo: </p>
                     <p class="etiqueta-izq"> Días facturación: </p>
                     <p class="etiqueta-izq"> Número factura: </p>
                 </div>
                 <div>
-                    <p class="etiqueta-der">{{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }} </p>
-                    <p class="etiqueta-der">{{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }}</p>
-                    <p class="etiqueta-der" *ngIf="dataInvoice.factura?.fechaInicial; else Vacio">{{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }}</p>
-                    <p class="etiqueta-der">{{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }}  hasta  {{dataInvoice.factura?.fechaInicial | date:'dd/M/yyyy' }} </p>
-                    <p class="etiqueta-der"> xxxx </p>
-                    <p class="etiqueta-der"> xxxx </p>
+                    <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy' }} </p>
+                    <p class="etiqueta-der">{{ vencimiento | date:'dd/M/yyyy' }}</p>
+                    <p class="etiqueta-der">{{hoy | date:'dd/M/yyyy' }}</p>
+                    <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaAnterior | date:'dd/M/yyyy' }}  hasta  {{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy' }} </p>
+                    <p class="etiqueta-der"> {{diaFacturacion}} </p>
                     <p class="etiqueta-der"> xxxx </p>
                     <ng-template #Vacio>
                         <p class="etiqueta-der"> --- </p>
@@ -49,19 +47,17 @@
             </div>
             <div class="datos">
                 <div>
-                    <p class="etiqueta-izq-titular"> Nombre del titular: </p>
+                    <p class="etiqueta-izq-titular"> Nombre del titular:  </p>
                     <p class="etiqueta-izq-titular"> Dirección de suministro: </p>
                     <p class="etiqueta-izq-titular"> Ubicación: </p>
                     <p class="etiqueta-izq-titular"> Código del cliente: </p>
-                    <p class="etiqueta-izq-titular"> Número del medidor: </p>
                     <p class="etiqueta-izq-titular"> Tipo de consumo: </p>
                     <p class="etiqueta-izq-titular"> Tarifa: </p>
                 </div>
                 <div>
-                    <p class="etiqueta-der-titular"> xxx </p>
+                    <p class="etiqueta-der-titular"> {{dataInvoice.contrato.cliente}} </p>
                     <p class="etiqueta-der-titular"> xxx </p>
                     <p class="etiqueta-der-titular"> 364-249-245 </p>
-                    <p class="etiqueta-der-titular"> xxx </p>
                     <p class="etiqueta-der-titular"> xxx </p>
                     <p class="etiqueta-der-titular"> xxx </p>
                     <p class="etiqueta-der-titular"> xxx </p>
@@ -74,84 +70,103 @@
         </div>
         <div class="resumen-container">
             <div class="consumo" >
-                <p class="etiqueta-consumo-total"> Demanda maxima </p>
-                <p class="etiqueta-valor"> xxx </p>
-            </div>
-            <div class="consumo" >
                 <p class="etiqueta-consumo-total"> Consumo total en KVArh </p>
-                <p class="etiqueta-valor"> xxx </p>
+                <p class="etiqueta-valor"> {{dataInvoice.totalLecturaActivaAjustada | number:'1.0':'en-US'}} </p>
             </div>
             <div class="consumo">
                 <p class="etiqueta-consumo-total"> Consumo total en kWh </p>
-                <p class="etiqueta-valor"> xxx </p>
+                <p class="etiqueta-valor"> {{dataInvoice.totalLecturaReactivaAjustada | number:'1.0':'en-US'}} </p>
             </div>
             <div class="consumo">
                 <p class="etiqueta-consumo-total"> Total a pagar </p>
-                <p class="etiqueta-valor"> xxx Lps</p>
+                <p class="etiqueta-valor" *ngIf="dataInvoice.cargo"> {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado   | number:'1.0':'en-US'}} Lps</p>
             </div>
         </div>
         <br>
         <div class="titulos">
             <h5>Detalle de Consumo de Energía</h5>
         </div>
-        <div class="titulos-detalle">
-            <h6></h6>
-            <h6>Lectura actual</h6>
-            <h6>Lectura anterior</h6>
-            <h6>Diferencia</h6>
-            <h6>Multiplicador</h6>
-            <h6>Consumo</h6>
-            <h6>Unidades</h6>
-        </div>
         <div class="detalle-container">
-            <div>
-                <p class="etiqueta-detalle">Fecha lectura</p>
-                <p class="etiqueta-detalle">Activa</p>
-                <p class="etiqueta-detalle">Reactiva</p>
-                <p class="etiqueta-detalle">Demanda</p>
-            </div>
-            <div>
-                <p class="etiqueta-detalle"> xxx </p>
-                <p class="etiqueta-detalle"> xxx <span class="asterisco"> </span></p>
-                <p class="etiqueta-detalle"> xxx <span class="asterisco"> </span></p>
-                <p class="etiqueta-detalle"> xxx </p>
-            </div>
-            <div>
-                <p class="etiqueta-detalle"> xxx </p>
-                <p class="etiqueta-detalle"> xxx <span class="asterisco"> </span></p>
-                <p class="etiqueta-detalle"> xxx <span class="asterisco"> </span></p>
-                <p class="etiqueta-detalle">-</p>
-            </div>
-            <div>
-                <p class="etiqueta-detalle">-</p>
-                <p class="etiqueta-detalle"> xxx </p>
-                <p class="etiqueta-detalle"> xxx </p>
-                <p class="etiqueta-detalle"> xxx </p>
-            </div>
-            <div>
-                <p class="etiqueta-detalle">-</p>
-                <p class="etiqueta-detalle"> xxx </p>
-                <p class="etiqueta-detalle"> xxx </p>
-                <p class="etiqueta-detalle"> xxx </p>
-            </div>
-            <div>
-                <p class="etiqueta-detalle">-</p>
-                <p class="etiqueta-detalle"> xxx </p>
-                <p class="etiqueta-detalle"> xxx </p>
-                <p class="etiqueta-detalle"> xxx </p>
-            </div>
-            <div>
-                <p class="etiqueta-detalle">-</p>
-                <p class="etiqueta-detalle">kWh</p>
-                <p class="etiqueta-detalle">kWArh</p>
-                <p class="etiqueta-detalle">kW</p>
-            </div>
+            <style type="text/css">
+                .tg  {border-collapse:collapse;border-spacing:0;}
+                .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                  overflow:hidden;padding:10px 5px;word-break:normal;}
+                .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                .tg .tg-zk76{background-color:#c0c0c0;border-color:#ffffff;text-align:center;vertical-align:top}
+                .tg .tg-oe15{background-color:#ffffff;border-color:#ffffff;text-align:left;vertical-align:top}
+                .tg .tg-wk8r{background-color:#ffffff;border-color:#ffffff;text-align:center;vertical-align:top}
+                .tg .tg-dou8{background-color:#001529;border-color:inherit;color:#ffffff;text-align:left;vertical-align:top}
+                .tg .tg-hvao{background-color:#c0c0c0;border-color:#ffffff;text-align:left;vertical-align:top}
+                </style>
+                <table class="tg">
+                <thead>
+                  <tr>
+                    <th class="tg-dou8"></th>
+                    <th class="tg-dou8">Lectura Actual</th>
+                    <th class="tg-dou8">Lectura Anterior</th>
+                    <th class="tg-dou8">Diferencia</th>
+                    <th class="tg-dou8">Multiplicador</th>
+                    <th class="tg-dou8">Consumo</th>
+                    <th class="tg-dou8">Unidad</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let data of dataInvoice.medidor">
+                    <tr>
+                      <td class="tg-hvao">Medidor</td>
+                      <td class="tg-zk76" colspan="6">{{data.descripcion}}</td>
+                    </tr>
+                    <tr>
+                      <td class="tg-oe15">Fecha de lectura</td>
+                      <td class="tg-wk8r">{{data.historico.fechaActual  | date:'dd/M/yyyy' }}</td>
+                      <td class="tg-wk8r">{{data.historico.fechaAnterior  | date:'dd/M/yyyy' }}</td>
+                      <td class="tg-wk8r"></td>
+                      <td class="tg-wk8r"></td>
+                      <td class="tg-wk8r"></td>
+                      <td class="tg-wk8r"></td>
+                    </tr>
+                    <tr>
+                      <td class="tg-oe15">Activa</td>
+                      <td class="tg-wk8r">{{data.historico.lecturaActivaActual  | number:'1.0':'en-US'}}</td>
+                      <td class="tg-wk8r">{{data.historico.lecturaActivaAnterior  | number:'1.0':'en-US'}}</td>
+                      <td class="tg-wk8r">{{data.historico.lecturaActivaActual - data.historico.lecturaActivaAnterior  | number:'1.0':'en-US'}}</td>
+                      <td class="tg-wk8r">{{data.historico.multiplicador }}</td>
+                      <td class="tg-wk8r">{{data.historico.lecturaActivaActual - data.historico.lecturaActivaAnterior  | number:'1.0':'en-US'}}</td>
+                      <td class="tg-wk8r">kWh</td>
+                    </tr>
+                    <tr>
+                      <td class="tg-oe15">Reactiva</td>
+                      <td class="tg-wk8r">{{data.historico.lecturaReactivaActual  | number:'1.0':'en-US'}}</td>
+                      <td class="tg-wk8r">{{data.historico.lecturaReactivaAnterior | number:'1.0':'en-US' }}</td>
+                      <td class="tg-wk8r">{{data.historico.lecturaReactivaActual - data.historico.lecturaReactivaAnterior  | number:'1.0':'en-US'}}</td>
+                      <td class="tg-wk8r">{{data.historico.multiplicador  | number:'1.0':'en-US'}}</td>
+                      <td class="tg-wk8r">{{data.historico.lecturaReactivaActual - data.historico.lecturaReactivaAnterior  | number:'1.0':'en-US'}}</td>
+                      <td class="tg-wk8r"> kWhA </td>
+                    </tr>
+                    
+                </tbody>
+                <tbody>
+                    
+                    <tr>
+                        <td class="tg-oe15">Total</td>
+                        <td class="tg-wk8r"></td>
+                        <td class="tg-wk8r"></td>
+                        <td class="tg-wk8r"></td>
+                        <td class="tg-wk8r"></td>
+                        <td class="tg-wk8r">{{dataInvoice.totalLecturaActivaAjustada + dataInvoice.totalLecturaReactivaAjustada  | number:'1.0':'en-US'}}</td>
+                        <td class="tg-wk8r"> kWh - kWhA </td>
+                    </tr>
+                </tbody>
+                </table>
+            
         </div>
         <br>
+
+ 
 <div class="titulos">
-    <h5>Cálculo de Consumo de Energía</h5>
-    <h5>Histórico de Consumo</h5>
-</div>
+    <h5>Detalle cliente regulado</h5>
+    <h5>Historico consumo</h5>
+</div>       
         
 <div class="consumo-container">
 <div class="calculo-consumo-container">
@@ -184,53 +199,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <div>
-        <table class="table table-bordered table-sm">
-            <thead>
-                <tr>
-                    <th scope="col">Cargo</th>
-                    <th scope="col">L/kW-mes</th>
-                    <th scope="col">Consumo</th>
-                    <th scope="col">Valor(L.)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <p style="margin: 0px;">Demanda</p>
-                    </td>
-                    <td> xxx </td>
-                    <td> xxx </td>
-                    <td> xxx </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <table class="table table-bordered table-sm">
-            <thead>
-                <tr>
-                    <th scope="col">Demanda leída kW</th>
-                    <th scope="col">
-                        <p style="margin: 0; font-size: 10px;"> Demanda máxima kW</p>
-                        <p style="margin: 0; font-size: 9px;">11 MESES X 0.85</p>
-                    </th>
-                    <th scope="col">Demanda contrada kW</th>
-                    <th scope="col">Demanda seleccionada kW</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td> xxx </td>
-                    <td> xxx </td>
-                    <td> xxx </td>
-                    <td> xxx </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div>
         <div style="background-color:  #969696; text-align: center;">
             <h6>Ajuste por factor de potencia</h6>
         </div>
@@ -245,7 +213,7 @@
             <img class="img-formula" src="assets/raiz.svg">
 
         </div>
-        <p style="    color: black; font-size: 17px; margin: 2% 0% 1% 0%; font-weight: bold;"> Penalidad
+        <p style="    color: black; font-size: 17px; margin: 2% 0% 1% 0%; font-weight: bold;"> Penalizacion reactiva
         </p>
         <p class="formula-penalidad" > {{dataInvoice.PCFRTotal * 100 | number:'1.0':'en-US'}}% = 
             <span class="resultado-penalidad" *ngIf="dataInvoice.cargo; else sinPenalizacion">
@@ -259,75 +227,57 @@
             </ng-template>
             
         </p>
-        <p class="formula-penalidad" > xxxx = <span class="resultado-penalidad">
-                    xxxx Lps</span> </p>
+            
+        <div style="background-color:  #969696; text-align: center;">
+            <h6>Distribucion de cargos por consumo energetico</h6>
+        </div>
 
+            <div class="contenedor-cliente-regulado">
+                <div>
+                    <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado"> 
+                        {{data.nombre}}
+                    </p>
+        
+                </div>
+                <div >
+                    <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado">L {{data.valorAjustado  | number:'1.0':'en-US'}} </p>
+                </div>
+            </div>
+            <div style="background-color:#a9a9a9;">
+                <p  style="margin: 1% 16% 0% 0%;" class="total-pagar">
+                    <span style="color: black; font-weight: bold; font-size: 16px;">
+                        Total:
+                    </span>
+                    <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
+                        L {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado   | number:'1.0':'en-US'}}
+                    </span>
+                    <ng-template #sinTotal>
+                        <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
+                            L {{'0'   | number:'1.0':'en-US'}} 
+                        </span>
+    
+                    </ng-template>
+                    
+                </p>
+
+            </div>
     </div>
+
 </div>
 
-
 <div class="historico-consumo-container">
+
     <div style="background-color: #b9b9b9; margin: 1% 3% 1% 3%;">
         <fusioncharts width="100%" height="100%" type="Column2d" [dataSource]="dataSource">
         </fusioncharts>
     </div>
-    <div style="background-color: #b9b9b9; margin: 1% 3% 1% 3%;">
+    <div style="background-color: #b9b9b9; margin: 1% 3% 1% 7%;">
         <p class="totales-historico">
-            <span> Total a pagar:</span>
+            <span> Total a consumo historico:</span>
             <span> xxxxx Lps </span>
         </p>
     </div>
-    <div style="text-align: end; margin: 1% 3% 1% 3%;">
-        <p style="color: black; font-size: 12px;"> *Según reglamento de tarifas vigentes a fecha de factura
-        </p>
-    </div>
 </div>
-</div>
-
-<div class="titulos">
-<h5>Detalle como cliente regulado</h5>
-<h5></h5>
-</div>
-<div class="impacto-container"> 
-<div class="detalle-cliente-container">
-    <div class="contenedor-cliente-regulado">
-        <div>
-            <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado"> 
-                {{data.nombre}}
-            </p>
-
-        </div>
-        <div >
-            <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado">L {{data.valorAjustado  | number:'1.0':'en-US'}} </p>
-        </div>
-    </div>
-    <div style="background-color:#a9a9a9; margin: 1% 0% 0% 0%;">
-        <p class="total-pagar">
-            <span style="color: black; font-weight: bold; font-size: 16px;">
-                Total:
-            </span>
-            <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
-                L {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado   | number:'1.0':'en-US'}}
-            </span>
-            <ng-template #sinTotal>
-                <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
-                    L {{'0'   | number:'1.0':'en-US'}} 
-                </span>
-
-            </ng-template>
-            
-        </p>
-    </div>
     
 </div>
 </div>
-</div>
-</div>
-
-<nz-spin nzTip="Cargando ... " [nzSpinning]="spinnerIsVisible" nzSize="large">
-    <nz-alert
-      nzType="info"
-      nzMessage="Alert message title"
-      nzDescription="Further details about the context of this alert."
-    ></nz-alert>
-</nz-spin>

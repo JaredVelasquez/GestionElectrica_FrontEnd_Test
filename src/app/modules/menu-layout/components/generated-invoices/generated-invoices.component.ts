@@ -11,59 +11,8 @@ import { endOfMonth } from 'date-fns';
 import { Router } from '@angular/router';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { formatDate } from '@angular/common';
+import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
 const moment = require('moment');
-export interface LecturasPorContrato {
-  factura?: {
-    fechaInicial: string,
-    fechaFinal: string,
-    fechaGeneracion?: string,
-    fechaVencimiento: string,
-    fechaEmision?: string,
-  },
-  contrato: {
-    contratoId: number,
-    contratoMedId: number,
-    contratoCodigo: string,
-    fechaInicial: string,
-    fechaFinal: string,
-    cliente: string
-  },
-  cargo?:
-  [
-    {
-      nombre: string,
-      valorAjustado: number
-    }
-  ],
-  medidor: [
-    {
-      sourceID: number,
-      sourceName: string,
-      LecturaActiva: number,
-      LecturaReactiva: number,
-      CEF: number,
-      PCF: number,
-      FP: number,
-      PCFR: number
-
-    }
-  ],
-  vmedidor?: [
-    {
-      descripcion: string,
-      LecturaActiva: number,
-      LecturaReactiva: number,
-    }
-  ],
-  totalLecturaActivaAjustada: number,
-  totalLecturaReactivaAjustada: number,
-  CEFTotal: number,
-  PCFTotal: number,
-  PCFRTotal: number,
-  FPTotal: number,
-
-
-}
 
 @Component({
   selector: 'app-generated-invoices',

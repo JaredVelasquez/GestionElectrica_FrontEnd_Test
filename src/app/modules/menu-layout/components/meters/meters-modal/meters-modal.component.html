@@ -190,18 +190,29 @@
         </div>
 
         <div nz-row class="row-3">
-          <div nzSpan="24" nz-col class="row3-col1">
+          <div nzSpan="11" nz-col class="row3-col1">
             <label>Serie</label>
             <div nz-row>
               <nz-form-item>
                 <nz-form-control>
-                  <input class="inputLarge" nz-input id="Serie" type="text" placeholder="098U23" formControlName="serie"  />
+                  <input style="width: 215px;" nz-input id="Serie" type="text" placeholder="098U23" formControlName="serie"  />
                 </nz-form-control>
               </nz-form-item>
             </div>
-
-
           </div>
+
+          
+          <div nz-col nzSpan="11" nzOffset="2">
+            <label>Multiplicador</label>
+            <div nz-row>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-input-number style="width: 215px;"  [nzPlaceHolder]="'1'" formControlName="multiplicador" [nzMin]="1" ></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
         </div>
 
         <div nz-row class="row-7">

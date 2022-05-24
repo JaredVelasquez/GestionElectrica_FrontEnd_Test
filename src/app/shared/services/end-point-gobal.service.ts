@@ -16,6 +16,9 @@ export class EndPointGobalService {
   GetId(url: string, Id: number){
     return this.http.get(`http://localhost:3000/${url}/${Id}`);
   }
+  GetIdString(url: string, Id: string){
+    return this.http.get(`http://localhost:3000/${url}/${Id}`);
+  }
   Post(url: string, body: any){
     return this.http.post(`http://localhost:3000/${url}`, body);
   }

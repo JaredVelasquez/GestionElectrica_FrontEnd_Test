@@ -30,6 +30,7 @@ export class MetersModalComponent implements OnInit {
   EmptyForm = this.fb.group({
     sourceId: ['', [Validators.required]],
     codigo: ['', [Validators.required]],
+    multiplicador: ['', [Validators.required]],
     descripcion: ['', [Validators.required]],
     modelo: ['', [Validators.required]],
     serie: ['', [Validators.required]],
@@ -143,6 +144,7 @@ export class MetersModalComponent implements OnInit {
       sourceId: [data.sourceId, [Validators.required]],
       codigo: [data.codigo, [Validators.required]],
       descripcion: [data.descripcion, [Validators.required]],
+      multiplicador: [data.multiplicador, [Validators.required]],
       modelo: [data.modelo, [Validators.required]],
       serie: [data.serie, [Validators.required]],
       lecturaMax: [data.lecturaMax, [Validators.required]],

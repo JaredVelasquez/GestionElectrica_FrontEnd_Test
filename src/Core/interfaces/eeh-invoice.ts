@@ -24,3 +24,69 @@ export interface datosFacturacion {
     detalleId: number,
     
 }
+
+
+export interface LecturasPorContrato {
+    factura?: {
+      fechaInicial: string,
+      fechaFinal: string,
+      fechaGeneracion?: string,
+      fechaVencimiento: string,
+      fechaEmision?: string,
+    },
+    contrato: {
+      contratoId: number,
+      contratoMedId: number,
+      contratoCodigo: string,
+      fechaInicial: string,
+      fechaFinal: string,
+      cliente: string,
+      diasDisponibles: number,
+      diaGeneracion: number,
+    },
+    cargo?:
+    [
+      {
+        nombre: string,
+        valorAjustado: number
+      }
+    ],
+    medidor: [
+      {
+        sourceID: number,
+        sourceName: string,
+        descripcion?: string,
+        LecturaActiva: number,
+        LecturaReactiva: number,
+        CEF: number,
+        PCF: number,
+        FP: number,
+        PCFR: number,
+        historico: {
+          lecturaActivaActual: number,
+          lecturaActivaAnterior: number,
+          lecturaReactivaActual: number,
+          lecturaReactivaAnterior: number,
+          fechaActual: string,
+          fechaAnterior: string,
+          multiplicador: number,
+        }
+  
+      }
+    ],
+    vmedidor?: [
+      {
+        descripcion: string,
+        LecturaActiva: number,
+        LecturaReactiva: number,
+      }
+    ],
+    totalLecturaActivaAjustada: number,
+    totalLecturaReactivaAjustada: number,
+    CEFTotal: number,
+    PCFTotal: number,
+    PCFRTotal: number,
+    FPTotal: number,
+  
+  
+  }
