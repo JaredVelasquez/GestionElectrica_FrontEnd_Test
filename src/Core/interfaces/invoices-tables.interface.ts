@@ -14,7 +14,7 @@ export interface  InvoiceInterface{
     facturaId: number;
     contratoMedidorId: number;
     actorId: number;
-    actorNombre: string;
+    cliente: string;
     energiaConsumida: number;
     total: number;
     parametroTarifaId: number;

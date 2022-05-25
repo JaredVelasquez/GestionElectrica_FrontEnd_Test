@@ -8,7 +8,22 @@ import { formatDate } from '@angular/common';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-
+export interface facturas{
+  
+  cliente: string,
+  codigo: string,
+  codigoContrato: string,
+  contratoId: number
+  energiaConsumida: number,
+  estado: number
+  fechaCancelacion: string,
+  fechaEmision: string,
+  fechaFin: string,
+  fechaInicio: string,
+  fechaLectura: string,
+  fechaVencimiento: string,
+  total: number
+}
 @Component({
   selector: 'app-digital-invoice',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,8 +39,9 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   hoy = Date.now();
   vencimiento: any;
   ChargePosition!: ChargesShema;
-  dataSource!: {chart:{}, data: [{}]};
+  @Input() dataSource!: {chart:{}, data: [{}]};
   title: string;
+  @Input() historicData!: facturas[];
 
   
   url = {
@@ -51,20 +67,20 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
     if(this.dataInvoice){
       this.vencimiento = (this.UnDiaMLS * this.dataInvoice.contrato.diasDisponibles) + this.hoy;
       this.diaFacturacion = this.numeroADia(this.dataInvoice.contrato.diaGeneracion);
-      this.GetHistorico(this.dataInvoice.contrato.contratoId);
+     this.GetHistorico(this.dataInvoice.contrato.contratoId, this.historicData);
       if(!this.dataSource){
         this.dataSource = {
           chart: {
-            caption: 'Countries With Most Oil Reserves [2017-18]',
-            subCaption: 'In MMbbl = One Million barrels',
-            xAxisName: 'Country',
-            yAxisName: 'Reserves (MMbbl)',
+            caption: 'Historico de consumo por facturas generadas',
+            subCaption: 'Energia activa consumida',
+            xAxisName: 'Fecha',
+            yAxisName: 'Consumo kWh',
             numberSuffix: 'K',
             theme: 'fusion'
           },
           data: [{
             
-           label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US').toString(), value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() ,
+           label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US').toString() + ' ]', value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() ,
 
           }
           ]
@@ -72,7 +88,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
 
       }else{
         this.dataSource.data.push(
-          { label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US').toString(), value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() },
+          { label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US').toString() + ' ]', value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() },
 
         );
 
@@ -83,40 +99,46 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
     }
     
   }
+  
+  GetHistorico(id : number, historicData : facturas[]){
+        
+            for(let data of historicData){
+              if(!this.dataSource){
+                this.dataSource = {
+                  chart: {
+                    caption: 'Historico de consumo por facturas generadas',
+                    subCaption: 'Energia activa consumida',
+                    xAxisName: 'Fecha',
+                    yAxisName: 'Consumo kWh',
+                    numberSuffix: 'K',
+                    theme: 'fusion'
+                  },
+                  data: [{
+                    label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() ,
+    
+                    
+                  }
+                  ]
+                };
+                
+                
+              }
+              else{
+                this.dataSource.data.push(
+                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }
+                  );
+              
+                
+              }
+            }
+          
+
+        
+  }
   ngOnDestroy(): void {
     
   }
 
-  GetHistorico(id : number){
-    this.globalService.GetId( this.url.getHistorico, id).subscribe(
-      (result : any) => {
-        if(result){
-            this.dataSource = {
-              chart: {
-                caption: 'Countries With Most Oil Reserves [2017-18]',
-                subCaption: 'In MMbbl = One Million barrels',
-                xAxisName: 'Country',
-                yAxisName: 'Reserves (MMbbl)',
-                numberSuffix: 'K',
-                theme: 'fusion'
-              },
-              data: [{
-                
-              }
-              ]
-            };
-            
-            for(let data of result){
-              this.dataSource.data.push(
-                { label: '[' + formatDate(data.fechaInicio.toISOString(),'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFinal.toISOString(),'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() },
-              );
-            }
-          
-
-        }
-      }
-    );
-  }
   GenerarFactura(): void {
     const div = document.getElementById('content');
 

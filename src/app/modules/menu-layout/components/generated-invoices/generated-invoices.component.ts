@@ -12,7 +12,24 @@ import { Router } from '@angular/router';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { formatDate } from '@angular/common';
 import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
+import { NotificationService } from '@shared/services/notification.service';
 const moment = require('moment');
+export interface facturas{
+  
+  cliente: string,
+  codigo: string,
+  codigoContrato: string,
+  contratoId: number
+  energiaConsumida: number,
+  estado: number
+  fechaCancelacion: string,
+  fechaEmision: string,
+  fechaFin: string,
+  fechaInicio: string,
+  fechaLectura: string,
+  fechaVencimiento: string,
+  total: number
+}
 
 @Component({
   selector: 'app-generated-invoices',
@@ -33,6 +50,11 @@ export class GeneratedInvoicesComponent implements OnInit {
   newFacturas!:any;
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+  UnDiaMLS = 86400000;
+  hoy = Date.now();
+  vencimiento: any;
+  dataSource!: {chart:{}, data: [{}]};
+  historicData: facturas[] = [];
 
   onChange(result: Date[]): void {
     this.dates = {
@@ -51,12 +73,14 @@ export class GeneratedInvoicesComponent implements OnInit {
     delete: 'facturas',
     update: 'facturas',
     generateFacturas: 'generate-invoice',
+    getHistorico: "get-invoices-contract",
   };
 
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -132,7 +156,19 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   GenerateInvoice(data: LecturasPorContrato): void{
     this.dataInvoice = data;
+    this.getHistoric(data.contrato.contratoId);
     this.FacturaIsVisible = true;
+  }
+
+  getHistoric(contratoId:number){
+    this.globalService.GetId( this.url.getHistorico, contratoId).subscribe(
+      (result : any) => {
+        if(result){
+          this.historicData = result;
+        }
+      }
+    );
+    
   }
 
   // CancelarFactura(invoicePosition: InvoiceInterface){
@@ -154,27 +190,38 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   // }
 
-  // EmitirFactura(invoicePosition: InvoiceInterface){
-
-  //   const {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion} = invoicePosition;
-  //   const provider = {
-  //     ... {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion},
-  //     descripcion: "Emitida",
-  //     fechaEmision: (new Date()).toISOString(),
-  //     estado: 2,
-  //   } 
-
-  //   console.log(provider);
+  EmitirFactura(invoicePosition: LecturasPorContrato){
+    console.log(invoicePosition);
     
-  //   this.globalService.PutId(this.url.update, invoicePosition.facturaId, provider).subscribe(
-  //     (result: any) => {
-  //       console.log(result);
-  //       this.GetRates();
-        
-  //     }
-  //   );
+    const provider = {
+      contratoId:  invoicePosition.contrato.contratoId,
+      codigo:  formatDate((new Date()).toISOString(), 'yyyy-MM-dd','en-US') + ' - FA#',
+      fechaLectura:  invoicePosition.medidor[0].historico.fechaActual,
+      fechaVencimiento:  (this.UnDiaMLS * invoicePosition.contrato.diasDisponibles) + this.hoy,
+      fechaInicio : invoicePosition.medidor[0].historico.fechaAnterior,
+      fechaFin:  invoicePosition.medidor[0].historico.fechaActual,
+      fechaEmision: (new Date()).toISOString(),
+      energiaConsumida: invoicePosition.totalLecturaActivaAjustada,
+      total: invoicePosition.cargo? invoicePosition.cargo[invoicePosition.cargo.length - 1].valorAjustado : 0,
+      estado: true,
+    } 
 
-  // }
+    console.log(provider);
+    
+    this.globalService.Post(this.url.post, provider).subscribe(
+      (result: any) => {
+        if(result){
+          if(result.error){
+            this.notificationService.createMessage('error', result.error)
+          }else{
+            this.notificationService.createMessage( 'succes', 'Factura emitida con exito. 😄');
+          }
+        } 
+        
+      }
+    );
+
+  }
 
   GenerateInvoicesCleanForm(){
     this.generateInvoicesForm = this.fb.group({
