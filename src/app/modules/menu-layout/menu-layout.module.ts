@@ -36,6 +36,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 
 
@@ -127,7 +128,8 @@ import { ModalCargosEehComponent } from './components/contracts/modal-cargos-eeh
     NzSwitchModule,
     NzInputNumberModule,
     NzMessageModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NzPopconfirmModule
   ],
   bootstrap: [MainPageComponent],
 })

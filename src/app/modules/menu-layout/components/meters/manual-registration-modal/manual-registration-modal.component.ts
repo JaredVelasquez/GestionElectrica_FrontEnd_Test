@@ -4,6 +4,7 @@ import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ManualInterface, ManualSchema } from 'src/Core/interfaces/manualRegister.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { VariableSchema } from 'src/Core/interfaces/variable.interface';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-manual-registration-modal',
@@ -22,7 +23,8 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   listOfDisplayData: ManualSchema[] = [];
   manualRegistersIsActive: boolean = false;
   validateForm!: FormGroup;
-  editableSchema!: ManualInterface | undefined;
+  editableSchema!: ManualInterface;
+  isEditable: boolean = false;
 
   url = {
     get: 'get-registros-manuales',
@@ -39,7 +41,8 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private  globalService : EndPointGobalService
+    private  globalService : EndPointGobalService,
+    private nzMessageService: NzMessageService
     ) {}
 
   ngOnInit(): void {
@@ -91,7 +94,7 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   }
 
   submitForm(): void { 
-    if(this.editableSchema)
+    if(this.isEditable)
       this.submitUpdateForm();
     else
       this.submitPostForm();
@@ -128,11 +131,15 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     
     if (this.validateForm.valid) {
       this.fullSchema();
-      this.globalService.Patch(this.url.update, this.dataPosition.id ,this.newManualRegister).subscribe(
+      this.newManualRegister.estado = this.editableSchema.estado;
+      this.editableSchema.variableId = this.newManualRegister.variableId;
+      this.editableSchema.fecha = this.newManualRegister.fecha;
+      this.editableSchema.valor = this.newManualRegister.valor;
+      this.globalService.PutId(this.url.update, this.editableSchema.id ,this.newManualRegister).subscribe(
         (result:any) => {
           if(!result){
-            this.updateTable(result);
-            
+            this.updateTable(this.editableSchema, this.editableSchema.estado);
+            this.isEditable = false;
           }
         }
       );
@@ -147,14 +154,31 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     }
   }
 
-  editableFrom(data: ManualSchema): void{
+  editableFrom(data: ManualInterface): void{
     this.validateForm = this.fb.group({
       medidorId: [this.dataPosition.id, [Validators.required]],
       variableId: [data.variableId , [Validators.required]],
-      fecha: [data.fecha, [Validators.required]],
+      fecha: [data.fecha.toString(), [Validators.required]],
       valor: [data.valor, [Validators.required]],
     });
+    this.editableSchema = data;
+    console.log(this.editableSchema);
     
+    this.isEditable = true;
+  }
+
+  disable(data: ManualInterface ,estado:boolean){
+    data.estado = estado;
+    this.globalService.Patch(this.url.update, data.id, {estado: estado}).subscribe(
+      (result: any) => {
+        if(!result){
+          this.nzMessageService.create('success', 'Accion completada 😎');
+          this.updateTable(data, !data.estado);
+        }else{
+          this.nzMessageService.create('error', 'La ejecucion fallo 😟')
+        }
+      }
+    );
   }
 
   fullSchema(){
@@ -170,16 +194,19 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     this.listOfData = [... this.listOfData];
   }
 
-  updateTable(data: ManualInterface): void{
+  updateTable(data: ManualInterface, estado: boolean): void{
     for(let i = 0; i < this.listOfManualRegisters.length; i++){
       if(data.id === this.listOfManualRegisters[i].id){
         this.listOfManualRegisters[i] = data;
       }
     }
-    this.listOfData = [... this.listOfManualRegisters];
+    this.FilterManualRegisters(estado, false);
   }
   
 
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
+  }
   showModal(): void {
     this.isVisible = true;
     this.FilterManualRegisters(true, false);

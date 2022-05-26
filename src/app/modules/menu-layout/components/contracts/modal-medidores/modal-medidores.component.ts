@@ -240,8 +240,8 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
       medidorId: ['', [Validators.required]],
       tarifaId: ['', [Validators.required]],
       zonaId: ['', [Validators.required]],
-      contratoId: ['', [Validators.required]],
-      fecha: ['', [Validators.required]],
+      contratoId: [this.dataPosition.id, [Validators.required]],
+      fecha: [[this.dataPosition.fechaCreacion.toString(), this.dataPosition.fechaVenc.toString()], [Validators.required]],
       observacion: ['', [Validators.required]],
     })
     this.editIsActive = false;

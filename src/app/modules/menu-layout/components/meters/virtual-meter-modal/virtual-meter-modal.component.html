@@ -24,7 +24,7 @@
                 <div nz-row>
                   <nz-form-item>
                     <nz-form-control>
-                      <nz-select formControlName="operacion" style="width: 120px;" >
+                      <nz-select formControlName="operacion" style="width: 120px;" (ngModelChange)="operacionEvent($event)">
                             <nz-option nzLabel="Suma (+)" [nzValue]="true"></nz-option>
                             <nz-option nzLabel="Resta (-)" [nzValue]="false"></nz-option>
                       </nz-select>
@@ -49,6 +49,20 @@
   
         </div>
         
+        <div nz-row>
+          <div nz-col>
+            <label>Medidor operado</label>
+            <div nz-row>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-select formControlName="sourceId" style="width: 150px;" nzAllowClear [nzDisabled]="isDisableSourceId">
+                        <nz-option [nzLabel]="dataPosition.sourceId" [nzValue]="dataPosition.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </div>
           <div nz-row class="row-3">
 
             <div nzSpan="24" nz-col class="row3-col1">

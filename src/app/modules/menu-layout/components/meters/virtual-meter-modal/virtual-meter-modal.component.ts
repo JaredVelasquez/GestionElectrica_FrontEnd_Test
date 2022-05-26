@@ -23,6 +23,7 @@ export class VirtualMeterModalComponent implements OnInit {
   VMIsDisable: boolean = false;
   IsEditableForm: boolean = false;
   IsEditableSchema!: VirtualMeterInterface;
+  isDisableSourceId: boolean = true;
 
   url = { 
     post: 'medidor-virtuals-custom',
@@ -32,6 +33,7 @@ export class VirtualMeterModalComponent implements OnInit {
 
   EmptyForm = this.fb.group({
     medidorId: [''],
+    sourceId: [''],
     porcentaje: ['', [Validators.required]],
     operacion: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
@@ -180,6 +182,7 @@ export class VirtualMeterModalComponent implements OnInit {
   cleanForm(): void{
     this.validateForm = this.fb.group({
       medidorId: [this.dataPosition.id],
+      sourceId: [''],
       porcentaje: ['', [Validators.required]],
       operacion: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
@@ -202,6 +205,12 @@ export class VirtualMeterModalComponent implements OnInit {
     
   }
 
+  operacionEvent(data: boolean){
+    if(data){
+      this.isDisableSourceId = false;
+    }
+    
+  }
   showModal(): void {
     this.isVisible = true;
     this.GetVirtualMeters(true, false);
