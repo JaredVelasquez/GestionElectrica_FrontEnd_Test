@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 
 import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NotificationService } from '@shared/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,8 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder,
     private registerService: RegisterService,
     private router: Router,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private notification: NotificationService
     ) {}
 
   ngOnInit(): void {
@@ -39,7 +41,6 @@ export class RegisterComponent implements OnInit {
       phoneNumber: ['', [Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      rolId: ['', [Validators.required]],
       agree: [false]
     },
     {
@@ -59,18 +60,17 @@ export class RegisterComponent implements OnInit {
         lastName:  this.validateForm.value.lastName, 
         password: this.validateForm.value.password,
         phoneNumber: this.validateForm.value.phoneNumberPrefix + this.validateForm.value.phoneNumber,
-        rolId: this.validateForm.value.rolId,
+        rolId: 1,
         username: this.validateForm.value.username,
       }
       this.registerService.SubmitRegisterUser(this.user).subscribe(
         (result:any) => {
-          if(!result.id)
+          if(!result.id){
             this.router.navigate(['login']);
+            this.notification.createNotification('success', 'Exito', 'Usuario Creado con exito');
+          }
           else{
-            this.message.error('Codigo de error: ' + result.id + '<br>' + 
-            'Contenido: '+ result.content + '<br>' + 
-            'Solucion: '+ result.solution
-            );
+            this.notification.createNotification('error', 'Falló', result.content);
 
           }
           

@@ -68,45 +68,45 @@ export class CancelledInvoicesComponent implements OnInit {
       }
     );
   }
-  PostRate(){
-    if (this.validateForm.valid) {
-      const provider = {
-        codigo: this.validateForm.value.codigo,
-        descripcion: this.validateForm.value.descripcion,
-        observacion: this.validateForm.value.observacion,
-      }
-      console.log(provider);
-      this.isVisible = false;
-      this.globalService.Post(this.url.post, provider).subscribe(
-        (result:any) => {
-          if(result){
-            this.GetRates();
+  // PostRate(){
+  //   if (this.validateForm.valid) {
+  //     const provider = {
+  //       codigo: this.validateForm.value.codigo,
+  //       descripcion: this.validateForm.value.descripcion,
+  //       observacion: this.validateForm.value.observacion,
+  //     }
+  //     console.log(provider);
+  //     this.isVisible = false;
+  //     this.globalService.Post(this.url.post, provider).subscribe(
+  //       (result:any) => {
+  //         if(result){
+  //           this.GetRates();
             
-          }
-            console.log(result);
+  //         }
+  //           console.log(result);
           
-        }
-      );
+  //       }
+  //     );
       
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
+  //   } else {
+  //     Object.values(this.validateForm.controls).forEach(control => {
+  //       if (control.invalid) {
+  //         control.markAsDirty();
+  //         control.updateValueAndValidity({ onlySelf: true });
+  //       }
+  //     });
+  //   }
 
-  }
-  DeleteRate(Id: any){
-    Id = Number(Id);
-    this.globalService.Delete(this.url.delete, Id).subscribe(
-      result => {
-        console.log(result);
-        this.GetRates();
-      }
-    );
-  }
+  // }
+  // DeleteRate(Id: any){
+  //   Id = Number(Id);
+  //   this.globalService.Delete(this.url.delete, Id).subscribe(
+  //     result => {
+  //       console.log(result);
+  //       this.GetRates();
+  //     }
+  //   );
+  // }
 
   
   

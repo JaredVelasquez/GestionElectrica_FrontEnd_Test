@@ -64,33 +64,10 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     this.globalService.Get(this.url.get).subscribe(
       (result:any) => {
         this.listOfManualRegisters = result;
-        this.listOfData = result;
-        this.FilterManualRegisters(true, false);
+        this.listOfData = [... this.listOfManualRegisters];
       }
     );
 
-  }
-  FilterManualRegisters(estado: boolean, switched: boolean){
-    
-    this.listOfData = [... this.listOfManualRegisters];
-    if(switched){
-      if(estado)
-        this.manualRegistersIsActive = false;
-      else
-        this.manualRegistersIsActive = true;
-
-    }
-    
-    this.listOfData.length = 0;
-    for(let i=0; i < this.listOfManualRegisters.length; i++){
-      if(this.listOfManualRegisters[i].medidorId === this.dataPosition.id && this.listOfManualRegisters[i].estado === estado){
-        this.listOfData = [... this.listOfData, this.listOfManualRegisters[i]];
-      }
-    }
-    
-
-    this.listOfData = [... this.listOfData];
-    
   }
 
   submitForm(): void { 
@@ -195,14 +172,43 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   }
 
   updateTable(data: ManualInterface, estado: boolean): void{
+    this.listOfData.length = 0;
     for(let i = 0; i < this.listOfManualRegisters.length; i++){
       if(data.id === this.listOfManualRegisters[i].id){
-        this.listOfManualRegisters[i] = data;
+        this.listOfManualRegisters[i] = {... data};
+        for(let j = 0; j < this.listOfVariables.length; j++){
+          if(data.variableId === this.listOfVariables[j].id){
+            this.listOfManualRegisters[i].descripcion = this.listOfVariables[j].descripcion;
+          }
+        }
+        
       }
     }
-    this.FilterManualRegisters(estado, false);
+    this.FilterManualRegisters(data.estado, false)
+    
   }
   
+  FilterManualRegisters(estado: boolean, switched: boolean){
+    
+    if(switched){
+      if(estado)
+        this.manualRegistersIsActive = false;
+      else
+        this.manualRegistersIsActive = true;
+
+    }
+    
+    this.listOfData.length = 0;
+    for(let i=0; i < this.listOfManualRegisters.length; i++){
+      if(this.listOfManualRegisters[i].medidorId === this.dataPosition.id && this.listOfManualRegisters[i].estado === estado){
+        this.listOfData = [... this.listOfData, this.listOfManualRegisters[i]];
+      }
+    }
+    
+
+    this.listOfData = this.listOfData;
+    
+  }
 
   cancel(): void {
     this.nzMessageService.info('click cancel');

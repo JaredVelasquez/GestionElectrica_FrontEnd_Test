@@ -17,6 +17,7 @@ export class VirtualMeterModalComponent implements OnInit {
   isVisible = false;
   @Input() listOfVMeters: VirtualMeterInterface[] = [];
   @Input() dataPosition!: MeterSchema;
+  @Input() listOfMeters: MeterSchema[] = [];
   newVMeter!: any;
   validateForm!: FormGroup;
   listOfData: VirtualMeterInterface[] = [];

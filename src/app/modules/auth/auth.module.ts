@@ -25,7 +25,9 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { CookieService } from 'ngx-cookie-service';
+import { SharedModule } from "../../shared/shared.module";
 
 
 //shared
@@ -61,7 +63,9 @@ import { RegisterComponent } from './components/register/register.component';
     NzDatePickerModule,
     NzDrawerModule,
     HttpClientModule,
+    NzNotificationModule,
     //shared
+    SharedModule,
   ],
   providers:
     [CookieService],

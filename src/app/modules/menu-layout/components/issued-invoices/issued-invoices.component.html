@@ -36,7 +36,7 @@
             <td>{{ data.energiaConsumida }}</td>
             <td style="color: red;">{{data.total + "  LPS"}}</td>
             <td nzRight nzAlign="center">
-              <button nz-button nzSize="small" nzType="primary" ><i nz-icon nzType="file-done"></i></button>
+              <button nz-button nzSize="small" nzType="primary" (click)="GenerateInvoice(data)"><i nz-icon nzType="file-done"></i></button>
 
             </td>
           </tr>
@@ -51,6 +51,6 @@
 
 <div *ngIf="FacturaIsVisible"> 
   <button class="back-btn" nz-button nzType="primary" (click)="Back()"><i nz-icon nzType="arrow-left"></i></button>
-  <app-digital-invoice [dataInvoice]="dataInvoice"></app-digital-invoice>
+  <app-digital-invoice [dataInvoice]="dataInvoice"  [dataSource]="dataSource" [historicData]="historicData"></app-digital-invoice>
 
 </div>

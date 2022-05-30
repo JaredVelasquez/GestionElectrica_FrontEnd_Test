@@ -242,8 +242,12 @@ export class GeneratedInvoicesComponent implements OnInit {
     
     this.globalService.Post(this.url.generateFacturas, generateFacturaSchema).subscribe(
       (result: any) => {
-        this.listOfData = result;
-        this.listOfData = [... this.listOfData];
+        console.log(result);
+        
+        if(result){
+          this.listOfData = result;
+          this.listOfData = [... this.listOfData];
+        }
         
       }
     );

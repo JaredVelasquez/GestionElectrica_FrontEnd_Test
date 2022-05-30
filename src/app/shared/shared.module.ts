@@ -29,6 +29,9 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+
 
 
 @NgModule({
@@ -52,7 +55,9 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     FusionChartsModule,
     NzAlertModule,
     NzBackTopModule,
-    NzMessageModule
+    NzMessageModule,
+    NzNotificationModule,
+    NzStatisticModule
   ],
   exports: [
     MenuLayoutComponent,

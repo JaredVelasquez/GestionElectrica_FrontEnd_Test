@@ -5,6 +5,7 @@ import {CookieService} from "ngx-cookie-service";
 import { key } from 'src/Core/Libraries/keys/keys.library';
 import {LoginService} from "../../services/login.service";
 import {Router} from "@angular/router";
+import { NotificationService } from '@shared/services/notification.service';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -18,7 +19,8 @@ export class LoginPageComponent implements OnInit {
     private fb: FormBuilder,
     private cookieService: CookieService,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private notification: NotificationService
     ) {}
 
   ngOnInit(): void {
@@ -43,9 +45,17 @@ export class LoginPageComponent implements OnInit {
             this.validateError = false;
             this.cookieService.set("tokensession", result?.token +'' , key.TOKEN_EXPIRATION_TIME, '');
             this.router.navigate(['sys/welcome'])
+            console.log('Soy el token activo: ' + this.cookieService.get('tokensession'));
+            this.notification.createNotification('success', 'Exito','Sesion iniciada con exito 😄');
+
+            
           }
-          else
+          else{
+            console.log(result);
+            
             this.validateError = true;
+            this.notification.createNotification('error', 'Falló', `${result.content} 😓`);
+          }
             
           return result;
         }

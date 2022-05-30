@@ -102,15 +102,15 @@
             <app-roll-over-modal [dataPosition]="data"></app-roll-over-modal>
           </td>
           <td nzAlign="center" nzRight>
-            <app-virtual-meter-modal [listOfVMeters]="listOfDataVM" [dataPosition]="data"></app-virtual-meter-modal>
+            <app-virtual-meter-modal [listOfVMeters]="listOfDataVM" [dataPosition]="data" [listOfMeters]="listOfManualMeterAux"></app-virtual-meter-modal>
           </td>
-          <td nzAlign="center" nzRight>
+          <td nzAlign="center" nzRight *ngIf="data.registroDatos; else automatico">
             <app-manual-registration-modal [dataPosition]="data" [listOfVariables]="listOfVariables"></app-manual-registration-modal>
           </td>
-          <!-- <ng-template #automatico>
+          <ng-template #automatico>
             <td nzAlign="center" nzRight><i nz-icon nzType="warning" nzTheme="outline"></i></td>
           </ng-template>
-           -->
+          
         </tr>
       </tbody>
     </nz-table>  

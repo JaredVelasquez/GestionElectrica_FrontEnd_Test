@@ -3,6 +3,9 @@ import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ChargesShema } from 'src/Core/interfaces/charges.interface';
 import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
 import { formatDate } from '@angular/common';
+import { concatMap } from 'rxjs/operators';
+
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 
 
@@ -39,9 +42,12 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   hoy = Date.now();
   vencimiento: any;
   ChargePosition!: ChargesShema;
-  @Input() dataSource!: {chart:{}, data: [{}]};
+  @Input() dataSource!: {chart:{}, data?: [{}]};
   title: string;
   @Input() historicData!: facturas[];
+  promedioConsumo = 0;
+  contFacturas = 0;
+
 
   
   url = {
@@ -49,6 +55,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   }
   constructor(
     private globalService: EndPointGobalService,
+    private message: NzMessageService
 
   ) {
     this.title = 'Historico consumo energia activa';
@@ -57,17 +64,14 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   
   ngOnInit(): void {
     this.isVisible = false;
-    // this.globalService.GetId( 'cargos-facturas', this.dataInvoice.cargoFacturaId).subscribe(
-    //   (result: any) => {
-    //     this.ChargePosition = result;
-    //   }
-    // );
   }
+
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.historicData);
     if(this.dataInvoice){
       this.vencimiento = (this.UnDiaMLS * this.dataInvoice.contrato.diasDisponibles) + this.hoy;
       this.diaFacturacion = this.numeroADia(this.dataInvoice.contrato.diaGeneracion);
-     this.GetHistorico(this.dataInvoice.contrato.contratoId, this.historicData);
+     this.GetHistorico(this.historicData);
       if(!this.dataSource){
         this.dataSource = {
           chart: {
@@ -77,60 +81,71 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
             yAxisName: 'Consumo kWh',
             numberSuffix: 'K',
             theme: 'fusion'
-          },
-          data: [{
-            
-           label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US').toString() + ' ]', value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() ,
-
           }
-          ]
         };
-
-      }else{
-        this.dataSource.data.push(
-          { label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US').toString() + ' ]', value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() },
-
-        );
+        this.dataSource.data?.push(
+          { label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US').toString() + ' ]', value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() });
+        
+          
+        this.dataSource.data = [
+          { label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US').toString() + ' ]', value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() }];
+        
+          
 
       }
 
+      
+      this.promedioConsumo += this.dataInvoice.totalLecturaActivaAjustada;
+      this.contFacturas ++;
       console.log(this.dataSource);
       
     }
+
+    this.promedioConsumo /= this.contFacturas;
     
   }
   
-  GetHistorico(id : number, historicData : facturas[]){
-        
+  GetHistorico(historicData : facturas[]){
+          console.log('Este es el historico de facturas');
+          console.log(historicData);
+          
+          
             for(let data of historicData){
-              if(!this.dataSource){
-                this.dataSource = {
-                  chart: {
-                    caption: 'Historico de consumo por facturas generadas',
-                    subCaption: 'Energia activa consumida',
-                    xAxisName: 'Fecha',
-                    yAxisName: 'Consumo kWh',
-                    numberSuffix: 'K',
-                    theme: 'fusion'
-                  },
-                  data: [{
-                    label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() ,
-    
-                    
-                  }
-                  ]
-                };
+              if(Date.parse(data.fechaFin) < Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
+                console.log('fecha introducida en grafico');
+                
+                if(!this.dataSource){
+                  this.dataSource = {
+                    chart: {
+                      caption: 'Historico de consumo por facturas generadas',
+                      subCaption: 'Energia activa consumida',
+                      xAxisName: 'Fecha',
+                      yAxisName: 'Consumo kWh',
+                      numberSuffix: 'K',
+                      theme: 'fusion'
+                    }
+                  };
+                  this.dataSource.data?.push(
+                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }
+                    );
+                  
+                  
+                    this.dataSource.data = [
+                      { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }];
+                }
+
                 
                 
-              }
-              else{
-                this.dataSource.data.push(
-                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }
-                  );
-              
+                  
                 
+                this.contFacturas ++;
+                this.promedioConsumo += data.energiaConsumida;
+
               }
             }
+
+            console.log(this.dataSource);
+            
           
 
         
@@ -140,6 +155,15 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   GenerarFactura(): void {
+    this.message
+      .loading('Action in progress', { nzDuration: 4000 })
+      .onClose!.pipe(
+        concatMap(() => this.message.success('Loading finished', { nzDuration: 2500 }).onClose!),
+        concatMap(() => this.message.info('Loading finished is finished', { nzDuration: 2500 }).onClose!)
+      )
+      .subscribe(() => {
+        console.log('All completed!');
+      });
     const div = document.getElementById('content');
 
     const options = {

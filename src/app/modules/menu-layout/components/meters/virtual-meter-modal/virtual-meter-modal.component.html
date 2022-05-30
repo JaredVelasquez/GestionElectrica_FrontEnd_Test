@@ -56,7 +56,7 @@
               <nz-form-item>
                 <nz-form-control>
                   <nz-select formControlName="sourceId" style="width: 150px;" nzAllowClear [nzDisabled]="isDisableSourceId">
-                        <nz-option [nzLabel]="dataPosition.sourceId" [nzValue]="dataPosition.id"></nz-option>
+                    <nz-option *ngFor="let data of listOfMeters" [nzLabel]="data.descripcion" [nzValue]="data.sourceId"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>

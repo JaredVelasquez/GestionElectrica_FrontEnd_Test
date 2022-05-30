@@ -175,10 +175,10 @@ export class FacturaEHHComponent implements OnInit {
   }
 
   fullSchema(): void{
-    const {codigo} = this.validateForm.value;
+    const {codigo, cargoReactivo} = this.validateForm.value;
 
     this.newFacturaEEH = {
-      ... {codigo},
+      ... {codigo, cargoReactivo},
       contratoId: this.dataPosition.id,
       tipoFacturaId: 1,
       fechaEmision: this.validateForm.value.fechaVencimiento[0],
@@ -222,6 +222,7 @@ export class FacturaEHHComponent implements OnInit {
       fechaVencimiento: ['', [Validators.required]],
       fechaFacturacion: ['', [Validators.required]],
       codigo: ["", [Validators.required]],
+      cargoReactivo: [ 0 , [Validators.required]],
     })
     this.editIsActive = false;
   }
