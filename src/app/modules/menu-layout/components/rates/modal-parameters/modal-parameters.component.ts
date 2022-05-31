@@ -6,6 +6,7 @@ import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { InputParametersInterface, InputParamSchema } from "src/Core/interfaces/input-parameters.interface";
 import { ChargesInterface } from 'src/Core/interfaces/charges.interface';
 import { endOfMonth } from 'date-fns';
+import { NotificationService } from '@shared/services/notification.service';
 
 @Component({
   selector: 'app-modal-parameters',
@@ -44,6 +45,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void { 
@@ -127,7 +129,11 @@ export class ModalParametersComponent implements OnInit, OnChanges {
                 this.GetParams(true, false);
 
               this.cleanForm();
+              this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+            }else{
+              this.notificationService.createMessage('error', 'La accion fallo 😓');
             }
+              
           }
         );
     } else {
@@ -176,7 +182,11 @@ export class ModalParametersComponent implements OnInit, OnChanges {
               if(dataEditable)
               this.update(dataEditable, dataEditable.estado);
               this.cleanForm();
+              this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+            }else{
+              this.notificationService.createMessage('error', 'La accion fallo 😓');
             }
+              
           }
         );  
         

@@ -7,6 +7,8 @@ import { endOfMonth } from 'date-fns';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { ThisReceiver } from '@angular/compiler';
+import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-roll-over-modal',
@@ -51,6 +53,8 @@ export class RollOverModalComponent implements OnInit, OnChanges {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
     ) {}
 
 
@@ -151,7 +155,11 @@ export class RollOverModalComponent implements OnInit, OnChanges {
             this.ListOfRollOver = [... this.ListOfRollOver, result];
             this.filterData(true, false);
             this.cleanForm();
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -194,7 +202,11 @@ export class RollOverModalComponent implements OnInit, OnChanges {
             this.filterData(this.IsEditableSchema.estado, false);
             this.IsEditableForm = false;
             this.cleanForm();
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -244,6 +256,10 @@ export class RollOverModalComponent implements OnInit, OnChanges {
   handleCancel(): void {
     console.log('Button cancel clicked!');
     this.isVisible = false;
+  }
+  
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
 
 

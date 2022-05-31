@@ -7,6 +7,8 @@ import { InvoiceChargeTypeSchema } from 'src/Core/interfaces/charge-type-invoice
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ManualInvoiceDetailSchema, ManualInvoiceDetailView } from 'src/Core/interfaces/manual-invoice-detail.interface';
 import { ManualInvoiceChargue } from 'src/Core/interfaces/manual-invoice-chargue.interface';
+import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-modal-cargos-eeh',
@@ -35,7 +37,9 @@ export class ModalCargosEehComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
-    private globalService: EndPointGobalService
+    private globalService: EndPointGobalService,
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
     ) {}
 
   ngOnInit(): void {
@@ -65,6 +69,9 @@ export class ModalCargosEehComponent implements OnInit {
             this.listOfDataAux = [... this.listOfDataAux, result];
             this.filterCargos(true, false);
 
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
             
             
@@ -93,8 +100,13 @@ export class ModalCargosEehComponent implements OnInit {
           if(!result){
             this.updateTable(this.localPosition.tipoCargoId, true);
 
-            this.CleanForm();            
+            this.CleanForm(); 
+            
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
         );
         
@@ -181,6 +193,9 @@ export class ModalCargosEehComponent implements OnInit {
 
   handleCancel(): void {
     this.isVisible = false;
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
 
   CleanForm(): void {

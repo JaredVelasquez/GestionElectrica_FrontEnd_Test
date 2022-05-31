@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { NotificationService } from '@shared/services/notification.service';
 import { ZoneShema } from 'src/Core/interfaces/zones.interface';
 
 @Component({
@@ -33,6 +34,7 @@ export class SubmitZoneModalComponent implements OnInit {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService
     ) { }
 
   ngOnInit(): void {
@@ -59,7 +61,11 @@ export class SubmitZoneModalComponent implements OnInit {
           if(result){
             this.DataUpdated.emit(result);
   
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -89,7 +95,11 @@ export class SubmitZoneModalComponent implements OnInit {
             this.dataPosition.descripcion = this.newZone.descripcion;
             this.dataPosition.observacion = this.newZone.observacion;
 
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       

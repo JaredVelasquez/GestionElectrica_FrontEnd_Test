@@ -158,10 +158,22 @@
 
                           <div nz-col>
                             <div *ngIf="data.estado; else disablesList"> 
-                                <button nz-button nzSize="small" nzType="primary" (click)=" disableVMeter(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                                <button nz-button nzSize="small" nzType="primary" 
+                                nz-popconfirm
+                                nzPopconfirmTitle="Estas seguro que quieres emitir esta factura ?"
+                                (nzOnConfirm)="disableVMeter(data, false)"
+                                (nzOnCancel)="cancel()"
+                                nzPopconfirmPlacement="rightBottom"
+                                ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                             </div>
                             <ng-template #disablesList>
-                                <button nz-button nzSize="small" nzType="primary" (click)=" disableVMeter(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                                <button nz-button nzSize="small" nzType="primary"
+                                nz-popconfirm
+                                nzPopconfirmTitle="Estas seguro que quieres emitir esta factura ?"
+                                (nzOnConfirm)="disableVMeter(data, true)"
+                                (nzOnCancel)="cancel()"
+                                nzPopconfirmPlacement="rightBottom"
+                                ><i nz-icon nzType="undo" nzTheme="outline"></i></button>
                             </ng-template>
 
                           </div>

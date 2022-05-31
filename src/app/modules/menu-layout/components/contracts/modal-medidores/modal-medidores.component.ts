@@ -8,6 +8,8 @@ import { ContractMeterInterface, ContractMeterSchema } from 'src/Core/interfaces
 import { ZoneShema } from 'src/Core/interfaces/zones.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
+import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-modal-medidores',
@@ -40,7 +42,9 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private globalService: EndPointGobalService
+    private globalService: EndPointGobalService,
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
     ) { }
 
   ngOnInit(): void {
@@ -129,7 +133,11 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
           if(result){
             this.getContractMeter(1, false);
             this.cleanForm();
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
     } else {
@@ -158,7 +166,11 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
               this.getContractMeter(0, false);
 
             this.cleanForm();
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
         );
     } else {
@@ -248,6 +260,9 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
   }
 
   
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
+  }
   listOfColumns: ColumnItem[] = [
     {
       name: 'Codigo Medidor',

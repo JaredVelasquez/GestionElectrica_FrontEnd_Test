@@ -5,6 +5,7 @@ import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface'
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
 import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 export interface facturas{
   
   cliente: string,
@@ -51,7 +52,8 @@ export class IssuedInvoicesComponent implements OnInit {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
   ) { }
 
   ngOnInit(): void {
@@ -113,7 +115,12 @@ export class IssuedInvoicesComponent implements OnInit {
           this.dataInvoice = result;
           this.getHistoric(result.contrato.contratoId);
           this.FacturaIsVisible = true;
+          
+          this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+        }else{
+          this.notificationService.createMessage('error', 'La accion fallo 😓');
         }
+          
         
       }
     );
@@ -155,6 +162,9 @@ export class IssuedInvoicesComponent implements OnInit {
 
   Back(): void {
     this.FacturaIsVisible = false;
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
   
   listOfColumns: ColumnItem[] = [

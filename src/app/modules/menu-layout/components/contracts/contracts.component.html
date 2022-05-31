@@ -1,10 +1,10 @@
 <h1>Contratos</h1>
 <br>
-<div nz-row>
+<!-- <div nz-row>
   <div nz-col nzOffset="7">
     <label>Filtrar Contratos Por:</label>
   </div>
-</div>
+</div> -->
 <div nz-row class="row-1">
 
   <div nz-col nzSpan="4">
@@ -20,12 +20,12 @@
     <div nz-col nzSpan="3" class="row1-col1">
       <app-modal-new-contract [ListOfClients]="ListOfClients" (DataUpdated)="TablaUpdated($event)"></app-modal-new-contract>
     </div>
-
+<!-- 
     <div nz-col nzSpan="8">  
       <nz-select nzMode="tags" nzPlaceHolder="Tag Mode" [(ngModel)]="listOfTagOptions" (ngModelChange)="SelectFilterEvent($event)">
         <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
       </nz-select>
-    </div>
+    </div> -->
 
 </div>
 
@@ -59,10 +59,22 @@
               <div nz-row>
                 <div nz-col>
                   <div *ngIf="data.estado; else disablesList"> 
-                      <button nz-button [nzLoading]="IsLoading" nzSize="small" nzDanger nzType="primary" (click)="disableContract(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                      <button nz-button [nzLoading]="IsLoading" nzSize="small" nzDanger nzType="primary"  
+                      nz-popconfirm
+                      nzPopconfirmTitle="Estas seguro que quieres habilitarlo?"
+                      (nzOnConfirm)="disableContract(data, 0)"
+                      (nzOnCancel)="cancel()"
+                      nzPopconfirmPlacement="rightBottom"
+                      ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                   </div>
                   <ng-template #disablesList>
-                      <button nz-button nzSize="small" nzType="primary" (click)=" disableContract(data, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                      <button nz-button nzSize="small" nzType="primary" 
+                      nz-popconfirm
+                      nzPopconfirmTitle="Estas seguro que quieres habilitarlo?"
+                      (nzOnConfirm)="disableContract(data, 1)"
+                      (nzOnCancel)="cancel()"
+                      nzPopconfirmPlacement="rightBottom"
+                      ><i nz-icon nzType="undo" nzTheme="outline"></i></button>
                   </ng-template>
   
                 </div>

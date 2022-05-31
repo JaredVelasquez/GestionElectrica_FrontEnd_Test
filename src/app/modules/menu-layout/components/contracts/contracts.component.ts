@@ -7,6 +7,7 @@ import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 import { ZoneShema } from 'src/Core/interfaces/zones.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-contracts',
@@ -40,7 +41,8 @@ export class ContractsComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
-    private globalService: EndPointGobalService
+    private globalService: EndPointGobalService,
+    private nzMessageService: NzMessageService,
   ) { }
 
   ngOnInit(): void {
@@ -195,6 +197,9 @@ export class ContractsComponent implements OnInit{
     
   }
 
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
+  }
 
 
   

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { NotificationService } from '@shared/services/notification.service';
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 
 @Component({
@@ -25,6 +26,7 @@ export class SubmitClientModalComponent implements OnInit {
   constructor(
     private globalService:EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService
   ) { }
 
   EmptyForm = this.fb.group({
@@ -63,7 +65,9 @@ export class SubmitClientModalComponent implements OnInit {
           if(result){
             this.DataUpdated.emit(result);
             this.isVisible = false;
-  
+            this.notificationService.createMessage('success', 'Cliente creado exitosamente 😎');
+          }else{
+            this.notificationService.createMessage('error', 'Fallo en la creacion del cliente 😓');
           }
         }
       );

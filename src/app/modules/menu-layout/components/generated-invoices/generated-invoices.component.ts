@@ -13,6 +13,8 @@ import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { formatDate } from '@angular/common';
 import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
 import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { concatMap } from 'rxjs/operators';
 const moment = require('moment');
 export interface facturas{
   
@@ -80,7 +82,8 @@ export class GeneratedInvoicesComponent implements OnInit {
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
   ) { }
 
   ngOnInit(): void {
@@ -114,6 +117,9 @@ export class GeneratedInvoicesComponent implements OnInit {
   handleCancel(): void {
     console.log('Button cancel clicked!');
     this.isVisible = false;
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
   // GetRates(){
   //   this.globalService.GetId(this.url.get, this.url.id).subscribe( 
@@ -231,7 +237,17 @@ export class GeneratedInvoicesComponent implements OnInit {
   }
 
   submitForm(){
-
+    let isLoading = true;
+    this.nzMessageService
+      .loading('Action in progress', { nzPauseOnHover:  isLoading})
+      .onClose!.pipe(
+        concatMap(() => this.nzMessageService.success('Loading finished', { nzDuration: 1000 }).onClose!),
+        concatMap(() => this.nzMessageService.info('Loading finished', { nzDuration: 1000 }).onClose!)
+      )
+      .subscribe(() => {
+        console.log('All completed!');
+      });
+      
     let generateFacturaSchema = {
       fechaInicial: formatDate(this.generateInvoicesForm.value.fecha[0],'yyyy-MM-dd','en-US'),
       fechaFinal:  formatDate(this.generateInvoicesForm.value.fecha[1],'yyyy-MM-dd','en-US'),
@@ -247,8 +263,13 @@ export class GeneratedInvoicesComponent implements OnInit {
         if(result){
           this.listOfData = result;
           this.listOfData = [... this.listOfData];
+
+          this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          isLoading = false;
+        }else{
+          this.notificationService.createMessage('error', 'La accion fallo 😓');
+          isLoading = false;
         }
-        
       }
     );
     

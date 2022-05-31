@@ -42,10 +42,22 @@
             <div nz-row>
               <div nz-col>
                 <div *ngIf="data.estado; else disablesList"> 
-                    <button nz-button nzSize="small" nzDanger nzType="primary" (click)="disableClient(data, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                    <button nz-button nzSize="small" nzDanger nzType="primary"  
+                    nz-popconfirm
+                    nzPopconfirmTitle="Quieres desabilitar este item ?"
+                    (nzOnConfirm)="disableClient(data, 0)"
+                    (nzOnCancel)="cancel()"
+                    nzPopconfirmPlacement="rightBottom" 
+                    ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                 </div>
                 <ng-template #disablesList>
-                    <button nz-button nzType="primary"  nzShape="circle" (click)=" disableClient(data, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                    <button nz-button nzType="primary"  nzShape="circle"  
+                    nz-popconfirm
+                    nzPopconfirmTitle="Quieres habilitar este item ?"
+                    (nzOnConfirm)="disableClient(data, 1)"
+                    (nzOnCancel)="cancel()"
+                    nzPopconfirmPlacement="rightBottom"
+                    ><i nz-icon nzType="undo" nzTheme="outline"></i></button>
                 </ng-template>
 
               </div>

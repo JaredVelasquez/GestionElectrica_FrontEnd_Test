@@ -30,6 +30,7 @@ export class ClientsComponent implements OnInit {
   constructor(
     private globalService:EndPointGobalService,
     private fb: FormBuilder,
+    private nzMessageService: NzMessageService,
   ) { }
   ngOnInit(): void {
     this.GetClients(1, false);
@@ -73,6 +74,9 @@ export class ClientsComponent implements OnInit {
         }
       }
     );
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
 
   // handlePreview = async (file: NzUploadFile): Promise<void> => {

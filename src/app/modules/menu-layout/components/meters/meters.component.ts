@@ -9,6 +9,8 @@ import { ManualInterface, ManualSchema } from 'src/Core/interfaces/manualRegiste
 import { VariableSchema } from 'src/Core/interfaces/variable.interface';
 import { VirtualMeterInterface } from 'src/Core/interfaces/virtual-meter.interface';
 import { SourceSchema } from 'src/Core/interfaces/iondata-source.interface';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NotificationService } from '@shared/services/notification.service';
 
 
 @Component({
@@ -45,7 +47,9 @@ export class MetersComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private http:HttpClient,
-    private globalService: EndPointGobalService
+    private globalService: EndPointGobalService,
+    private nzMessageService: NzMessageService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -154,9 +158,15 @@ export class MetersComponent implements OnInit, OnChanges {
             this.GetMeters(1, false);
           }
 
+          this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+        }else{
+          this.notificationService.createMessage('error', 'La accion fallo 😓');
         }
       }
     );
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
 
   listOfColumns: ColumnItem[] = [

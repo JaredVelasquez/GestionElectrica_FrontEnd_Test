@@ -6,6 +6,7 @@ import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.i
 import { InputParametersInterface } from 'src/Core/interfaces/input-parameters.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { endOfMonth } from 'date-fns';
+import { NotificationService } from '@shared/services/notification.service';
 
 @Component({
   selector: 'app-modal-new-charge',
@@ -54,6 +55,7 @@ export class ModalNewChargeComponent implements OnInit, OnChanges {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -152,7 +154,11 @@ export class ModalNewChargeComponent implements OnInit, OnChanges {
           if(result){
             this.DataUpdated.emit(result);
             this.isVisible = false;
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
     } else {
@@ -174,7 +180,11 @@ export class ModalNewChargeComponent implements OnInit, OnChanges {
           if(!result){
             this.updateMainTable(this.provider);
             this.isVisible = false;
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
         );
     } else {

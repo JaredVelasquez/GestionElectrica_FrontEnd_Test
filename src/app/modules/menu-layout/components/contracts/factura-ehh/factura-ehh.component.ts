@@ -6,6 +6,8 @@ import { endOfMonth } from 'date-fns';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { EEHSchema } from 'src/Core/interfaces/eeh-invoice';
 import { ManualInvoiceDetailView } from 'src/Core/interfaces/manual-invoice-detail.interface';
+import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-factura-ehh',
@@ -37,7 +39,9 @@ export class FacturaEHHComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private globalService: EndPointGobalService
+    private globalService: EndPointGobalService,
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
     ) { }
 
 
@@ -114,6 +118,10 @@ export class FacturaEHHComponent implements OnInit {
           if(result){
             this.GetFacturas(this.newFacturaEEH.estado, false);
             this.cleanForm();
+            this.notificationService.createMessage('success', 'Factura creada con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La creacion fallo 😓');
+
           }
         }
       );
@@ -143,7 +151,14 @@ export class FacturaEHHComponent implements OnInit {
               this.GetFacturas(false, false);
 
             this.cleanForm();
+            this.notificationService.createMessage('success', 'Factura actualizada con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La actualizacion fallo 😓');
+
           }
+
+
+          
         }
         );
     } else {
@@ -235,6 +250,9 @@ export class FacturaEHHComponent implements OnInit {
   handleCancel(): void {
     console.log('Button cancel clicked!');
     this.isVisible = false;
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
   
   

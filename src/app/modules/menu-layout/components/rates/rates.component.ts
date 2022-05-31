@@ -5,6 +5,8 @@ import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { ZoneShema } from 'src/Core/interfaces/zones.interface';
 import { InputParametersInterface, InputParamSchema } from 'src/Core/interfaces/input-parameters.interface';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NotificationService } from '@shared/services/notification.service';
 
 
 
@@ -35,6 +37,8 @@ export class RatesComponent implements OnInit{
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private nzMessageService: NzMessageService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -110,6 +114,9 @@ export class RatesComponent implements OnInit{
         }
       }
     );
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
 
 

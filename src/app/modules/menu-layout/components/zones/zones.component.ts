@@ -3,6 +3,8 @@ import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { ZoneShema } from 'src/Core/interfaces/zones.interface';
+import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-zones',
@@ -30,6 +32,8 @@ export class ZonesComponent implements OnInit {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private nzMessageService: NzMessageService,
+    private notificationService: NotificationService,
 
   ) { }
 
@@ -74,6 +78,9 @@ export class ZonesComponent implements OnInit {
         }
       }
     );
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
 
   

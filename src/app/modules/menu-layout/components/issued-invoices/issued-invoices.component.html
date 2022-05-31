@@ -27,7 +27,13 @@
         <tbody>
           <tr *ngFor="let data of listOfData">
             <td nzLeft nzAlign="center">
-              <button nz-button nzSize="small" nzDanger nzType="primary" (click)="CancelarFactura(data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+              <button nz-button nzSize="small" nzDanger nzType="primary"
+              nz-popconfirm
+              nzPopconfirmTitle="Estas seguro que quieres emitir esta factura ?"
+              (nzOnConfirm)="CancelarFactura(data)"
+              (nzOnCancel)="cancel()"
+              nzPopconfirmPlacement="rightBottom"
+              ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
             </td>
             <td>{{data.codigo}}</td>
             <td>{{ data.codigoContrato }}</td>

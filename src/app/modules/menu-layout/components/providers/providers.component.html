@@ -32,10 +32,20 @@
           <div nz-row nzAlign="middle" nzJustify="center">
             <div nz-col>
               <div *ngIf="provider.estado ; else disable">
-                <button nz-button nzDanger nzType="primary" (click)="disableProvider(provider, 0)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                <button nz-button nzDanger nzType="primary"  
+                nz-popconfirm
+                nzPopconfirmTitle="Quieres desabilitar este item ?"
+                (nzOnConfirm)="disableProvider(provider, 0)"
+                (nzOnCancel)="cancel()"
+                nzPopconfirmPlacement="rightBottom"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
               </div>
               <ng-template #disable>
-                <button nz-button (click)="disableProvider(provider, 1)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
+                <button nz-button 
+                nz-popconfirm
+                nzPopconfirmTitle="Quieres desabilitar este item ?"
+                (nzOnConfirm)="disableProvider(provider, 1)"
+                (nzOnCancel)="cancel()"
+                ><i nz-icon nzType="undo" nzTheme="outline"></i></button>
               </ng-template>
             </div>
               <div nz-col nzOffset="1">

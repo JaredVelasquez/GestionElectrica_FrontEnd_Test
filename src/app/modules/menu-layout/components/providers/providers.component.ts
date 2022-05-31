@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActorInterface } from "src/Core/interfaces/actors.interface";
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NotificationService } from '@shared/services/notification.service';
 
 const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
   new Promise((resolve, reject) => {
@@ -34,6 +36,8 @@ export class ProvidersComponent implements OnInit {
   constructor(
     private globalService:EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
   ) { }
   ngOnInit(): void {
     this.GetProviders(1, false);
@@ -77,6 +81,9 @@ export class ProvidersComponent implements OnInit {
     );
   }
 
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
+  }
   // handlePreview = async (file: NzUploadFile): Promise<void> => {
   //   if (!file.url && !file.) {
   //     file.preview = await getBase64(file.originFileObj!);

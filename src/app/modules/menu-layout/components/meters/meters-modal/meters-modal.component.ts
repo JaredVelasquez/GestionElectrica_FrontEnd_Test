@@ -1,6 +1,7 @@
 import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { NotificationService } from '@shared/services/notification.service';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 import { SourceSchema } from 'src/Core/interfaces/iondata-source.interface';
 import { MeasurePointSchema } from 'src/Core/interfaces/measure-point.interface';
@@ -47,6 +48,7 @@ export class MetersModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private  globalService : EndPointGobalService,
+    private notificationService: NotificationService
 
   ) { }
 
@@ -89,7 +91,11 @@ export class MetersModalComponent implements OnInit {
             this.DataUpdated.emit(result);
             this.isVisible = false;
             
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -121,7 +127,11 @@ export class MetersModalComponent implements OnInit {
             this.updateMainTable();
             this.isVisible = false;
 
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
           
             
           

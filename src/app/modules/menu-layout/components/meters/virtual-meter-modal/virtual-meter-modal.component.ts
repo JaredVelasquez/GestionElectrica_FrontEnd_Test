@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { NotificationService } from '@shared/services/notification.service';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { VirtualMeterInterface, VirtualMeterShema } from 'src/Core/interfaces/virtual-meter.interface';
@@ -42,6 +44,8 @@ export class VirtualMeterModalComponent implements OnInit {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
   ) { }
 
   ngOnInit(): void {
@@ -93,7 +97,11 @@ export class VirtualMeterModalComponent implements OnInit {
               this.GetVirtualMeters(result.estado, false);
 
             this.cleanForm();
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -127,7 +135,11 @@ export class VirtualMeterModalComponent implements OnInit {
             this.updateTable(this.IsEditableSchema);
             this.IsEditableForm = false;
             this.cleanForm();
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -224,6 +236,9 @@ export class VirtualMeterModalComponent implements OnInit {
 
   handleCancel(): void {
     this.isVisible = false;
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
 
 

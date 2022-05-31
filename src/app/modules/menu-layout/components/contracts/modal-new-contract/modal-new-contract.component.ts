@@ -6,6 +6,8 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 import { endOfMonth } from 'date-fns';
+import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 
 
@@ -36,7 +38,9 @@ export class ModalNewContractComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private globalService: EndPointGobalService
+    private globalService: EndPointGobalService,
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
     ) { }
 
   ngOnInit(): void {
@@ -114,7 +118,11 @@ export class ModalNewContractComponent implements OnInit {
             this.DataUpdated.emit(result);
             //this.isVisible = false;
 
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
     } else {
@@ -136,7 +144,12 @@ export class ModalNewContractComponent implements OnInit {
           if(!result){
             this.updateMainTable(this.newContract);
             this.isVisible = false;
+            
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
         );
     } else {
@@ -215,6 +228,9 @@ export class ModalNewContractComponent implements OnInit {
     }
   }
   
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
+  }
   listOfColumns: ColumnItem[] = [
     {
       name: 'Codigo Medidor',

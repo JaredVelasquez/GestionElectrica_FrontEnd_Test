@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChange
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
+import { NotificationService } from '@shared/services/notification.service';
 @Component({
   selector: 'app-modal-new-rate',
   templateUrl: './modal-new-rate.component.html',
@@ -34,6 +35,7 @@ export class ModalNewRateComponent implements OnInit {
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -87,7 +89,11 @@ export class ModalNewRateComponent implements OnInit {
                 this.dataPosition.observacion = provider.observacion;
                 this.dataPosition.tipo = provider.tipo;
                 
-              }
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
+          }
+            
               this.isVisible = false;
             }
           }
@@ -99,7 +105,11 @@ export class ModalNewRateComponent implements OnInit {
             if(result){
               this.DataUpdated.emit(result);
               this.isVisible = false;
+              this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+            }else{
+              this.notificationService.createMessage('error', 'La accion fallo 😓');
             }
+              
             
           }
         );

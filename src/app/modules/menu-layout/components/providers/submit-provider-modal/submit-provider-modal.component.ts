@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 
 @Component({
@@ -25,6 +27,8 @@ export class SubmitProviderModalComponent implements OnInit {
   constructor(
     private globalService:EndPointGobalService,
     private fb: FormBuilder,
+    private notificationService: NotificationService,
+    private nzMessageService: NzMessageService,
   ) { }
 
   EmptyForm = this.fb.group({
@@ -62,7 +66,11 @@ export class SubmitProviderModalComponent implements OnInit {
             this.DataUpdated.emit(result);
             this.isVisible = false;
   
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -91,7 +99,11 @@ export class SubmitProviderModalComponent implements OnInit {
             this.UpdateMainTable(this.newProvider);
             this.isVisible = false;
             
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -139,6 +151,9 @@ export class SubmitProviderModalComponent implements OnInit {
   handleCancel(): void {
     console.log('Button cancel clicked!');
     this.isVisible = false;
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
   }
 
 

@@ -5,6 +5,7 @@ import { ManualInterface, ManualSchema } from 'src/Core/interfaces/manualRegiste
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { VariableSchema } from 'src/Core/interfaces/variable.interface';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NotificationService } from '@shared/services/notification.service';
 
 @Component({
   selector: 'app-manual-registration-modal',
@@ -42,7 +43,8 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private  globalService : EndPointGobalService,
-    private nzMessageService: NzMessageService
+    private nzMessageService: NzMessageService,
+    private notificationService: NotificationService
     ) {}
 
   ngOnInit(): void {
@@ -117,7 +119,11 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
           if(!result){
             this.updateTable(this.editableSchema, this.editableSchema.estado);
             this.isEditable = false;
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+          }else{
+            this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
+            
         }
       );
       
@@ -149,8 +155,8 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     this.globalService.Patch(this.url.update, data.id, {estado: estado}).subscribe(
       (result: any) => {
         if(!result){
-          this.nzMessageService.create('success', 'Accion completada 😎');
           this.updateTable(data, !data.estado);
+          this.nzMessageService.create('success', 'Accion completada 😎');
         }else{
           this.nzMessageService.create('error', 'La ejecucion fallo 😟')
         }
