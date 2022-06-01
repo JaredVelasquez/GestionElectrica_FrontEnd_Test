@@ -42,11 +42,10 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   hoy = Date.now();
   vencimiento: any;
   ChargePosition!: ChargesShema;
-  @Input() dataSource!: {chart:{}, data?: [{}]};
+  @Input() dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
   title: string;
   @Input() historicData!: facturas[];
-  promedioConsumo = 0;
-  contFacturas = 0;
+  
 
 
   
@@ -68,88 +67,16 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(this.historicData);
+    console.log(this.dataInvoice);
+    
     if(this.dataInvoice){
       this.vencimiento = (this.UnDiaMLS * this.dataInvoice.contrato.diasDisponibles) + this.hoy;
       this.diaFacturacion = this.numeroADia(this.dataInvoice.contrato.diaGeneracion);
-     this.GetHistorico(this.historicData);
-      if(!this.dataSource){
-        this.dataSource = {
-          chart: {
-            caption: 'Historico de consumo por facturas generadas',
-            subCaption: 'Energia activa consumida',
-            xAxisName: 'Fecha',
-            yAxisName: 'Consumo kWh',
-            numberSuffix: 'K',
-            theme: 'fusion'
-          }
-        };
-        this.dataSource.data?.push(
-          { label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US').toString() + ' ]', value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() });
-        
-          
-        this.dataSource.data = [
-          { label: '[' + formatDate(this.dataInvoice.medidor[0].historico.fechaAnterior ,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(this.dataInvoice.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US').toString() + ' ]', value: (this.dataInvoice.totalLecturaActivaAjustada.toFixed(2)).toString() }];
-        
-          
 
-      }
-
-      
-      this.promedioConsumo += this.dataInvoice.totalLecturaActivaAjustada;
-      this.contFacturas ++;
-      console.log(this.dataSource);
-      
     }
-
-    this.promedioConsumo /= this.contFacturas;
     
   }
   
-  GetHistorico(historicData : facturas[]){
-          console.log('Este es el historico de facturas');
-          console.log(historicData);
-          
-          
-            for(let data of historicData){
-              if(Date.parse(data.fechaFin) < Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
-                console.log('fecha introducida en grafico');
-                
-                if(!this.dataSource){
-                  this.dataSource = {
-                    chart: {
-                      caption: 'Historico de consumo por facturas generadas',
-                      subCaption: 'Energia activa consumida',
-                      xAxisName: 'Fecha',
-                      yAxisName: 'Consumo kWh',
-                      numberSuffix: 'K',
-                      theme: 'fusion'
-                    }
-                  };
-                  this.dataSource.data?.push(
-                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }
-                    );
-                  
-                  
-                    this.dataSource.data = [
-                      { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }];
-                }
-
-                
-                
-                  
-                
-                this.contFacturas ++;
-                this.promedioConsumo += data.energiaConsumida;
-
-              }
-            }
-
-            console.log(this.dataSource);
-            
-          
-
-        
-  }
   ngOnDestroy(): void {
     
   }

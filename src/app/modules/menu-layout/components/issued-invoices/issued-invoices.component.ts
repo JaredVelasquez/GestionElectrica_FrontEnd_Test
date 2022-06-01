@@ -6,6 +6,7 @@ import { EndPointGobalService } from "@shared/services/end-point-gobal.service";
 import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { formatDate } from '@angular/common';
 export interface facturas{
   
   cliente: string,
@@ -37,7 +38,7 @@ export class IssuedInvoicesComponent implements OnInit {
   listOfData: InvoiceInterface[] = [];
   list: any[] = [];
   historicData: facturas[] = [];
-  dataSource!: {chart:{}, data: [{}]};
+  dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
   
   url = {
     id: 2,
@@ -113,7 +114,7 @@ export class IssuedInvoicesComponent implements OnInit {
         
         if(result){
           this.dataInvoice = result;
-          this.getHistoric(result.contrato.contratoId);
+          this.getHistoric(result.contrato.contratoId, data);
           this.FacturaIsVisible = true;
           
           this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
@@ -127,11 +128,79 @@ export class IssuedInvoicesComponent implements OnInit {
 
   }
 
-  getHistoric(contratoId:number){
+  getHistoric(contratoId:number, facturas : InvoiceInterface){
     this.globalService.GetId( this.url.getHistorico, contratoId).subscribe(
       (result : any) => {
         if(result){
           this.historicData = result;
+          for(let data of this.historicData){
+            if(Date.parse(data.fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
+              if(!this.dataSource){
+                this.dataSource = {
+                  chart: {
+                    caption: 'Historico de consumo por facturas generadas',
+                    subCaption: 'Energia activa consumida',
+                    xAxisName: 'Fecha',
+                    yAxisName: 'Consumo kWh',
+                    numberSuffix: 'K',
+                    theme: 'fusion'
+                  },
+                  data: [
+                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }],
+                
+                  contFacturas: 0,
+                  promedioConsumo: 0  
+                };
+                
+              }else{
+                
+                this.dataSource.data?.push(
+                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }
+                  );
+              }
+    
+  
+              
+              
+                
+              
+              this.dataSource.contFacturas ++;
+              this.dataSource.promedioConsumo += data.energiaConsumida;
+  
+            }
+
+          }
+
+          
+          if(!this.dataSource){
+            this.dataSource = {
+              chart: {
+                caption: 'Historico de consumo por facturas generadas',
+                subCaption: 'Energia activa consumida',
+                xAxisName: 'Fecha',
+                yAxisName: 'Consumo kWh',
+                numberSuffix: 'K',
+                theme: 'fusion'
+              },
+              data: [
+                { label: '[' + formatDate(facturas.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(facturas.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (facturas.energiaConsumida.toFixed(2)).toString() }],
+            
+              contFacturas: 0,
+              promedioConsumo: 0  
+            };
+            
+          }else{
+            
+            this.dataSource.data?.push(
+              { label: '[' + formatDate(facturas.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(facturas.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (facturas.energiaConsumida.toFixed(2)).toString() }
+              );
+          }
+
+              
+          this.dataSource.contFacturas ++;
+          this.dataSource.promedioConsumo += facturas.energiaConsumida;
+          this.dataSource.promedioConsumo /= this.dataSource.contFacturas;
+
         }
       }
     );

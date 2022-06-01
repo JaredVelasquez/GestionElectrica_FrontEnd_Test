@@ -10,7 +10,7 @@ import { EspecialChargesInterface } from 'src/Core/interfaces/especial-charges.i
 import { endOfMonth } from 'date-fns';
 import { Router } from '@angular/router';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
-import { formatDate } from '@angular/common';
+import { formatDate, NumberSymbol } from '@angular/common';
 import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -55,7 +55,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   UnDiaMLS = 86400000;
   hoy = Date.now();
   vencimiento: any;
-  dataSource!: {chart:{}, data: [{}]};
+  dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
   historicData: facturas[] = [];
 
   onChange(result: Date[]): void {
@@ -166,11 +166,55 @@ export class GeneratedInvoicesComponent implements OnInit {
     this.FacturaIsVisible = true;
   }
 
-  getHistoric(contratoId:number){
+  getHistoric(contratoId:NumberSymbol){
     this.globalService.GetId( this.url.getHistorico, contratoId).subscribe(
       (result : any) => {
         if(result){
           this.historicData = result;
+          for(let data of this.historicData){
+            if(Date.parse(data.fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
+              console.log('fecha introducida en grafico');
+              
+              if(!this.dataSource){
+                this.dataSource = {
+                  chart: {
+                    caption: 'Historico de consumo por facturas generadas',
+                    subCaption: 'Energia activa consumida',
+                    xAxisName: 'Fecha',
+                    yAxisName: 'Consumo kWh',
+                    numberSuffix: 'K',
+                    theme: 'fusion'
+                  },
+                  data: [
+                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }],
+                
+                  contFacturas: 0,
+                  promedioConsumo: 0  
+                };
+                
+              }else{
+                
+                this.dataSource.data?.push(
+                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }
+                  );
+              }
+  
+              
+              
+                
+              
+              this.dataSource.contFacturas ++;
+              this.dataSource.promedioConsumo += data.energiaConsumida;
+  
+            }
+
+          }
+
+          this.dataSource.promedioConsumo /= this.dataSource.contFacturas;
+
+        
+
+
         }
       }
     );
