@@ -43,6 +43,8 @@ export interface LecturasPorContrato {
       cliente: string,
       diasDisponibles: number,
       diaGeneracion: number,
+      direccion: string,
+      telefono: string
     },
     cargo?:
     [

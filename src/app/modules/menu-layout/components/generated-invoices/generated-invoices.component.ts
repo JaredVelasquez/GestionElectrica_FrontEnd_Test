@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
@@ -15,7 +15,9 @@ import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { concatMap } from 'rxjs/operators';
+import { locale } from 'moment';
 const moment = require('moment');
+import { DatePipe } from '@angular/common';
 export interface facturas{
   
   cliente: string,
@@ -40,6 +42,7 @@ export interface facturas{
 })
 export class GeneratedInvoicesComponent implements OnInit {
   FacturaIsVisible: boolean = false;
+  pipe = new DatePipe('en-US');
   dataInvoice!: LecturasPorContrato;
   isVisible = false;
   validateForm!: FormGroup;
@@ -84,6 +87,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private nzMessageService: NzMessageService,
+    @Inject(LOCALE_ID) public locale: string,
   ) { }
 
   ngOnInit(): void {
@@ -103,6 +107,14 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   Back(): void {
     this.FacturaIsVisible = false;
+    this.dataSource = {chart:{
+      caption: 'Historico de consumo por facturas generadas',
+      subCaption: 'Energia activa consumida',
+      xAxisName: 'Fecha',
+      yAxisName: 'Consumo kWh',
+      numberSuffix: 'K',
+      theme: 'fusion'
+    }, data: [{}], contFacturas: 0, promedioConsumo: 0};
   }
 
   showModal(): void {
@@ -162,11 +174,11 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   GenerateInvoice(data: LecturasPorContrato): void{
     this.dataInvoice = data;
-    this.getHistoric(data.contrato.contratoId);
+    this.getHistoric(data.contrato.contratoId, data);
     this.FacturaIsVisible = true;
   }
 
-  getHistoric(contratoId:NumberSymbol){
+  getHistoric(contratoId: number, data: LecturasPorContrato){
     this.globalService.GetId( this.url.getHistorico, contratoId).subscribe(
       (result : any) => {
         if(result){
@@ -186,7 +198,7 @@ export class GeneratedInvoicesComponent implements OnInit {
                     theme: 'fusion'
                   },
                   data: [
-                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }],
+                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.energiaConsumida.toFixed(2)).toString() }],
                 
                   contFacturas: 0,
                   promedioConsumo: 0  
@@ -195,13 +207,10 @@ export class GeneratedInvoicesComponent implements OnInit {
               }else{
                 
                 this.dataSource.data?.push(
-                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }
+                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.energiaConsumida.toFixed(2)).toString() }
                   );
               }
   
-              
-              
-                
               
               this.dataSource.contFacturas ++;
               this.dataSource.promedioConsumo += data.energiaConsumida;
@@ -209,7 +218,32 @@ export class GeneratedInvoicesComponent implements OnInit {
             }
 
           }
+          
+          if(!this.dataSource){
+            this.dataSource = {
+              chart: {
+                caption: 'Historico de consumo por facturas generadas',
+                subCaption: 'Energia activa consumida',
+                xAxisName: 'Fecha',
+                yAxisName: 'Consumo kWh',
+                numberSuffix: 'K',
+                theme: 'fusion'
+              },
+              data: [
+                { label: '[' + formatDate(data.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }],
 
+              contFacturas: 0,
+              promedioConsumo: 0  
+            };
+            
+          }else{
+            
+          this.dataSource.data?.push(
+            { label: '[' + formatDate(data.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }
+            );
+          }
+          this.dataSource.contFacturas ++;
+          this.dataSource.promedioConsumo += data.totalLecturaActivaAjustada;
           this.dataSource.promedioConsumo /= this.dataSource.contFacturas;
 
         
@@ -221,31 +255,13 @@ export class GeneratedInvoicesComponent implements OnInit {
     
   }
 
-  // CancelarFactura(invoicePosition: InvoiceInterface){
-  //   const {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion} = invoicePosition;
-  //   const provider = {
-  //     ... {contratoMedidorId, codigo, fechaLectura, fechaVencimiento, fechaInicio, fechaFin, tipoConsumo, observacion},
-  //     descripcion: "CANCELADA",
-  //     fechaEmision: (new Date()).toISOString(),
-  //     estado: 0,
-  //   } 
-  //   console.log(provider);
-  //   this.globalService.Patch(this.url.update, invoicePosition.facturaId, provider).subscribe(
-  //     (result: any) => {
-  //       console.log(result);
-  //       this.GetRates();
-        
-  //     }
-  //   );
-
-  // }
 
   EmitirFactura(invoicePosition: LecturasPorContrato){
     console.log(invoicePosition);
     
     const provider = {
       contratoId:  invoicePosition.contrato.contratoId,
-      codigo:  formatDate((new Date()).toISOString(), 'yyyy-MM-dd','en-US') + ' - FA#',
+      codigo:  formatDate((new Date()).toISOString(), 'yyyy-MM-dd','en-US', 'GMT') + ' - FA#',
       fechaLectura:  invoicePosition.medidor[0].historico.fechaActual,
       fechaVencimiento:  (this.UnDiaMLS * invoicePosition.contrato.diasDisponibles) + this.hoy,
       fechaInicio : invoicePosition.medidor[0].historico.fechaAnterior,
@@ -291,10 +307,13 @@ export class GeneratedInvoicesComponent implements OnInit {
       .subscribe(() => {
         console.log('All completed!');
       });
-      
+      var local = new Date();
+      var utc = Date.UTC(local.getFullYear(), local.getMonth(), local.getDate(), local.getHours(), local.getMinutes(), local.getSeconds(), local.getMilliseconds());
+      var tz = (utc - local.getTime()) / (60 * 60 * 1000);
+      console.log(tz);
     let generateFacturaSchema = {
-      fechaInicial: formatDate(this.generateInvoicesForm.value.fecha[0],'yyyy-MM-dd','en-US'),
-      fechaFinal:  formatDate(this.generateInvoicesForm.value.fecha[1],'yyyy-MM-dd','en-US'),
+      fechaInicial: this.pipe.transform(this.generateInvoicesForm.value.fecha[0], 'yyyy-MM-dd HH:mm', '-0600'),
+      fechaFinal: this.pipe.transform(this.generateInvoicesForm.value.fecha[1], 'yyyy-MM-dd HH:mm', '-0600'),
       facturaEEH: this.generateInvoicesForm.value.facturaEEH,
     }
     console.log(generateFacturaSchema);
@@ -320,15 +339,6 @@ export class GeneratedInvoicesComponent implements OnInit {
     
   }
 
-  // fullSchema(){
-  //   this.newFacturas = {
-  //     fechaInicial: (this.generateInvoicesForm.value.fecha[0]).toISOString().format('dd-m-yy'),
-  //     fechaFinal: this.generateInvoicesForm.value.fecha[1].toISOString().format('dd-m-yy'),
-  //     facturaEEH: this.generateInvoicesForm.value.facturaEEH
-  //   }
-  // }
-
-  
   
   listOfColumns: ColumnItem[] = [
     {
@@ -368,7 +378,7 @@ export class GeneratedInvoicesComponent implements OnInit {
       filterMultiple: true
     },
     {
-      name: 'Energia consumida',
+      name: 'Energia consumida (kWh)',
       sortOrder: null,
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.energiaConsumida - b.energiaConsumida,
       sortDirections: ['descend', 'ascend', null],

@@ -119,7 +119,7 @@ export class IssuedInvoicesComponent implements OnInit {
           
           this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
         }else{
-          this.notificationService.createMessage('error', 'La accion fallo 😓');
+          this.notificationService.createMessage('error', 'No hay lecturas facturables 😓');
         }
           
         
@@ -146,7 +146,7 @@ export class IssuedInvoicesComponent implements OnInit {
                     theme: 'fusion'
                   },
                   data: [
-                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }],
+                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.energiaConsumida.toFixed(2)).toString() }],
                 
                   contFacturas: 0,
                   promedioConsumo: 0  
@@ -155,7 +155,7 @@ export class IssuedInvoicesComponent implements OnInit {
               }else{
                 
                 this.dataSource.data?.push(
-                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (data.energiaConsumida.toFixed(2)).toString() }
+                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.energiaConsumida.toFixed(2)).toString() }
                   );
               }
     
@@ -183,7 +183,7 @@ export class IssuedInvoicesComponent implements OnInit {
                 theme: 'fusion'
               },
               data: [
-                { label: '[' + formatDate(facturas.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(facturas.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (facturas.energiaConsumida.toFixed(2)).toString() }],
+                { label: '[' + formatDate(facturas.fechaInicio,'yyyy-MM-dd hh:MM:ss','en-US', '-0600').toString() + ' - '  + formatDate(facturas.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (facturas.energiaConsumida.toFixed(2)).toString() }],
             
               contFacturas: 0,
               promedioConsumo: 0  
@@ -192,7 +192,7 @@ export class IssuedInvoicesComponent implements OnInit {
           }else{
             
             this.dataSource.data?.push(
-              { label: '[' + formatDate(facturas.fechaInicio,'yyyy-MM-dd','en-US').toString() + ' - '  + formatDate(facturas.fechaFin,'yyyy-MM-dd','en-US').toString(), value: (facturas.energiaConsumida.toFixed(2)).toString() }
+              { label: '[' + formatDate(facturas.fechaInicio,'yyyy-MM-dd hh:MM:ss','en-US', '-0600').toString() + ' - '  + formatDate(facturas.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (facturas.energiaConsumida.toFixed(2)).toString() }
               );
           }
 
@@ -231,6 +231,14 @@ export class IssuedInvoicesComponent implements OnInit {
 
   Back(): void {
     this.FacturaIsVisible = false;
+    this.dataSource = {chart:{
+      caption: 'Historico de consumo por facturas generadas',
+      subCaption: 'Energia activa consumida',
+      xAxisName: 'Fecha',
+      yAxisName: 'Consumo kWh',
+      numberSuffix: 'K',
+      theme: 'fusion'
+    }, data: [{}], contFacturas: 0, promedioConsumo: 0};
   }
   cancel(): void {
     this.nzMessageService.info('click cancel');
@@ -265,7 +273,7 @@ export class IssuedInvoicesComponent implements OnInit {
       filterMultiple: true
     },
     {
-      name: 'Fecha generacion',
+      name: 'Fecha',
       sortOrder: 'descend',
       sortFn: null ,
       sortDirections: ['descend', 'ascend', null],
@@ -274,7 +282,7 @@ export class IssuedInvoicesComponent implements OnInit {
       filterMultiple: true
     },
     {
-      name: 'Energia consumida',
+      name: 'Energia consumida (kWh)',
       sortOrder: 'descend',
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.energiaConsumida - b.energiaConsumida,
       sortDirections: ['descend', 'ascend', null],

@@ -34,10 +34,10 @@
                     <p class="etiqueta-izq"> Número factura: </p>
                 </div>
                 <div>
-                    <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy hh:MM:ss' }} </p>
-                    <p class="etiqueta-der">{{ vencimiento | date:'dd/M/yyyy' }}</p>
-                    <p class="etiqueta-der">{{hoy | date:'dd/M/yyyy' }}</p>
-                    <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaAnterior | date:'dd/M/yyyy' }}  hasta  {{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy' }} </p>
+                    <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy hh:MM:ss':'GMT' }} </p>
+                    <p class="etiqueta-der">{{ vencimiento | date:'dd/M/yyyy':'GMT' }}</p>
+                    <p class="etiqueta-der">{{hoy | date:'dd/M/yyyy':'GMT' }}</p>
+                    <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaAnterior | date:'dd/M/yyyy':'GMT' }}  hasta  {{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy':'GMT' }} </p>
                     <p class="etiqueta-der"> {{diaFacturacion}} </p>
                     <p class="etiqueta-der"> xxxx </p>
                     <ng-template #Vacio>
@@ -48,19 +48,13 @@
             <div class="datos">
                 <div>
                     <p class="etiqueta-izq-titular"> Nombre del titular:  </p>
-                    <p class="etiqueta-izq-titular"> Dirección de suministro: </p>
-                    <p class="etiqueta-izq-titular"> Ubicación: </p>
-                    <p class="etiqueta-izq-titular"> Código del cliente: </p>
-                    <p class="etiqueta-izq-titular"> Tipo de consumo: </p>
-                    <p class="etiqueta-izq-titular"> Tarifa: </p>
+                    <p class="etiqueta-izq-titular"> Dirección: </p>
+                    <p class="etiqueta-izq-titular"> Telefono: </p>
                 </div>
                 <div>
                     <p class="etiqueta-der-titular"> {{dataInvoice.contrato.cliente}} </p>
-                    <p class="etiqueta-der-titular"> xxx </p>
-                    <p class="etiqueta-der-titular"> 364-249-245 </p>
-                    <p class="etiqueta-der-titular"> xxx </p>
-                    <p class="etiqueta-der-titular"> xxx </p>
-                    <p class="etiqueta-der-titular"> xxx </p>
+                    <p class="etiqueta-der-titular"> {{dataInvoice.contrato.direccion}} </p>
+                    <p class="etiqueta-der-titular"> {{dataInvoice.contrato.telefono}} </p>
                 </div>
             </div>
         </div>
@@ -71,11 +65,11 @@
         <div class="resumen-container">
             <div class="consumo" >
                 <p class="etiqueta-consumo-total"> Consumo total en KVArh </p>
-                <p class="etiqueta-valor"> {{dataInvoice.totalLecturaActivaAjustada | number:'1.0':'en-US'}} </p>
+                <p class="etiqueta-valor"> {{dataInvoice.totalLecturaReactivaAjustada | number:'1.0':'en-US'}} </p>
             </div>
             <div class="consumo">
                 <p class="etiqueta-consumo-total"> Consumo total en kWh </p>
-                <p class="etiqueta-valor"> {{dataInvoice.totalLecturaReactivaAjustada | number:'1.0':'en-US'}} </p>
+                <p class="etiqueta-valor"> {{dataInvoice.totalLecturaActivaAjustada | number:'1.0':'en-US'}} </p>
             </div>
             <div class="consumo">
                 <p class="etiqueta-consumo-total"> Total a pagar </p>
@@ -118,8 +112,8 @@
                     </tr>
                     <tr>
                       <td class="tg-oe15">Fecha de lectura</td>
-                      <td class="tg-wk8r">{{data.historico.fechaActual  | date:'dd/M/yyyy' }}</td>
-                      <td class="tg-wk8r">{{data.historico.fechaAnterior  | date:'dd/M/yyyy' }}</td>
+                      <td class="tg-wk8r">{{data.historico.fechaActual  | date:'dd/M/yyyy':'GMT' }}</td>
+                      <td class="tg-wk8r">{{data.historico.fechaAnterior  | date:'dd/M/yyyy':'GMT' }}</td>
                       <td class="tg-wk8r"></td>
                       <td class="tg-wk8r"></td>
                       <td class="tg-wk8r"></td>
@@ -193,7 +187,7 @@
 <div class="consumo-container" *ngIf="dataInvoice.cargo">
 <div class="calculo-consumo-container">
     <div>
-        <table class="table table-bordered table-sm">
+        <!-- <table class="table table-bordered table-sm">
             <thead>
                 <tr>
                     <th scope="col">Cargo</th>
@@ -220,7 +214,7 @@
                     <td> xxx </td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
         <div style="background-color:  #969696; text-align: center;">
             <h6>Ajuste por factor de potencia</h6>
         </div>
@@ -295,9 +289,13 @@
     </div>
     <div style="background-color: #b9b9b9; margin: 1% 3% 1% 7%;">
         <p class="totales-historico">
-            <span> Promedio de consumo:</span>
+            <span> Promedio de consumo energia activa:</span>
             <span> {{dataSource.promedioConsumo | number:'1.0':'en-US' }} kWh </span>
         </p>
+        <!-- <p class="totales-historico">
+            <span> Promedio de consumo energia reactiva:</span>
+            <span> {{dataSource.promedioConsumo | number:'1.0':'en-US' }} kWh </span>
+        </p> -->
     </div>
 </div>
     

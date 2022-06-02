@@ -20,7 +20,7 @@
       <form nz-form [formGroup]="generateInvoicesForm">
         <div nz-row>
           <div nz-col>
-            <nz-range-picker style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+            <nz-range-picker [nzShowTime]="true" style="width: 475px;" formControlName="fecha" [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
           
 
           </div>
@@ -77,8 +77,8 @@
           <tr *ngFor="let data of listOfData">
             <td>{{ data.contrato.contratoCodigo }}</td>
             <td>{{data.contrato.cliente}}</td>
-            <td>{{data.factura?.fechaInicial  | date:'dd/M/yyyy'  }}</td>
-            <td>{{ data.factura?.fechaFinal  | date:'dd/M/yyyy'   }}</td>
+            <td>{{data.medidor[0].historico?.fechaAnterior  | date:'dd/M/yyyy':'GMT'  }}</td>
+            <td>{{ data.medidor[0].historico?.fechaActual  | date:'dd/M/yyyy':'GMT' }}</td>
             <td>{{ data.totalLecturaActivaAjustada | number:'1.0':'en-US'}} kWh</td>
             <td style="color: red;" *ngIf="data.cargo; else sinTotal">L {{data.cargo[data.cargo.length -1].valorAjustado  | number:'1.0':'en-US' }}</td>
             <ng-template #sinTotal>
