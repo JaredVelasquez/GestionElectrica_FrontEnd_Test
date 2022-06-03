@@ -9,7 +9,9 @@
       <a href="http://falconingenieria.com/" target="_blank">
         <img src="../../../../../assets/Images/LogoSmall.png" alt="logo">
         <h1>Falcon Ingenieria</h1>
+        
       </a>
+      
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       
@@ -116,17 +118,17 @@
         
       <div nz-menu-item nzMatchRouter>
         <li>
-            <i nz-icon nzType="pie-chart"></i>
-            <span >Reportes</span>
+            <i nz-icon nzType="poweroff"></i>
+            <span >Cerrar session</span>
         </li>
       </div>
 
-      <div nz-menu-item nzMatchRouter>
+      <!-- <div nz-menu-item nzMatchRouter>
         <li>
             <i nz-icon nzType="setting"></i>
             <span >Configuracion</span>
         </li>
-      </div>
+      </div> -->
     </ul>
   </nz-sider>
   <nz-layout>
@@ -137,19 +139,27 @@
                nz-icon
                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
             ></i>
+            
         </span>
-      <span class="header-title">SISTEMA DE FACTURACION ENERGETICA</span>
+      <span class="header-title">SISTEMA DE FACTURACION ENERGETICA </span>
+      <span class="header-clock">
+        <!-- <iframe style="text-align:center;padding:1em 0;" src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=es&size=small&timezone=America%2FTegucigalpa" width="12%" height="110" frameborder="0" seamless></iframe>  -->
+
+      </span>
 
         
       </div>
       
     </nz-header>
     <nz-content>
+      
       <div class="inner-content">
+        
         <router-outlet></router-outlet>
         <nz-back-top [nzVisibilityHeight]="100">
         </nz-back-top>
       </div>
+      
     </nz-content>
   </nz-layout>
 </nz-layout>
