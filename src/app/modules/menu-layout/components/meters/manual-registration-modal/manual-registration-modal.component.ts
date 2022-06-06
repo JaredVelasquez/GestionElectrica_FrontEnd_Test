@@ -6,6 +6,7 @@ import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { VariableSchema } from 'src/Core/interfaces/variable.interface';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NotificationService } from '@shared/services/notification.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-manual-registration-modal',
@@ -26,6 +27,7 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   validateForm!: FormGroup;
   editableSchema!: ManualInterface;
   isEditable: boolean = false;
+  pipe = new DatePipe('en-US');
 
   url = {
     get: 'get-registros-manuales',
@@ -165,6 +167,8 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   }
 
   fullSchema(){
+    this.validateForm.value.fecha[0] = this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-0600');
+    this.validateForm.value.fecha[1] = this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss','-0600');
     this.newManualRegister = {
       ... this.validateForm.value,
       estado: true

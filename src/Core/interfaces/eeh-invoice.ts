@@ -7,6 +7,7 @@ export interface EEHSchema{
     fechaVencimiento: string,
     fechaInicial: string,
     fechaFinal: string,
+    cargoReactivo: number,
     estado: boolean
 }
 

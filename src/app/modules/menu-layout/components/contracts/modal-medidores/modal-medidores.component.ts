@@ -10,6 +10,7 @@ import { RatesInterface } from 'src/Core/interfaces/Rates.interface';
 import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-modal-medidores',
@@ -38,6 +39,7 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
     delete: 'contratos-medidores',
     update: 'contratos-medidores',
   };
+  pipe = new DatePipe('en-US');
   
 
   constructor(
@@ -57,8 +59,6 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
     if(this.dataPosition){
       this.validateForm = this.fb.group({
         medidorId: ['', [Validators.required]],
-        tarifaId: ['', [Validators.required]],
-        zonaId: ['', [Validators.required]],
         contratoId: [this.dataPosition.id, [Validators.required]],
         fecha: [[this.dataPosition.fechaCreacion, this.dataPosition.fechaVenc.toString()], [Validators.required]],
         observacion: ['', [Validators.required]],
@@ -209,8 +209,8 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
 
     this.newCMeterSchema = {
       ... {medidorId, tarifaId, zonaId, contratoId, observacion, estado},
-      fechaInicial: this.validateForm.value.fecha[0],
-      fechaFinal: this.validateForm.value.fecha[1],
+      fechaInicial:this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaFinal: this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
     }
   }
 
@@ -238,8 +238,6 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
     
     this.validateForm = this.fb.group({
       medidorId: [data.medidorId, [Validators.required]],
-      tarifaId: [data.tarifaId, [Validators.required]],
-      zonaId: [data.zonaId, [Validators.required]],
       contratoId: [this.dataPosition.id, [Validators.required]],
       fecha: [[data.fechaInicial.toString(), data.fechaFinal.toString()], [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
@@ -250,8 +248,6 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
   cleanForm(){
     this.validateForm = this.fb.group({
       medidorId: ['', [Validators.required]],
-      tarifaId: ['', [Validators.required]],
-      zonaId: ['', [Validators.required]],
       contratoId: [this.dataPosition.id, [Validators.required]],
       fecha: [[this.dataPosition.fechaCreacion.toString(), this.dataPosition.fechaVenc.toString()], [Validators.required]],
       observacion: ['', [Validators.required]],

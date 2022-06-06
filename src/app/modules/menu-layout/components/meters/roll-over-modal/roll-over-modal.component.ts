@@ -9,6 +9,7 @@ import { MeterSchema } from 'src/Core/interfaces/meter.interface';
 import { ThisReceiver } from '@angular/compiler';
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-roll-over-modal',
@@ -27,6 +28,7 @@ export class RollOverModalComponent implements OnInit, OnChanges {
   IsEditableSchema!: RollOverSchema;
   IsEditableForm: boolean = false;
   IsDisableRollOver: boolean = false;
+  pipe = new DatePipe('en-US');
 
   onChange(result: Date[]): void {
     this.dates = {
@@ -144,8 +146,8 @@ export class RollOverModalComponent implements OnInit, OnChanges {
 
       this.newRollOver = {
         ... {medidorId, energia, lecturaAnterior, lecturaNueva, observacion},
-        fechaInicial: this.dates.from,
-        fechaFinal: this.dates.to,
+        fechaInicial: this.pipe.transform( this.dates.from , 'yyyy-MM-dd HH:mm', '-0600'),
+        fechaFinal:this.pipe.transform( this.dates.to , 'yyyy-MM-dd HH:mm', '-0600'),
         estado: true
       }
       console.log(this.newRollOver);
@@ -182,8 +184,8 @@ export class RollOverModalComponent implements OnInit, OnChanges {
 
       this.newRollOver = {
         ... {medidorId, energia, lecturaAnterior, lecturaNueva, observacion},
-        fechaInicial: this.validateForm.value.fecha[0],
-        fechaFinal: this.validateForm.value.fecha[1],
+        fechaInicial: this.pipe.transform( this.validateForm.value.fecha[0] , 'yyyy-MM-dd HH:mm', '-0600'),
+        fechaFinal:this.pipe.transform( this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm', '-0600'),
         estado: true
       }
       this.IsEditableSchema.observacion = this.newRollOver.observacion;

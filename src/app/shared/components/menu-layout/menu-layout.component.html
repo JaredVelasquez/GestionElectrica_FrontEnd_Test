@@ -116,11 +116,12 @@
       </li>
 
         
-      <div nz-menu-item nzMatchRouter>
-        <li>
-            <i nz-icon nzType="poweroff"></i>
-            <span >Cerrar session</span>
-        </li>
+      <div nz-menu-item nzMatchRouter (click)="endSession()">
+          <li>
+              <i nz-icon nzType="poweroff" ></i>
+              <span >Cerrar session</span>
+          </li>
+        
       </div>
 
       <!-- <div nz-menu-item nzMatchRouter>
@@ -142,10 +143,6 @@
             
         </span>
       <span class="header-title">SISTEMA DE FACTURACION ENERGETICA </span>
-      <span class="header-clock">
-        <!-- <iframe style="text-align:center;padding:1em 0;" src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=es&size=small&timezone=America%2FTegucigalpa" width="12%" height="110" frameborder="0" seamless></iframe>  -->
-
-      </span>
 
         
       </div>

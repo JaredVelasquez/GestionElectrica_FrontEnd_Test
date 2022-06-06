@@ -8,6 +8,7 @@ import { EEHSchema } from 'src/Core/interfaces/eeh-invoice';
 import { ManualInvoiceDetailView } from 'src/Core/interfaces/manual-invoice-detail.interface';
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-factura-ehh',
@@ -36,6 +37,7 @@ export class FacturaEHHComponent implements OnInit {
     update: "factura-manuals",
 
   }
+  pipe = new DatePipe('en-US');
 
   constructor(
     private fb: FormBuilder,
@@ -66,6 +68,8 @@ export class FacturaEHHComponent implements OnInit {
 
     this.globalService.Get(this.url.get).subscribe(
       (result: any) => {
+        console.log(result);
+        
         this.listOfDataAux = [... result];
         this.filterInvoices(estado, switched);
         
@@ -196,10 +200,10 @@ export class FacturaEHHComponent implements OnInit {
       ... {codigo, cargoReactivo},
       contratoId: this.dataPosition.id,
       tipoFacturaId: 1,
-      fechaEmision: this.validateForm.value.fechaVencimiento[0],
-      fechaVencimiento: this.validateForm.value.fechaVencimiento[1],
-      fechaInicial: this.validateForm.value.fechaFacturacion[0],
-      fechaFinal: this.validateForm.value.fechaFacturacion[1],
+      fechaEmision: this.pipe.transform(this.validateForm.value.fechaVencimiento[0], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaVencimiento: this.pipe.transform(this.validateForm.value.fechaVencimiento[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaInicial: this.pipe.transform(this.validateForm.value.fechaFacturacion[0], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaFinal: this.pipe.transform(this.validateForm.value.fechaFacturacion[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
       estado: true,
     }
   }
@@ -222,11 +226,13 @@ export class FacturaEHHComponent implements OnInit {
   }
 
   editableForm(data: EEHSchema){
+    console.log(data);
     
     this.validateForm = this.fb.group({
       fechaVencimiento: [[data.fechaEmision.toString(), data.fechaVencimiento.toString()], [Validators.required]],
       fechaFacturacion: [[data.fechaInicial.toString(), data.fechaFinal.toString()], [Validators.required]],
       codigo: [data.codigo, [Validators.required]],
+      cargoReactivo: [ data.cargoReactivo , [Validators.required]],
     })
     this.localPosition = data;
     this.editIsActive = true;

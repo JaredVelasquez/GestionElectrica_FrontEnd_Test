@@ -2,13 +2,13 @@
 <div nz-col nzOffset="8" nzSpan="4" class="row1-col1">
 
     <button nz-button nzSize="small" [nzType]="'primary'" (click)="showModal()"><i nz-icon nzType="file-text" nzTheme="outline"></i></button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="Medidores" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" nzWidth="9" [nzStyle]="{ top: '5px' }">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Medidores" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" nzWidth="35%" [nzStyle]="{ top: '5px' }">
         <ng-container *nzModalContent>
 
 
           <form nz-form [formGroup]="validateForm" nzLayout="horizontal">
             <div nz-row>
-              <div nz-col nzSpan="8">
+              <div nz-col nzSpan="11">
                 <label>Medidor</label>
                   <div nz-row>
                     <nz-form-item>
@@ -21,7 +21,7 @@
                   </div>
                 
               </div>
-              <div nz-col  nzSpan="8">
+              <div nz-col nzOffset="2"  nzSpan="11">
                 <label>Contrato</label>
                   <div nz-row>
                     <nz-form-item>
@@ -34,35 +34,10 @@
                   </div>
               </div>
               
-              <div nz-col  nzSpan="8">
-                <label>Tarifa</label>
-                  <div nz-row>
-                    <nz-form-item>
-                      <nz-form-control>
-                        <nz-select style="width: 290px;" nzSize="large" nzMode="default" nzPlaceHolder="12983718" formControlName="tarifaId">
-                          <nz-option *ngFor="let rate of listOfRates" [nzLabel]="rate.codigo" [nzValue]="rate.id"></nz-option>
-                        </nz-select>
-                      </nz-form-control>
-                    </nz-form-item>
-                  </div>
-              </div>
             
             </div>
           
             <div nz-row>
-              <div nz-col nzSpan="8">
-                <label>Zona</label>
-                  <div nz-row>
-                    <nz-form-item>
-                      <nz-form-control>
-                        <nz-select style="width: 230px;" nzSize="large" nzMode="default" nzPlaceHolder="12983718" formControlName="zonaId">
-                          <nz-option *ngFor="let zone of listOfZones" [nzLabel]="zone.codigo" [nzValue]="zone.id"></nz-option>
-                        </nz-select>
-                      </nz-form-control>
-                    </nz-form-item>
-                  </div>
-
-              </div>
             
               <div nz-col>
                 <label>Fecha valida</label>
@@ -70,7 +45,7 @@
                   <nz-form-control>
                   
                       <div nz-row>
-                              <nz-range-picker style="width: 580px;" formControlName="fecha" [nzRanges]="ranges" [nzDisabled]="true" [(ngModel)]="dates"></nz-range-picker>
+                              <nz-range-picker [nzShowTime]="true" style="width: 600px;" formControlName="fecha" [nzRanges]="ranges" [nzDisabled]="true" [(ngModel)]="dates"></nz-range-picker>
                       </div>
                     
                   </nz-form-control>
@@ -83,7 +58,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <textarea nz-input formControlName="observacion" class="inputLarge"  rows="2" placeholder="Escriba algo"></textarea>
+                        <textarea nz-input formControlName="observacion" style="width: 600px;"  rows="2" placeholder="Escriba algo"></textarea>
                     </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -96,7 +71,7 @@
     
           <div nz-row class="row-4">
               
-              <div nz-col nzOffset="19" nzSpan="1">
+              <div nz-col nzOffset="16" nzSpan="1">
                   <button nz-button (click)="cleanForm()"><i nz-icon nzTheme="outline" nzType="clear"></i></button>
               </div>
               <div nz-col nzOffset="1" nzSpan="1" >

@@ -7,6 +7,7 @@ import { InputParametersInterface, InputParamSchema } from "src/Core/interfaces/
 import { ChargesInterface } from 'src/Core/interfaces/charges.interface';
 import { endOfMonth } from 'date-fns';
 import { NotificationService } from '@shared/services/notification.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-modal-parameters',
@@ -26,6 +27,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
   validateForm!: FormGroup;
+  pipe = new DatePipe('en-US');
 
   EmptyForm = this.fb.group({
     fecha: ['', [Validators.required]],
@@ -150,8 +152,8 @@ export class ModalParametersComponent implements OnInit, OnChanges {
     this.newParam = {
       idTarifa: this.dataPosition.id,
       ... this.validateForm.value,
-      fechaInicio: this.validateForm.value.fecha[0],
-      fechaFinal: this.validateForm.value.fecha[1],
+      fechaInicio:  this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm', '-0600'),
+      fechaFinal:  this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm', '-0600'),
       estado: true,
     }
 
@@ -165,8 +167,8 @@ export class ModalParametersComponent implements OnInit, OnChanges {
         ... {valor, observacion, tipoCargoId},
         id: dataEditable.idParametro,
         tipo: dataEditable.tipo,
-        fechaInicio: this.validateForm.value.fecha[0],
-        fechaFinal: this.validateForm.value.fecha[1],
+        fechaInicio:  this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-0600') || '',
+        fechaFinal: this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-0600')  || '',
         estado: dataEditable.estado,
         }
         
@@ -181,14 +183,15 @@ export class ModalParametersComponent implements OnInit, OnChanges {
             if(!result){
               if(dataEditable)
               this.update(dataEditable, dataEditable.estado);
-              this.cleanForm();
               this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
             }else{
               this.notificationService.createMessage('error', 'La accion fallo 😓');
             }
               
+            
           }
         );  
+        this.cleanForm();
         
       }
   } else {

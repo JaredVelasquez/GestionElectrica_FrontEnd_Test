@@ -15,8 +15,6 @@ import { LecturasPorContrato } from "src/Core/interfaces/eeh-invoice";
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { concatMap } from 'rxjs/operators';
-import { locale } from 'moment';
-const moment = require('moment');
 import { DatePipe } from '@angular/common';
 export interface facturas{
   
@@ -42,7 +40,6 @@ export interface facturas{
 })
 export class GeneratedInvoicesComponent implements OnInit {
   FacturaIsVisible: boolean = false;
-  pipe = new DatePipe('en-US');
   dataInvoice!: LecturasPorContrato;
   isVisible = false;
   validateForm!: FormGroup;
@@ -60,6 +57,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   vencimiento: any;
   dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
   historicData: facturas[] = [];
+  pipe = new DatePipe('en-US');
 
   onChange(result: Date[]): void {
     this.dates = {
@@ -307,13 +305,9 @@ export class GeneratedInvoicesComponent implements OnInit {
       .subscribe(() => {
         console.log('All completed!');
       });
-      var local = new Date();
-      var utc = Date.UTC(local.getFullYear(), local.getMonth(), local.getDate(), local.getHours(), local.getMinutes(), local.getSeconds(), local.getMilliseconds());
-      var tz = (utc - local.getTime()) / (60 * 60 * 1000);
-      console.log(tz);
     let generateFacturaSchema = {
-      fechaInicial: this.pipe.transform(this.generateInvoicesForm.value.fecha[0], 'yyyy-MM-dd HH:mm', '-0600'),
-      fechaFinal: this.pipe.transform(this.generateInvoicesForm.value.fecha[1], 'yyyy-MM-dd HH:mm', '-0600'),
+      fechaInicial: this.pipe.transform(this.generateInvoicesForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaFinal: this.pipe.transform(this.generateInvoicesForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
       facturaEEH: this.generateInvoicesForm.value.facturaEEH,
     }
     console.log(generateFacturaSchema);
