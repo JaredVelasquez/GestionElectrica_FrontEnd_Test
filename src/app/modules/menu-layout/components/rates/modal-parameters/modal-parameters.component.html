@@ -149,8 +149,8 @@
                   </div>
                 </td>
                 <td>{{ data.cargoNombre }}</td>
-                <td>{{ data.fechaInicio  | date:'dd/M/yyyy'  }}</td>
-                <td>{{ data.fechaFinal  | date:'dd/M/yyyy' }}</td>
+                <td>{{ data.fechaInicio  | date:'dd/M/yyyy':'GMT'  }}</td>
+                <td>{{ data.fechaFinal  | date:'dd/M/yyyy':'GMT' }}</td>
                 <td nzRight>Lps. {{  data.valor }}</td>
                 </tr>
               </tbody>

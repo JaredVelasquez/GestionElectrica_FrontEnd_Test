@@ -270,15 +270,6 @@ export class RollOverModalComponent implements OnInit, OnChanges {
   
   listOfColumns: ColumnItem[] = [
     {
-      name: 'ID',
-      sortOrder: null,
-      sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: RollOverSchema, b: RollOverSchema) => a.id - (b.id),
-      filterMultiple: false,
-      listOfFilter: [],
-      filterFn: null,
-    },
-    {
       name: 'Fecha inicial',
       sortOrder: null,
       sortFn: (a: RollOverSchema, b: RollOverSchema) => (String(a.fechaInicial)).localeCompare(String(b.fechaInicial)),

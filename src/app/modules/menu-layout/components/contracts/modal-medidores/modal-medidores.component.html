@@ -148,8 +148,8 @@
                                 </div>
                               </td>
                             <td>{{data.descripcion}}</td>
-                            <td>{{data.fechaInicial   | date:'dd/M/yyyy'  }}</td>
-                            <td >{{data.fechaFinal  | date:'dd/M/yyyy'  }}</td>
+                            <td>{{data.fechaInicial   | date:'dd/M/yyyy':'GMT'  }}</td>
+                            <td >{{data.fechaFinal  | date:'dd/M/yyyy':'GMT'  }}</td>
                             </tr>
                         </tbody>
                         </nz-table>

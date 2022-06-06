@@ -34,7 +34,7 @@
                     <p class="etiqueta-izq"> Número factura: </p>
                 </div>
                 <div>
-                    <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy hh:MM:ss':'GMT' }} </p>
+                    <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy':'GMT' }} </p>
                     <p class="etiqueta-der">{{ vencimiento | date:'dd/M/yyyy':'GMT' }}</p>
                     <p class="etiqueta-der">{{hoy | date:'dd/M/yyyy':'GMT' }}</p>
                     <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaAnterior | date:'dd/M/yyyy':'GMT' }}  hasta  {{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy':'GMT' }} </p>

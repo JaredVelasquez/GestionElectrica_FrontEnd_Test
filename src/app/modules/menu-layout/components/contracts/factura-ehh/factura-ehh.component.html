@@ -138,10 +138,10 @@
                               </div>
                             </td>
                           <td>{{data.codigo}}</td>
-                          <td>{{data.fechaEmision   | date:'dd/M/yyyy'}}</td>
-                          <td>{{data.fechaVencimiento   | date:'dd/M/yyyy'}}</td>
-                          <td>{{data.fechaInicial   | date:'dd/M/yyyy'}}</td>
-                          <td>{{data.fechaFinal   | date:'dd/M/yyyy'}}</td>
+                          <td>{{data.fechaEmision   | date:'dd/M/yyyy':'GMT'}}</td>
+                          <td>{{data.fechaVencimiento   | date:'dd/M/yyyy':'GMT'}}</td>
+                          <td>{{data.fechaInicial   | date:'dd/M/yyyy':'GMT'}}</td>
+                          <td>{{data.fechaFinal   | date:'dd/M/yyyy':'GMT'}}</td>
 
                           <td nzRight nzAlign="center">
                             <app-modal-cargos-eeh [dataPosition]="data" [listOfDataAux]="listOfManualInvoiceDetail"></app-modal-cargos-eeh>
