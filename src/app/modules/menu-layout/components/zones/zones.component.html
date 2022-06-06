@@ -18,7 +18,7 @@
 <br>
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzPageSize]="10">
+      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{   x: '100%', y: '100%' }" [nzPageSize]="10">
         <thead>
           <tr>
           <th nzWidth="80px">Acciones</th>
@@ -51,7 +51,7 @@
                     ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                 </div>
                 <ng-template #disablesList>
-                    <button nz-button nzType="primary"  nzShape="circle"  
+                    <button nz-button nzType="primary" nzSize="small"  
                     nz-popconfirm
                     nzPopconfirmTitle="Quieres habilitar este item ?"
                     (nzOnConfirm)="disableClient(data, 1)"

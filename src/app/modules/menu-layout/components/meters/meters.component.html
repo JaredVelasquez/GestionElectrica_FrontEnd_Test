@@ -38,7 +38,7 @@
 
   <div nz-col>
 
-    <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '100%', y: '240px' }" nzSize="middle">
+    <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{ x: '100%', y: '100%' }" nzSize="middle" [nzPageSize]="10">
       <thead>
         <tr>
           <th nzLeft nzWidth="100px">Accion</th>
@@ -82,7 +82,7 @@
                     (nzOnConfirm)="disableMeter(data, 1)"
                     (nzOnCancel)="cancel()"
                     nzPopconfirmPlacement="rightBottom" 
-                    ><i nz-icon nzType="file-done" nzTheme="outline"></i></button>
+                    ><i nz-icon nzType="undo" nzTheme="outline"></i></button>
                 </ng-template>
               </div>
               <div nz-col nzOffset="3">

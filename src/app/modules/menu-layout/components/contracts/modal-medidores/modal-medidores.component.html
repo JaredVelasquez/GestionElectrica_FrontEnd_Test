@@ -58,7 +58,7 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <textarea nz-input formControlName="observacion" style="width: 600px;"  rows="2" placeholder="Escriba algo"></textarea>
+                        <textarea nz-input formControlName="observacion" style="width: 480px;"  rows="2" placeholder="Escriba algo"></textarea>
                     </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -103,7 +103,7 @@
                         <nz-table #table [nzData]="listOfData" [nzScroll]="{  x: '100%', y: '240px' }"  [nzPageSize]="4">
                         <thead>
                             <tr>
-                            <th nzLeft nzWidth="80px">Acciones</th>
+                            <th nzLeft nzWidth="90px">Acciones</th>
                             <th
                                 *ngFor="let column of listOfColumns"
                                 [nzSortOrder]="column.sortOrder"

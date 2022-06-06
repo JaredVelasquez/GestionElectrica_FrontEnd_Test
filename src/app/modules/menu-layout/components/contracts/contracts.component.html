@@ -33,7 +33,7 @@
 
 <div nz-row class="row-2">
   <div nz-col>
-      <nz-table #table [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '100%', y: '385px' }"  [nzPageSize]="10">
+      <nz-table #table [nzData]="ListOfData" nzTableLayout="fixed" [nzScroll]="{  x: '100%', y: '100%' }"  [nzPageSize]="10">
         <thead>
           <tr>
           <th nzLeft nzWidth="80px" nzAlign="center">Acciones</th>
@@ -88,8 +88,8 @@
             <td nzLeft>{{data.codigo}}</td>  
             <td>{{data.descripcion}}</td>
             <td>{{ data.nombre }}</td>
-            <td>{{ data.fechaCreacion   | date:'dd/M/yyyy'  }}</td>  
-            <td>{{ data.fechaVenc   | date:'dd/M/yyyy'  }}</td> 
+            <td>{{ data.fechaCreacion   | date:'dd/M/yyyy':'GMT'  }}</td>  
+            <td>{{ data.fechaVenc   | date:'dd/M/yyyy':'GMT'  }}</td> 
             <td nzRight nzAlign="center">
                 <app-modal-medidores [dataPosition]="data" [listOfZones]="listOfZones" [listOfRates] = "listOfRates" [listOfMeters]="listOfMeters"></app-modal-medidores>
             </td>

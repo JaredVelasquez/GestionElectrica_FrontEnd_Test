@@ -22,10 +22,6 @@
     margin: auto;
 }
 
-[nz-button] {
-    margin-right: 8px;
-    margin-bottom: 12px;
-}
 
 .cabecera {
     background-color: #001529;
@@ -44,15 +40,6 @@
     justify-content: space-around;
     width: 80%;
     margin: auto;
-}
-
-.titulos-detalle {
-    background-color: #001529;
-    display: flex;
-    justify-content: space-around;
-    width: 80%;
-    margin: auto;
-    margin-top: 5px;
 }
 
 .datos {
@@ -109,12 +96,6 @@
     margin-right: 1%;
 }
 
-.etiqueta-consumo {
-    font-size: 16px;
-    color: black;
-    margin: 3% 0% 1% 0%;
-}
-
 .etiqueta-consumo-total {
     font-size: 16px;
     color: black;
@@ -137,13 +118,6 @@
     margin-top: 3px;
     width: 80%;
     margin: auto;
-}
-
-.etiqueta-detalle {
-    font-size: 13px;
-    color: black;
-    text-align: center;
-    margin: 0% 0% 0% 0%;
 }
 
 .consumo-container {
@@ -202,17 +176,6 @@
     margin-top: 5px;
 }
 
-.impacto-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 1px 1px;
-    grid-template-areas: ". .";
-    margin-top: 5px;
-    width: 80%;
-    margin: auto;
-}
-
 
 .datos-cliente-regulado {
     display: flex;
@@ -234,13 +197,6 @@
     justify-content: space-between;
     color: black;
     margin: 1% 5% 1% 5%;
-}
-
-.detalle-cliente-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 0.3fr;
-    grid-template-areas: ".";
 }
 
 .contenedor-cliente-regulado {
@@ -303,13 +259,6 @@
 .resultado-penalidad {
     background-color: #d8d8d8;
     padding: 0px 12px 0px 12px;
-}
-
-.asterisco {
-    color: red;
-    font-size: 15px;
-    margin: 0px;
-    font-weight: bold;
 }
 
 h1,
