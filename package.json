@@ -1,6 +1,9 @@
 {
   "name": "gestion-electrica-front-end-test",
   "version": "0.0.0",
+  "engines": {
+    "node": "16.14.2"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
