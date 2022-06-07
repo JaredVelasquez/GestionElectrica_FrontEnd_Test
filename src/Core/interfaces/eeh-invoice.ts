@@ -47,7 +47,7 @@ export interface LecturasPorContrato {
       direccion: string,
       telefono: string
     },
-    cargo?:
+    cargo:
     [
       {
         nombre: string,

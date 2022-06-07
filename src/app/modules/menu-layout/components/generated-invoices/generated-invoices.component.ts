@@ -33,6 +33,19 @@ export interface facturas{
   total: number
 }
 
+export interface model{
+  contratoId:  number,
+  codigo: string,
+  fechaLectura:  string,
+  fechaVencimiento: number,
+  fechaInicio : string,
+  fechaFin:  string,
+  fechaEmision: string,
+  energiaConsumida: number,
+  total: number | undefined,
+  estado: boolean,
+} 
+
 @Component({
   selector: 'app-generated-invoices',
   templateUrl: './generated-invoices.component.html',
@@ -58,6 +71,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
   historicData: facturas[] = [];
   pipe = new DatePipe('en-US');
+  isLoading: boolean = false;
 
   onChange(result: Date[]): void {
     this.dates = {
@@ -85,7 +99,6 @@ export class GeneratedInvoicesComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private nzMessageService: NzMessageService,
-    @Inject(LOCALE_ID) public locale: string,
   ) { }
 
   ngOnInit(): void {
@@ -131,45 +144,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   cancel(): void {
     this.nzMessageService.info('click cancel');
   }
-  // GetRates(){
-  //   this.globalService.GetId(this.url.get, this.url.id).subscribe( 
-  //     (result:any) => {
-  //       console.log(result);
-  //       result.Id = Number(result.Id);
-  //       this.listOfData = result;
-  //     }
-  //   );
-  // }
   
-  // GetMeters(){
-  //   this.globalService.Get(this.url.getMeters).subscribe(
-  //     (result:any) => {
-  //       this.listOfMeters = result;
-
-        
-  //     }
-  //   );
-  // }
-  
-  // GetContratos(){
-  //   this.globalService.GetId(this.url.getcontratosM, 1).subscribe( 
-  //     (result:any) => {
-  //       this.ListOfContractMeditors = result;
-  //     }
-  //   );
-  // }
-
-  // GetCargos(){
-  //   this.globalService.GetId(this.url.getECharges, 1).subscribe( 
-  //     (result:any) => {
-  //       this.ListOfCharges = result;
-  //       console.log(this.ListOfCharges);
-        
-  //     }
-  //   );
-  // }
-  
-
   GenerateInvoice(data: LecturasPorContrato): void{
     this.dataInvoice = data;
     this.getHistoric(data.contrato.contratoId, data);
@@ -285,6 +260,46 @@ export class GeneratedInvoicesComponent implements OnInit {
       }
     );
 
+  }
+
+  EmitAll(){
+    this.isLoading = true;
+    this.nzMessageService
+      .loading('Action in progress', { nzPauseOnHover: this.isLoading })
+      .onClose!.pipe(
+        concatMap(() => this.nzMessageService.success('Loading finished', { nzDuration: 2500 }).onClose!),
+        concatMap(() => this.nzMessageService.info('Loading finished is finished', { nzDuration: 2500 }).onClose!)
+      )
+      .subscribe(() => {
+        console.log('All completed!');
+      });
+    for(let i = 0; i < this.listOfData.length; i++){
+
+      let provider: model = {
+        contratoId:  this.listOfData[i].contrato.contratoId,
+        codigo:  formatDate((new Date()).toISOString(), 'yyyy-MM-dd','en-US', 'GMT') + ' - FA#',
+        fechaLectura:  this.listOfData[i].medidor[0].historico.fechaActual,
+        fechaVencimiento:  (this.UnDiaMLS * this.listOfData[i].contrato.diasDisponibles) + this.hoy,
+        fechaInicio : this.listOfData[i].medidor[0].historico.fechaAnterior,
+        fechaFin:  this.listOfData[i].medidor[0].historico.fechaActual,
+        fechaEmision: (new Date()).toISOString(),
+        energiaConsumida: this.listOfData[i].totalLecturaActivaAjustada,
+        total: this.listOfData[i].cargo ? this.listOfData[i].cargo[this.listOfData[i].cargo.length - 1].valorAjustado : 0,
+        estado: true,
+      } 
+
+      this.globalService.Post(this.url.post, provider).subscribe(
+        (result: any) => {
+          console.log(result);
+          
+        }
+      );
+
+      if(i+1 == this.listOfData.length){
+        this.isLoading = false;
+      }
+      
+    }
   }
 
   GenerateInvoicesCleanForm(){
