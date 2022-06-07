@@ -12,7 +12,15 @@ const routes: Routes = [
     path: 'sys', 
     loadChildren: () => import('@modules/menu-layout/menu-layout.module').then(m => m.MenuLayoutModule),
     canActivate: [AuthGuard] 
-  }
+  },
+  { path: '', 
+    pathMatch: 'full', 
+    redirectTo: '/sys/welcome' 
+  },
+  { path: '**', 
+    pathMatch: 'full', 
+    redirectTo: '/sys/welcome' 
+  },
 ];
 
 @NgModule({
