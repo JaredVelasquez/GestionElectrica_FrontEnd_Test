@@ -1,6 +1,8 @@
-<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()"   class="container-bordered">
+  <h3>Registrarse</h3>
   <div nz-row>
-    <div nz-col nzSpan="12">
+    <div nz-col nzSpan="11">
       <nz-form-label  nzRequired nzFor="email">E-mail</nz-form-label>
 
       <div nz-row>
@@ -14,7 +16,7 @@
     </div>
 
     
-    <div nz-col nzSpan="12">
+    <div nz-col nzOffset="2" nzSpan="11">
       <nz-form-label
         nzFor="username"
         nzRequired
@@ -36,7 +38,7 @@
   </div>
     
     <div nz-row>
-      <div nz-col nzSpan="12" >
+      <div nz-col nzSpan="11" >
           <nz-form-label  nzFor="password" nzRequired>Password</nz-form-label>
         <div nz-row>
           <nz-form-item  nzFlex>
@@ -56,7 +58,7 @@
 
       </div>
         
-      <div nz-col nzSpan="12">
+      <div nz-col nzOffset="2" nzSpan="11">
         <nz-form-label  nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
 
         <div nz-row>
@@ -83,26 +85,26 @@
     </div>
 
     <div nz-row>
-      <div nz-col nzSpan="12"> 
+      <div nz-col nzSpan="11"> 
         <nz-form-label nzFor="phoneNumber" nzRequired>Phone Number</nz-form-label>
         
         <div nz-row>
-          <nz-form-item>
-            <nz-form-control
-              [nzValidateStatus]="validateForm.controls['phoneNumber']"
-              nzErrorTip="Please input your phone number!"
-            >
-              <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
-                <ng-template #addOnBeforeTemplate>
-                  <nz-select  formControlName="phoneNumberPrefix" class="phone-select">
-                    <nz-option nzLabel="+504" nzValue="+504"></nz-option>
-                    <nz-option nzLabel="+1" nzValue="+1"></nz-option>
-                  </nz-select>
-                </ng-template>
-                <input width="200x" formControlName="phoneNumber" id="'phoneNumber'" nz-input />
-              </nz-input-group>
-            </nz-form-control>
-          </nz-form-item>
+            <nz-form-item>
+              <nz-form-control
+                [nzValidateStatus]="validateForm.controls['phoneNumber']"
+                nzErrorTip="Please input your phone number!"
+              >
+                <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+                  <ng-template #addOnBeforeTemplate>
+                    <nz-select  formControlName="phoneNumberPrefix" class="phone-select">
+                      <nz-option nzLabel="+504" nzValue="+504"></nz-option>
+                      <nz-option nzLabel="+1" nzValue="+1"></nz-option>
+                    </nz-select>
+                  </ng-template>
+                  <input width="200x" formControlName="phoneNumber" id="'phoneNumber'" nz-input />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
 
         </div>
 
@@ -112,7 +114,7 @@
 
     <div nz-row>
 
-      <div nz-col nzSpan="12">
+      <div nz-col nzSpan="11">
         <nz-form-label nzFor="firstName" nzRequired>Nombre</nz-form-label>
 
         <div row>
@@ -125,7 +127,7 @@
         </div>
 
       </div>
-      <div nz-col nzSpan="12">
+      <div nz-col nzSpan="11" nzOffset="2">
         <nz-form-label  nzFor="lastName" nzRequired>Apellido</nz-form-label>
 
         <div nz-row>
@@ -175,8 +177,7 @@
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
             <label nz-checkbox formControlName="agree">
               <span>
-                I have read the
-                <a>agreement</a>
+                Acepto los terminos de contrato
               </span>
             </label>
           </nz-form-control>
@@ -189,12 +190,19 @@
     <div nz-row>
       <div nz-col nzSpan="24">
         <nz-form-item nz-row class="register-area">
-          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <nz-form-control [nzSpan]="3" [nzOffset]="10">
             <button [disabled]="validateForm.invalid" nz-button nzType="primary">Register</button>
           </nz-form-control>
         </nz-form-item>
 
       </div>
 
+    </div>
+    
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        
+        <a [routerLink]="['/login']" style="text-align: center;"> <p>Iniciar Sesion</p> </a>
+      </div>
     </div>
   </form>

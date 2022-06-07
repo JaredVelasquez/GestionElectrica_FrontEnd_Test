@@ -26,6 +26,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { CookieService } from 'ngx-cookie-service';
 import { SharedModule } from "../../shared/shared.module";
 
@@ -33,11 +34,15 @@ import { SharedModule } from "../../shared/shared.module";
 //shared
 
 import { RegisterComponent } from './components/register/register.component';
+import { GenereteCodeComponent } from './components/generete-code/generete-code.component';
+import { VerifyCodeComponent } from './components/verify-code/verify-code.component';
 @NgModule({
   declarations: [
     AuthMainComponent,
     LoginPageComponent,
     RegisterComponent,
+    GenereteCodeComponent,
+    VerifyCodeComponent,
 
   ],
   imports: [
@@ -64,6 +69,7 @@ import { RegisterComponent } from './components/register/register.component';
     NzDrawerModule,
     HttpClientModule,
     NzNotificationModule,
+    NzStatisticModule,
     //shared
     SharedModule,
   ],

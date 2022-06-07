@@ -1,41 +1,50 @@
-.inputLarge{
-    width: 476px;
-    display: table-cell; 
-    vertical-align: middle;
-    border: 1px solid #ccc;
-}
-.inputMedium{
-    width: 230px;
-    display: table-cell; 
-    vertical-align: middle;
-    border: 1px solid #ccc;
-}
 
-[nz-form] {
+.login-form {
     margin: 0 auto;
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 520px;
+    width: 340px;
     transform: translate(-50%, -50%);   
-} 
+}
 
-@media (max-width: 1300px){
-    [nz-form] {
-        width: 90%;  
+@media (max-width: 300px){
+    .login-form {
+        width: 100%;  
     }
 
 }
 
-.phone-select {
-width: 100px;
+.login-form-margin {
+margin-bottom: 16px;
 }
 
-.register-are {
-margin-bottom: 8px;
+.login-form-forgot {
+float: right;
 }
 
-.container-bordered {   
+.login-form-button {
+    width: 100%;
+    padding: 0.5em 1em;
+    border: none;
+}
+
+.logo-container {
+    margin: 0 auto;
+    width: 150px;  
+
+
+}
+
+.Logo {
+    margin: 0 auto;
+    width: 150px;  
+}
+
+
+
+
+.login-form {   
     border-color: #aaaaaa;
     border-width: 1px;
     border-style: solid;
@@ -50,4 +59,7 @@ margin-bottom: 8px;
 }
 h3 {
     text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 150%;
 }
+

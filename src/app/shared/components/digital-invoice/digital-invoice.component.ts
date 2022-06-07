@@ -45,6 +45,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
   title: string;
   @Input() historicData!: facturas[];
+  @Input() typeInvoice!: number;
   
 
 

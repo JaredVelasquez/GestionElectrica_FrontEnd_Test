@@ -1,4 +1,3 @@
-
 <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
 
     <div nz-row class="logo-container">
@@ -21,17 +20,8 @@
         </nz-input-group>
         </nz-form-control>
     </nz-form-item>
-    <div nz-row class="login-form-margin">
-        <!-- <div nz-col [nzSpan]="12">
-        <label nz-checkbox formControlName="remember">
-            <span>Remember me</span>
-        </label>
-        </div> -->
-        <div nz-col [nzSpan]="12">
-        <a class="login-form-forgot">Cambiar mi contraseña</a>
-        </div>
-    </div>
     <button [disabled]="validateForm.invalid" nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-    <a [routerLink]="['register']">Registrate ahora!</a>
+    <a [routerLink]="['register']" style="text-align: center;"> <p>Registrate ahora!</p> </a>
+    <a [routerLink]="['generate-code']"  style="text-align: center;"> <p>Olvide mi contraseña</p> </a>
+    
 </form>
-  
