@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '@modules/auth/services/login.service';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { NotificationService } from '@shared/services/notification.service';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -22,7 +23,8 @@ export class VerifyCodeComponent implements OnInit {
     private cookieService: CookieService,
     private loginService: LoginService,
     private router: Router,
-    private notification: NotificationService
+    private notificationService: NotificationService,
+    private globalService: EndPointGobalService
     ) {}
 
   ngOnInit(): void {
@@ -35,6 +37,22 @@ export class VerifyCodeComponent implements OnInit {
   
   submitForm(): void {
     if (this.validateForm.valid) {
+      
+      this.globalService.Post('verify-code', {code: this.validateForm.value.code}).subscribe(
+        (result: any) => {
+          console.log(result);
+          
+          if(result.error){
+            this.notificationService.createMessage('error', `${result.error}  😓`);
+
+          }else{
+            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+            this.router.navigate(['login/reset-password', result]); 
+            
+          }
+          
+        }
+      );
 
     } else {
       Object.values(this.validateForm.controls).forEach(control => {

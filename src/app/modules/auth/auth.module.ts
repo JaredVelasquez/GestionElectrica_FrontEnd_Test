@@ -36,6 +36,7 @@ import { SharedModule } from "../../shared/shared.module";
 import { RegisterComponent } from './components/register/register.component';
 import { GenereteCodeComponent } from './components/generete-code/generete-code.component';
 import { VerifyCodeComponent } from './components/verify-code/verify-code.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 @NgModule({
   declarations: [
     AuthMainComponent,
@@ -43,6 +44,7 @@ import { VerifyCodeComponent } from './components/verify-code/verify-code.compon
     RegisterComponent,
     GenereteCodeComponent,
     VerifyCodeComponent,
+    ResetPasswordComponent,
 
   ],
   imports: [
