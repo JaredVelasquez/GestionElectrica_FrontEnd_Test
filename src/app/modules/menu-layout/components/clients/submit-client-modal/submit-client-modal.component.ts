@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { NotificationService } from '@shared/services/notification.service';
+import { rejects } from 'assert';
+import { resolve } from 'dns';
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
 
 @Component({
@@ -16,7 +19,8 @@ export class SubmitClientModalComponent implements OnInit {
   newProvider!: ActorInterface;
   validateForm!: FormGroup;
   isVisible = false;
-
+  file!: any;
+  previsualize!: any;
   url = {
     get: 'get-providers',
     post: 'actores',
@@ -26,7 +30,8 @@ export class SubmitClientModalComponent implements OnInit {
   constructor(
     private globalService:EndPointGobalService,
     private fb: FormBuilder,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private sanitizer: DomSanitizer
   ) { }
 
   EmptyForm = this.fb.group({
@@ -40,6 +45,14 @@ export class SubmitClientModalComponent implements OnInit {
     this.validateForm = this.EmptyForm;
   }
 
+  captureFile(event: any): any{
+    this.file = event.target.files[0];
+    this.extraerBase64(this.file).then((file:any) => {
+      this.previsualize = file.base;
+      
+    })
+  }
+
   submitForm(): void{
     if(!this.dataPosition){
       this.submitPostForm();
@@ -48,6 +61,29 @@ export class SubmitClientModalComponent implements OnInit {
       this.submitUpdateForm();
     }
   }
+
+  extraerBase64 = async ($event: any) => new Promise((resolve, rejects) => {
+    try{
+      const unsafeImg = window.URL.createObjectURL($event);
+      const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
+      const reader = new FileReader();
+      reader.readAsDataURL($event);
+      reader.onload = () => {
+        resolve({
+          base: reader.result
+        });
+      };
+      reader.onerror = error =>{
+        resolve({
+          base: null 
+        })
+      };
+      return true;
+
+    }catch(e){
+      return null;
+    }
+  });
 
   submitPostForm(){
     if (this.validateForm.valid) {

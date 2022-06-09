@@ -131,19 +131,19 @@
                 <tr *ngFor="let data of table.data">
                 <td nzLeft>
                   <div nz-row>
-                    <div nz-col>
+
+                    <div nz-col nzSpan="11">
+                          <button class="edit" nz-button nzType="primary" nzSize="small" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+                      
+
+                    </div>
+                    <div nz-col nzOffset="2" nzSpan="11">
                       <div *ngIf="data.estado; else disablesList"> 
                           <button class="edit" nz-button nzType="primary" nzSize="small" nzDanger (click)=" disableRelation(data, false)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                       </div>
                       <ng-template #disablesList>
                           <button class="edit" nz-button nzType="primary" nzSize="small" (click)=" disableRelation(data, true)"><i nz-icon nzType="undo" nzTheme="outline"></i></button>
                       </ng-template>
-
-                    </div>
-
-                    <div nz-col>
-                          <button class="edit" nz-button nzType="primary" nzSize="small" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-                      
 
                     </div>
                   </div>

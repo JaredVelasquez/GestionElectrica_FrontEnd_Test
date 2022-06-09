@@ -167,8 +167,7 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   }
 
   fullSchema(){
-    this.validateForm.value.fecha[0] = this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-0600');
-    this.validateForm.value.fecha[1] = this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss','-0600');
+    this.validateForm.value.fecha = this.pipe.transform(this.validateForm.value.fecha, 'yyyy-MM-dd HH:mm:ss', '-0600')?.toString();
     this.newManualRegister = {
       ... this.validateForm.value,
       estado: true

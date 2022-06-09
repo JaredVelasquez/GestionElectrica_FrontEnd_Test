@@ -40,6 +40,7 @@ export class ClientsComponent implements OnInit {
     this.listOfClients.push(list);
   }
 
+
   GetClients(estado: number, switched: boolean){
     if(switched){
       if((!this.disableClients) && estado === 0){

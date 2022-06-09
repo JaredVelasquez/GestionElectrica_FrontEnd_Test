@@ -184,6 +184,7 @@ export class ModalCargosEehComponent implements OnInit {
 
   
   showModal(): void {
+    this.CleanForm();
     this.isVisible = true;
   }
 

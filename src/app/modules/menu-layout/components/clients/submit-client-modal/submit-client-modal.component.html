@@ -68,7 +68,8 @@
                               <div nz-row>
                                 <nz-form-item>
                                   <nz-form-control>
-                                    <input class="inputLarge" nz-input id="file" type="file"  />
+                                    <input class="inputLarge" id="file" type="file" (change)="captureFile($event)"/>
+                                    <img style="width: 80px;" *ngIf="previsualize" [src]="previsualize" alt="">
                                   </nz-form-control>
                                 </nz-form-item>
                               </div>

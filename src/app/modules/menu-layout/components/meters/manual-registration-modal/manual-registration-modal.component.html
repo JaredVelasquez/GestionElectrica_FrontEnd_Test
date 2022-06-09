@@ -93,10 +93,9 @@
                 <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
                   <thead>
                     <tr>
-                      <th nzWidth="90px">
+                      <th nzWidth="100px">
                         Acciones
                       </th>
-                      <th nzWidth="100px">Medidor</th>
                       <th nzWidth="100px">Variable</th>
                       <th nzCustomFilter>
                         Fecha
@@ -107,36 +106,36 @@
                   <tbody>
                     <tr *ngFor="let data of nzTable.data">
                       <td>
-                        <div nz-col>
-                          <div *ngIf="data.estado; else disablesList"> 
-                              <button nzSize="small" nz-button nzType="primary" nzDanger
-                              nz-popconfirm
-                              nzPopconfirmTitle="Estas seguro que quieres deshabilitarlo?"
-                              (nzOnConfirm)="disable(data, false)"
-                              (nzOnCancel)="cancel()"
-                              nzPopconfirmPlacement="rightBottom"
-                              nz-button
-                              
-                              ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-                          </div>
-                          <ng-template #disablesList>
-                              <button nzSize="small"  nz-button nzType="primary"><i nz-icon nzType="undo" nzTheme="outline"
+                        <div nz-row>
+                          <div nz-col nzSpan="11">
+                                <button  *ngIf="data.estado; else disablesList" nzSize="small" nz-button nzType="primary" nzDanger
                                 nz-popconfirm
-                                nzPopconfirmTitle="Estas seguro que quieres habilitarlo?"
-                                (nzOnConfirm)="disable(data, true)"
+                                nzPopconfirmTitle="Estas seguro que quieres deshabilitarlo?"
+                                (nzOnConfirm)="disable(data, false)"
                                 (nzOnCancel)="cancel()"
                                 nzPopconfirmPlacement="rightBottom"
                                 nz-button
                                 
-                                ></i></button>
-                          </ng-template>
-                        </div>
-                        <div nz-col>
-                          <button nzSize="small"  nz-button nzType="primary" (click)="editableFrom(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-                          
+                                ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                            <ng-template #disablesList>
+                                <button nzSize="small"  nz-button nzType="primary"><i nz-icon nzType="undo" nzTheme="outline"
+                                  nz-popconfirm
+                                  nzPopconfirmTitle="Estas seguro que quieres habilitarlo?"
+                                  (nzOnConfirm)="disable(data, true)"
+                                  (nzOnCancel)="cancel()"
+                                  nzPopconfirmPlacement="rightBottom"
+                                  nz-button
+                                  
+                                  ></i></button>
+                            </ng-template>
+                          </div>
+                          <div nz-col nzSpan="11" nzOffset="2">
+                            <button nzSize="small"  nz-button nzType="primary" (click)="editableFrom(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+                            
+                          </div>
+
                         </div>
                       </td>
-                      <td>{{ data.codigo }}</td>
                       <td>{{ data.descripcion }}</td>
                       <td timeZone>{{ data.fecha  | date:'yyyy/M/dd':'GMT' }}</td>
                       <td>{{ data.valor }}</td>

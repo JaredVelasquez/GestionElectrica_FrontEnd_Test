@@ -184,8 +184,8 @@ export class RollOverModalComponent implements OnInit, OnChanges {
 
       this.newRollOver = {
         ... {medidorId, energia, lecturaAnterior, lecturaNueva, observacion},
-        fechaInicial: this.pipe.transform( this.validateForm.value.fecha[0] , 'yyyy-MM-dd HH:mm', '-0600'),
-        fechaFinal:this.pipe.transform( this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm', '-0600'),
+        fechaInicial: this.pipe.transform( this.validateForm.value.fecha[0] , 'yyyy-MM-dd HH:mm:ss', '-0600'),
+        fechaFinal:this.pipe.transform( this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
         estado: true
       }
       this.IsEditableSchema.observacion = this.newRollOver.observacion;
