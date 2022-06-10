@@ -1,8 +1,11 @@
 
 
 <div nz-row>
-    <div nz-col nzOffset="22">
+    <div nz-col nzOffset="21" nzSpan="1">
         <button nz-button class="print-btn" nzType="primary" (click)=" GenerarFactura()" [nzLoading]="spinnerIsVisible"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
+    </div>
+    <div nz-col nzSpan="1">
+        <button nz-button class="print-btn" nzType="primary" (click)=" sendFile()" [nzLoading]="spinnerIsVisible"><i nz-icon nzType="send" nzTheme="outline"></i></button>
     </div>
 </div>
 <br>

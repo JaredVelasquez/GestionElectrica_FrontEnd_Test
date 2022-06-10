@@ -8,6 +8,7 @@ export interface ActorInterface{
     imagen: string;
     imagenId: string;
     observacion: string;
+    correo: string;
     estado: boolean;
 }
 

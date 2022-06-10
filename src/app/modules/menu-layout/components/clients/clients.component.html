@@ -19,17 +19,17 @@
     
   <div nz-col nzOffset="1" *ngFor="let provider of listOfClients">
   
-      <nz-card style="width:200px;" [nzCover]="coverTemplate" [nzActions]="[actionEdit]">
+      <nz-card class="card" [nzCover]="coverTemplate" [nzActions]="[actionEdit]">
           <nz-card-meta
             nzTitle= {{provider.nombre}}
             nzDescription= {{provider.direccion}}
           ></nz-card-meta>
         </nz-card>
         <ng-template #coverTemplate>
-          <img alt="example" src="{{provider.imagen}}" />
+          <img class="logo" alt="example" src="{{provider.imagen}}" />
         </ng-template>
         <ng-template #actionEdit>
-          <div nz-row nzAlign="middle" nzJustify="center">
+          <div nz-row  nzJustify="center">
             <div nz-col>
               <div *ngIf="provider.estado ; else disable">
                 <button nz-button nzDanger nzType="primary" 

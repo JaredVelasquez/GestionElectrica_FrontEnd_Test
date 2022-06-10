@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NotificationService } from '@shared/services/notification.service';
+import { FilesService } from '@shared/services/files.service';
 
 const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
   new Promise((resolve, reject) => {
@@ -24,7 +25,6 @@ export class ProvidersComponent implements OnInit {
   disableClients: boolean = false;
   previewVisible = false;
   previewImage: string | undefined = '';
-  fileList : any = [];
 
 
   url = {

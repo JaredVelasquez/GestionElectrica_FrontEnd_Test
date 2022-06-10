@@ -36,7 +36,13 @@ export class GenereteCodeComponent implements OnInit {
     if (this.validateForm.valid) { 
       console.log('entre');
       
-      this.globalService.Post('send-email', {identificator: this.validateForm.value.identificator}).subscribe(
+      this.globalService.Post('send-email', {
+        identificator: this.validateForm.value.identificator, 
+        subject: 'Codigo de verificación',
+        text: 'Su codigo de verificacion es : ',
+        option: 1
+      
+      }).subscribe(
         (result: any) => {
           console.log(result);
           

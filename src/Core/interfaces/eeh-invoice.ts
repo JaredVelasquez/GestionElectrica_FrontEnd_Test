@@ -45,7 +45,8 @@ export interface LecturasPorContrato {
       diasDisponibles: number,
       diaGeneracion: number,
       direccion: string,
-      telefono: string
+      telefono: string,
+      correo: string
     },
     cargo:
     [

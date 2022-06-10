@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
+import { FilesService } from '@shared/services/files.service';
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ActorInterface } from 'src/Core/interfaces/actors.interface';
@@ -29,6 +30,7 @@ export class SubmitProviderModalComponent implements OnInit {
     private fb: FormBuilder,
     private notificationService: NotificationService,
     private nzMessageService: NzMessageService,
+    private filesService:FilesService,
   ) { }
 
   EmptyForm = this.fb.group({
@@ -36,6 +38,7 @@ export class SubmitProviderModalComponent implements OnInit {
     telefono: ['', [Validators.required]],
     direccion: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
+    correo: ['', [Validators.required]],
   })
 
   ngOnInit(): void {
@@ -51,12 +54,21 @@ export class SubmitProviderModalComponent implements OnInit {
     }
   }
 
+  file!: any;
+  previsualize!: any;
+  captureFile(event: any): any{
+    this.file = event.target.files[0];
+    this.filesService.extraerBase64(this.file).then((file:any) => {
+      this.previsualize = file.base;
+      
+    })
+  }
   submitPostForm(){
     if (this.validateForm.valid) {
       this.newProvider = {
         ... this.validateForm.value,
         tipo: false,
-        imagen: 'https://us.123rf.com/450wm/blankstock/blankstock1408/blankstock140800126/30454176-signo-de-interrogaci%C3%B3n-signo-icono-s%C3%ADmbolo-de-ayuda-signo-de-preguntas-frecuentes-bot%C3%B3n-plano-gris-c.jpg?ver=6',
+        imagen: this.previsualize,
         estado: true
       }
 
@@ -89,7 +101,7 @@ export class SubmitProviderModalComponent implements OnInit {
       this.newProvider = {
         ... this.validateForm.value,
         tipo: false,
-        imagen: 'https://us.123rf.com/450wm/blankstock/blankstock1408/blankstock140800126/30454176-signo-de-interrogaci%C3%B3n-signo-icono-s%C3%ADmbolo-de-ayuda-signo-de-preguntas-frecuentes-bot%C3%B3n-plano-gris-c.jpg?ver=6',
+        imagen: this.previsualize,
         estado: true
       }
 
@@ -123,7 +135,9 @@ export class SubmitProviderModalComponent implements OnInit {
       telefono: [this.dataPosition.telefono, [Validators.required]],
       direccion: [this.dataPosition.direccion, [Validators.required]],
       observacion: [this.dataPosition.observacion, [Validators.required]],
+      correo: [this.dataPosition.correo, [Validators.required]],
     })
+    this.previsualize = this.dataPosition.imagen
   }
 
   UpdateMainTable(data: ActorInterface){
@@ -131,6 +145,8 @@ export class SubmitProviderModalComponent implements OnInit {
     this.dataPosition.telefono = data.telefono;
     this.dataPosition.observacion = data.observacion;
     this.dataPosition.direccion = data.direccion;
+    this.dataPosition.imagen = data.imagen
+    this.dataPosition.correo = data.correo
 
   }
 

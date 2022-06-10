@@ -277,7 +277,7 @@ export class GeneratedInvoicesComponent implements OnInit {
 
       let provider: model = {
         contratoId:  this.listOfData[i].contrato.contratoId,
-        codigo:  formatDate((new Date()).toISOString(), 'yyyy-MM-dd','en-US', 'GMT') + ' - FA#',
+        codigo:   this.pipe.transform(new Date().toISOString(), 'yyyy-MM-dd HH:mm:ss', '-0600') + ' - FA#',
         fechaLectura:  this.listOfData[i].medidor[0].historico.fechaActual,
         fechaVencimiento:  (this.UnDiaMLS * this.listOfData[i].contrato.diasDisponibles) + this.hoy,
         fechaInicio : this.listOfData[i].medidor[0].historico.fechaAnterior,
