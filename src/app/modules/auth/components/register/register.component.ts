@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NotificationService } from '@shared/services/notification.service';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +29,8 @@ export class RegisterComponent implements OnInit {
     private registerService: RegisterService,
     private router: Router,
     private message: NzMessageService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private globalService: EndPointGobalService
     ) {}
 
   ngOnInit(): void {
@@ -68,6 +70,7 @@ export class RegisterComponent implements OnInit {
           if(!result.id){
             this.router.navigate(['login']);
             this.notification.createNotification('success', 'Exito', 'Usuario Creado con exito');
+            this.confirmationEmail();
           }
           else{
             this.notification.createNotification('error', 'Falló', result.content);
@@ -87,21 +90,17 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  // updateConfirmValidator(): void {
-  //   /** wait for refresh value */
-  //   Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
-  // }
+  confirmationEmail(){
+    this.globalService.Post('send-email', {
+      identificator: this.validateForm.value.email, 
+      subject: 'Registro en sistema de facturacion',
+      text: 'Bienvenido a su plataforma para gestion de consumo energetico, consulte su manual de usuario aqui : ',
+      option: 3
+    
+    }).subscribe(
+      (result: any) => {
+        console.log(result);
+      })
 
-  // confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
-  //   if (!control.value) {
-  //     return { required: true };
-  //   } else if (control.value !== this.validateForm.controls.password.value) {
-  //     return { confirm: true, error: true };
-  //   }
-  //   return {};
-  // };
-
-  // getCaptcha(e: MouseEvent): void {
-  //   e.preventDefault();
-  // }
+  }
 }

@@ -82,11 +82,11 @@
       
                           <div nz-row>
                             <div nz-col>
-                              <label>Logo de cliente</label>
-                              <div nz-row>
+                              <label class="logo-label">Logo de cliente</label>
+                              <div nz-row class="logo-div">
                                 <nz-form-item>
                                   <nz-form-control>
-                                    <input class="inputLarge" id="file" type="file" (change)="captureFile($event)"/>
+                                    <input class="imglogo" id="file" type="file" (change)="captureFile($event)" nz-image />
                                     <img style="width: 80px;" *ngIf="previsualize" [src]="previsualize" alt="">
                                   </nz-form-control>
                                 </nz-form-item>

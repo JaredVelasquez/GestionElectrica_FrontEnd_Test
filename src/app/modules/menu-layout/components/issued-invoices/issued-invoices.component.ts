@@ -101,6 +101,9 @@ export class IssuedInvoicesComponent implements OnInit {
     
 
   GenerateInvoice(data: InvoiceInterface): void{
+    console.log('GRAFICO');
+    
+    console.log(data);
     
     let generateFacturaSchema = {
       fechaInicial: data.fechaInicio,

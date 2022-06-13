@@ -68,7 +68,21 @@ export class GeneratedInvoicesComponent implements OnInit {
   UnDiaMLS = 86400000;
   hoy = Date.now();
   vencimiento: any;
-  dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
+  dataSource: {chart:{}, data: any[], contFacturas: number, promedioConsumo: number} =  {
+    chart: {
+      caption: 'Historico de consumo por facturas generadas',
+      subCaption: 'Energia activa consumida',
+      xAxisName: 'Fecha',
+      yAxisName: 'Consumo kWh',
+      numberSuffix: 'K',
+      theme: 'fusion'
+    },
+    data: [
+      ],
+  
+    contFacturas: 0,
+    promedioConsumo: 0  
+  };
   historicData: facturas[] = [];
   pipe = new DatePipe('en-US');
   isLoading: boolean = false;
@@ -118,14 +132,21 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   Back(): void {
     this.FacturaIsVisible = false;
-    this.dataSource = {chart:{
-      caption: 'Historico de consumo por facturas generadas',
-      subCaption: 'Energia activa consumida',
-      xAxisName: 'Fecha',
-      yAxisName: 'Consumo kWh',
-      numberSuffix: 'K',
-      theme: 'fusion'
-    }, data: [{}], contFacturas: 0, promedioConsumo: 0};
+    this.dataSource = {
+      chart: {
+        caption: 'Historico de consumo por facturas generadas',
+        subCaption: 'Energia activa consumida',
+        xAxisName: 'Fecha',
+        yAxisName: 'Consumo kWh',
+        numberSuffix: 'K',
+        theme: 'fusion'
+      },
+      data: [
+        { }],
+    
+      contFacturas: 0,
+      promedioConsumo: 0  
+    };
   }
 
   showModal(): void {
@@ -146,12 +167,20 @@ export class GeneratedInvoicesComponent implements OnInit {
   }
   
   GenerateInvoice(data: LecturasPorContrato): void{
+    console.log('FACTURAS');
+    console.log(data);
+  
+    
+    
     this.dataInvoice = data;
     this.getHistoric(data.contrato.contratoId, data);
     this.FacturaIsVisible = true;
+    console.log(this.dataSource);
+    
   }
 
   getHistoric(contratoId: number, data: LecturasPorContrato){
+    
     this.globalService.GetId( this.url.getHistorico, contratoId).subscribe(
       (result : any) => {
         if(result){
@@ -191,8 +220,10 @@ export class GeneratedInvoicesComponent implements OnInit {
             }
 
           }
+
           
-          if(!this.dataSource){
+          
+          if(!this.dataSource.data){
             this.dataSource = {
               chart: {
                 caption: 'Historico de consumo por facturas generadas',
@@ -208,16 +239,20 @@ export class GeneratedInvoicesComponent implements OnInit {
               contFacturas: 0,
               promedioConsumo: 0  
             };
+            this.dataSource.contFacturas ++;
+            this.dataSource.promedioConsumo += data.totalLecturaActivaAjustada;
+            this.dataSource.promedioConsumo /= this.dataSource.contFacturas;
             
           }else{
             
           this.dataSource.data?.push(
             { label: '[' + formatDate(data.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }
             );
+            this.dataSource.contFacturas ++;
+            this.dataSource.promedioConsumo += data.totalLecturaActivaAjustada;
+            this.dataSource.promedioConsumo /= this.dataSource.contFacturas;
+
           }
-          this.dataSource.contFacturas ++;
-          this.dataSource.promedioConsumo += data.totalLecturaActivaAjustada;
-          this.dataSource.promedioConsumo /= this.dataSource.contFacturas;
 
         
 

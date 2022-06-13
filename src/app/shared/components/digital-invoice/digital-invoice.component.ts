@@ -42,7 +42,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   hoy = Date.now();
   vencimiento: any;
   ChargePosition!: ChargesShema;
-  @Input() dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
+  @Input() dataSource!: {chart:{}, data: any[], contFacturas: number, promedioConsumo: number};
   title: string;
   @Input() historicData!: facturas[];
   @Input() typeInvoice!: number;
@@ -69,10 +69,12 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.historicData);
-    console.log(this.dataInvoice);
+    console.log(this.dataSource);
+    
     
     if(this.dataInvoice){
+      if(this.dataSource.data.length > 1)
+          this.dataSource.data.shift();
       this.vencimiento = (this.UnDiaMLS * this.dataInvoice.contrato.diasDisponibles) + this.hoy;
       this.diaFacturacion = this.numeroADia(this.dataInvoice.contrato.diaGeneracion);
 
