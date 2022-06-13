@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { NotificationService } from '@shared/services/notification.service';
+import { TimeService } from '@shared/services/time.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 import { LecturasPorContrato } from 'src/Core/interfaces/eeh-invoice';
@@ -36,9 +37,10 @@ export class CancelledInvoicesComponent implements OnInit {
   listOfData: InvoiceInterface[] = [];
   list: any[] = [];
   historicData: facturas[] = [];
-  dataSource!: {chart:{}, data: [{}], contFacturas: number, promedioConsumo: number};
+  dataSource!: {chart:{}, data: any[], contFacturas: number, promedioConsumo: number};
   dataInvoice!: LecturasPorContrato;
   FacturaIsVisible: boolean = false;
+  dateConfig = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   url = {
     id: 0,
     get: 'get-invoices',
@@ -54,6 +56,7 @@ export class CancelledInvoicesComponent implements OnInit {
     private fb: FormBuilder,
     private notificationService: NotificationService,
     private nzMessageService: NzMessageService,
+    private times :TimeService
   ) { }
 
   ngOnInit(): void {
@@ -95,8 +98,10 @@ export class CancelledInvoicesComponent implements OnInit {
       yAxisName: 'Consumo kWh',
       numberSuffix: 'K',
       theme: 'fusion'
-    }, data: [{}], contFacturas: 0, promedioConsumo: 0};
+    }, data: [], contFacturas: 0, promedioConsumo: 0};
+    this.dataSource.data.length = 0;
   }
+
   cancel(): void {
     this.nzMessageService.info('click cancel');
   }
@@ -169,8 +174,9 @@ export class CancelledInvoicesComponent implements OnInit {
       (result : any) => {
         if(result){
           this.historicData = result;
-          for(let data of this.historicData){
-            if(Date.parse(data.fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
+          this.historicData = this.historicData.slice(0, 5);
+          for(let i = 0; i < this.historicData.length ; i ++){
+            if(Date.parse(this.historicData[i].fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
               if(!this.dataSource){
                 this.dataSource = {
                   chart: {
@@ -182,7 +188,7 @@ export class CancelledInvoicesComponent implements OnInit {
                     theme: 'fusion'
                   },
                   data: [
-                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.energiaConsumida.toFixed(2)).toString() }],
+                    { label: '[' + this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaFin) + ' ]', value: (this.historicData[i].energiaConsumida.toFixed(2)).toString() }],
                 
                   contFacturas: 0,
                   promedioConsumo: 0  
@@ -191,7 +197,7 @@ export class CancelledInvoicesComponent implements OnInit {
               }else{
                 
                 this.dataSource.data?.push(
-                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.energiaConsumida.toFixed(2)).toString() }
+                  { label: '[' +  this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaInicio) + ' ]', value: (this.historicData[i].energiaConsumida.toFixed(2)).toString() }
                   );
               }
     
@@ -201,7 +207,7 @@ export class CancelledInvoicesComponent implements OnInit {
                 
               
               this.dataSource.contFacturas ++;
-              this.dataSource.promedioConsumo += data.energiaConsumida;
+              this.dataSource.promedioConsumo += this.historicData[i].energiaConsumida;
   
             }
 
@@ -219,7 +225,7 @@ export class CancelledInvoicesComponent implements OnInit {
                 theme: 'fusion'
               },
               data: [
-                { label: '[' + formatDate(facturas.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(facturas.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (facturas.energiaConsumida.toFixed(2)).toString() }],
+                { label: '[' +  this.times.steticDate(facturas.fechaInicio)+ ' - '  +    this.times.steticDate(facturas.fechaFin) + ' ]', value: (facturas.energiaConsumida.toFixed(2)).toString() }],
             
               contFacturas: 0,
               promedioConsumo: 0  
@@ -228,7 +234,7 @@ export class CancelledInvoicesComponent implements OnInit {
           }else{
             
             this.dataSource.data?.push(
-              { label: '[' + formatDate(facturas.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(facturas.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (facturas.energiaConsumida.toFixed(2)).toString() }
+              { label: '[' +   this.times.steticDate(facturas.fechaInicio) + ' - '  +   this.times.steticDate(facturas.fechaFin) + ' ]', value: (facturas.energiaConsumida.toFixed(2)).toString() }
               );
           }
 

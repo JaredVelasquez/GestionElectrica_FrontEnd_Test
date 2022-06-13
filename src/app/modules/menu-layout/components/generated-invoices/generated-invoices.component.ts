@@ -16,6 +16,7 @@ import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { concatMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+import { TimeService } from '@shared/services/time.service';
 export interface facturas{
   
   cliente: string,
@@ -113,6 +114,7 @@ export class GeneratedInvoicesComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private nzMessageService: NzMessageService,
+    private times: TimeService,
   ) { }
 
   ngOnInit(): void {
@@ -141,12 +143,13 @@ export class GeneratedInvoicesComponent implements OnInit {
         numberSuffix: 'K',
         theme: 'fusion'
       },
-      data: [
-        { }],
+      data: [],
     
       contFacturas: 0,
       promedioConsumo: 0  
     };
+    
+    this.dataSource.data.length = 0;
   }
 
   showModal(): void {
@@ -185,8 +188,9 @@ export class GeneratedInvoicesComponent implements OnInit {
       (result : any) => {
         if(result){
           this.historicData = result;
-          for(let data of this.historicData){
-            if(Date.parse(data.fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
+          this.historicData = this.historicData.slice(0, 5);
+          for(let i = 0; i < this.historicData.length ; i ++){
+            if(Date.parse(this.historicData[i].fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
               console.log('fecha introducida en grafico');
               
               if(!this.dataSource){
@@ -200,7 +204,7 @@ export class GeneratedInvoicesComponent implements OnInit {
                     theme: 'fusion'
                   },
                   data: [
-                    { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.energiaConsumida.toFixed(2)).toString() }],
+                    { label: '[' +   this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaFin) + ' ]', value: (this.historicData[i].energiaConsumida.toFixed(2)).toString() }],
                 
                   contFacturas: 0,
                   promedioConsumo: 0  
@@ -209,13 +213,13 @@ export class GeneratedInvoicesComponent implements OnInit {
               }else{
                 
                 this.dataSource.data?.push(
-                  { label: '[' + formatDate(data.fechaInicio,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.fechaFin,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.energiaConsumida.toFixed(2)).toString() }
+                  { label: '[' +  this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaFin) + ' ]', value: (this.historicData[i].energiaConsumida.toFixed(2)).toString() }
                   );
               }
   
               
               this.dataSource.contFacturas ++;
-              this.dataSource.promedioConsumo += data.energiaConsumida;
+              this.dataSource.promedioConsumo += this.historicData[i].energiaConsumida;
   
             }
 
@@ -234,7 +238,7 @@ export class GeneratedInvoicesComponent implements OnInit {
                 theme: 'fusion'
               },
               data: [
-                { label: '[' + formatDate(data.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }],
+                { label: '[' +  this.times.steticDate(data.medidor[0].historico.fechaAnterior) + ' - '  + this.times.steticDate(data.medidor[0].historico.fechaActual) + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }],
 
               contFacturas: 0,
               promedioConsumo: 0  
@@ -246,7 +250,7 @@ export class GeneratedInvoicesComponent implements OnInit {
           }else{
             
           this.dataSource.data?.push(
-            { label: '[' + formatDate(data.medidor[0].historico.fechaAnterior,'yyyy-MM-dd','en-US', 'GMT').toString() + ' - '  + formatDate(data.medidor[0].historico.fechaActual,'yyyy-MM-dd','en-US', 'GMT').toString() + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }
+            { label: '[' +  this.times.steticDate(data.medidor[0].historico.fechaAnterior) + ' - '  + this.times.steticDate(data.medidor[0].historico.fechaActual) + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }
             );
             this.dataSource.contFacturas ++;
             this.dataSource.promedioConsumo += data.totalLecturaActivaAjustada;
