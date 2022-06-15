@@ -136,7 +136,7 @@
                   <tbody>
                     <tr *ngFor="let data of table.data">
                       <td nzLeft>{{ data.id }}</td>
-                      <td>{{ (data.porcentaje * 100) }} %</td>
+                      <td>{{ (data.porcentaje * 100)  | number:'1.0':'en-US'}} %</td>
                       <td>
                         <div *ngIf="data.operacion;else Resta">
                           <span>Suma (+)</span>

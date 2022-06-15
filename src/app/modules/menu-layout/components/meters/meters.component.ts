@@ -36,7 +36,7 @@ export class MetersComponent implements OnInit, OnChanges {
     getVMeters: 'get-vmeters',
     getSource: 'get-source',
     getVMetersmodel: 'medidor-virtuals',
-    getMeasurePoints: 'punto-medicions',
+    getMeasurePoints: 'get-zones',
     getVariables: "variables",
     get: 'medidors',
     post:'medidors',
@@ -89,7 +89,7 @@ export class MetersComponent implements OnInit, OnChanges {
   }
 
   GetMeasurePoint(): void{
-    this.globalService.Get(this.url.getMeasurePoints).subscribe(
+    this.globalService.GetId(this.url.getMeasurePoints, 1).subscribe(
       (result:any) => {
         this.listOfMPoinst = result;
       }
