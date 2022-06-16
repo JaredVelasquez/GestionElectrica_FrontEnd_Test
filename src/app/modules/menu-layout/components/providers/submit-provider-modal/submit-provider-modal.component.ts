@@ -47,6 +47,7 @@ export class SubmitProviderModalComponent implements OnInit {
 
   submitForm(): void{
     if(!this.dataPosition){
+            this.CleanForm();
       this.submitPostForm();
     }
     else{
@@ -75,6 +76,7 @@ export class SubmitProviderModalComponent implements OnInit {
       this.globalService.Post(this.url.post, this.newProvider).subscribe(
         (result:any) => {
           if(result){
+            this.CleanForm();
             this.DataUpdated.emit(result);
             this.isVisible = false;
   
@@ -109,6 +111,7 @@ export class SubmitProviderModalComponent implements OnInit {
         (result:any) => {
           if(!result){
             this.UpdateMainTable(this.newProvider);
+            this.CleanForm();
             this.isVisible = false;
             
             this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
@@ -140,6 +143,17 @@ export class SubmitProviderModalComponent implements OnInit {
     this.previsualize = this.dataPosition.imagen
   }
 
+
+  CleanForm(){
+    this.validateForm = this.fb.group({
+      nombre: ['', [Validators.required]],
+      telefono: ['', [Validators.required]],
+      direccion: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+      correo: ['', [Validators.required]],
+    })
+  }
+
   UpdateMainTable(data: ActorInterface){
     this.dataPosition.nombre = data.nombre;
     this.dataPosition.telefono = data.telefono;
@@ -153,7 +167,7 @@ export class SubmitProviderModalComponent implements OnInit {
   showModal(): void {
     this.isVisible = true;
     if(!this.dataPosition){
-      this.validateForm = this.EmptyForm;
+      this.CleanForm();
     }else{
       this.editableForm();
     }

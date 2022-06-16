@@ -45,7 +45,7 @@ export class SubmitClientModalComponent implements OnInit {
   })
 
   ngOnInit(): void {
-    this.validateForm = this.EmptyForm;
+    this.CleanForm();
   }
 
   captureFile(event: any): any{
@@ -87,6 +87,7 @@ export class SubmitClientModalComponent implements OnInit {
           if(result){
             this.DataUpdated.emit(result);
             this.isVisible = false;
+            this.CleanForm();
             this.notificationService.createMessage('success', 'Cliente creado exitosamente 😎');
           }else{
             this.notificationService.createMessage('error', 'Fallo en la creacion del cliente 😓');
@@ -117,6 +118,7 @@ export class SubmitClientModalComponent implements OnInit {
         (result:any) => {
           if(!result){
             this.newProvider.id = this.dataPosition.id;
+            this.CleanForm();
             this.UpdateMainTable(this.newProvider);
             this.isVisible = false;
             
@@ -157,11 +159,21 @@ export class SubmitClientModalComponent implements OnInit {
     this.dataPosition.correo = data.correo;
 
   }
+  CleanForm(){
+    this.validateForm = this.fb.group({
+      nombre: ['', [Validators.required]],
+      telefono: ['', [Validators.required]],
+      direccion: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+      correo: ['', [Validators.required]],
+    })
+    
+  }
 
   showModal(): void {
     this.isVisible = true;
     if(!this.dataPosition){
-      this.validateForm = this.EmptyForm;
+      this.CleanForm();
     }else{
       this.editableForm();
     }
