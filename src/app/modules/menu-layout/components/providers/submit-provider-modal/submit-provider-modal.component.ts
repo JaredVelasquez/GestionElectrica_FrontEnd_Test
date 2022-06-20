@@ -47,7 +47,6 @@ export class SubmitProviderModalComponent implements OnInit {
 
   submitForm(): void{
     if(!this.dataPosition){
-            this.CleanForm();
       this.submitPostForm();
     }
     else{
