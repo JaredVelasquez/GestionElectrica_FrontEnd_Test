@@ -93,12 +93,12 @@ export class ModalCargosEehComponent implements OnInit {
     if (this.validateForm.valid) {
       this.newCargo = {
         ... this.validateForm.value,
-        estado: true
+        estado: this.localPosition.estado
       }
       this.globalService.PutId( this.url.updateCargo, this.localPosition.tipoCargoId, this.newCargo).subscribe(
         (result:any) => {
           if(!result){
-            this.updateTable(this.localPosition.tipoCargoId, true);
+            this.updateTable(this.localPosition.tipoCargoId, this.newCargo.estado);
 
             this.CleanForm(); 
             

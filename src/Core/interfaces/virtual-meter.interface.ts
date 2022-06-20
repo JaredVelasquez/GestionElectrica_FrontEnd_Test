@@ -1,6 +1,7 @@
 export interface VirtualMeterInterface{
     id: number;
     medidorId: number;
+    sourceId: number;
     vmedidorId: number;
     operacion: number;
     porcentaje: number;

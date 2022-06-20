@@ -35,12 +35,6 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     update: 'registro-manuals',
   }
 
-  EmptyForm = this.fb.group({
-    medidorId: ['', [Validators.required]],
-    variableId: ['', [Validators.required]],
-    fecha: ['', [Validators.required]],
-    valor: ['', [Validators.required]],
-  });
 
   constructor(
     private fb: FormBuilder,
@@ -50,17 +44,12 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     ) {}
 
   ngOnInit(): void {
-    this.validateForm = this.EmptyForm;
+    this.cleanForm();
     this.GetManualRegisters();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.EmptyForm = this.fb.group({
-      medidorId: [this.dataPosition.id, [Validators.required]],
-      variableId: ['', [Validators.required]],
-      fecha: ['', [Validators.required]],
-      valor: ['', [Validators.required]],
-    });
+    this.cleanForm();
     this.listOfDisplayData = [...this.listOfData];
   }
 
@@ -79,7 +68,7 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
       this.submitUpdateForm();
     else
       this.submitPostForm();
-    this.validateForm = this.EmptyForm;
+      this.cleanForm();
   }
   
   submitPostForm(){
@@ -215,7 +204,9 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     }
     
 
-    this.listOfData = this.listOfData;
+    this.listOfData = [... this.listOfData];
+    console.log(this.listOfData);
+    
     
   }
 
@@ -225,6 +216,7 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   showModal(): void {
     this.isVisible = true;
     this.FilterManualRegisters(true, false);
+    this.cleanForm();
   }
 
   handleOk(): void {

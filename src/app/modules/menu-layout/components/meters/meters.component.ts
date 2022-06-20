@@ -82,6 +82,8 @@ export class MetersComponent implements OnInit, OnChanges {
       (result:any) => {
         this.listOfData =  result;
         this.listOfManualMeterAux = result;
+        console.log(this.listOfManualMeterAux);
+        
         
       }
     );
@@ -100,6 +102,8 @@ export class MetersComponent implements OnInit, OnChanges {
     this.globalService.Get(this.url.getVMetersDetail).subscribe(
       (result:any) => {
         this.listOfDataVM = result;
+        console.log(this.listOfDataVM);
+        
       }
     );
   }

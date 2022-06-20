@@ -61,7 +61,7 @@
                   <div *ngIf="data.estado; else disablesList"> 
                       <button nz-button [nzLoading]="IsLoading" nzSize="small" nzDanger nzType="primary"  
                       nz-popconfirm
-                      nzPopconfirmTitle="Estas seguro que quieres habilitarlo?"
+                      nzPopconfirmTitle="Quieres deshabilitar este item?"
                       (nzOnConfirm)="disableContract(data, 0)"
                       (nzOnCancel)="cancel()"
                       nzPopconfirmPlacement="rightBottom"
@@ -70,7 +70,7 @@
                   <ng-template #disablesList>
                       <button nz-button nzSize="small" nzType="primary" 
                       nz-popconfirm
-                      nzPopconfirmTitle="Estas seguro que quieres habilitarlo?"
+                      nzPopconfirmTitle="Quieres habilitar este item?"
                       (nzOnConfirm)="disableContract(data, 1)"
                       (nzOnCancel)="cancel()"
                       nzPopconfirmPlacement="rightBottom"

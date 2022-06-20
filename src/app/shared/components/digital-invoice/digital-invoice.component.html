@@ -144,19 +144,20 @@
                 </tbody>
                 <tbody *ngFor="let data of dataInvoice.vmedidor">
                     <tr>
+                      <td class="tg-hvao">Ajustes</td>
+                      <td class="tg-zk76" colspan="6">{{data.descripcion}}</td>
+                    </tr>
+                    <tr>
                         <td class="tg-oe15">Ajuste Activa</td>
-                        <td class="tg-zk76" colspan="2">{{data.descripcion}}</td>
+                        <td class="tg-wk8r" colspan="2"></td>
                         <td class="tg-wk8r">{{data.LecturaActiva  | number:'1.0':'en-US'}}</td>
                         <td class="tg-wk8r">{{data.porcentaje  | number:'1.0':'en-US'}} %</td>
                         <td class="tg-wk8r">{{data.LecturaActiva  | number:'1.0':'en-US'}}</td>
                         <td class="tg-wk8r"> kWhA </td>
                     </tr>
-
-                </tbody>
-                <tbody *ngFor="let data of dataInvoice.vmedidor">
                     <tr>
                         <td class="tg-oe15">Ajuste Reactiva</td>
-                        <td class="tg-zk76" colspan="2">{{data.descripcion}}</td>
+                        <td class="tg-wk8r" colspan="2"></td>
                         <td class="tg-wk8r">{{data.LecturaReactiva  | number:'1.0':'en-US'}}</td>
                         <td class="tg-wk8r">{{data.porcentaje  | number:'1.0':'en-US'}} %</td>
                         <td class="tg-wk8r">{{data.LecturaReactiva  | number:'1.0':'en-US'}}</td>

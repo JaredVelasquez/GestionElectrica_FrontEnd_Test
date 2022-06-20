@@ -34,13 +34,6 @@ export class VirtualMeterModalComponent implements OnInit {
     update: 'medidor-virtuals'
   }
 
-  EmptyForm = this.fb.group({
-    medidorId: [''],
-    sourceId: [''],
-    porcentaje: ['', [Validators.required]],
-    operacion: ['', [Validators.required]],
-    observacion: ['', [Validators.required]],
-  })
   constructor(
     private globalService: EndPointGobalService,
     private fb: FormBuilder,
@@ -50,7 +43,7 @@ export class VirtualMeterModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetVirtualMeters(true, false);
-    this.validateForm = this.EmptyForm;
+    this.cleanForm();
   }
   
   
@@ -119,7 +112,8 @@ export class VirtualMeterModalComponent implements OnInit {
   submitUpdateForm(){
     
     if (this.validateForm.valid) {
-      const {porcentaje, operacion, observacion} =  this.validateForm.value;
+      
+      const {porcentaje, operacion, observacion, sourceId} =  this.validateForm.value;
       this.newVMeter = {
         ... {porcentaje, operacion, observacion},
         estado: true
@@ -127,15 +121,28 @@ export class VirtualMeterModalComponent implements OnInit {
       this.IsEditableSchema.observacion = this.newVMeter.observacion;
       this.IsEditableSchema.operacion = this.newVMeter.operacion;
       this.IsEditableSchema.porcentaje = this.newVMeter.porcentaje;
+      this.IsEditableSchema.sourceId = this.validateForm.value.sourceId;
       
       if(this.IsEditableSchema)
       this.globalService.PutId(this.url.update, this.IsEditableSchema.vmedidorId, this.newVMeter).subscribe(
         (result:any) => {
           if(!result){
             this.updateTable(this.IsEditableSchema);
+            this.globalService.Patch( 'medidor-virtual-detalles', this.IsEditableSchema.id, {sourceId: this.validateForm.value.sourceId}).subscribe(
+              (result:any) => {
+                if(!result){
+
+                  this.IsEditableForm = false;
+                  this.cleanForm();
+                  this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+                }else{
+                  this.notificationService.createMessage('error', 'La accion fallo 😓');
+                }
+                
+              }
+            );
             this.IsEditableForm = false;
             this.cleanForm();
-            this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
           }else{
             this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
@@ -157,18 +164,20 @@ export class VirtualMeterModalComponent implements OnInit {
 
   editableForm(data: VirtualMeterInterface){
     
-    console.log(data);
+    console.log(data.sourceId);
+    console.log(this.listOfMeters);
+    
     this.IsEditableSchema = data;
     this.IsEditableForm = true;
     this.validateForm = this.fb.group({
       medidorId: [data.medidorId],
+      sourceId: [data.sourceId],
       porcentaje: [data.porcentaje, [Validators.required]],
       operacion: [data.operacion, [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
     })
 
   }
-  
   disableVMeter(vmeter: VirtualMeterInterface, estado : boolean){
 
     this.globalService.Patch(this.url.getVMetersDetail, vmeter.id, {estado: estado}).subscribe(
@@ -204,11 +213,8 @@ export class VirtualMeterModalComponent implements OnInit {
 
 
   updateTable(data: any){
-    console.log(data);
     for(let i = 0;i < this.listOfData.length; i++){
-      if(this.listOfData[i].vmedidorId === data.vmedidorId && this.listOfData[i].id === data.id ){
-        console.log(data);
-        
+      if(this.listOfData[i].id === data.id ){
         this.listOfData[i] = data;
       }
     }
@@ -227,7 +233,7 @@ export class VirtualMeterModalComponent implements OnInit {
   showModal(): void {
     this.isVisible = true;
     this.GetVirtualMeters(true, false);
-    this.validateForm = this.EmptyForm;
+    this.cleanForm();
   }
 
   handleOk(): void {

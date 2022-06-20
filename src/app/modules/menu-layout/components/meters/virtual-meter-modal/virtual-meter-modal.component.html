@@ -116,7 +116,7 @@
                 <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{  x: '100%', y: '240px' }"  [nzPageSize]="10">
                   <thead>
                     <tr>
-                    <th nzLeft nzWidth="90px">ID</th>
+                      <th nzRight nzWidth="90px">Acciones</th>
                       <th
                         *ngFor="let column of listOfColumns"
                         [nzSortOrder]="column.sortOrder"
@@ -129,30 +129,11 @@
                       >
                         {{ column.name }}
                       </th>
-                      <th nzWidth="110px">Tipo</th>
-                      <th nzRight nzWidth="90px">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let data of table.data">
-                      <td nzLeft>{{ data.id }}</td>
-                      <td>{{ (data.porcentaje * 100)  | number:'1.0':'en-US'}} %</td>
-                      <td>
-                        <div *ngIf="data.operacion;else Resta">
-                          <span>Suma (+)</span>
-                        </div>
-                        <ng-template #Resta>
-                          <span>Resta (-)</span>
-                        </ng-template>
-                      </td>
-                      <td>
-                        <div *ngIf="data.operacion;else Generacion">
-                          <span>Consumo</span>
-                        </div>
-                        <ng-template #Generacion>
-                          <span>Generacion</span>
-                        </ng-template>
-                      </td>
+                      
                       <td nzRight nzAlign="center">
                         <div nz-row>
 
@@ -160,16 +141,16 @@
                             <div *ngIf="data.estado; else disablesList"> 
                                 <button nz-button nzSize="small" nzType="primary" 
                                 nz-popconfirm
-                                nzPopconfirmTitle="Estas seguro que quieres emitir esta factura ?"
+                                nzPopconfirmTitle="Quieres deshabilitar este item ?"
                                 (nzOnConfirm)="disableVMeter(data, false)"
                                 (nzOnCancel)="cancel()"
-                                nzPopconfirmPlacement="rightBottom"
+                                nzPopconfirmPlacement="rightBottom" nzDanger
                                 ><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                             </div>
                             <ng-template #disablesList>
                                 <button nz-button nzSize="small" nzType="primary"
                                 nz-popconfirm
-                                nzPopconfirmTitle="Estas seguro que quieres emitir esta factura ?"
+                                nzPopconfirmTitle="Quieres habilitar este item ?"
                                 (nzOnConfirm)="disableVMeter(data, true)"
                                 (nzOnCancel)="cancel()"
                                 nzPopconfirmPlacement="rightBottom"
@@ -184,6 +165,15 @@
                           </div>
 
                         </div>
+                      </td>
+                      <td>{{ (data.porcentaje * 100)  | number:'1.0':'en-US'}} %</td>
+                      <td>
+                        <div *ngIf="data.operacion;else Resta">
+                          <span>Suma (+)</span>
+                        </div>
+                        <ng-template #Resta>
+                          <span>Resta (-)</span>
+                        </ng-template>
                       </td>
                     </tr>
                   </tbody>

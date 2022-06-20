@@ -83,6 +83,8 @@ export class MetersModalComponent implements OnInit {
   }
   
   submitPostForm(){
+    console.log(this.validateForm.value);
+    
     if (this.validateForm.valid) {
       this.fullSchema();
       this.globalService.Post(this.url.postMeter, this.meter).subscribe(

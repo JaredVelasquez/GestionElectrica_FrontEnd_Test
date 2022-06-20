@@ -110,12 +110,9 @@
                             <td nzLeft>
                               <div nz-row>
                                 <div nz-col>
-                                  <button class="edit" nzSize="small" nz-button nzType="primary" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-                                </div>
-                                <div nz-col nzOffset="1">
                                   <button *ngIf="data.estado; else enable" class="delete" nzSize="small" nz-button nzType="primary" nzDanger
                                   nz-popconfirm
-                                  nzPopconfirmTitle="Estas seguro que quieres habilitarlo?"
+                                  nzPopconfirmTitle="Quieres deshabilitar este item?"
                                   (nzOnConfirm)="disable(data, false)"
                                   (nzOnCancel)="cancel()"
                                   nzPopconfirmPlacement="rightBottom"
@@ -124,7 +121,7 @@
                                   <ng-template #enable>
                                     <button class="delete" nzSize="small" nz-button nzType="primary"
                                     nz-popconfirm
-                                    nzPopconfirmTitle="Estas seguro que quieres habilitarlo?"
+                                    nzPopconfirmTitle="Quieres habilitar este item?"
                                     (nzOnConfirm)="disable(data, true)"
                                     (nzOnCancel)="cancel()"
                                     nzPopconfirmPlacement="rightBottom"
@@ -134,6 +131,9 @@
 
                                   </ng-template>
                                   
+                                </div>
+                                <div nz-col nzOffset="1">
+                                  <button class="edit" nzSize="small" nz-button nzType="primary" (click)="editableForm(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                                 </div>
                               </div>
                             </td>

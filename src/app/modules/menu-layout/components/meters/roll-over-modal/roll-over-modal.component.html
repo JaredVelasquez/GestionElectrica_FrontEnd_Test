@@ -145,7 +145,7 @@
                         <div *ngIf="data.estado; else disablesList"> 
                             <button nzSize="small" nz-button nzType="primary" nzDanger 
                             nz-popconfirm
-                            nzPopconfirmTitle="Estas seguro que quieres emitir esta factura ?"
+                            nzPopconfirmTitle="Quieneres deshabilitar este item?"
                             (nzOnConfirm)=" disableVMeter(data, false)"
                             (nzOnCancel)="cancel()"
                             nzPopconfirmPlacement="rightBottom"
@@ -154,7 +154,7 @@
                         <ng-template #disablesList>
                             <button nzSize="small"  nz-button nzType="primary" 
                             nz-popconfirm
-                            nzPopconfirmTitle="Estas seguro que quieres emitir esta factura ?"
+                            nzPopconfirmTitle="Quieneres habilitar este item?"
                             (nzOnConfirm)=" disableVMeter(data, true)"
                             (nzOnCancel)="cancel()"
                             nzPopconfirmPlacement="rightBottom" 
