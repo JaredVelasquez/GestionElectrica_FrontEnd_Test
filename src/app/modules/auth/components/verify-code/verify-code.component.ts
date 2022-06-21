@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService } from '@modules/auth/services/login.service';
 import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 import { NotificationService } from '@shared/services/notification.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -21,7 +20,6 @@ export class VerifyCodeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cookieService: CookieService,
-    private loginService: LoginService,
     private router: Router,
     private notificationService: NotificationService,
     private globalService: EndPointGobalService

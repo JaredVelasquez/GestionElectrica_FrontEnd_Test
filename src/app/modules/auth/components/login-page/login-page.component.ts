@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {CookieService} from "ngx-cookie-service";
 import { key } from 'src/Core/Libraries/keys/keys.library';
-import {LoginService} from "../../services/login.service";
 import {Router} from "@angular/router";
 import { NotificationService } from '@shared/services/notification.service';
+import { EndPointGobalService } from '@shared/services/end-point-gobal.service';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -18,9 +18,9 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cookieService: CookieService,
-    private loginService: LoginService,
     private router: Router,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private globalService: EndPointGobalService
     ) {}
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class LoginPageComponent implements OnInit {
     if (this.validateForm.valid) {
       console.log(this.validateForm.value);
       this.cookieService.deleteAll();
-      const res : any = this.loginService.SubmitLogin(this.validateForm.value).subscribe(
+      const res : any = this.globalService.Post( 'login', this.validateForm.value).subscribe(
         (result:any) => {
           
           if(result?.token){

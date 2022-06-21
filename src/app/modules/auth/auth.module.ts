@@ -15,7 +15,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzTableModule, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -44,7 +44,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     RegisterComponent,
     GenereteCodeComponent,
     VerifyCodeComponent,
-    ResetPasswordComponent,
+    ResetPasswordComponent
 
   ],
   imports: [

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { RegisterService } from '@modules/auth/services/register.service';
 import {regisUser} from "src/Core/interfaces/registerUser.interface";
 import { Valide } from "src/app/validators/validators.custom";
 import { Router } from "@angular/router";
@@ -26,7 +25,6 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private registerService: RegisterService,
     private router: Router,
     private message: NzMessageService,
     private notification: NotificationService,
@@ -65,7 +63,7 @@ export class RegisterComponent implements OnInit {
         rolId: 1,
         username: this.validateForm.value.username,
       }
-      this.registerService.SubmitRegisterUser(this.user).subscribe(
+      this.globalService.Post( 'register',this.user).subscribe(
         (result:any) => {
           if(!result.id){
             this.router.navigate(['login']);
