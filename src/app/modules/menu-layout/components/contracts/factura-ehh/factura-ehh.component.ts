@@ -30,6 +30,7 @@ export class FacturaEHHComponent implements OnInit {
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
   listOfOption: Array<{ label: string; value: string }> = [];
   listOfTagOptions = [];
+  
   url = {
     get: "factura-manuals",
     getdetalle: "get-manual-invoices-detail",
@@ -200,10 +201,10 @@ export class FacturaEHHComponent implements OnInit {
       ... {codigo, cargoReactivo},
       contratoId: this.dataPosition.id,
       tipoFacturaId: 1,
-      fechaEmision: this.pipe.transform(this.validateForm.value.fechaVencimiento[0], 'yyyy-MM-dd HH:mm:ss', '-0600'),
-      fechaVencimiento: this.pipe.transform(this.validateForm.value.fechaVencimiento[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
-      fechaInicial: this.pipe.transform(this.validateForm.value.fechaFacturacion[0], 'yyyy-MM-dd HH:mm:ss', '-0600'),
-      fechaFinal: this.pipe.transform(this.validateForm.value.fechaFacturacion[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaEmision: this.pipe.transform(this.validateForm.value.fechaVencimiento[0], 'yyyy-MM-dd HH:mm:ss', '-1200'),
+      fechaVencimiento: this.pipe.transform(this.validateForm.value.fechaVencimiento[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
+      fechaInicial: this.pipe.transform(this.validateForm.value.fechaFacturacion[0], 'yyyy-MM-dd HH:mm:ss', '-1200'),
+      fechaFinal: this.pipe.transform(this.validateForm.value.fechaFacturacion[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
       estado: true,
     }
   }
@@ -229,8 +230,9 @@ export class FacturaEHHComponent implements OnInit {
     console.log(data);
     
     this.validateForm = this.fb.group({
-      fechaVencimiento: [[data.fechaEmision.toString(), data.fechaVencimiento.toString()], [Validators.required]],
-      fechaFacturacion: [[data.fechaInicial.toString(), data.fechaFinal.toString()], [Validators.required]],
+      fechaVencimiento: [[ this.pipe.transform(new Date(data.fechaEmision), 'yyyy-MM-dd HH:mm:ss', 'GMT'), this.pipe.transform(new Date(data.fechaVencimiento), 'yyyy-MM-dd HH:mm:ss', 'GMT')], [Validators.required]],
+      fechaFacturacion: [[this.pipe.transform(new Date(data.fechaInicial), 'yyyy-MM-dd HH:mm:ss', 'GMT'),
+       this.pipe.transform(new Date( data.fechaFinal), 'yyyy-MM-dd HH:mm:ss', 'GMT')], [Validators.required]],
       codigo: [data.codigo, [Validators.required]],
       cargoReactivo: [ data.cargoReactivo , [Validators.required]],
     })

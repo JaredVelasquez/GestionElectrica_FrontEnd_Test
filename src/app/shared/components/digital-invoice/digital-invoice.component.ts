@@ -156,7 +156,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
           const img = canvas.toDataURL('image/PNG');
           const bufferX = 5;
           const bufferY = 5;
-          const imgProps = (<any>doc).getImageProperties(img);
+          const imgProps = (<any>doc).getImageProperties(img);3
           const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
           const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
     
@@ -168,7 +168,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
             this.globalService.Post('send-email', {
               identificator: this.dataInvoice.contrato.correo, 
               subject: 'Factura de consumo',
-              text: 'Su factura a fue generada el ' + this.pipe.transform(new Date().toISOString(), 'yyyy/MM/dd HH:mm:ss', '-0600'),
+              text: 'Su factura a fue generada el ' + this.pipe.transform(new Date().toISOString(), 'yyyy/MM/dd HH:mm:ss', '-1200'),
               atachment: doc.output('datauri'),
               option: 2
             }).subscribe(

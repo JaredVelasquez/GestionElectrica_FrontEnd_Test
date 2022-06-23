@@ -8,6 +8,7 @@ import { toBoolean, toNumber } from 'ng-zorro-antd/core/util';
 import { endOfMonth } from 'date-fns';
 import { NotificationService } from '@shared/services/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -20,13 +21,14 @@ export class ModalNewContractComponent implements OnInit {
   inputValue: string = 'my site';
   isVisible = false;
   validateForm!: FormGroup;
-  newContract!: ContractSchema;
+  newContract!: any;
   @Input() dataPosition!: ContractInterface;
   @Input() ListOfClients: ActorInterface[] = [];
   @Output() DataUpdated : EventEmitter<ContractInterface> = new EventEmitter<ContractInterface>();
   ListOfClientsAux: ActorInterface[] = [];
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+  pipe = new DatePipe('en-US');
   
   url = {
     get: 'get-contracts',
@@ -65,7 +67,8 @@ export class ModalNewContractComponent implements OnInit {
       codigo: [ this.dataPosition.codigo , [Validators.required]],
       clasificacion: [ this.dataPosition.clasificacion, [Validators.required]],
       actorId: [ this.dataPosition.actorId, [Validators.required]],
-      fecha: [ [this.dataPosition.fechaCreacion.toString(), this.dataPosition.fechaVenc.toString()], [Validators.required]],
+      fecha: [ [this.pipe.transform(new Date(this.dataPosition.fechaCreacion), 'yyyy-MM-dd HH:mm:ss', 'GMT'), 
+      this.pipe.transform(new Date(this.dataPosition.fechaVenc), 'yyyy-MM-dd HH:mm:ss', 'GMT')], [Validators.required]],
       diaGeneracion: [ this.dataPosition.diaGeneracion, [Validators.required]],
       diasDisponibles: [ this.dataPosition.diasDisponibles, [Validators.required]],
       exportacion: [ this.dataPosition.exportacion, [Validators.required]],
@@ -196,8 +199,8 @@ export class ModalNewContractComponent implements OnInit {
 
     this.newContract = {
       ... {codigo, clasificacion, actorId, diaGeneracion, diasDisponibles, exportacion, descripcion, observacion},
-      fechaCreacion: this.validateForm.value.fecha[0],
-      fechaVenc: this.validateForm.value.fecha[1],
+      fechaCreacion: this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-1200'),
+      fechaVenc:  this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
       estado: true,
       tipoContratoId: this.DefineContractType(), 
     }   

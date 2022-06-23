@@ -132,7 +132,7 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     this.validateForm = this.fb.group({
       medidorId: [this.dataPosition.id, [Validators.required]],
       variableId: [data.variableId , [Validators.required]],
-      fecha: [data.fecha.toString(), [Validators.required]],
+      fecha: [this.pipe.transform(new Date(data.fecha), 'yyyy-MM-dd HH:mm:ss', 'GMT'), [Validators.required]],
       valor: [data.valor, [Validators.required]],
     });
     this.editableSchema = data;
@@ -156,7 +156,7 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
   }
 
   fullSchema(){
-    this.validateForm.value.fecha = this.pipe.transform(this.validateForm.value.fecha, 'yyyy-MM-dd HH:mm:ss', '-0600')?.toString();
+    this.validateForm.value.fecha = this.pipe.transform(this.validateForm.value.fecha, 'yyyy-MM-dd HH:mm:ss', '-1200')?.toString();
     this.newManualRegister = {
       ... this.validateForm.value,
       estado: true

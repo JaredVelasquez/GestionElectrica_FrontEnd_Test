@@ -209,8 +209,8 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
 
     this.newCMeterSchema = {
       ... {medidorId, tarifaId, zonaId, contratoId, observacion, estado},
-      fechaInicial:this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-0600'),
-      fechaFinal: this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaInicial:this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-1200'),
+      fechaFinal: this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
     }
   }
 
@@ -239,7 +239,8 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
     this.validateForm = this.fb.group({
       medidorId: [data.medidorId, [Validators.required]],
       contratoId: [this.dataPosition.id, [Validators.required]],
-      fecha: [[data.fechaInicial.toString(), data.fechaFinal.toString()], [Validators.required]],
+      fecha: [[ this.pipe.transform(new Date(data.fechaInicial), 'yyyy-MM-dd HH:mm:ss', 'GMT'), 
+      this.pipe.transform(new Date(data.fechaFinal), 'yyyy-MM-dd HH:mm:ss', 'GMT')], [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
     })
     this.editIsActive = true;

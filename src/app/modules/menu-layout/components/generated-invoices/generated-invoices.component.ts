@@ -360,8 +360,8 @@ export class GeneratedInvoicesComponent implements OnInit {
         console.log('All completed!');
       });
     let generateFacturaSchema = {
-      fechaInicial: this.pipe.transform(this.generateInvoicesForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-0600'),
-      fechaFinal: this.pipe.transform(this.generateInvoicesForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaInicial: this.pipe.transform(this.generateInvoicesForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-1200'),
+      fechaFinal: this.pipe.transform(this.generateInvoicesForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
       facturaEEH: this.generateInvoicesForm.value.facturaEEH,
     }
     console.log(generateFacturaSchema);

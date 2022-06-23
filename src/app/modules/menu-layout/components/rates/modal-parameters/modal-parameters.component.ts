@@ -152,8 +152,8 @@ export class ModalParametersComponent implements OnInit, OnChanges {
     this.newParam = {
       idTarifa: this.dataPosition.id,
       ... this.validateForm.value,
-      fechaInicio:  this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm', '-0600'),
-      fechaFinal:  this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm', '-0600'),
+      fechaInicio:  this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm', '-1200'),
+      fechaFinal:  this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm', '-1200'),
       estado: true,
     }
 
@@ -167,8 +167,8 @@ export class ModalParametersComponent implements OnInit, OnChanges {
         ... {valor, observacion, tipoCargoId},
         id: dataEditable.idParametro,
         tipo: dataEditable.tipo,
-        fechaInicio:  this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-0600') || '',
-        fechaFinal: this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-0600')  || '',
+        fechaInicio:  this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-1200') || '',
+        fechaFinal: this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-1200')  || '',
         estado: dataEditable.estado,
         }
         
@@ -230,7 +230,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
     this.editIsActive = data;
 
     this.validateForm = this.fb.group({
-      fecha: [[data.fechaInicio.toString(), data.fechaFinal.toString()], [Validators.required]],
+      fecha: [[this.pipe.transform(data.fechaInicio, 'yyyy-MM-dd HH:mm', 'GMT'),  this.pipe.transform(data.fechaFinal, 'yyyy-MM-dd HH:mm', 'GMT')], [Validators.required]],
       tipoCargoId: [data.cargoId, [Validators.required]],
       valor: [data.valor, [Validators.required]],
       observacion: [data.observacion, [Validators.required]],

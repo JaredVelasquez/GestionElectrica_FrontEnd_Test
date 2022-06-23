@@ -101,7 +101,8 @@ export class RollOverModalComponent implements OnInit, OnChanges {
     this.IsEditableSchema = data;
     this.IsEditableForm = true;
     this.validateForm = this.fb.group({
-      fecha: [ [data.fechaInicial.toString(), data.fechaFinal.toString()], [Validators.required]],
+      fecha: [ [this.pipe.transform(new Date(data.fechaInicial), 'yyyy-MM-dd HH:mm:ss', 'GMT'),
+      this.pipe.transform(new Date( data.fechaFinal), 'yyyy-MM-dd HH:mm:ss', 'GMT')], [Validators.required]],
       medidorId: [ data.medidorId, [Validators.required]],
       energia: [ data.energia, [Validators.required]],
       lecturaAnterior: [ data.lecturaAnterior, [Validators.required]],
@@ -146,8 +147,8 @@ export class RollOverModalComponent implements OnInit, OnChanges {
 
       this.newRollOver = {
         ... {medidorId, energia, lecturaAnterior, lecturaNueva, observacion},
-        fechaInicial: this.pipe.transform( this.dates.from , 'yyyy-MM-dd HH:mm:ss', '-0600'),
-        fechaFinal:this.pipe.transform( this.dates.to , 'yyyy-MM-dd HH:mm:ss', '-0600'),
+        fechaInicial: this.pipe.transform( this.dates.from , 'yyyy-MM-dd HH:mm:ss', '-1200'),
+        fechaFinal:this.pipe.transform( this.dates.to , 'yyyy-MM-dd HH:mm:ss', '-1200'),
         estado: true
       }
       console.log(this.newRollOver);
@@ -184,8 +185,8 @@ export class RollOverModalComponent implements OnInit, OnChanges {
 
       this.newRollOver = {
         ... {medidorId, energia, lecturaAnterior, lecturaNueva, observacion},
-        fechaInicial: this.pipe.transform( this.validateForm.value.fecha[0] , 'yyyy-MM-dd HH:mm:ss', '-0600'),
-        fechaFinal:this.pipe.transform( this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-0600'),
+        fechaInicial: this.pipe.transform( this.validateForm.value.fecha[0] , 'yyyy-MM-dd HH:mm:ss', '-1200'),
+        fechaFinal:this.pipe.transform( this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
         estado: true
       }
       this.IsEditableSchema.observacion = this.newRollOver.observacion;

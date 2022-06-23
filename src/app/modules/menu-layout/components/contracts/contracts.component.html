@@ -88,8 +88,8 @@
             <td nzLeft>{{data.codigo}}</td>  
             <td>{{data.descripcion}}</td>
             <td>{{ data.nombre }}</td>
-            <td>{{ data.fechaCreacion   | date:'dd/M/yyyy':'GMT'  }}</td>  
-            <td>{{ data.fechaVenc   | date:'dd/M/yyyy':'GMT'  }}</td> 
+            <td>{{ data.fechaCreacion   | date:'dd/M/yyyy' : 'GMT'  }}</td>  
+            <td>{{ data.fechaVenc   | date:'dd/M/yyyy' : 'GMT'  }}</td> 
             <td nzRight nzAlign="center">
                 <app-modal-medidores [dataPosition]="data" [listOfZones]="listOfZones" [listOfRates] = "listOfRates" [listOfMeters]="listOfMeters"></app-modal-medidores>
             </td>
