@@ -371,14 +371,14 @@ export class GeneratedInvoicesComponent implements OnInit {
       (result: any) => {
         console.log(result);
         
-        if(result){
+        if(result.error){
+          this.notificationService.createNotification('error', 'Falló',`${result.error} 😓`);
+          isLoading = false;
+        }else{
           this.listOfData = result;
           this.listOfData = [... this.listOfData];
 
           this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
-          isLoading = false;
-        }else{
-          this.notificationService.createMessage('error', 'La accion fallo 😓');
           isLoading = false;
         }
       }
