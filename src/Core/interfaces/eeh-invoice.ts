@@ -92,6 +92,6 @@ export interface LecturasPorContrato {
     PCFTotal: number,
     PCFRTotal: number,
     FPTotal: number,
-  
+    PPS: number
   
   }

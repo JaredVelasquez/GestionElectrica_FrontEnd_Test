@@ -31,9 +31,10 @@
                 <div nz-row>
                     <nz-form-item>
                     <nz-form-control>
-                        <nz-select formControlName="clasificacion" class="inputMedium" (ngModelChange)="filterActores($event)">
-                            <nz-option nzLabel="Proveedor" nzValue="P"></nz-option>
-                            <nz-option nzLabel="Cliente" nzValue="C"></nz-option>
+                        <nz-select formControlName="tipoContratoId" class="inputMedium" (ngModelChange)="filterActores($event)">
+                            <div *ngFor="let item of ListOfContractTypes">
+                                <nz-option [nzLabel]="item.nombre" [nzValue]="item.id"></nz-option>
+                            </div>
                             <!-- <nz-option nzLabel="Servicios comunitarios" nzValue="I"></nz-option> -->
                         </nz-select>                   
                     </nz-form-control>

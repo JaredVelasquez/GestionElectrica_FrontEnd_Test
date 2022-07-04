@@ -134,21 +134,6 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   Back(): void {
     this.FacturaIsVisible = false;
-    this.dataSource = {
-      chart: {
-        caption: 'Historico de consumo por facturas generadas',
-        subCaption: 'Energia activa consumida',
-        xAxisName: 'Fecha',
-        yAxisName: 'Consumo kWh',
-        numberSuffix: 'K',
-        theme: 'fusion'
-      },
-      data: [],
-    
-      contFacturas: 0,
-      promedioConsumo: 0  
-    };
-    
     this.dataSource.data.length = 0;
   }
 

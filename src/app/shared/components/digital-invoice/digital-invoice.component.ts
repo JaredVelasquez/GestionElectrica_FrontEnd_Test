@@ -11,6 +11,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { TimeService } from '@shared/services/time.service';
 export interface facturas{
   
   cliente: string,
@@ -46,6 +47,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   title: string;
   @Input() historicData!: facturas[];
   @Input() typeInvoice!: number;
+  pieGraph!: {chart:{}, data: any[]};
   dataDocument: any;
   pipe = new DatePipe('en-US');
   
@@ -57,7 +59,8 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   }
   constructor(
     private globalService: EndPointGobalService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private times: TimeService,
 
   ) {
     this.title = 'Historico consumo energia activa';
@@ -75,6 +78,30 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
     if(this.dataInvoice){
       this.vencimiento = (this.UnDiaMLS * this.dataInvoice.contrato.diasDisponibles) + this.hoy;
       this.diaFacturacion = this.numeroADia(this.dataInvoice.contrato.diaGeneracion);
+      this.pieGraph = {
+        chart: {
+          caption: "Distribucion de consumo energetico",
+          subCaption: "",
+          numberPrefix: "$",
+          showPercentInTooltip: "0",
+          decimals: "1",
+          useDataPlotColorForLabels: "1",
+          theme: "fusion"
+    
+        },
+        data: [
+          {
+            label: "Generacion solar",
+            value: (this.dataInvoice.PPS * this.dataInvoice.totalLecturaActivaAjustada).toString()
+          },
+          {
+            label: "Energia EEH",
+            value: ( this.dataInvoice.totalLecturaActivaAjustada - (this.dataInvoice.PPS * this.dataInvoice.totalLecturaActivaAjustada)).toString()
+          }
+        ]
+      };
+
+
 
     }
     

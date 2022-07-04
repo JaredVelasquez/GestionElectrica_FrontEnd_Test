@@ -25,6 +25,7 @@ export class ModalNewContractComponent implements OnInit {
   @Input() dataPosition!: ContractInterface;
   @Input() ListOfClients: ActorInterface[] = [];
   @Output() DataUpdated : EventEmitter<ContractInterface> = new EventEmitter<ContractInterface>();
+  ListOfContractTypes: any[] = [];
   ListOfClientsAux: ActorInterface[] = [];
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
@@ -47,6 +48,11 @@ export class ModalNewContractComponent implements OnInit {
 
   ngOnInit(): void {
     this.cleanForm();
+    this.globalService.Get("tipo-contratos").subscribe(
+      (result: any) => {
+        this.ListOfContractTypes = result;
+      }
+    );
   }
 
   showModal(): void {
@@ -54,7 +60,7 @@ export class ModalNewContractComponent implements OnInit {
     console.log(this.dataPosition);
     
     if(this.dataPosition){
-      this.filterActores(this.dataPosition.clasificacion);
+      this.filterActores(this.dataPosition.tipoContratoId);
       this.editableForm();
     }else{
       this.cleanForm();
@@ -65,7 +71,7 @@ export class ModalNewContractComponent implements OnInit {
   editableForm(){
     this.validateForm = this.fb.group({
       codigo: [ this.dataPosition.codigo , [Validators.required]],
-      clasificacion: [ this.dataPosition.clasificacion, [Validators.required]],
+      tipoContratoId: [ this.dataPosition.tipoContratoId, [Validators.required]],
       actorId: [ this.dataPosition.actorId, [Validators.required]],
       fecha: [ [this.pipe.transform(new Date(this.dataPosition.fechaCreacion), 'yyyy-MM-dd HH:mm:ss', 'GMT'), 
       this.pipe.transform(new Date(this.dataPosition.fechaVenc), 'yyyy-MM-dd HH:mm:ss', 'GMT')], [Validators.required]],
@@ -80,7 +86,7 @@ export class ModalNewContractComponent implements OnInit {
   cleanForm(){
     this.validateForm = this.fb.group({
       codigo: ['', [Validators.required]],
-      clasificacion: ['', [Validators.required]],
+      tipoContratoId: ['', [Validators.required]],
       actorId: ['', [Validators.required]],
       fecha: ['', [Validators.required]],
       diaGeneracion: ['', [Validators.required]],
@@ -186,12 +192,11 @@ export class ModalNewContractComponent implements OnInit {
     this.dataPosition.fechaCreacion = this.newContract.fechaCreacion;
     this.dataPosition.fechaVenc = this.newContract.fechaVenc;
     this.dataPosition.exportacion = this.newContract.exportacion;
-    this.dataPosition.clasificacion = this.newContract.clasificacion;
+    this.dataPosition.tipoContratoId = this.newContract.tipoContratoId;
     this.dataPosition.actorId = this.newContract.actorId;
     this.dataPosition.diaGeneracion = this.newContract.diaGeneracion;
     this.dataPosition.diasDisponibles = this.newContract.diasDisponibles;
     this.dataPosition.observacion = this.newContract.observacion;
-    this.dataPosition.tipoContratoId = this.DefineContractType();
   }
 
   fullSchema(){
@@ -202,22 +207,12 @@ export class ModalNewContractComponent implements OnInit {
       fechaCreacion: this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-1200'),
       fechaVenc:  this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
       estado: true,
-      tipoContratoId: this.DefineContractType(), 
     }   
 
   }
-  DefineContractType(){
-    if(this.validateForm.value.clasificacion === 'P'){
-      return 1;
-    }
-    else
-      return 3;
 
-
-
-  }
   filterActores(tipoActor: any){
-    if(tipoActor === 'P'){
+    if(tipoActor === 1 || tipoActor === 8 ){
       tipoActor = false;
     }
     else

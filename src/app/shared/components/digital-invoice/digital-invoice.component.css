@@ -4,13 +4,28 @@
     opacity: 0.6;
 }
 
+
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-    overflow:hidden;padding:10px 5px;word-break:normal;}
+  overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-    font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-0lax{text-align:left;vertical-align:top}
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-zk76{background-color:#c0c0c0;border-color:#ffffff;text-align:center;vertical-align:top}
+.tg .tg-oe15{background-color:#ffffff;border-color:#ffffff;text-align:left;vertical-align:top}
+.tg .tg-wk8r{background-color:#ffffff;border-color:#ffffff;text-align:center;vertical-align:top}
+.tg .tg-dou8{background-color:#001529;border-color:inherit;color:#ffffff;text-align:left;vertical-align:top}
+.tg .tg-hvao{background-color:#c0c0c0;border-color:#ffffff;text-align:left;vertical-align:top}
         
+
+
+.origen-table  {border-collapse:collapse;border-spacing:0;}
+.origen-table td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.origen-table th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.origen-table .tg-ifil{background-color:#656565;border-color:#ffffff;color:#ffffff;font-weight:bold;text-align:center;vertical-align:top}
+.origen-table .tg-8jgo{border-color:#ffffff;text-align:center;vertical-align:top}
+.origen-table .tg-g6p1{background-color:#656565;border-color:#ffffff;color:#ffffff;font-weight:bold;text-align:left;vertical-align:top}
 
 .grid-container {
     display: grid; 
@@ -129,6 +144,36 @@
     margin-top: 5px;
     width: 80%;
     margin: auto;
+}
+
+.origen-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 1px 1px;
+    grid-template-areas: ". .";
+    margin-top: 5px;
+    width: 80%;
+    height: auto;
+    margin: auto;
+}
+
+.origen-energia {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1px 1px;
+    grid-template-areas: ".";
+    margin-top: 5px;
+}
+
+.matriz {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 1px 1px;
+    grid-template-areas: ".";
+    margin-top: 5px;
 }
 
 .table thead th {
