@@ -1,5 +1,3 @@
-
-
 <div nz-row>
     <div nz-col nzOffset="21" nzSpan="1">
         <button nz-button class="print-btn" nzType="primary" (click)=" GenerarFactura()" [nzLoading]="spinnerIsVisible"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
@@ -179,7 +177,7 @@
 <div class="consumo-container" *ngIf="dataInvoice.cargo">
 <div class="calculo-consumo-container">
     <div>
-        <table class="table table-bordered table-sm">
+        <!-- <table class="table table-bordered table-sm">
             <thead>
                 <tr>
                     <th scope="col">Cargo</th>
@@ -206,7 +204,7 @@
                     <td> xxx </td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
         <div style="background-color:  #969696; text-align: center;">
             <h6>Ajuste por factor de potencia</h6>
         </div>

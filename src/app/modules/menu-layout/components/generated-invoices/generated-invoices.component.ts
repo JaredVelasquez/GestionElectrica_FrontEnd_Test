@@ -345,8 +345,8 @@ export class GeneratedInvoicesComponent implements OnInit {
         console.log('All completed!');
       });
     let generateFacturaSchema = {
-      fechaInicial: this.pipe.transform(new Date(this.generateInvoicesForm.value.fecha[0]), 'yyyy-MM-dd HH:mm', '-0600'),
-      fechaFinal: this.pipe.transform(new Date(this.generateInvoicesForm.value.fecha[1]), 'yyyy-MM-dd HH:mm', '-0600'),
+      fechaInicial: this.pipe.transform(new Date(this.generateInvoicesForm.value.fecha[0]), 'yyyy-MM-dd HH:mm:ss', '-0600'),
+      fechaFinal: this.pipe.transform(new Date(this.generateInvoicesForm.value.fecha[1]), 'yyyy-MM-dd HH:mm:ss', '-0600'),
       facturaEEH: this.generateInvoicesForm.value.facturaEEH,
     }
     console.log(generateFacturaSchema);
