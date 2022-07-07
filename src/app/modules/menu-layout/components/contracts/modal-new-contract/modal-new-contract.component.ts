@@ -200,10 +200,10 @@ export class ModalNewContractComponent implements OnInit {
   }
 
   fullSchema(){
-    const {codigo, clasificacion, actorId, diaGeneracion, diasDisponibles, exportacion, descripcion, observacion} = this.validateForm.value;
+    const {codigo, clasificacion, actorId, diaGeneracion, diasDisponibles, exportacion, descripcion, observacion, tipoContratoId} = this.validateForm.value;
 
     this.newContract = {
-      ... {codigo, clasificacion, actorId, diaGeneracion, diasDisponibles, exportacion, descripcion, observacion},
+      ... {codigo, clasificacion, actorId, diaGeneracion, diasDisponibles, exportacion, descripcion, observacion, tipoContratoId},
       fechaCreacion: this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-1200'),
       fechaVenc:  this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
       estado: true,
