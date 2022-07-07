@@ -212,7 +212,7 @@ export class ModalNewContractComponent implements OnInit {
   }
 
   filterActores(tipoActor: any){
-    if(tipoActor === 1 || tipoActor === 8 ){
+    if(tipoActor === 1 || tipoActor === 4 ){
       tipoActor = false;
     }
     else
