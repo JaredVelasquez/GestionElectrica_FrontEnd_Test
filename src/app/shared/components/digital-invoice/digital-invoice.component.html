@@ -307,24 +307,24 @@
               <tr>
                 <th class="tg-ifil">Origen</th>
                 <th class="tg-ifil">Energia (kWh)</th>
-                <th class="tg-ifil">Sobretotal (%)</th>
+                <th class="tg-ifil">Precio de la energia (Lps)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td class="tg-g6p1">Generacion solar</td>
-                <td class="tg-8jgo">{{dataInvoice.totalLecturaActivaAjustada * dataInvoice.PPS  | number:'1.0':'en-US' }} kWh</td>
-                <td class="tg-8jgo">{{dataInvoice.PPS * 100  | number:'1.0':'en-US' }} %</td>
+                <td class="tg-8jgo">{{dataInvoice.totalEnergiaFotovoltaicaActivaConsumida  | number:'1.0':'en-US' }} kWh</td>
+                <td class="tg-8jgo">L {{dataInvoice.CEFTotal | number:'1.0':'en-US' }}</td>
               </tr>
               <tr>
                 <td class="tg-g6p1">Energia EEH</td>
-                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada - (dataInvoice.PPS * dataInvoice.totalLecturaActivaAjustada)  | number:'1.0':'en-US' }} kWhA</td>
-                <td class="tg-8jgo">{{ (1 -  dataInvoice.PPS )* 100  | number:'1.0':'en-US' }} %</td>
+                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada  | number:'1.0':'en-US' }} kWhA</td>
+                <td class="tg-8jgo">L {{ dataInvoice.cargo[dataInvoice.cargo.length - 1].valorAjustado -  dataInvoice.CEFTotal| number:'1.0':'en-US' }}</td>
               </tr>
               <tr>
                 <td class="tg-g6p1">Total Consumo</td>
-                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada  | number:'1.0':'en-US' }} kWh</td>
-                <td class="tg-8jgo">{{ 100 }} %</td>
+                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada  +  dataInvoice.totalEnergiaFotovoltaicaActivaConsumida | number:'1.0':'en-US' }} kWh</td>
+                <td class="tg-8jgo">L {{ dataInvoice.cargo[dataInvoice.cargo.length - 1].valorAjustado  | number:'1.0':'en-US'}}</td>
               </tr>
             </tbody>
             </table>
