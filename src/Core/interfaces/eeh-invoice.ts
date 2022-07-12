@@ -94,4 +94,6 @@ export interface LecturasPorContrato {
   PCFRTotal: number,
   FPTotal: number,
   PPS: number,
+  PBE: number,
+  ModoCalculoSolar: boolean
 }

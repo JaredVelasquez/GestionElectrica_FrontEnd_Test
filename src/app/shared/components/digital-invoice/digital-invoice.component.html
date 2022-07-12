@@ -313,7 +313,7 @@
             <tbody>
               <tr>
                 <td class="tg-g6p1">Generacion solar</td>
-                <td class="tg-8jgo">{{dataInvoice.totalEnergiaFotovoltaicaActivaConsumida  | number:'1.0':'en-US' }} kWh</td>
+                <td class="tg-8jgo">{{dataInvoice.CEFTotal / dataInvoice.PBE  | number:'1.0':'en-US' }} kWh</td>
                 <td class="tg-8jgo">L {{dataInvoice.CEFTotal | number:'1.0':'en-US' }}</td>
               </tr>
               <tr>
@@ -323,7 +323,7 @@
               </tr>
               <tr>
                 <td class="tg-g6p1">Total Consumo</td>
-                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada  +  dataInvoice.totalEnergiaFotovoltaicaActivaConsumida | number:'1.0':'en-US' }} kWh</td>
+                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada  +  (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.0':'en-US' }} kWh</td>
                 <td class="tg-8jgo">L {{ dataInvoice.cargo[dataInvoice.cargo.length - 1].valorAjustado  | number:'1.0':'en-US'}}</td>
               </tr>
             </tbody>
