@@ -264,8 +264,8 @@ export class GeneratedInvoicesComponent implements OnInit {
       fechaInicio : invoicePosition.medidor[0].historico.fechaAnterior,
       fechaFin:  invoicePosition.medidor[0].historico.fechaActual,
       fechaEmision: (new Date()).toISOString(),
-      energiaConsumida: invoicePosition.totalLecturaActivaAjustada,
-      total: invoicePosition.cargo? invoicePosition.cargo[invoicePosition.cargo.length - 1].valorAjustado + ( invoicePosition.CEFTotal / invoicePosition.PBE): 0,
+      energiaConsumida: invoicePosition.totalLecturaActivaAjustada  + ( invoicePosition.CEFTotal / invoicePosition.PBE),
+      total: invoicePosition.cargo? invoicePosition.cargo[invoicePosition.cargo.length - 1].valorAjustado: 0,
       estado: true,
     } 
 
@@ -307,8 +307,8 @@ export class GeneratedInvoicesComponent implements OnInit {
         fechaInicio : this.listOfData[i].medidor[0].historico.fechaAnterior,
         fechaFin:  this.listOfData[i].medidor[0].historico.fechaActual,
         fechaEmision: (new Date()).toISOString(),
-        energiaConsumida: this.listOfData[i].totalLecturaActivaAjustada,
-        total: this.listOfData[i].cargo ? this.listOfData[i].cargo[this.listOfData[i].cargo.length - 1].valorAjustado + (this.listOfData[i].CEFTotal / this.listOfData[i].PBE) : 0,
+        energiaConsumida: this.listOfData[i].totalLecturaActivaAjustada+ (this.listOfData[i].CEFTotal / this.listOfData[i].PBE),
+        total: this.listOfData[i].cargo ? this.listOfData[i].cargo[this.listOfData[i].cargo.length - 1].valorAjustado  : 0,
         estado: true,
       } 
 
