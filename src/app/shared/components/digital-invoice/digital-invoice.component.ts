@@ -133,15 +133,31 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
     if(div){
       
       html2canvas(div, options).then((canvas) => {
-        const img = canvas.toDataURL('image/PNG');
-        const bufferX = 5;
-        const bufferY = 5;
-        const imgProps = (<any>doc).getImageProperties(img);
-        const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        var imgWidth = 210;
+        var pageHeight = 290;
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
   
-        (doc as any).addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
-
+  
+        var doc = new jsPDF('p', 'mm');
+        var position = 0;
+        var pageData = canvas.toDataURL('image/jpeg', 1.0);
+        var imgData = encodeURIComponent(pageData);
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        doc.setLineWidth(5);
+        doc.setDrawColor(255, 255, 255);
+        doc.rect(0, 0, 210, 295);
+        heightLeft -= pageHeight;
+  
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          doc.addPage();
+          doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          doc.setLineWidth(5);
+          doc.setDrawColor(255, 255, 255);
+          doc.rect(0, 0, 210, 295);
+          heightLeft -= pageHeight;
+        }
         return doc;
       }).then((doc) => {
         
