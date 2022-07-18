@@ -12,6 +12,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { TimeService } from '@shared/services/time.service';
+import { InvoiceInterface } from 'src/Core/interfaces/invoices-tables.interface';
 export interface facturas{
   
   cliente: string,
@@ -43,9 +44,9 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
   hoy = Date.now();
   vencimiento: any;
   ChargePosition!: ChargesShema;
-  @Input() dataSource!: {chart:{}, data: any[], contFacturas: number, promedioConsumo: number};
+  @Input() dataSource!:{chart:{}, categories: any[], dataset: any[], contFacturas: number, promedioConsumo: number};
   title: string;
-  @Input() historicData!: facturas[];
+  @Input() historicData!: InvoiceInterface[];
   @Input() typeInvoice!: number;
   pieGraph!: {chart:{}, data: any[]};
   dataDocument: any;

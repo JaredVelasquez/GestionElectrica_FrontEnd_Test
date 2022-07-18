@@ -17,35 +17,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { concatMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { TimeService } from '@shared/services/time.service';
-export interface facturas{
-  
-  cliente: string,
-  codigo: string,
-  codigoContrato: string,
-  contratoId: number
-  energiaConsumida: number,
-  estado: number
-  fechaCancelacion: string,
-  fechaEmision: string,
-  fechaFin: string,
-  fechaInicio: string,
-  fechaLectura: string,
-  fechaVencimiento: string,
-  total: number
-}
 
-export interface model{
-  contratoId:  number,
-  codigo: string,
-  fechaLectura:  string,
-  fechaVencimiento: number,
-  fechaInicio : string,
-  fechaFin:  string,
-  fechaEmision: string,
-  energiaConsumida: number,
-  total: number | undefined,
-  estado: boolean,
-} 
 
 @Component({
   selector: 'app-generated-invoices',
@@ -69,7 +41,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   UnDiaMLS = 86400000;
   hoy = Date.now();
   vencimiento: any;
-  dataSource: {chart:{}, data: any[], contFacturas: number, promedioConsumo: number} =  {
+  dataSource: {chart:{}, categories: any[], dataset: any[], contFacturas: number, promedioConsumo: number} =  {
     chart: {
       caption: 'Historico de consumo por facturas generadas',
       subCaption: 'Energia activa consumida',
@@ -77,14 +49,31 @@ export class GeneratedInvoicesComponent implements OnInit {
       yAxisName: 'Consumo kWh',
       numberSuffix: 'K',
       theme: 'fusion'
+
     },
-    data: [
-      ],
-  
+    categories: [{
+      category: []
+    }],
+    dataset: [
+        {
+        seriesname: "EEH",
+        color: "008ee4",
+        data: [
+        ],
+        },
+        {
+        seriesname: "Generacion Solar",
+        color: "f8bd19",
+        data: [
+        ],
+        
+        }
+    ],
     contFacturas: 0,
     promedioConsumo: 0  
-  };
-  historicData: facturas[] = [];
+  }
+
+  historicData: InvoiceInterface[] = [];
   pipe = new DatePipe('en-US');
   isLoading: boolean = false;
 
@@ -134,7 +123,11 @@ export class GeneratedInvoicesComponent implements OnInit {
 
   Back(): void {
     this.FacturaIsVisible = false;
-    this.dataSource.data.length = 0;
+    this.dataSource.categories[0].category.length = 0;
+    for(let i = 0 ; i < this.dataSource.dataset.length ; i ++){
+      this.dataSource.dataset[i].data.length = 0;
+
+    }
   }
 
   showModal(): void {
@@ -163,7 +156,6 @@ export class GeneratedInvoicesComponent implements OnInit {
     this.dataInvoice = data;
     this.getHistoric(data.contrato.contratoId, data);
     this.FacturaIsVisible = true;
-    console.log(this.dataSource);
     
   }
 
@@ -172,80 +164,52 @@ export class GeneratedInvoicesComponent implements OnInit {
     this.globalService.GetId( this.url.getHistorico, contratoId).subscribe(
       (result : any) => {
         if(result){
+          console.log(result);
+          
           this.historicData = result;
           this.historicData = this.historicData.slice(0, 5);
           for(let i = 0; i < this.historicData.length ; i ++){
             if(Date.parse(this.historicData[i].fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
-              console.log('fecha introducida en grafico');
-              
-              if(!this.dataSource){
-                this.dataSource = {
-                  chart: {
-                    caption: 'Historico de consumo por facturas generadas',
-                    subCaption: 'Energia activa consumida',
-                    xAxisName: 'Fecha',
-                    yAxisName: 'Consumo kWh',
-                    numberSuffix: 'K',
-                    theme: 'fusion'
-                  },
-                  data: [
-                    { label: '[' +   this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaFin) + ' ]', value: (this.historicData[i].energiaConsumida.toFixed(2)).toString() }],
+
+                this.dataSource.categories[0].category = [
+                  ... this.dataSource.categories[0].category, 
+                  {label: '[' +   this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaFin) + ' ]' }
+                ]
+
+                this.dataSource.dataset[0].data = [
+                  ... this.dataSource.dataset[0].data, 
+                {  value: ((this.historicData[i].consumoExterno).toFixed(2)).toString() },
+
+                ]        
                 
-                  contFacturas: 0,
-                  promedioConsumo: 0  
-                };
+                this.dataSource.dataset[1].data = [
+                  ... this.dataSource.dataset[1].data, 
+                {  value: ((this.historicData[i].consumoSolar).toFixed(2)).toString() },
+                ]
                 
-              }else{
-                
-                this.dataSource.data?.push(
-                  { label: '[' +  this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaFin) + ' ]', value: (this.historicData[i].energiaConsumida.toFixed(2)).toString() }
-                  );
-              }
-  
-              
               this.dataSource.contFacturas ++;
               this.dataSource.promedioConsumo += this.historicData[i].energiaConsumida;
-  
             }
-
           }
+            
+          this.dataSource.categories[0].category = [
+              ... this.dataSource.categories[0].category, 
+              {label: '[' +   this.times.steticDate(data.medidor[0].historico.fechaAnterior) + ' - '  +  this.times.steticDate(data.medidor[0].historico.fechaActual) + ' ]' }
+            ]
+            
+            this.dataSource.dataset[0].data = [
+              ... this.dataSource.dataset[0].data, 
+            {  value: ((data.totalLecturaActivaAjustada).toFixed(2)).toString() },
+            ]
+            
+            this.dataSource.dataset[1].data = [
+              ... this.dataSource.dataset[1].data, 
+            {  value: (((data.CEFTotal / data.PBE)).toFixed(2)).toString() },
+            ]
 
-          
-          
-          if(!this.dataSource.data){
-            this.dataSource = {
-              chart: {
-                caption: 'Historico de consumo por facturas generadas',
-                subCaption: 'Energia activa consumida',
-                xAxisName: 'Fecha',
-                yAxisName: 'Consumo kWh',
-                numberSuffix: 'K',
-                theme: 'fusion'
-              },
-              data: [
-                { label: '[' +  this.times.steticDate(data.medidor[0].historico.fechaAnterior) + ' - '  + this.times.steticDate(data.medidor[0].historico.fechaActual) + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }],
-
-              contFacturas: 0,
-              promedioConsumo: 0  
-            };
             this.dataSource.contFacturas ++;
             this.dataSource.promedioConsumo += data.totalLecturaActivaAjustada;
             this.dataSource.promedioConsumo /= this.dataSource.contFacturas;
-            
-          }else{
-            
-          this.dataSource.data?.push(
-            { label: '[' +  this.times.steticDate(data.medidor[0].historico.fechaAnterior) + ' - '  + this.times.steticDate(data.medidor[0].historico.fechaActual) + ' ]', value: (data.totalLecturaActivaAjustada.toFixed(2)).toString() }
-            );
-            this.dataSource.contFacturas ++;
-            this.dataSource.promedioConsumo += data.totalLecturaActivaAjustada;
-            this.dataSource.promedioConsumo /= this.dataSource.contFacturas;
-
-          }
-
-        
-
-
         }
       }
     );
@@ -253,6 +217,29 @@ export class GeneratedInvoicesComponent implements OnInit {
   }
 
 
+  dataBarGraphic(valorSolar: number, valorExterno: number){
+    
+    return {
+      dataset: [
+      {
+      seriesname: "EEH",
+      color: "008ee4",
+      data: [
+        {  value: (valorExterno.toFixed(2)).toString() }],
+      
+      },
+      {
+      seriesname: "Generacion Solar",
+      color: "008ee4",
+      data: [
+        {  value: (valorSolar.toFixed(2)).toString() }],
+      
+      },
+
+      ]
+    }
+
+  }
   EmitirFactura(invoicePosition: LecturasPorContrato){
     console.log(invoicePosition);
     
@@ -265,6 +252,8 @@ export class GeneratedInvoicesComponent implements OnInit {
       fechaFin:  invoicePosition.medidor[0].historico.fechaActual,
       fechaEmision: (new Date()).toISOString(),
       energiaConsumida: invoicePosition.totalLecturaActivaAjustada  + ( invoicePosition.CEFTotal / invoicePosition.PBE),
+      consumoSolar: ( invoicePosition.CEFTotal / invoicePosition.PBE),
+      consumoExterno: invoicePosition.totalLecturaActivaAjustada,
       total: invoicePosition.cargo? invoicePosition.cargo[invoicePosition.cargo.length - 1].valorAjustado: 0,
       estado: true,
     } 
@@ -299,7 +288,7 @@ export class GeneratedInvoicesComponent implements OnInit {
       });
     for(let i = 0; i < this.listOfData.length; i++){
 
-      let provider: model = {
+      let provider = {
         contratoId:  this.listOfData[i].contrato.contratoId,
         codigo:   this.pipe.transform(new Date().toISOString(), 'yyyy-MM-dd HH:mm:ss', '-0600') + ' - FA#',
         fechaLectura:  this.listOfData[i].medidor[0].historico.fechaActual,
@@ -308,10 +297,13 @@ export class GeneratedInvoicesComponent implements OnInit {
         fechaFin:  this.listOfData[i].medidor[0].historico.fechaActual,
         fechaEmision: (new Date()).toISOString(),
         energiaConsumida: this.listOfData[i].totalLecturaActivaAjustada + (this.listOfData[i].CEFTotal / this.listOfData[i].PBE),
+        consumoSolar: (this.listOfData[i].CEFTotal / this.listOfData[i].PBE),
+        consumoExterno: this.listOfData[i].totalLecturaActivaAjustada,
         total: this.listOfData[i].cargo ? this.listOfData[i].cargo[this.listOfData[i].cargo.length - 1].valorAjustado  : 0,
         estado: true,
       } 
-
+      console.log(provider);
+      
       this.globalService.Post(this.url.post, provider).subscribe(
         (result: any) => {
           console.log(result);
