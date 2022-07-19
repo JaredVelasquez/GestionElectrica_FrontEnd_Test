@@ -237,6 +237,12 @@
     margin: 0% 5% 0% 5%;
 }
 
+.totales-tablas {
+    color: black; 
+    font-weight: bold;
+    background-color: #b9b9b9;
+}
+
 .total-pagar {
     display: flex;
     justify-content: space-between;

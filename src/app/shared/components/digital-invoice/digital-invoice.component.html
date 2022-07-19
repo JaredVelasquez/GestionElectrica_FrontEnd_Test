@@ -136,7 +136,7 @@
                     </tr>
                     
                 </tbody>
-                <tbody *ngFor="let data of dataInvoice.vmedidor">
+                <!-- <tbody *ngFor="let data of dataInvoice.vmedidor">
                     <tr>
                       <td class="tg-hvao">Ajustes</td>
                       <td class="tg-zk76" colspan="8">{{data.descripcion}}</td>
@@ -158,28 +158,26 @@
                         <td class="tg-wk8r"> kWhA </td>
                     </tr>
 
-                </tbody>
+                </tbody> -->
                 <tbody>
                     
                     <tr>
-                        <td class="tg-oe15">Factor potencia</td>
-                        <td class="tg-wk8r">FP Medio</td>
-                        <td class="tg-wk8r">FP Acumulado</td>
-                        <td class="tg-wk8r" colspan="2"></td>
-                        <td class="tg-wk8r">Activa total</td>
-                        <td class="tg-wk8r"></td>
-                        <td class="tg-wk8r">Activa + Reactiva</td>
-                        <td class="tg-wk8r">Porcentaje</td>
+                        <td class="tg-dou8  "></td>
+                        <td class="tg-dou8">FP Medio</td>
+                        <td class="tg-dou8">P acumulada</td>
+                        <td class="tg-dou8" colspan="2"></td>
+                        <td class="tg-dou8">Activa total</td>
+                        <td class="tg-dou8">Reactiva total</td>
+                        <td class="tg-dou8"  colspan="2">Activa + Reactiva</td>
                     </tr>
                     <tr>
-                        <td class="tg-oe15">Total</td>
-                        <td class="tg-wk8r">{{dataInvoice.FPTotal * 100  | number:'1.2-2':'en-US'}} %</td>
-                        <td class="tg-wk8r">{{dataInvoice.PCFRTotal * 100  | number:'1.2-2':'en-US'}} %</td>
-                        <td class="tg-wk8r" colspan="2"></td>
-                        <td class="tg-wk8r">{{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}} kWh</td>
-                        <td class="tg-wk8r"></td>
-                        <td class="tg-wk8r">{{dataInvoice.totalLecturaActivaAjustada + dataInvoice.totalLecturaReactivaAjustada  | number:'1.2-2':'en-US'}}</td>
-                        <td class="tg-wk8r"> kWh - kWhA</td>
+                        <td class="tg-oe15 totales-tablas" style="background-color:  #b9b9b9">Total</td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.FPTotal * 100  | number:'1.2-2':'en-US'}} %</td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.PCFRTotal * 100  | number:'1.2-2':'en-US'}} %</td>
+                        <td class="tg-wk8r totales-tablas" colspan="2"  style="background-color:  #b9b9b9"></td>
+                        <td class="tg-wk8r totales-tablas"  style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}} kWh</td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaReactivaAjustada  | number:'1.2-2':'en-US'}} kWhA</td>
+                        <td class="tg-wk8r totales-tablas"  colspan="2" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + dataInvoice.totalLecturaReactivaAjustada  | number:'1.2-2':'en-US'}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -227,11 +225,11 @@
         <div style="background-color:  #969696; text-align: center;">
             <h6>Ajuste por factor de potencia</h6>
         </div>
-        <p style="color: black; font-size: 17px; margin: 0% 0% 1% 0%; font-weight: bold;"> Factor de potencia
+        <p style="color: black; font-size: 17px; margin: 0% 0% 1% 0%; font-weight: bold;"> Factor de potencia medio
         </p>
         <div style="position: relative;">
-            <p class="formula-dividendo"> {{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}} </p>
-            <p class="formula-divisor1"> {{dataInvoice.totalLecturaActivaAjustada  + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}} <sup>2</sup> </p>
+            <p class="formula-dividendo"> {{dataInvoice.totalLecturaActivaAjustada | number:'1.2-2':'en-US'}} </p>
+            <p class="formula-divisor1"> {{dataInvoice.totalLecturaActivaAjustada  | number:'1.2-2':'en-US'}} <sup>2</sup> </p>
             <p class="mas"> + </p>
             <p class="formula-divisor2"> {{dataInvoice.totalLecturaReactivaAjustada | number:'1.2-2':'en-US'}} <sup>2</sup> = </p>
             <p class="resultado-factor"> {{ dataInvoice.FPTotal * 100 | number:'1.2-2':'en-US'}} % </p>
@@ -342,8 +340,8 @@
               </tr>
               <tr>
                 <td class="tg-g6p1">Total Consumo</td>
-                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada  +  (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US' }} kWh</td>
-                <td class="tg-8jgo">L {{ dataInvoice.cargo[dataInvoice.cargo.length - 1].valorAjustado  | number:'1.2-2':'en-US'}}</td>
+                <td class="tg-8jgo totales-tablas">{{ dataInvoice.totalLecturaActivaAjustada  +  (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US' }} kWh</td>
+                <td class="tg-8jgo totales-tablas">L {{ dataInvoice.cargo[dataInvoice.cargo.length - 1].valorAjustado  | number:'1.2-2':'en-US'}}</td>
               </tr>
             </tbody>
             </table>
