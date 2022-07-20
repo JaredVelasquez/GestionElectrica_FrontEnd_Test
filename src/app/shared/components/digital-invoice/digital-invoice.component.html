@@ -177,7 +177,7 @@
                         <td class="tg-wk8r totales-tablas" colspan="2"  style="background-color:  #b9b9b9"></td>
                         <td class="tg-wk8r totales-tablas"  style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}} kWh</td>
                         <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaReactivaAjustada  | number:'1.2-2':'en-US'}} kWhA</td>
-                        <td class="tg-wk8r totales-tablas"  colspan="2" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + dataInvoice.totalLecturaReactivaAjustada  | number:'1.2-2':'en-US'}}</td>
+                        <td class="tg-wk8r totales-tablas"  colspan="2" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + dataInvoice.totalLecturaReactivaAjustada  + (dataInvoice.CEFTotal / dataInvoice.PBE)  | number:'1.2-2':'en-US'}}</td>
                     </tr>
                 </tbody>
                 </table>
