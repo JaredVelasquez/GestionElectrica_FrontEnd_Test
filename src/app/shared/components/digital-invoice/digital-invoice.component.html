@@ -137,11 +137,11 @@
                     
                 </tbody>
                 <tbody *ngFor="let data of dataInvoice.vmedidor">
-                    <tr>
-                      <td class="tg-hvao">Ajustes</td>
-                      <td class="tg-zk76" colspan="8">{{data.descripcion}}</td>
+                    <tr *ngIf="data.mostrar">
+                        <td class="tg-hvao">Ajustes</td>
+                        <td class="tg-zk76" colspan="8">{{data.descripcion}}</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="data.mostrar">
                         <td class="tg-oe15">Ajuste Activa</td>
                         <td class="tg-wk8r" colspan="4"></td>
                         <td class="tg-wk8r">{{data.LecturaActiva  | number:'1.2-2':'en-US'}}</td>
@@ -149,7 +149,7 @@
                         <td class="tg-wk8r">{{data.LecturaActiva  | number:'1.2-2':'en-US'}}</td>
                         <td class="tg-wk8r"> kWh </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="data.mostrar">
                         <td class="tg-oe15">Ajuste Reactiva</td>
                         <td class="tg-wk8r" colspan="4"></td>
                         <td class="tg-wk8r">{{data.LecturaReactiva  | number:'1.2-2':'en-US'}}</td>
@@ -157,6 +157,7 @@
                         <td class="tg-wk8r">{{data.LecturaReactiva  | number:'1.2-2':'en-US'}}</td>
                         <td class="tg-wk8r"> kWhA </td>
                     </tr>
+
 
                 </tbody>
                 <tbody>

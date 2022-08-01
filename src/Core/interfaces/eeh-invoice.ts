@@ -81,6 +81,7 @@ export interface LecturasPorContrato {
       descripcion: string,
       LecturaActiva: number,
       LecturaReactiva: number,
+      mostrar: boolean,
       porcentaje: number,
     }
   ],

@@ -78,6 +78,8 @@ export class VirtualMeterModalComponent implements OnInit {
 
   submitPostForm(estado: boolean): void{
     if (this.validateForm.valid) {
+      console.log(this.validateForm.value);
+      
       this.newVMeter = {
         ... this.validateForm.value,
         estado: true
@@ -113,7 +115,7 @@ export class VirtualMeterModalComponent implements OnInit {
     
     if (this.validateForm.valid) {
       
-      const {porcentaje, operacion, observacion, sourceId} =  this.validateForm.value;
+      const {porcentaje, operacion, observacion, sourceId, mostrar} =  this.validateForm.value;
       this.newVMeter = {
         ... {porcentaje, operacion, observacion},
         estado: true
@@ -122,17 +124,19 @@ export class VirtualMeterModalComponent implements OnInit {
       this.IsEditableSchema.operacion = this.newVMeter.operacion;
       this.IsEditableSchema.porcentaje = this.newVMeter.porcentaje;
       this.IsEditableSchema.sourceId = this.validateForm.value.sourceId;
+      this.IsEditableSchema.mostrar = this.validateForm.value.mostrar;
       
       if(this.IsEditableSchema)
       this.globalService.PutId(this.url.update, this.IsEditableSchema.vmedidorId, this.newVMeter).subscribe(
         (result:any) => {
           if(!result){
-            this.updateTable(this.IsEditableSchema);
-            this.globalService.Patch( 'medidor-virtual-detalles', this.IsEditableSchema.id, {sourceId: this.validateForm.value.sourceId}).subscribe(
+            this.globalService.Patch( 'medidor-virtual-detalles', this.IsEditableSchema.id, {sourceId: this.validateForm.value.sourceId, mostrar: this.validateForm.value.mostrar}).subscribe(
               (result:any) => {
                 if(!result){
 
                   this.IsEditableForm = false;
+                  this.updateTable(this.IsEditableSchema);
+                  
                   this.cleanForm();
                   this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
                 }else{
@@ -174,6 +178,7 @@ export class VirtualMeterModalComponent implements OnInit {
       sourceId: [data.sourceId],
       porcentaje: [data.porcentaje, [Validators.required]],
       operacion: [data.operacion, [Validators.required]],
+      mostrar: [data.mostrar, [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
     })
 
@@ -207,6 +212,7 @@ export class VirtualMeterModalComponent implements OnInit {
       sourceId: [''],
       porcentaje: ['', [Validators.required]],
       operacion: ['', [Validators.required]],
+      mostrar: ['', [Validators.required]],
       observacion: ['', [Validators.required]],
     })
   }

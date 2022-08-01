@@ -6,6 +6,7 @@ export interface VirtualMeterInterface{
     operacion: number;
     porcentaje: number;
     observacion: string;
+    mostrar: boolean;
     estado: boolean;
 }
 

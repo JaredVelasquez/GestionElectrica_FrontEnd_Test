@@ -55,14 +55,30 @@
             <div nz-row>
               <nz-form-item>
                 <nz-form-control>
-                  <nz-select formControlName="sourceId" style="width: 300px;" nzAllowClear>
+                  <nz-select formControlName="sourceId" style="width: 290px;" nzAllowClear>
                     <nz-option *ngFor="let data of listOfMeters" [nzLabel]="data.descripcion" [nzValue]="data.sourceId"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
             </div>
           </div>
+
+          
+          <div nz-col nzOffset="1">
+            <label>Mostrar en factura</label>
+            <div nz-row>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-select formControlName="mostrar" style="width: 160px;" nzAllowClear>
+                    <nz-option nzLabel="Si" [nzValue]="true"></nz-option>
+                    <nz-option nzLabel="No" [nzValue]="false"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
         </div>
+        
           <div nz-row class="row-3">
 
             <div nzSpan="24" nz-col class="row3-col1">
