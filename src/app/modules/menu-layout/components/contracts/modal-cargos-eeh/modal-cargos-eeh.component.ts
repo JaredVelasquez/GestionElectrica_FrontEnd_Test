@@ -69,6 +69,8 @@ export class ModalCargosEehComponent implements OnInit {
             this.listOfDataAux = [... this.listOfDataAux, result];
             this.filterCargos(true, false);
 
+            this.CleanForm(); 
+            
             this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
           }else{
             this.notificationService.createMessage('error', 'La accion fallo 😓');
@@ -102,6 +104,7 @@ export class ModalCargosEehComponent implements OnInit {
 
             this.CleanForm(); 
             
+            this.editIsActive = false;
             this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
           }else{
             this.notificationService.createMessage('error', 'La accion fallo 😓');
@@ -146,7 +149,7 @@ export class ModalCargosEehComponent implements OnInit {
   }
 
   disable(data: ManualInvoiceDetailView, estado: boolean): void{
-    this.globalService.Patch(this.url.update, data.tipoCargoId, {estado: estado}).subscribe(
+    this.globalService.Patch(this.url.update, data.detalleId, {estado: estado}).subscribe(
       result => {
         console.log(result);
         
@@ -204,6 +207,7 @@ export class ModalCargosEehComponent implements OnInit {
       nombre: ["", [Validators.required]],
       valor: [0, [Validators.required]],
     });
+    this.editIsActive = false;
   }
 
   GetTipoCargosFacturaManual(): void{

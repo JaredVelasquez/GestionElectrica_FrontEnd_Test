@@ -138,7 +138,7 @@
                       </td>
                       <td>{{ data.descripcion }}</td>
                       <td timeZone>{{ data.fecha  | date:'yyyy/M/dd':'GMT' }}</td>
-                      <td>{{ data.valor }}</td>
+                      <td>{{ data.valor   | number:'1.2-2':'en-US'}}</td>
                     </tr>
                   </tbody>
                 </nz-table>
