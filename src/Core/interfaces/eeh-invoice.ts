@@ -96,5 +96,6 @@ export interface LecturasPorContrato {
   FPTotal: number,
   PPS: number,
   PBE: number,
-  ModoCalculoSolar: boolean
+  ModoCalculoSolar: boolean,
+  diasFacturados: number,
 }

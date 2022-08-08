@@ -328,10 +328,10 @@ export class GeneratedInvoicesComponent implements OnInit {
   submitForm(){
     let isLoading = true;
     this.nzMessageService
-      .loading('Action in progress', { nzPauseOnHover:  isLoading})
+      .loading('Action in progress', { nzAnimate:  isLoading, nzPauseOnHover: isLoading})
       .onClose!.pipe(
-        concatMap(() => this.nzMessageService.success('Loading finished', { nzDuration: 1000 }).onClose!),
-        concatMap(() => this.nzMessageService.info('Loading finished', { nzDuration: 1000 }).onClose!)
+        concatMap(() => this.nzMessageService.success('Loading finished').onClose!),
+        concatMap(() => this.nzMessageService.info('Loading finished').onClose!)
       )
       .subscribe(() => {
         console.log('All completed!');
