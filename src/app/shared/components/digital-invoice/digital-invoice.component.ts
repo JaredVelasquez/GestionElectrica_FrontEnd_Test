@@ -81,7 +81,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
       this.diaFacturacion = this.numeroADia(this.dataInvoice.contrato.diaGeneracion);
       this.pieGraph = {
         chart: {
-          caption: "Distribucion de consumo energetico",
+          caption: "Distribución de consumo energético",
           subCaption: "",
           numberPrefix: "$",
           showPercentInTooltip: "0",
@@ -92,11 +92,11 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
         },
         data: [
           {
-            label: "Generacion solar",
+            label: "Generación solar",
             value: (this.dataInvoice.CEFTotal / this.dataInvoice.PBE).toString()
           },
           {
-            label: "Energia EEH",
+            label: "Energía EEH",
             value: ( this.dataInvoice.totalLecturaActivaAjustada).toString()
           }
         ]

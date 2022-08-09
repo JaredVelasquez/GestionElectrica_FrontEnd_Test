@@ -43,8 +43,8 @@ export class IssuedInvoicesComponent implements OnInit {
   
   dataSource: {chart:{}, categories: any[], dataset: any[], contFacturas: number, promedioConsumo: number} =  {
     chart: {
-      caption: 'Historico de consumo por facturas generadas',
-      subCaption: 'Energia activa consumida',
+      caption: 'Histórico de consumo por facturas generadas',
+      subCaption: 'Energía activa consumida',
       xAxisName: 'Fecha',
       yAxisName: 'Consumo kWh',
       numberSuffix: 'K',
@@ -62,7 +62,7 @@ export class IssuedInvoicesComponent implements OnInit {
         ],
         },
         {
-        seriesname: "Generacion Solar",
+        seriesname: "Generación Solar",
         color: "f8bd19",
         data: [
         ],
@@ -108,7 +108,7 @@ export class IssuedInvoicesComponent implements OnInit {
       
       },
       {
-      seriesname: "Generacion Solar",
+      seriesname: "Generación Solar",
       color: "008ee4",
       data: [
         {  value: (valorSolar.toFixed(2)).toString() }],

@@ -10,10 +10,10 @@
   overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-zk76{background-color:#c0c0c0;border-color:#ffffff;text-align:center;vertical-align:top}
+.tg .tg-zk76{background-color:#c0c0c0;border-color:#ffffff;text-align:center    ;vertical-align:top}
 .tg .tg-oe15{background-color:#ffffff;border-color:#ffffff;text-align:left;vertical-align:top}
 .tg .tg-wk8r{background-color:#ffffff;border-color:#ffffff;text-align:center;vertical-align:top}
-.tg .tg-dou8{background-color:#001529;border-color:inherit;color:#ffffff;text-align:left;vertical-align:top}
+.tg .tg-dou8{background-color:#001529;border-color:inherit;color:#ffffff;text-align:center;vertical-align:top}
 .tg .tg-hvao{background-color:#c0c0c0;border-color:#ffffff;text-align:left;vertical-align:top}
         
 
@@ -24,7 +24,7 @@
 .origen-table th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
 .origen-table .tg-ifil{background-color:#656565;border-color:#ffffff;color:#ffffff;font-weight:bold;text-align:center;vertical-align:top}
-.origen-table .tg-8jgo{border-color:#ffffff;text-align:center;vertical-align:top}
+.origen-table .tg-8jgo{border-color:#ffffff;text-align:right;vertical-align:top}
 .origen-table .tg-g6p1{background-color:#656565;border-color:#ffffff;color:#ffffff;font-weight:bold;text-align:left;vertical-align:top}
 
 .grid-container {
@@ -41,7 +41,8 @@
 .cabecera {
     background-color: #001529;
     display: flex;
-    justify-content: space-between;
+    margin: 0% 10% 0% 10%;
+    justify-content: center;
 }
 
 .direccion {
@@ -224,7 +225,6 @@
 
 .datos-cliente-regulado {
     display: flex;
-    justify-content: space-between;
     color: black;
     margin: 0% 5% 0% 5%;
 }

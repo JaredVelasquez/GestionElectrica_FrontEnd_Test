@@ -12,15 +12,11 @@
     <div class="cabecera">
         <!-- <img style="width: 50px;" [src]="" alt="Cliente"> -->
         <h2> {{dataInvoice.contrato.cliente}} </h2>
-        <div style="text-align: end;">
-            <p class="direccion"> </p>
-            <p class="direccion"></p>
-        </div>
     </div>
     <br>
     <div class="body">
         <div class="titulos">
-            <h5>Datos de Factura</h5>
+            <h5>Datos de factura</h5>
             <h5>Datos del titular </h5>
         </div>
         <div class="grid-container">
@@ -51,7 +47,7 @@
                 <div>
                     <p class="etiqueta-izq-titular"> Nombre del titular:  </p>
                     <p class="etiqueta-izq-titular"> Dirección: </p>
-                    <p class="etiqueta-izq-titular"> Telefono: </p>
+                    <p class="etiqueta-izq-titular"> Teléfono: </p>
                 </div>
                 <div>
                     <p class="etiqueta-der-titular"> {{dataInvoice.contrato.cliente}} </p>
@@ -62,11 +58,11 @@
         </div>
 
         <div class="titulos">
-            <h5>Resumen de la Factura</h5>
+            <h5>Resumen de la factura</h5>
         </div>
         <div class="resumen-container">
             <div class="consumo" >
-                <p class="etiqueta-consumo-total"> Consumo total en KVArh </p>
+                <p class="etiqueta-consumo-total"> Consumo total en kVArh </p>
                 <p class="etiqueta-valor"> {{dataInvoice.totalLecturaReactivaAjustada | number:'1.2-2':'en-US'}} </p>
             </div>
             <div class="consumo">
@@ -74,23 +70,21 @@
                 <p class="etiqueta-valor"> {{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}} </p>
             </div>
             <div class="consumo">
-                <p class="etiqueta-consumo-total"> Total a pagar </p>
-                <p class="etiqueta-valor" *ngIf="dataInvoice.cargo"> {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado   | number:'1.2-2':'en-US'}} Lps</p>
+                <p class="etiqueta-consumo-total"> Total a pagar en lempiras</p>
+                <p class="etiqueta-valor" *ngIf="dataInvoice.cargo"> {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado   | number:'1.2-2':'en-US'}}</p>
             </div>
         </div>
         <br>
         <div class="titulos">
-            <h5>Detalle de Consumo de Energía</h5>
+            <h5>Detalle de consumo de energía</h5>
         </div>
         <div class="detalle-container">
                 <table class="tg">
                 <thead>
                   <tr>
                     <th class="tg-dou8"></th>
-                    <th class="tg-dou8">Factor de potencia</th>
-                    <th class="tg-dou8">Penalizacion</th>
-                    <th class="tg-dou8">Lectura Actual</th>
-                    <th class="tg-dou8">Lectura Anterior</th>
+                    <th class="tg-dou8">Lectura actual</th>
+                    <th class="tg-dou8">Lectura anterior</th>
                     <th class="tg-dou8">Diferencia</th>
                     <th class="tg-dou8">Multiplicador</th>
                     <th class="tg-dou8">Consumo</th>
@@ -100,12 +94,11 @@
                 <tbody *ngFor="let data of dataInvoice.medidor">
                     <tr>
                       <td class="tg-hvao">Medidor</td>
-                      <td class="tg-zk76" colspan="8">{{data.descripcion}}</td>
+                      <td class="tg-zk76" colspan="2">{{data.descripcion}}</td>
+                      <td class="tg-zk76" colSpan="4">FP : {{data.FP *100 | number:'1.2-2':'en-US'}}% - Penalización: {{ data.PCFR *100 | number:'1.2-2':'en-US'}}%</td>
                     </tr>
                     <tr>
                       <td class="tg-oe15">Fecha de lectura</td>
-                      <td class="tg-wk8r"></td>
-                      <td class="tg-wk8r"></td>
                       <td class="tg-wk8r">{{data.historico.fechaActual  | date:'dd/M/yyyy':'GMT' }}</td>
                       <td class="tg-wk8r">{{data.historico.fechaAnterior  | date:'dd/M/yyyy':'GMT' }}</td>
                       <td class="tg-wk8r"></td>
@@ -115,8 +108,6 @@
                     </tr>
                     <tr>
                       <td class="tg-oe15">Activa</td>
-                      <td class="tg-wk8r"></td>
-                      <td class="tg-wk8r"></td>
                       <td class="tg-wk8r">{{data.historico.lecturaActivaActual  | number:'1.2-2':'en-US'}}</td>
                       <td class="tg-wk8r">{{data.historico.lecturaActivaAnterior  | number:'1.2-2':'en-US'}}</td>
                       <td class="tg-wk8r">{{data.historico.lecturaActivaActual - data.historico.lecturaActivaAnterior  | number:'1.2-2':'en-US'}}</td>
@@ -126,14 +117,12 @@
                     </tr>
                     <tr>
                       <td class="tg-oe15">Reactiva</td>
-                      <td class="tg-wk8r">{{data.FP *100 | number:'1.2-2':'en-US'}} %</td>
-                      <td class="tg-wk8r">{{data.PCFR *100 | number:'1.2-2':'en-US'}} %</td>
                       <td class="tg-wk8r">{{data.historico.lecturaReactivaActual  | number:'1.2-2':'en-US'}}</td>
                       <td class="tg-wk8r">{{data.historico.lecturaReactivaAnterior | number:'1.2-2':'en-US' }}</td>
                       <td class="tg-wk8r">{{data.historico.lecturaReactivaActual - data.historico.lecturaReactivaAnterior  | number:'1.2-2':'en-US'}}</td>
-                      <td class="tg-wk8r">{{data.historico.multiplicador  | number:'1.2-2':'en-US'}}</td>
+                      <td class="tg-wk8r">{{data.historico.multiplicador}}</td>
                       <td class="tg-wk8r">{{data.historico.lecturaReactivaActual - data.historico.lecturaReactivaAnterior  | number:'1.2-2':'en-US'}}</td>
-                      <td class="tg-wk8r"> kWhA </td>
+                      <td class="tg-wk8r"> kVArh </td>
                     </tr>
                     
                 </tbody>
@@ -143,7 +132,7 @@
                         <td class="tg-zk76" colspan="8">{{data.descripcion}}</td>
                     </tr>
                     <tr *ngIf="data.mostrar">
-                        <td class="tg-oe15">Ajuste Activa</td>
+                        <td class="tg-oe15">Ajuste activa</td>
                         <td class="tg-wk8r" colspan="4"></td>
                         <td class="tg-wk8r">{{data.LecturaActiva  | number:'1.2-2':'en-US'}}</td>
                         <td class="tg-wk8r">{{data.porcentaje  | number:'1.2-2':'en-US'}} %</td>
@@ -151,7 +140,7 @@
                         <td class="tg-wk8r"> kWh </td>
                     </tr>
                     <tr *ngIf="data.mostrar">
-                        <td class="tg-oe15">Ajuste Reactiva</td>
+                        <td class="tg-oe15">Ajuste reactiva</td>
                         <td class="tg-wk8r" colspan="4"></td>
                         <td class="tg-wk8r">{{data.LecturaReactiva  | number:'1.2-2':'en-US'}}</td>
                         <td class="tg-wk8r">{{data.porcentaje  | number:'1.2-2':'en-US'}} %</td>
@@ -164,22 +153,20 @@
                 <tbody>
                     
                     <tr>
-                        <td class="tg-dou8  "></td>
-                        <td class="tg-dou8">FP Medio</td>
-                        <td class="tg-dou8">P acumulada</td>
-                        <td class="tg-dou8" colspan="2"></td>
-                        <td class="tg-dou8">Activa total</td>
-                        <td class="tg-dou8">Reactiva total</td>
-                        <td class="tg-dou8"  colspan="2">Activa + Reactiva</td>
+                        <td class="tg-oe15 totales-tablas" style="background-color:  #b9b9b9">Activa total</td>
+                        <!-- <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.FPTotal * 100  | number:'1.2-2':'en-US'}} %</td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.PCFRTotal * 100  | number:'1.2-2':'en-US'}} %</td> -->
+                        <td class="tg-wk8r totales-tablas" colspan="4"  style="background-color:  #b9b9b9"></td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}}</td>
+                        <td class="tg-wk8r totales-tablas"  style="background-color:  #b9b9b9">kWh</td>
                     </tr>
                     <tr>
-                        <td class="tg-oe15 totales-tablas" style="background-color:  #b9b9b9">Total</td>
-                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.FPTotal * 100  | number:'1.2-2':'en-US'}} %</td>
-                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.PCFRTotal * 100  | number:'1.2-2':'en-US'}} %</td>
-                        <td class="tg-wk8r totales-tablas" colspan="2"  style="background-color:  #b9b9b9"></td>
-                        <td class="tg-wk8r totales-tablas"  style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}} kWh</td>
-                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaReactivaAjustada  | number:'1.2-2':'en-US'}} kWhA</td>
-                        <td class="tg-wk8r totales-tablas"  colspan="2" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + dataInvoice.totalLecturaReactivaAjustada  + (dataInvoice.CEFTotal / dataInvoice.PBE)  | number:'1.2-2':'en-US'}}</td>
+                        <td class="tg-oe15 totales-tablas" style="background-color:  #b9b9b9">Reactiva total</td>
+                        <!-- <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.FPTotal * 100  | number:'1.2-2':'en-US'}} %</td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.PCFRTotal * 100  | number:'1.2-2':'en-US'}} %</td> -->
+                        <td class="tg-wk8r totales-tablas" colspan="4"  style="background-color:  #b9b9b9"></td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaReactivaAjustada  | number:'1.2-2':'en-US'}}</td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">kWhA</td>
                     </tr>
                 </tbody>
                 </table>
@@ -238,15 +225,15 @@
             <img class="img-formula" src="assets/raiz.svg">
 
         </div>
-        <p style="    color: black; font-size: 17px; margin: 2% 0% 1% 0%; font-weight: bold;"> Penalizacion reactiva
+        <p style="    color: black; font-size: 17px; margin: 2% 0% 1% 0%; font-weight: bold;"> Penalización reactiva
         </p>
         <p class="formula-penalidad" > {{dataInvoice.PCFRTotal * 100 | number:'1.2-2':'en-US'}}% = 
             <span class="resultado-penalidad" *ngIf="dataInvoice.cargo; else sinPenalizacion">
-                {{ dataInvoice.cargo[dataInvoice.cargo.length -2].valorAjustado | number:'1.2-2':'en-US'}} Lps
+                L {{ dataInvoice.cargo[dataInvoice.cargo.length -2].valorAjustado | number:'1.2-2':'en-US'}}
             </span> 
             <ng-template #sinPenalizacion>
                 <span class="resultado-penalidad">
-                    {{ 0 }} Lps
+                    L {{ 0 }}
                 </span> 
 
             </ng-template>
@@ -258,32 +245,42 @@
         </div>
 
             <div class="contenedor-cliente-regulado">
+                
                 <div>
                     <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado"> 
-                        {{data.nombre}}
+                        <span *ngIf="data.nombre != 'Total'">
+                            {{data.nombre}}
+                        </span>
+                        
                     </p>
         
                 </div>
-                <div >
-                    <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado">L {{data.valorAjustado  | number:'1.2-2':'en-US'}} </p>
+                <div>
+                    <p *ngFor="let data of dataInvoice.cargo" class="datos-cliente-regulado" style="justify-content: right;">
+                        <span *ngIf="data.nombre != 'Total'">
+                            L {{data.valorAjustado  | number:'1.2-2':'en-US'}} 
+                        </span>
+                    </p>
                 </div>
             </div>
-            <div style="background-color:#a9a9a9;">
-                <p  style="margin: 1% 16% 0% 0%;" class="total-pagar">
-                    <span style="color: black; font-weight: bold; font-size: 16px;">
-                        Total:
-                    </span>
-                    <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
-                        L {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado   | number:'1.2-2':'en-US'}}
-                    </span>
-                    <ng-template #sinTotal>
-                        <span style="color: black; font-weight: bold; font-size: 16px;" *ngIf="dataInvoice.cargo ; else sinTotal">
-                            L {{'0'   | number:'1.2-2':'en-US'}} 
+            <div class="contenedor-cliente-regulado" style="background-color: #b9b9b9; font-weight: bold;">
+                <div>
+                    <p class="datos-cliente-regulado"> 
+                        <span>
+                            Total
                         </span>
-    
-                    </ng-template>
-                    
-                </p>
+                        
+                    </p>
+        
+                </div>
+                <div>
+                    <p class="datos-cliente-regulado" style="justify-content: right;">
+                        <span>
+                        L {{dataInvoice.cargo[dataInvoice.cargo.length -1].valorAjustado   | number:'1.2-2':'en-US'}}
+
+                        </span>
+                    </p>
+                </div>
 
             </div>
     </div>
@@ -296,9 +293,9 @@
         <fusioncharts width="100%" height="100%" type="scrollstackedcolumn2d" [dataSource]="dataSource">
         </fusioncharts>
     </div>
-    <div style="background-color: #b9b9b9; margin: 1% 3% 1% 7%;">
+    <div style="background-color: #b9b9b9; margin: 0% 3% 0% 3%;">
         <p class="totales-historico">
-            <span> Promedio de consumo energia activa:</span>
+            <span> Promedio de consumo energía activa:</span>
             <span> {{dataSource.promedioConsumo | number:'1.2-2':'en-US' }} kWh </span>
         </p>
         <!-- <p class="totales-historico">
@@ -314,7 +311,7 @@
 
  
 <div class="titulos" *ngIf="dataInvoice.cargo">
-    <h5>Origen de la electricidad</h5>
+    <h5>Origen de la energía</h5>
 </div>  
 
 <div class="origen-container"  *ngIf="dataInvoice.cargo">
@@ -325,19 +322,19 @@
             <thead>
               <tr>
                 <th class="tg-ifil">Origen</th>
-                <th class="tg-ifil">Energia (kWh)</th>
-                <th class="tg-ifil">Precio de la energia (Lps)</th>
+                <th class="tg-ifil">Energía</th>
+                <th class="tg-ifil">Precio de la energía</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="tg-g6p1">Generacion solar</td>
+                <td class="tg-g6p1">Generación solar</td>
                 <td class="tg-8jgo">{{dataInvoice.CEFTotal / dataInvoice.PBE  | number:'1.2-2':'en-US' }} kWh</td>
                 <td class="tg-8jgo">L {{dataInvoice.CEFTotal | number:'1.2-2':'en-US' }}</td>
               </tr>
               <tr>
-                <td class="tg-g6p1">Energia EEH</td>
-                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada  | number:'1.2-2':'en-US' }} kWhA</td>
+                <td class="tg-g6p1">Energía EEH</td>
+                <td class="tg-8jgo">{{ dataInvoice.totalLecturaActivaAjustada  | number:'1.2-2':'en-US' }} kWh</td>
                 <td class="tg-8jgo">L {{ dataInvoice.cargo[dataInvoice.cargo.length - 1].valorAjustado -  dataInvoice.CEFTotal| number:'1.2-2':'en-US' }}</td>
               </tr>
               <tr>
@@ -356,6 +353,13 @@
             <fusioncharts width="100%" height="100%" type="Pie2d" [dataSource]="pieGraph">
             </fusioncharts>
         </div>
+        <!-- <div style="background-color: rgb(255 255 255);
+        position: absolute;
+        height: 50px;
+        width: 370px;
+        bottom: 0;">
+            <span style="color: rgb(255 255 255);">.</span>
+        </div> -->
     </div>
 
 </div>
