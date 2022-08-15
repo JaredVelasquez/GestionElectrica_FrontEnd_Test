@@ -12,4 +12,9 @@ export class TimeService {
     fecha =  formatDate(fecha, 'yyyy-MM-dd HH:mm:ss','en-US', 'GMT');
     return new Date(fecha).toLocaleDateString("en-US", {month: 'long', day: 'numeric'});
   }
+
+  getMountLeters(fecha: string){
+    fecha =  formatDate(fecha, 'yyyy-MM-dd HH:mm:ss','en-US', 'GMT');
+    return new Date(fecha).toLocaleDateString("en-US", {month: 'long'});
+  } 
 }

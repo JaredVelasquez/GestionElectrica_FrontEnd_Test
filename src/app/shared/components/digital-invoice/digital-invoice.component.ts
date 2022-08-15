@@ -122,14 +122,34 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(() => {
         console.log('All completed!');
       });
+      this.createDocument(1);
+    
+  }
+
+
+  sendFile() {
+    this.message
+      .loading('Action in progress', { nzDuration: 4000 })
+      .onClose!.pipe(
+        concatMap(() => this.message.success('Loading finished', { nzDuration: 2500 }).onClose!),
+        concatMap(() => this.message.info('Loading finished is finished', { nzDuration: 2500 }).onClose!)
+      )
+      .subscribe(() => {
+        console.log('All completed!');
+      });
+        this.createDocument(2);
+  }
+
+   createDocument(opc: number){
     const div = document.getElementById('content');
+    const pag2 = document.getElementById('pag2');
+    var doc = new jsPDF('p', 'mm', 'a4', true);
 
     const options = {
       background: 'white',
       scale: 3
     };
 
-    const doc = new jsPDF('p', 'mm', 'a4', true);
 
     if(div){
       
@@ -140,8 +160,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
         var heightLeft = imgHeight;
   
   
-        var doc = new jsPDF('p', 'mm');
-        var position = 0;
+        var position = 5;
         var pageData = canvas.toDataURL('image/jpeg', 1.0);
         var imgData = encodeURIComponent(pageData);
         doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
@@ -159,83 +178,70 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
           doc.rect(0, 0, 210, 295);
           heightLeft -= pageHeight;
         }
-        return doc;
-      }).then((doc) => {
-        
-          doc.save(`factura-${'prueba'}.pdf`);
+        if(pag2){
+          html2canvas(pag2, options).then((canvas) => { 
+          let imgHeight1 = imgHeight;
+          imgWidth = 210;
+          pageHeight = 290;
+          imgHeight = canvas.height * imgWidth / canvas.width;
+          pageData = canvas.toDataURL('image/jpeg', 1.0);
+          imgData = encodeURIComponent(pageData);
           
-        
-      }).then((doc) => {
-          console.log(doc);
-          
-      });
-      
-    }else{
-      console.log("No se pudo generar factura, content no existe");
-    }
+          if((heightLeft * -1) < imgHeight){
+            doc.addPage();
+            heightLeft = imgHeight;
+            position = 5;
+          }else{
+            if(imgHeight1 > 290){
+              imgHeight1 -= 290;
+            }
+            heightLeft = imgHeight;
+            position = imgHeight1;
+          }
+          doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
     
-  }
-  sendFile() {
-    this.message
-      .loading('Action in progress', { nzDuration: 4000 })
-      .onClose!.pipe(
-        concatMap(() => this.message.success('Loading finished', { nzDuration: 2500 }).onClose!),
-        concatMap(() => this.message.info('Loading finished is finished', { nzDuration: 2500 }).onClose!)
-      )
-      .subscribe(() => {
-        console.log('All completed!');
-      });
-      const div = document.getElementById('content');
-  
-      const options = {
-        background: 'white',
-        scale: 3
-      };
-  
-      const doc = new jsPDF('p', 'mm', 'a4', true);
-  
-      if(div){
-        
-        html2canvas(div, options).then((canvas) => {
-          const img = canvas.toDataURL('image/PNG');
-          const bufferX = 5;
-          const bufferY = 5;
-          const imgProps = (<any>doc).getImageProperties(img);3
-          const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
-          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    
-          (doc as any).addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
-  
+          while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            doc.addPage();
+            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            doc.setLineWidth(5);
+            doc.setDrawColor(255, 255, 255);
+            doc.rect(0, 0, 210, 295);
+            heightLeft -= pageHeight;
+          }
           return doc;
-        }).then((doc) => {
-          
-            this.globalService.Post('send-email', {
-              identificator: this.dataInvoice.contrato.correo, 
-              subject: 'Factura de consumo',
-              text: 'Su factura a fue generada el ' + this.pipe.transform(new Date().toISOString(), 'yyyy/MM/dd HH:mm:ss', '-1200'),
-              atachment: doc.output('datauri'),
-              option: 2
-            }).subscribe(
-               (data: any) => {
-                if(data){
-                  
-                }
+        }).then(async (doc) => {
+        //imprimir
+        if(opc === 1){
+          doc.save(`Factura ${this.dataInvoice.contrato.cliente} ${this.times.getMountLeters(this.dataInvoice.medidor[0].historico.fechaAnterior)}.pdf`);
+        }
+        //enviar por correo
+        if(opc === 2){
+          this.globalService.Post('send-email', {
+            identificator: this.dataInvoice.contrato.correo, 
+            subject: 'Factura de consumo',
+            text: 'Su factura a fue generada el ' + this.pipe.transform(new Date().toISOString(), 'yyyy/MM/dd HH:mm:ss', '-1200'),
+            atachment: doc.output('datauri'),
+            option: 2
+          }).subscribe(
+             (data: any) => {
+              if(data){
                 
-               }
-             )
-            
+              }
+              
+             }
+           )
+        }
           
-        }).then((doc) => {
-            console.log(doc);
-            
-        });
         
-      }else{
-        console.log("No se pudo generar factura, content no existe");
+      })
+
       }
-    
-    
+    })
   }
+  
+}
 
   numeroADia(dia: number){
     let day;
