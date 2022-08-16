@@ -187,7 +187,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
           pageData = canvas.toDataURL('image/jpeg', 1.0);
           imgData = encodeURIComponent(pageData);
           
-          if((heightLeft * -1) < imgHeight){
+          if((heightLeft * -1) < (imgHeight + 6)){
             doc.addPage();
             heightLeft = imgHeight;
             position = 5;
@@ -196,7 +196,7 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
               imgHeight1 -= 290;
             }
             heightLeft = imgHeight;
-            position = imgHeight1;
+            position = imgHeight1 + 6;
           }
           doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
           heightLeft -= pageHeight;
