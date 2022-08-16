@@ -228,7 +228,7 @@ export class CancelledInvoicesComponent implements OnInit {
           this.historicData = result;
           this.historicData = this.historicData.slice(0, 5);
           for(let i = 0; i < this.historicData.length ; i ++){
-            if(Date.parse(this.historicData[i].fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)){
+            if(Date.parse(this.historicData[i].fechaFin) <= Date.parse(this.dataInvoice.medidor[0].historico.fechaAnterior)+ (900000 * 24)){
 
                 this.dataSource.categories[0].category = [
                   ... this.dataSource.categories[0].category, 
