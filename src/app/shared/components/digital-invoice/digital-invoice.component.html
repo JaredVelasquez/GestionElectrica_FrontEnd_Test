@@ -154,7 +154,7 @@
                         <!-- <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.FPTotal * 100  | number:'1.2-2':'en-US'}} %</td>
                         <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.PCFRTotal * 100  | number:'1.2-2':'en-US'}} %</td> -->
                         <td class="tg-wk8r totales-tablas" colspan="4"  style="background-color:  #b9b9b9"></td>
-                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}}</td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaActivaAjustada + dataInvoice.totalEnergiaFotovoltaicaActivaConsumida | number:'1.2-2':'en-US'}}</td>
                         <td class="tg-wk8r totales-tablas"  style="background-color:  #b9b9b9">kWh</td>
                     </tr>
                     <tr>
@@ -162,7 +162,7 @@
                         <!-- <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.FPTotal * 100  | number:'1.2-2':'en-US'}} %</td>
                         <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.PCFRTotal * 100  | number:'1.2-2':'en-US'}} %</td> -->
                         <td class="tg-wk8r totales-tablas" colspan="4"  style="background-color:  #b9b9b9"></td>
-                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaReactivaAjustada  | number:'1.2-2':'en-US'}}</td>
+                        <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">{{dataInvoice.totalLecturaReactivaAjustada + dataInvoice.totalEnergiaFotovoltaicaReactivaConsumida| number:'1.2-2':'en-US'}}</td>
                         <td class="tg-wk8r totales-tablas" style="background-color:  #b9b9b9">kWhA</td>
                     </tr>
                 </tbody>

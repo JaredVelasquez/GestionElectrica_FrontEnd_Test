@@ -28,22 +28,6 @@ export class MetersModalComponent implements OnInit {
     postMeter:'medidors',
     del:'medidors',
   }
-  EmptyForm = this.fb.group({
-    sourceId: ['', [Validators.required]],
-    codigo: ['', [Validators.required]],
-    multiplicador: ['', [Validators.required]],
-    descripcion: ['', [Validators.required]],
-    modelo: ['', [Validators.required]],
-    serie: ['', [Validators.required]],
-    lecturaMax: ['', [Validators.required]],
-    puntoConexion: ['', [Validators.required]],
-    puntoMedicionId: ['', [Validators.required]],
-    observacion: ['', [Validators.required]],
-    tipo: ['', [Validators.required]],
-    registroDatos: ['', [Validators.required]],
-    almacenamientoLocal: ['', [Validators.required]],
-    funcionalidad: ['', [Validators.required]],
-  });
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +37,7 @@ export class MetersModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.validateForm = this.EmptyForm;
+    this.cleanForm();
   }
   
   showModal(): void {
@@ -62,7 +46,7 @@ export class MetersModalComponent implements OnInit {
       this.editableFrom(this.dataPosition);
 
     }else{
-      this.validateForm = this.EmptyForm;
+      this.cleanForm();
     }
   }
 
@@ -72,6 +56,7 @@ export class MetersModalComponent implements OnInit {
 
   handleCancel(): void {
     this.isVisible = false;
+    this.cleanForm();
   }
 
   submitForm(): void { 
@@ -80,6 +65,7 @@ export class MetersModalComponent implements OnInit {
     }else{
       this.submitUpdateForm();
     }
+    this.cleanForm();
   }
   
   submitPostForm(){
@@ -195,6 +181,26 @@ export class MetersModalComponent implements OnInit {
     this.dataPosition.funcionalidad = this.validateForm.value.funcionalidad;
   }
 
+
+  cleanForm(){
+    this.validateForm = this.fb.group({
+      sourceId: ['', [Validators.required]],
+      codigo: ['', [Validators.required]],
+      multiplicador: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      modelo: ['', [Validators.required]],
+      serie: ['', [Validators.required]],
+      lecturaMax: ['', [Validators.required]],
+      puntoConexion: ['', [Validators.required]],
+      puntoMedicionId: ['', [Validators.required]],
+      observacion: ['', [Validators.required]],
+      tipo: ['', [Validators.required]],
+      registroDatos: ['', [Validators.required]],
+      almacenamientoLocal: ['', [Validators.required]],
+      funcionalidad: ['', [Validators.required]],
+    });
+  
+  }
 }
 
   

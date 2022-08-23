@@ -23,18 +23,12 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   ListOfCharges: ChargesInterface[] = [];
   isVisible = false;
   editIsActive!: InputParametersInterface;
+  isEditable: boolean = false;
   paramIsDisable: boolean = false;
   dates:{from: any, to: any} = {from: '', to: ''};
   ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
   validateForm!: FormGroup;
   pipe = new DatePipe('en-US');
-
-  EmptyForm = this.fb.group({
-    fecha: ['', [Validators.required]],
-    tipoCargoId: ['', [Validators.required]],
-    valor: [0 , [Validators.required]],
-    observacion: ['', [Validators.required]],
-  })
 
   url = {
     get: 'get-parameter',
@@ -53,7 +47,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
   ngOnInit(): void { 
     this.GetCargo();
     this.GetParams(true, false); 
-    this.validateForm = this.EmptyForm;
+    this.cleanForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -184,6 +178,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
               if(dataEditable)
               this.update(dataEditable, dataEditable.estado);
               this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+              this.isEditable = false;
             }else{
               this.notificationService.createMessage('error', 'La accion fallo 😓');
             }
@@ -211,6 +206,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
       valor: [0 , [Validators.required]],
       observacion: ['', [Validators.required]],
     })
+    this.isEditable = false;
   
   }
 
@@ -228,6 +224,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
 
   editableForm(data: InputParametersInterface){
     this.editIsActive = data;
+    this.isEditable = true;
 
     this.validateForm = this.fb.group({
       fecha: [[this.pipe.transform(data.fechaInicio, 'yyyy-MM-dd HH:mm', 'GMT'),  this.pipe.transform(data.fechaFinal, 'yyyy-MM-dd HH:mm', 'GMT')], [Validators.required]],
@@ -240,7 +237,7 @@ export class ModalParametersComponent implements OnInit, OnChanges {
 
   
   showModal(): void {
-    this.validateForm = this.EmptyForm;
+    this.cleanForm();
     this.isVisible = true;
   }
 
@@ -253,8 +250,6 @@ export class ModalParametersComponent implements OnInit, OnChanges {
     console.log('Button cancel clicked!');
     this.isVisible = false;
   }
-
-
 
 
   listOfColumns: ColumnItem[] = [
