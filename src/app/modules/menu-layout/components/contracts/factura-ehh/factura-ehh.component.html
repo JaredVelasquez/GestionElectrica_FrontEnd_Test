@@ -75,10 +75,10 @@
         <div nz-row>
             <div nz-col>
               <div *ngIf="!IsDisable ; else enableClients">
-                <button nz-button [nzType]="'primary'" (click)="filterInvoices(false, true)"><span>Mostrar desabilitados</span></button>
+                <button nz-button [nzType]="'primary'" (click)="filterInvoices(false, true)"><span nz-icon nzType="filter" nzTheme="outline"></span><span>Mostrar desabilitados</span></button>
               </div>
               <ng-template #enableClients>
-                <button nz-button [nzType]="'primary'" (click)="filterInvoices(true, true)"><span>Mostrar Habilitados</span></button>
+                <button nz-button [nzType]="'primary'" (click)="filterInvoices(true, true)"><span nz-icon nzType="filter" nzTheme="outline"></span><span>Mostrar Habilitados</span></button>
               </ng-template>
           
             </div>

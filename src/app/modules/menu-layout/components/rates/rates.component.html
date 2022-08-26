@@ -5,10 +5,10 @@
   <div nz-col nzSpan="4">
 
     <div *ngIf="!ratesIsActive ; else enableClients">
-      <button nz-button [nzType]="'primary'" (click)="GetRates(0, true)"><span>Mostrar desabilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetRates(0, true)"><span nz-icon nzType="filter" nzTheme="outline"></span><span>Mostrar desabilitados</span></button>
     </div>
     <ng-template #enableClients>
-      <button nz-button [nzType]="'primary'" (click)="GetRates(1, true)"><span>Mostrar habilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetRates(1, true)"><span nz-icon nzType="filter" nzTheme="outline"></span><span>Mostrar habilitados</span></button>
     </ng-template>
 
   </div>

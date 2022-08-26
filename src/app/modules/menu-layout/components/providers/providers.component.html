@@ -3,10 +3,10 @@
 <div nz-row>
   <div nz-col nzOffset="1" nzSpan="4">
     <div *ngIf="!disableClients ; else enableClients">
-      <button nz-button [nzType]="'primary'" (click)="GetProviders(0, true)"><span>Mostrar desabilitados</span></button>
-    </div>
+      <button nz-button [nzType]="'primary'" (click)="GetProviders(0, true)"><i nz-icon nzType="filter" nzTheme="outline"></i><span>Mostrar desabilitados</span></button>
+    </div>  
     <ng-template #enableClients>
-      <button nz-button [nzType]="'primary'" (click)="GetProviders(1, true)"><span>Mostrar Habilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetProviders(1, true)"><i nz-icon nzType="filter" nzTheme="outline"></i><span>Mostrar Habilitados</span></button>
     </ng-template>
 
   </div>

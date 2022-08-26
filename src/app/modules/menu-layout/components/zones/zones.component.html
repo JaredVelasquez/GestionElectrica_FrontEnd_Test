@@ -4,10 +4,10 @@
 
   <div nz-col nzSpan="5">
     <div *ngIf="!zonaIsDisable ; else enableClients">
-      <button nz-button [nzType]="'primary'" (click)="GetZones(0, true)"><span>Mostrar desabilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetZones(0, true)"><span nz-icon nzType="filter" nzTheme="outline"></span><span>Mostrar desabilitados</span></button>
     </div>
     <ng-template #enableClients>
-      <button nz-button [nzType]="'primary'" (click)="GetZones(1, true)"><span>Mostrar Habilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetZones(1, true)"><span nz-icon nzType="filter" nzTheme="outline"></span><span>Mostrar Habilitados</span></button>
     </ng-template>
 
   </div>

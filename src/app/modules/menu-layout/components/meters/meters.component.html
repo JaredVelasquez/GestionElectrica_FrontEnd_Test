@@ -5,21 +5,21 @@
   <div nz-col nzSpan="4">
 
     <div *ngIf="!meterIsActive ; else enableClients">
-      <button nz-button [nzType]="'primary'" (click)="GetMeters(0, true)"><span>Medidores desabilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetMeters(0, true)"><span nz-icon nzType="filter" nzTheme="outline"></span><span>Mostrar desabilitados</span></button>
     </div>
     <ng-template #enableClients>
-      <button nz-button [nzType]="'primary'" (click)="GetMeters(1, true)"><span>Medidores Habilitados</span></button>
+      <button nz-button [nzType]="'primary'" (click)="GetMeters(1, true)"><span nz-icon nzType="filter" nzTheme="outline"></span><span>Mostrar Habilitados</span></button>
     </ng-template>
 
   </div>
 
   <div nz-col  nzSpan="4">
     <div *ngIf="!meterIsManual; else automatico">
-      <button nz-button nzType="primary" (click)="GetManualSchemas(true)">Medidores Manuales</button>
+      <button nz-button nzType="primary" (click)="GetManualSchemas(true)"><span nz-icon nzType="filter" nzTheme="outline"></span>Mostrar Manuales</button>
     </div>
     <ng-template #automatico>
       <div>
-        <button nz-button nzType="primary" (click)="GetManualSchemas(false)">Medidores Automaticos</button>
+        <button nz-button nzType="primary" (click)="GetManualSchemas(false)"><span nz-icon nzType="filter" nzTheme="outline"></span>Mostrar Automaticos</button>
       </div>
     </ng-template>
     
