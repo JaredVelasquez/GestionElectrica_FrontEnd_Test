@@ -3,7 +3,7 @@ export interface RollOverSchema {
     medidorId: number;
     fechaInicial: string;
     fechaFinal: string;
-    energia: boolean;
+    energia: number;
     lecturaAnterior: number;
     lecturaNueva: number;
     observacion: string;

@@ -65,7 +65,6 @@ export class MetersModalComponent implements OnInit {
     }else{
       this.submitUpdateForm();
     }
-    this.cleanForm();
   }
   
   submitPostForm(){
@@ -80,6 +79,7 @@ export class MetersModalComponent implements OnInit {
             this.isVisible = false;
             
             this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+            this.cleanForm();
           }else{
             this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
@@ -98,24 +98,20 @@ export class MetersModalComponent implements OnInit {
   }
 
   submitUpdateForm(): void {
-    console.log(this.dataPosition);
-    console.log(this.validateForm.value);
-    
     if (this.validateForm.valid) {
-    
-    
-    console.log(this.validateForm.value);
       
       this.fullSchema();
-      this.globalService.PutId(this.url.postMeter, this.dataPosition.id ,this.meter).subscribe(
+      console.log(this.meter);
+      
+      this.globalService.Patch(this.url.postMeter, this.dataPosition.id ,this.meter).subscribe(
         (result:any) => {
-          console.log(result);
           
           if(!result){
             this.updateMainTable();
             this.isVisible = false;
 
             this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
+            this.cleanForm();
           }else{
             this.notificationService.createMessage('error', 'La accion fallo 😓');
           }
@@ -137,7 +133,7 @@ export class MetersModalComponent implements OnInit {
   }
 
   editableFrom(data: MeterSchema): void{
-    console.log(this.dataPosition.observacion);
+    console.log(this.dataPosition.funcionalidad);
     this.validateForm = this.fb.group({
       sourceId: [data.sourceId, [Validators.required]],
       codigo: [data.codigo, [Validators.required]],
@@ -179,6 +175,9 @@ export class MetersModalComponent implements OnInit {
     this.dataPosition.registroDatos = this.validateForm.value.registroDatos;
     this.dataPosition.almacenamientoLocal = this.validateForm.value.almacenamientoLocal;
     this.dataPosition.funcionalidad = this.validateForm.value.funcionalidad;
+    console.log(this.validateForm.value);
+    console.log(this.dataPosition);
+    
   }
 
 

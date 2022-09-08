@@ -65,6 +65,22 @@
               </div>
             
             </div>
+            <div nz-row>
+              <div nz-col>
+                <label>Mostrar en factura</label>
+                <div nz-row>
+                  <nz-form-item>
+                    <nz-form-control>
+                      <nz-select formControlName="mostrar" style="width: 160px;" nzAllowClear>
+                        <nz-option nzLabel="Si" [nzValue]="true"></nz-option>
+                        <nz-option nzLabel="No" [nzValue]="false"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+              
+            </div>
 
           </form>
           <br>  

@@ -232,7 +232,7 @@ export class CancelledInvoicesComponent implements OnInit {
 
                 this.dataSource.categories[0].category = [
                   ... this.dataSource.categories[0].category, 
-                  {label: '[' +   this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaFin) + ' ]' }
+                  {label: this.times.extractTextMount(this.historicData[i].fechaInicio)}
                 ]
 
                 this.dataSource.dataset[0].data = [
@@ -253,7 +253,7 @@ export class CancelledInvoicesComponent implements OnInit {
             
           this.dataSource.categories[0].category = [
               ... this.dataSource.categories[0].category, 
-              {label: '[' +   this.times.steticDate(facturas.fechaInicio) + ' - '  +  this.times.steticDate(facturas.fechaFin) + ' ]' }
+              {label: this.times.extractTextMount(facturas.fechaInicio)}
             ]
             
             this.dataSource.dataset[0].data = [

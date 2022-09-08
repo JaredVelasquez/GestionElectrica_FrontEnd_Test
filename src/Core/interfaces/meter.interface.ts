@@ -13,7 +13,7 @@ export interface MeterSchema{
     tipo: boolean;
     registroDatos: boolean,
     almacenamientoLocal: boolean,
-    funcionalidad: boolean,
+    funcionalidad: number,
     estado: boolean;
   }
   

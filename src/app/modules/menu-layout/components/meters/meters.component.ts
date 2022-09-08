@@ -66,7 +66,7 @@ export class MetersComponent implements OnInit, OnChanges {
    
  }
   updateTable(list: MeterSchema){
-    this.listOfData = [...this.listOfData,list];
+    this.listOfData = [...this.listOfData, list];
   }
 
   GetMeters(estado: number, switched: boolean){

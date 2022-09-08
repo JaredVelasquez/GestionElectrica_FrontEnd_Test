@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { environment } from '@dev/environment';
+import { first, interval } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,4 +9,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  name = 'Angular';
+
+  private source = interval(3000);
+  constructor(
+    private http: HttpClient
+  ) { 
+  }
+    
+
 }

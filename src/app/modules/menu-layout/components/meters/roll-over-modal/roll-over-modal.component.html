@@ -35,8 +35,9 @@
                   <nz-form-control>
                       <nz-form-item  nzFlex>
                           <nz-select class="inputMedium" formControlName="energia" nzPlaceHolder="Activa, Reactiva" nzAllowClear>
-                                  <nz-option nzLabel="Activa" [nzValue]="true"></nz-option>
-                                  <nz-option nzLabel="Reactiva" [nzValue]="false"></nz-option>
+                                  <nz-option nzLabel="Activa" [nzValue]=1></nz-option>
+                                  <nz-option nzLabel="Reactiva" [nzValue]=0></nz-option>
+                                  <nz-option nzLabel="Activa Exportada" [nzValue]=2></nz-option>
                           </nz-select>
                       </nz-form-item>
                   </nz-form-control>

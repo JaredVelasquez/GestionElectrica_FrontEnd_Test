@@ -194,6 +194,7 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
         this.listOfDataAux[i].tarifaId = this.validateForm.value.tarifaId;
         this.listOfDataAux[i].fechaInicial = this.validateForm.value.fecha[0];
         this.listOfDataAux[i].fechaFinal = this.validateForm.value.fecha[1];
+        this.listOfDataAux[i].mostrar = this.validateForm.value.mostrar;
       }
     }
     
@@ -204,11 +205,11 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
   }
 
   fullSchema(): void{
-    const {medidorId, tarifaId, zonaId, contratoId, observacion, estado} = this.validateForm.value;
+    const {medidorId, tarifaId, zonaId, contratoId, observacion, estado, mostrar} = this.validateForm.value;
 
 
     this.newCMeterSchema = {
-      ... {medidorId, tarifaId, zonaId, contratoId, observacion, estado},
+      ... {medidorId, tarifaId, zonaId, contratoId, observacion, estado, mostrar},
       fechaInicial:this.pipe.transform(this.validateForm.value.fecha[0], 'yyyy-MM-dd HH:mm:ss', '-1200'),
       fechaFinal: this.pipe.transform(this.validateForm.value.fecha[1], 'yyyy-MM-dd HH:mm:ss', '-1200'),
     }
@@ -242,6 +243,7 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
       fecha: [[ this.pipe.transform(new Date(data.fechaInicial), 'yyyy-MM-dd HH:mm:ss', 'GMT'), 
       this.pipe.transform(new Date(data.fechaFinal), 'yyyy-MM-dd HH:mm:ss', 'GMT')], [Validators.required]],
       observacion: [data.observacion, [Validators.required]],
+      mostrar: [data.mostrar, [Validators.required]],
     })
     this.editIsActive = true;
   }
@@ -252,6 +254,7 @@ export class ModalMedidoresComponent implements OnInit, OnChanges {
       contratoId: [this.dataPosition.id, [Validators.required]],
       fecha: [[this.dataPosition.fechaCreacion.toString(), this.dataPosition.fechaVenc.toString()], [Validators.required]],
       observacion: ['', [Validators.required]],
+      mostrar: ['', [Validators.required]],
     })
     this.editIsActive = false;
   }

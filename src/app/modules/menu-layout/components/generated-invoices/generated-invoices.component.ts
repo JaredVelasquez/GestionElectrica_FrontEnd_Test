@@ -37,7 +37,9 @@ export class GeneratedInvoicesComponent implements OnInit {
   list: any[] = [];
   newFacturas!:any;
   dates:{from: any, to: any} = {from: '', to: ''};
-  ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+  initialDate = new Date(formatDate((new Date()).toISOString(), 'yyyy-MM-dd 00:00:00.000', 'en-US', 'GMT'));
+  
+  ranges = { Today: [this.initialDate, this.initialDate], 'This Month': [this.initialDate, endOfMonth(new Date())] };
   UnDiaMLS = 86400000;
   hoy = Date.now();
   vencimiento: any;
@@ -110,7 +112,8 @@ export class GeneratedInvoicesComponent implements OnInit {
     // this.GetRates();
     // this.GetContratos();
     // this.GetCargos();
-    this.GenerateInvoicesCleanForm();
+  console.log(this.initialDate);
+  this.GenerateInvoicesCleanForm();
     
     
   }
@@ -174,7 +177,7 @@ export class GeneratedInvoicesComponent implements OnInit {
 
                 this.dataSource.categories[0].category = [
                   ... this.dataSource.categories[0].category, 
-                  {label: '[' +   this.times.steticDate(this.historicData[i].fechaInicio) + ' - '  +  this.times.steticDate(this.historicData[i].fechaFin) + ' ]' }
+                  {label: this.times.extractTextMount(this.historicData[i].fechaInicio)}
                 ]
 
                 this.dataSource.dataset[0].data = [
@@ -195,7 +198,7 @@ export class GeneratedInvoicesComponent implements OnInit {
             
           this.dataSource.categories[0].category = [
               ... this.dataSource.categories[0].category, 
-              {label: '[' +   this.times.steticDate(data.medidor[0].historico.fechaAnterior) + ' - '  +  this.times.steticDate(data.medidor[0].historico.fechaActual) + ' ]' }
+              {label: this.times.extractTextMount(data.medidor[0].historico.fechaAnterior)}
             ]
             
             this.dataSource.dataset[0].data = [
