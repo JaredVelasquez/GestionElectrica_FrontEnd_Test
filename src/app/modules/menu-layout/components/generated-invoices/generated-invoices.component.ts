@@ -203,12 +203,12 @@ export class GeneratedInvoicesComponent implements OnInit {
             
             this.dataSource.dataset[0].data = [
               ... this.dataSource.dataset[0].data, 
-            {  value: ((data.totalLecturaActivaAjustada).toFixed(2)).toString() },
+            {  value: ((data.totalLecturaActivaAjustada + (data.PT * data.PPPTT)).toFixed(2)).toString() },
             ]
             
             this.dataSource.dataset[1].data = [
               ... this.dataSource.dataset[1].data, 
-            {  value: (((data.CEFTotal / data.PBE)).toFixed(2)).toString() },
+            {  value: (((data.CEFTotal / data.PBE) + data.totalEnergiaDeInyeccionConsumida).toFixed(2)).toString() },
             ]
 
             this.dataSource.contFacturas ++;
@@ -224,7 +224,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   dataBarGraphic(valorSolar: number, valorExterno: number){
     
     return {
-      dataset: [
+      dataset: [  
       {
       seriesname: "EEH",
       color: "008ee4",
