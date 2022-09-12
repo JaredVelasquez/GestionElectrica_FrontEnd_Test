@@ -104,7 +104,7 @@
                               </div>
                             </td>
                           <td>{{data.nombre}}</td>
-                          <td>L {{data.valor | number:'1.0':'en-US'}}</td>
+                          <td>L {{data.valor  | number:'1.2-2':'en-US'}}</td>
                           </tr>
                       </tbody>
                       </nz-table>
@@ -116,8 +116,8 @@
                 <div nz-col>
                   <label>{{"Total Cargos Lps."}}</label>
                 </div>
-                <div nz-col nzOffset="1">
-                  <nz-input-number [ngModel]="total" [nzDisabled]="true"></nz-input-number>
+                <div nz-col nzOffset="1" nzSpan="16">
+                  <nz-input-number style="width: 170px;" [ngModel]="total | number:'1.2-2':'en-US' " [nzDisabled]="true"></nz-input-number>
                 </div>
               </div>
     </ng-container>

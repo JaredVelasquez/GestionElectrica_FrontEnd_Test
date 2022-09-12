@@ -79,7 +79,7 @@
             <td>{{data.contrato.cliente}}</td>
             <td>{{data.medidor[0].historico.fechaAnterior  | date:'dd/M/yyyy':'GMT'  }}</td>
             <td>{{ data.medidor[0].historico.fechaActual  | date:'dd/M/yyyy':'GMT' }}</td>
-            <td>{{ data.totalLecturaActivaAjustada + data.totalEnergiaFotovoltaicaActivaConsumida | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ data.totalLecturaActivaAjustada + data.totalEnergiaFotovoltaicaActivaConsumida  + data.totalEnergiaDeInyeccionConsumida + (data.PT * data.PPPTT)| number:'1.0':'en-US'}} kWh</td>
             <td style="color: red;" *ngIf="data.cargo; else sinTotal">L {{ data.cargo[data.cargo.length -1].valorAjustado| number:'1.0':'en-US' }}</td>
             <ng-template #sinTotal>
               <td style="color: green;">L {{0  | number:'1.0':'en-US'}}</td> 
