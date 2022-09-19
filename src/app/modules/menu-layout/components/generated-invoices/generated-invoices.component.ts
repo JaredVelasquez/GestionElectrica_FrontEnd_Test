@@ -38,7 +38,7 @@ export class GeneratedInvoicesComponent implements OnInit {
   newFacturas!:any;
   dates:{from: any, to: any} = {from: '', to: ''};
   initialDate = new Date(formatDate((new Date()).toISOString(), 'yyyy-MM-dd 00:00:00.000', 'en-US', 'GMT'));
-  
+    
   ranges = { Today: [this.initialDate, this.initialDate], 'This Month': [this.initialDate, endOfMonth(new Date())] };
   UnDiaMLS = 86400000;
   hoy = Date.now();
@@ -208,7 +208,7 @@ export class GeneratedInvoicesComponent implements OnInit {
             
             this.dataSource.dataset[1].data = [
               ... this.dataSource.dataset[1].data, 
-            {  value: (((data.CEFTotal / data.PBE) + data.totalEnergiaDeInyeccionConsumida).toFixed(2)).toString() },
+            {  value: ((data.totalEnergiaFotovoltaicaActivaConsumida + data.totalEnergiaDeInyeccionConsumida).toFixed(2)).toString() },
             ]
 
             this.dataSource.contFacturas ++;
@@ -255,9 +255,9 @@ export class GeneratedInvoicesComponent implements OnInit {
       fechaInicio : invoicePosition.medidor[0].historico.fechaAnterior,
       fechaFin:  invoicePosition.medidor[0].historico.fechaActual,
       fechaEmision: (new Date()).toISOString(),
-      energiaConsumida: invoicePosition.totalLecturaActivaAjustada  + ( invoicePosition.CEFTotal / invoicePosition.PBE) + invoicePosition.totalEnergiaDeInyeccionConsumida + ( invoicePosition.PT +  invoicePosition.PPPTT),
-      consumoSolar: ( invoicePosition.CEFTotal / invoicePosition.PBE)  + invoicePosition.totalEnergiaDeInyeccionConsumida,
-      consumoExterno: invoicePosition.totalLecturaActivaAjustada  + ( invoicePosition.PT +  invoicePosition.PPPTT),
+      energiaConsumida: invoicePosition.totalLecturaActivaAjustada  + ( invoicePosition.totalEnergiaFotovoltaicaActivaConsumida) + invoicePosition.totalEnergiaDeInyeccionConsumida + ( invoicePosition.PT * invoicePosition.PPPTT),
+      consumoSolar: ( invoicePosition.totalEnergiaFotovoltaicaActivaConsumida)  + invoicePosition.totalEnergiaDeInyeccionConsumida,
+      consumoExterno: invoicePosition.totalLecturaActivaAjustada  + ( invoicePosition.PT *  invoicePosition.PPPTT),
       total: invoicePosition.cargo? invoicePosition.cargo[invoicePosition.cargo.length - 1].valorAjustado: 0,
       estado: true,
     } 
@@ -300,8 +300,8 @@ export class GeneratedInvoicesComponent implements OnInit {
         fechaInicio : this.listOfData[i].medidor[0].historico.fechaAnterior,
         fechaFin:  this.listOfData[i].medidor[0].historico.fechaActual,
         fechaEmision: (new Date()).toISOString(),
-        energiaConsumida: this.listOfData[i].totalLecturaActivaAjustada + (this.listOfData[i].CEFTotal / this.listOfData[i].PBE) + this.listOfData[i].totalEnergiaDeInyeccionConsumida + (this.listOfData[i].PT * this.listOfData[i].PPPTT),
-        consumoSolar: (this.listOfData[i].CEFTotal / this.listOfData[i].PBE)   + this.listOfData[i].totalEnergiaDeInyeccionConsumida,
+        energiaConsumida: this.listOfData[i].totalLecturaActivaAjustada + (this.listOfData[i].totalEnergiaFotovoltaicaActivaConsumida) + this.listOfData[i].totalEnergiaDeInyeccionConsumida + (this.listOfData[i].PT * this.listOfData[i].PPPTT),
+        consumoSolar: (this.listOfData[i].totalEnergiaFotovoltaicaActivaConsumida)   + this.listOfData[i].totalEnergiaDeInyeccionConsumida,
         consumoExterno: this.listOfData[i].totalLecturaActivaAjustada + (this.listOfData[i].PT * this.listOfData[i].PPPTT),
         total: this.listOfData[i].cargo ? this.listOfData[i].cargo[this.listOfData[i].cargo.length - 1].valorAjustado  : 0,
         estado: true,

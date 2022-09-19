@@ -93,11 +93,11 @@ export class DigitalInvoiceComponent implements OnInit, OnChanges, OnDestroy {
         data: [
           {
             label: "Generación solar",
-            value: (this.dataInvoice.CEFTotal / this.dataInvoice.PBE).toString()
+            value: ((this.dataInvoice.totalEnergiaFotovoltaicaActivaConsumida) + this.dataInvoice.totalEnergiaDeInyeccionConsumida).toString()
           },
           {
             label: "Energía EEH",
-            value: ( this.dataInvoice.totalLecturaActivaAjustada).toString()
+            value: ( this.dataInvoice.totalLecturaActivaAjustada + (this.dataInvoice.PT * this.dataInvoice.PPPTT)).toString()
           }
         ]
       };

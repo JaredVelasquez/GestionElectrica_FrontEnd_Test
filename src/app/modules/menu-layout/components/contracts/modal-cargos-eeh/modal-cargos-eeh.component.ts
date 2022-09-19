@@ -60,6 +60,9 @@ export class ModalCargosEehComponent implements OnInit {
   submitPostForm(): void{
     
     if (this.validateForm.valid) {
+      this.validateForm.value.valor = this.validateForm.value.valor.replace(/(,)/gm, "");
+      console.log("valor : " + this.validateForm.value.valor);
+      
       this.fullSchema();
       this.newCargo.estado = true;
       this.newCargo.facturaId =  this.dataPosition.id;
@@ -93,6 +96,8 @@ export class ModalCargosEehComponent implements OnInit {
   submitUpdateForm(): void{
     
     if (this.validateForm.valid) {
+      this.validateForm.value.valor = this.validateForm.value.valor.replace(/(,)/gm, "");
+      console.log("valor : " + this.validateForm.value.valor);
       this.newCargo = {
         ... this.validateForm.value,
         estado: this.localPosition.estado
@@ -130,7 +135,6 @@ export class ModalCargosEehComponent implements OnInit {
       
     if(id === this.listOfDataAux[i].tipoCargoId){
       this.listOfDataAux[i].nombre = this.validateForm.value.nombre;
-      this.listOfDataAux[i].valor = this.validateForm.value.valor;
     }
   }
 
@@ -140,6 +144,8 @@ export class ModalCargosEehComponent implements OnInit {
   }
 
   fullSchema(): void{
+
+    
     const {nombre, valor} = this.validateForm.value;
 
     this.newCargo = {
@@ -179,7 +185,7 @@ export class ModalCargosEehComponent implements OnInit {
     
     this.validateForm = this.fb.group({
       nombre: [data.nombre, [Validators.required]],
-      valor: [data.valor, [Validators.required]],
+      valor: [data.valor.toString(), [Validators.required]],
     });
     this.localPosition = data;
     this.editIsActive = true;
@@ -244,6 +250,7 @@ export class ModalCargosEehComponent implements OnInit {
   }
 
   UpdateTotalCargos(valor: any){
+    valor = Number(valor);
     this.total= 0;
     this.totalCargos();
     return this.total += valor;
