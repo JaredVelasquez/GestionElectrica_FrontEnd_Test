@@ -65,7 +65,7 @@
             </div>
             <div class="consumo">
                 <p class="etiqueta-consumo-total"> Consumo total en kWh </p>
-                <p class="etiqueta-valor"> {{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.CEFTotal / dataInvoice.PBE) | number:'1.2-2':'en-US'}} </p>
+                <p class="etiqueta-valor"> {{dataInvoice.totalLecturaActivaAjustada + (dataInvoice.totalEnergiaFotovoltaicaActivaConsumida) + dataInvoice.totalEnergiaDeInyeccionConsumida + (dataInvoice.PPPTT * dataInvoice.PT) | number:'1.2-2':'en-US'}} </p>
             </div>
             <div class="consumo">
                 <p class="etiqueta-consumo-total"> Total a pagar en lempiras</p>
