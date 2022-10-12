@@ -26,7 +26,7 @@
                     <p class="etiqueta-izq"> Fecha emisión: </p>
                     <p class="etiqueta-izq"> Fechas facturadas: </p>
                     <p class="etiqueta-izq"> Días facturación: </p>
-                    <p class="etiqueta-izq"> Número factura: </p>
+                    <p class="etiqueta-izq"> Tarifa solar: </p>
                 </div>
                 <div>
                     <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy':'GMT' }} </p>
@@ -34,7 +34,7 @@
                     <p class="etiqueta-der">{{hoy | date:'dd/M/yyyy':'GMT' }}</p>
                     <p class="etiqueta-der">{{dataInvoice.medidor[0].historico.fechaAnterior | date:'dd/M/yyyy':'GMT' }}  hasta  {{dataInvoice.medidor[0].historico.fechaActual | date:'dd/M/yyyy':'GMT' }} </p>
                     <p class="etiqueta-der"> {{dataInvoice.diasFacturados}}</p>
-                    <p class="etiqueta-der"> xxxx </p>
+                    <p class="etiqueta-der"> {{dataInvoice.PBE | number:'1.2-2':'en-US'}} </p>
                     
                     <ng-template #Vacio>
                         <p class="etiqueta-der"> --- </p>
