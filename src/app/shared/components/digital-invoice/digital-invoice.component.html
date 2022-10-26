@@ -9,8 +9,8 @@
 <hr>
 <div id="content">
     <div class="cabecera">
-        <!-- <img style="width: 50px;" [src]="" alt="Cliente"> -->
-        <h2> {{dataInvoice.contrato.cliente}} </h2>
+        <img style="max-height: 50px;" [src]="dataInvoice.contrato.logo" class="logo" id="logo" alt="Cliente">
+        <h2 style="margin-right: 45%;" id="cliente"> {{dataInvoice.contrato.cliente}} </h2>
     </div>
     <div class="body">
         <div class="titulos">
@@ -19,7 +19,7 @@
         </div>
         <div class="grid-container">
 
-            <div class="datos">
+            <div class="datos"> 
                 <div>
                     <p class="etiqueta-izq"> Fecha lectura: </p>
                     <p class="etiqueta-izq"> Fecha vencimiento: </p>
@@ -92,7 +92,7 @@
                     <tr *ngIf="data.mostrar">
                       <td class="tg-hvao">Medidor</td>
                       <td class="tg-zk76" colspan="2">{{data.descripcion}}</td>
-                      <td class="tg-zk76" colSpan="4">FP : {{data.FP *100 | number:'1.2-2':'en-US'}}% - Penalización: {{ data.PCFR *100 | number:'1.2-2':'en-US'}}%</td>
+                      <td class="tg-zk76" colSpan="4">FP : {{data.FP *100 | number:'1.2-2':'en-US'}}% <span *ngIf="data.cargoReactivo">- Penalización: {{ data.PCFR *100 | number:'1.2-2':'en-US'}}%</span></td>
                     </tr>
                     <tr *ngIf="data.mostrar">
                       <td class="tg-oe15">Fecha de lectura</td>
@@ -225,9 +225,9 @@
                 <img class="img-formula" src="assets/raiz.svg">
     
             </div>
-            <p style="    color: black; font-size: 17px; margin: 2% 0% 1% 0%; font-weight: bold;"> Penalización reactiva
+            <p *ngIf="dataInvoice.cargoReactivo" style="    color: black; font-size: 17px; margin: 2% 0% 1% 0%; font-weight: bold;"> Penalización reactiva
             </p>
-            <p class="formula-penalidad" > {{dataInvoice.PCFRTotal * 100 | number:'1.2-2':'en-US'}}% = 
+            <p *ngIf="dataInvoice.cargoReactivo" class="formula-penalidad" > {{dataInvoice.PCFRTotal * 100 | number:'1.2-2':'en-US'}}% = 
                 <span class="resultado-penalidad" *ngIf="dataInvoice.cargo; else sinPenalizacion">
                     L {{ dataInvoice.cargo[dataInvoice.cargo.length -2].valorAjustado | number:'1.2-2':'en-US'}}
                 </span> 

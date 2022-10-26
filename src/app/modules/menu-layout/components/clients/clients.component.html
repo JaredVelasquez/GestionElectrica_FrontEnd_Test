@@ -26,9 +26,9 @@
           ></nz-card-meta>
         </nz-card>
         <ng-template #coverTemplate>
-          <img *ngIf="provider.imagen; else NoImage" class="logo" alt="example" src="{{provider.imagen}}" />
+          <img *ngIf="provider.imagen; else NoImage" style="max-height: 1000px; height: 200px;" class="logo" alt="example" src="{{provider.imagen}}" />
           <ng-template #NoImage>
-            <img class="logo" alt="example" src="https://us.123rf.com/450wm/blankstock/blankstock1408/blankstock140800126/30454176-signo-de-interrogaci%C3%B3n-signo-icono-s%C3%ADmbolo-de-ayuda-signo-de-preguntas-frecuentes-bot%C3%B3n-plano-gris-c.jpg?ver=6" />
+            <img class="logo" alt="example" src="../../../../../assets/Images/Imagen_error.webp" />
           </ng-template>
           
         </ng-template>

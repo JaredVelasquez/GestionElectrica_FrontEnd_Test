@@ -26,7 +26,7 @@ export class GenereteCodeComponent implements OnInit {
     this.validateForm = this.fb.group({
       identificator: [null, [Validators.required]],
     });
-
+        
   }
 
   

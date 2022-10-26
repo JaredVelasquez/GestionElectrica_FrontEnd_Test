@@ -15,6 +15,7 @@ import { GeneratedInvoicesComponent } from './components/generated-invoices/gene
 import { IssuedInvoicesComponent } from './components/issued-invoices/issued-invoices.component';
 import { CancelledInvoicesComponent } from './components/cancelled-invoices/cancelled-invoices.component';
 import { ReportComponent } from './components/report/report.component';
+import { UsersComponent } from './components/users/users.component';
 
 
 const routes: Routes = [
@@ -78,6 +79,10 @@ const routes: Routes = [
       {
         path: 'report',
         component: ReportComponent
+      },
+      {
+        path: 'users',
+        component: UsersComponent
       },
      ]
   },

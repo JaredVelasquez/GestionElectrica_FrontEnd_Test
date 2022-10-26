@@ -9,10 +9,9 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-
 import { NzModalModule } from 'ng-zorro-antd/modal';
-
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { DigitalInvoiceComponent } from './components/digital-invoice/digital-invoice.component';
@@ -57,7 +56,8 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
     NzBackTopModule,
     NzMessageModule,
     NzNotificationModule,
-    NzStatisticModule
+    NzStatisticModule,
+    NzAvatarModule
   ],
   exports: [
     MenuLayoutComponent,

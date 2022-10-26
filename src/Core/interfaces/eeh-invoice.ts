@@ -40,7 +40,8 @@ export interface LecturasPorContrato {
     diaGeneracion: number,
     direccion: string,
     telefono: string,
-    correo: string
+    correo: string,
+    logo: string,
   },
   cargo:
   [
@@ -57,6 +58,8 @@ export interface LecturasPorContrato {
       ConsumoExterno: number,
       ConsumoInterno: number,
       LecturaReactiva: number,
+      LecturaActivaExportada: number,
+      cargoReactivo: boolean,
       descripcion: string,
       CEF: number,
       PCF: number,
@@ -72,6 +75,8 @@ export interface LecturasPorContrato {
         lecturaActivaAnterior: number,
         lecturaReactivaActual: number,
         lecturaReactivaAnterior: number,
+        lecturaActivaExportadaActual: number,
+        lecturaActivaExportadaAnterior: number,
         fechaActual: string,
         fechaAnterior: string,
         multiplicador: number,
@@ -105,6 +110,7 @@ export interface LecturasPorContrato {
   PBE: number,
   ECR: number,
   ESG: number,
+  cargoReactivo: boolean,
   ModoCalculoSolar: boolean,
   diasFacturados: number,
 }

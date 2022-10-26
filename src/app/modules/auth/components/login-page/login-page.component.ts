@@ -44,6 +44,8 @@ export class LoginPageComponent implements OnInit {
             console.log(result.token);
             this.validateError = false;
             this.cookieService.set("tokensession", result?.token +'' , key.TOKEN_EXPIRATION_TIME, '');
+            localStorage.setItem('user', result?.usuario);
+            localStorage.setItem('rol', result?.rol);
             this.router.navigate(['sys/welcome'])
             console.log('Soy el token activo: ' + this.cookieService.get('tokensession'));
             this.notification.createNotification('success', 'Exito','Sesion iniciada con exito 😄');

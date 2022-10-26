@@ -7,8 +7,8 @@
             [nzTrigger]="null">
     <div class="sidebar-logo">
       <a href="http://falconingenieria.com/" target="_blank">
-        <img src="../../../../../assets/Images/LogoSmall.png" alt="logo">
-        <h1>Falcon Ingenieria</h1>
+        <img src="../../../../../assets/Images/Solar 2.png" alt="logo">
+        <h1>Zorzales Solar</h1>
         
       </a>
       
@@ -21,7 +21,7 @@
             <span >Inicio</span>
         </li>
       </div>
-      <li nz-submenu nzOpen nzTitle="Mantenimientos" nzIcon="tool">
+      <li *ngIf="rol == 2  || rol == 1" nz-submenu nzOpen nzTitle="Mantenimientos" nzIcon="tool">
         <ul>
           <div routerLink="clients" nz-menu-item nzMatchRouter>
             <li>
@@ -47,10 +47,16 @@
                 <span >Medidores</span>
             </li>
           </div>
+          <div *ngIf="rol == 2" routerLink="users" nz-menu-item nzMatchRouter>
+            <li>
+                <i nz-icon nzType="user"></i>
+                <span >Usuarios</span>
+            </li>
+          </div>
         </ul>
       </li>
       
-      <div routerLink="rates" nz-menu-item nzMatchRouter>
+      <div *ngIf="rol == 2  || rol == 1" routerLink="rates" nz-menu-item nzMatchRouter>
         <li>
             <i nz-icon nzType="dollar"></i>
             <span >Tarifas</span>
@@ -64,7 +70,7 @@
         </li>
       </div>
        -->
-      <div routerLink="contracts" nz-menu-item nzMatchRouter>
+      <div *ngIf="rol == 2 || rol == 1" routerLink="contracts" nz-menu-item nzMatchRouter>
         <li>
             <i nz-icon nzType="reconciliation"></i>
             <span >Contratos</span>
@@ -127,7 +133,7 @@
       <!-- <div nz-menu-item nzMatchRouter>
         <li>
             <i nz-icon nzType="setting"></i>
-            <span >Configuracion</span>
+          <span >Configuracion</span>1|°!2Q3ZS6347
         </li>
       </div> -->
     </ul>
@@ -142,9 +148,7 @@
             ></i>
             
         </span>
-      <span class="header-title">SISTEMA DE FACTURACION ENERGETICA </span>
-
-        
+      <span class="header-title">SISTEMA DE FACTURACION ENERGETICA </span>    
       </div>
       
     </nz-header>

@@ -2,8 +2,8 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { es_ES, NZ_DATE_CONFIG, NZ_I18N } from 'ng-zorro-antd/i18n';
-import { en_US , NZ_DATE_LOCALE} from 'ng-zorro-antd/i18n';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
 
 import { registerLocaleData, CommonModule } from '@angular/common';
 
@@ -14,7 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from "@shared/shared.module";
-import { locale, utc } from 'moment';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '@shared/helpers/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,8 +29,10 @@ import { locale, utc } from 'moment';
     BrowserAnimationsModule
     
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US },
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
     { provide: LOCALE_ID, useValue: 'en_US' },
+    { provide: HTTP_INTERCEPTORS ,useClass: JwtInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

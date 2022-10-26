@@ -29,7 +29,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { CookieService } from 'ngx-cookie-service';
 import { SharedModule } from "../../shared/shared.module";
-
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 //shared
 
@@ -72,6 +72,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     HttpClientModule,
     NzNotificationModule,
     NzStatisticModule,
+    NzAvatarModule,
     //shared
     SharedModule,
   ],

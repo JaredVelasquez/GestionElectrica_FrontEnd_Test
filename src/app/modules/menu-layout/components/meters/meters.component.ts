@@ -83,11 +83,8 @@ export class MetersComponent implements OnInit, OnChanges {
         this.listOfData =  result;
         this.listOfManualMeterAux = result;
         console.log(this.listOfManualMeterAux);
-        
-        
       }
     );
-    
   }
 
   GetMeasurePoint(): void{
