@@ -87,31 +87,30 @@ export class ZonesComponent implements OnInit {
   listOfColumns: ColumnItem[] = [
     {
       name: 'Codigo',
-      sortOrder: 'descend',
-      sortFn: (a: ZoneShema, b: ZoneShema) => a.codigo - b.codigo,
-      sortDirections: ['descend', null],
+      sortOrder: null,
+      sortFn: (a: ZoneShema, b: ZoneShema) => a.codigo.localeCompare(b.codigo),
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: ZoneShema) => list.some(codigo => item.codigo.indexOf(codigo) !== -1)
     },
     {
       name: 'Descripcion',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: ZoneShema, b: ZoneShema) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: ZoneShema) => list.some(codigo => item.descripcion.indexOf(codigo) !== -1)
     },
     {
       name: 'Observacion',
       sortOrder: null,
+      sortFn: (a: ZoneShema, b: ZoneShema) => a.observacion.localeCompare(b.observacion),
       sortDirections: ['ascend', 'descend', null],
-      sortFn: null,
-      filterMultiple: false,
-      listOfFilter: [
-      ],
-      filterFn: null
+      filterMultiple: true,
+      listOfFilter: [],
+      filterFn: (list: string[], item: ZoneShema) => list.some(codigo => item.observacion.indexOf(codigo) !== -1)
     }
   ];
 

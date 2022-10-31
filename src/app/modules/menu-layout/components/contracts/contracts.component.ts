@@ -208,46 +208,46 @@ export class ContractsComponent implements OnInit{
       name: 'Codigo',
       sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.codigo.localeCompare(b.codigo),
-      sortDirections: ['ascend','descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: ContractInterface) => list.some(codigo => item.codigo.indexOf(codigo) !== -1)
     },
     {
       name: 'Descripcion',
       sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['ascend','descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: ContractInterface) => list.some(codigo => item.descripcion.indexOf(codigo) !== -1)
     },
     {
       name: 'Cliente',
       sortOrder: null,
-      sortFn: null,
-      sortDirections: ['ascend','descend', null],
+      sortFn: (a: ContractInterface, b: ContractInterface) => a.nombre.localeCompare(b.nombre),
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: ContractInterface) => list.some(nombre => item.nombre.indexOf(nombre) !== -1)
     },
     {
       name: 'Creacion',
       sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaCreacion.localeCompare(b.fechaCreacion),
-      sortDirections: ['ascend','descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: ContractInterface) => list.some(codigo => item.fechaCreacion.indexOf(codigo) !== -1)
     },
     {
       name: 'Vencimiento',
       sortOrder: null,
       sortFn: (a: ContractInterface, b: ContractInterface) => a.fechaVenc.localeCompare(b.fechaVenc),
-      sortDirections: ['ascend','descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: ContractInterface) => list.some(codigo => item.fechaVenc.indexOf(codigo) !== -1)
     }
   ];
 

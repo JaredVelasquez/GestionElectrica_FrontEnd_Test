@@ -1,6 +1,6 @@
 export interface ZoneShema {
     id: number;
-    codigo: number;
+    codigo: string;
     descripcion: string;
     observacion: string;
     estado: boolean;

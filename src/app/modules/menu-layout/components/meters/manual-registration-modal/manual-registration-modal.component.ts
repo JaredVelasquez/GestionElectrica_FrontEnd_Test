@@ -7,6 +7,7 @@ import { VariableSchema } from 'src/Core/interfaces/variable.interface';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NotificationService } from '@shared/services/notification.service';
 import { DatePipe } from '@angular/common';
+import { ColumnItem } from 'src/Core/interfaces/col-meter-table.interface';
 
 @Component({
   selector: 'app-manual-registration-modal',
@@ -244,4 +245,34 @@ export class ManualRegistrationModalComponent implements OnInit, OnChanges {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter((item: ManualSchema) => item.fecha.indexOf(this.searchValue) !== -1);
   }
+
+  listOfColumns: ColumnItem[] = [
+    {
+      name: 'Variable',
+      sortOrder: null,
+      sortFn: (a: ManualInterface, b: ManualInterface) => a.variableId - (b.variableId),
+      sortDirections: ['descend', 'ascend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Fecha',
+      sortOrder: null,
+      sortFn: (a: ManualInterface, b: ManualInterface) => a.fecha.localeCompare(b.fecha),
+      sortDirections: ['descend', 'ascend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+    {
+      name: 'Valor',
+      sortOrder: null,
+      sortFn: (a: ManualInterface, b: ManualInterface) => a.valor - (b.valor),
+      sortDirections: ['descend', 'ascend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
+    },
+  ];
 }

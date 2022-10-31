@@ -3,7 +3,7 @@
 <div *ngIf="!FacturaIsVisible">
   <div nz-row class="row-2">
   <div nz-col>
-      <nz-table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{x:'100%', y:'100%'}"  [nzPageSize]="10">
+      <nz-table #table [nzData]="listOfData" nzTableLayout="fixed" [nzScroll]="{x:'100%', y:'100%'}"  [nzPageSize]="9">
         <thead>
           <tr>
           <th nzLeft nzWidth="90px" nzAlign="center">Acciones</th>
@@ -25,7 +25,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of listOfData">
+          <tr *ngFor="let data of table.data">
             <td nzLeft nzAlign="center">
               <button nz-button nzSize="small" nzDanger nzType="primary"
               nz-popconfirm

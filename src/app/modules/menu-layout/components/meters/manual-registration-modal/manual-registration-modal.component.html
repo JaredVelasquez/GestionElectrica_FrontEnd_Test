@@ -93,14 +93,22 @@
                 <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
                   <thead>
                     <tr>
-                      <th nzWidth="100px">
+                      <th 
+                      nzWidth="100px">
                         Acciones
                       </th>
-                      <th nzWidth="100px">Variable</th>
-                      <th >
-                        Fecha
+                      <th
+                        *ngFor="let column of listOfColumns"
+                        [nzSortOrder]="column.sortOrder"
+                        [nzSortFn]="column.sortFn"
+                        [nzSortDirections]="column.sortDirections"
+                        [nzFilterMultiple]="column.filterMultiple"
+                        [nzFilters]="column.listOfFilter"
+                        [nzFilterFn]="column.filterFn"
+                        nzWidth="100px"
+                      >
+                        {{ column.name }}
                       </th>
-                      <th>Valor</th>
                     </tr>
                   </thead>
                   <tbody>

@@ -288,7 +288,7 @@ export class IssuedInvoicesComponent implements OnInit {
     },
     {
       name: 'Contrato',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigoContrato.localeCompare(b.codigoContrato),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
@@ -297,8 +297,8 @@ export class IssuedInvoicesComponent implements OnInit {
     },
     {
       name: 'Cliente',
-      sortOrder: 'descend',
-      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.codigoContrato.localeCompare(b.codigoContrato),
+      sortOrder: null,
+      sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.cliente.localeCompare(b.cliente),
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
       filterFn: null,
@@ -306,7 +306,7 @@ export class IssuedInvoicesComponent implements OnInit {
     },
     {
       name: 'Fecha',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: null ,
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
@@ -315,7 +315,7 @@ export class IssuedInvoicesComponent implements OnInit {
     },
     {
       name: 'Energia consumida (kWh)',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.energiaConsumida - b.energiaConsumida,
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],
@@ -324,7 +324,7 @@ export class IssuedInvoicesComponent implements OnInit {
     },
     {
       name: 'Total',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: InvoiceInterface, b: InvoiceInterface) => a.total - b.total,
       sortDirections: ['descend', 'ascend', null],
       listOfFilter: [],

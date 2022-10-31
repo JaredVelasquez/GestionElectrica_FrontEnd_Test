@@ -125,30 +125,30 @@ export class RatesComponent implements OnInit{
   listOfColumns: ColumnItem[] = [
     {
       name: 'Codigo',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: RatesInterface, b: RatesInterface) => a.codigo.localeCompare(b.codigo),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: RatesInterface) => list.some(codigo => item.codigo.indexOf(codigo) !== -1)
     },
     {
       name: 'Descripcion',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: RatesInterface, b: RatesInterface) => a.descripcion.localeCompare(b.descripcion),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: RatesInterface) => list.some(descripcion => item.descripcion.indexOf(descripcion) !== -1)
     },
     {
       name: 'Observacion',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: RatesInterface, b: RatesInterface) => a.observacion.localeCompare(b.observacion),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: RatesInterface) => list.some(observacion => item.observacion.indexOf(observacion) !== -1)
     }
   ];
 

@@ -261,7 +261,7 @@ export class VirtualMeterModalComponent implements OnInit {
       name: 'Porcentaje',
       sortOrder: 'descend',
       sortFn: (a: VirtualMeterShema, b: VirtualMeterShema) => a.porcentaje - b.porcentaje,
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend', 'descend', null],
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
@@ -273,8 +273,6 @@ export class VirtualMeterModalComponent implements OnInit {
       sortFn: (a: VirtualMeterShema, b: VirtualMeterShema) => Number(a.operacion) - Number(b.operacion),
       filterMultiple: false,
       listOfFilter: [
-        { text: 'London', value: 'London' },
-        { text: 'Sidney', value: 'Sidney' }
       ],
       filterFn: null
     },

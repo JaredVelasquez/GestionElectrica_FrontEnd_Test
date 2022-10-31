@@ -183,20 +183,20 @@ export class MetersComponent implements OnInit, OnChanges {
     {
       name: 'Source ID',
       sortOrder: null,
-      sortFn: (a: MeterSchema, b: MeterSchema) => a.sourceId.localeCompare(b.sourceId),
+      sortFn: (a: MeterSchema, b: MeterSchema) => a.sourceId - (b.sourceId),
       sortDirections: ['ascend', 'descend', null],
       filterMultiple: true,
       listOfFilter: [],
-      filterFn: (list: string[], item: MeterSchema) => list.some(codigo => item.sourceId.indexOf(codigo) !== -1)
+      filterFn: null
     },
     {
       name: 'Descripcion',
       sortOrder: null,
-      sortFn: null,
-      sortDirections: [],
+      sortFn: (a: MeterSchema, b: MeterSchema) => a.descripcion.localeCompare(b.descripcion),
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: MeterSchema) => list.some(codigo => item.descripcion.indexOf(codigo) !== -1)
     },
     {
       name: 'Modelo',

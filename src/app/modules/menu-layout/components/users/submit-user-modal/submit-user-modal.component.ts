@@ -88,8 +88,7 @@ export class SubmitUserModalComponent implements OnInit  {
       this.globalService.Patch(this.url.post, this.dataPosition.id, this.newUser).subscribe(
         (result:any) => {
           if(!result){
-            this.dataPosition = this.newUser;
-
+            this.updateMainTable();
             this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
           }else{
             this.notificationService.createMessage('error', 'La accion fallo 😓');
@@ -134,11 +133,14 @@ export class SubmitUserModalComponent implements OnInit  {
   }
 
   updateMainTable(): void{
-    this.dataPosition = { 
-      id: this.dataPosition.id,
-      ... this.validateForm.value,
-      estado: this.dataPosition.estado
-    }
+    this.dataPosition.id = this.dataPosition.id;
+    this.dataPosition.nombre = this.validateForm.value.nombre;
+    this.dataPosition.ad = this.dataPosition.ad;
+    this.dataPosition.rolid = this.validateForm.value.rolid;
+    this.dataPosition.apellido = this.validateForm.value.apellido;
+    this.dataPosition.telefono = this.validateForm.value.telefono;
+    this.dataPosition.observacion = this.validateForm.value.observacion;
+    this.dataPosition = this.dataPosition;
   }
 
 

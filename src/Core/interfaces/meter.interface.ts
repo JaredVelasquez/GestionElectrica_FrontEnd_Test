@@ -1,7 +1,7 @@
 export interface MeterSchema{
     id: number;
     codigo: string;
-    sourceId: string;
+    sourceId: number;
     descripcion: string;
     modelo: string;
     serie: string;

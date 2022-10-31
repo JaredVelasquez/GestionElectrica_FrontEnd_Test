@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit, OnChanges {
     delete: 'usuarios',
     update: 'usuarios',
   };
-  EmptyForm =this.fb.group({
+  EmptyForm = this.fb.group({
     codigo: ['', [Validators.required]],
     descripcion: ['', [Validators.required]],
     observacion: ['', [Validators.required]],
@@ -104,6 +104,11 @@ export class UsersComponent implements OnInit, OnChanges {
     this.globalService.Patch(this.url.update, user.id, {estado: estado}).subscribe(
       result => {
         if(!result){
+          for(let i = 0; i < this.listOfDataAux.length; i++){
+            if(this.listOfDataAux[i].id == user.id){
+              this.listOfDataAux[i].estado = !user.estado;
+            }
+          }
           if(estado === true){
             this.filterUsers(false, false);
           }else{
@@ -122,30 +127,30 @@ export class UsersComponent implements OnInit, OnChanges {
   listOfColumns: ColumnItem[] = [
     {
       name: 'Propietario',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: userSchema, b: userSchema) => a.nombre.localeCompare(b.nombre),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: userSchema) => list.some(codigo => item.nombre.indexOf(codigo) !== -1)
     },
     {
       name: 'Correo',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: userSchema, b: userSchema) => a.correo.localeCompare(b.correo),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: (list: string[], item: userSchema) => list.some(codigo => item.correo.indexOf(codigo) !== -1)
     },
     {
       name: 'Clasificación',
-      sortOrder: 'descend',
+      sortOrder: null,
       sortFn: (a: userSchema, b: userSchema) => a.rolid - (b.rolid),
-      sortDirections: ['descend', null],
+      sortDirections: ['ascend', 'descend', null],
+      filterMultiple: true,
       listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true
+      filterFn: null
     },
   ];
 
