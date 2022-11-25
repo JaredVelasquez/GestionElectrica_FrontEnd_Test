@@ -49,7 +49,6 @@ export class MenuLayoutComponent implements OnInit {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
-  text: string = this.user.nombre;
   color: string = colorList[3];
 
 }

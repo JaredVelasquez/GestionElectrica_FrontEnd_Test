@@ -350,7 +350,6 @@ export class GeneratedInvoicesComponent implements OnInit {
     
     this.globalService.Post(this.url.generateFacturas, generateFacturaSchema).subscribe(
       (result: any) => {
-        console.log(result);
         
         if(result.error){
           this.notificationService.createNotification('error', 'Falló',`${result.error} 😓`);
@@ -358,6 +357,7 @@ export class GeneratedInvoicesComponent implements OnInit {
         }else{
           this.listOfData = result;
           this.listOfData = [... this.listOfData];
+          console.log(result);
 
           this.notificationService.createMessage('success', 'La acción se ejecuto con exito 😎');
           isLoading = false;

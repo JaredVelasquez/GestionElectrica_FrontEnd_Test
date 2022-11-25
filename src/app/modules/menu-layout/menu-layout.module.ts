@@ -69,6 +69,7 @@ import { ModalCargosEehComponent } from './components/contracts/modal-cargos-eeh
 import { UsersComponent } from './components/users/users.component';
 import { SubmitUserModalComponent } from './components/users/submit-user-modal/submit-user-modal.component';
 import { CredentialUserModalComponent } from './components/users/credential-user-modal/credential-user-modal.component';
+import { PruebaComponent } from './components/prueba/prueba.component';
 
 
 @NgModule({
@@ -109,6 +110,7 @@ import { CredentialUserModalComponent } from './components/users/credential-user
     UsersComponent,
     SubmitUserModalComponent,
     CredentialUserModalComponent,
+    PruebaComponent,
   ],
   imports: [
     CommonModule,

@@ -16,6 +16,7 @@ import { IssuedInvoicesComponent } from './components/issued-invoices/issued-inv
 import { CancelledInvoicesComponent } from './components/cancelled-invoices/cancelled-invoices.component';
 import { ReportComponent } from './components/report/report.component';
 import { UsersComponent } from './components/users/users.component';
+import { PruebaComponent } from './components/prueba/prueba.component';
 
 
 const routes: Routes = [
@@ -83,6 +84,10 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent
+      },
+      {
+        path: 'prueba',
+        component: PruebaComponent
       },
      ]
   },

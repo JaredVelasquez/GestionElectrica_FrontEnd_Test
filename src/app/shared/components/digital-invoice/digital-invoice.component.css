@@ -142,12 +142,21 @@
     margin: auto;
 }
 
+.detalle {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 1px 1px;
+    grid-template-areas: ".";
+    margin-top: 5px;
+}
+
 .consumo-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     gap: 1px 1px;
-    grid-template-areas: ".";
+    grid-template-areas: ". .";
     margin-top: 5px;
     width: 80%;
     margin: auto;
@@ -161,7 +170,6 @@
     grid-template-areas: ". .";
     margin-top: 5px;
     width: 80%;
-    height: auto;
     margin: auto;
 }
 
